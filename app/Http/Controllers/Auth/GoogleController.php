@@ -20,7 +20,6 @@ class GoogleController extends Controller
     {
         try {
             $user = Socialite::driver('google')->stateless()->user();
-
             $existingUser = User::where('email', $user->email)->first();
 
             if ($existingUser) {
@@ -39,10 +38,10 @@ class GoogleController extends Controller
                     'password' => bcrypt(Str::random(16)),
                     'register_ip' => request()->ip(),
                     'last_login_ip' => request()->ip(),
+                    'last_user_agent' => request()->header('User-Agent'),
                 ]);
 
                 $newUser->sendWelcomeNotification();
-
                 Auth::login($newUser);
             }
 

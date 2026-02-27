@@ -17,22 +17,26 @@ class AppServiceProvider extends ServiceProvider
     {
         Event::listen(Login::class, function ($event) {
             $user = $event->user;
+
+            if ($user->wasRecentlyCreated) {
+                return;
+            }
+
             $ip = request()->ip();
             $userAgent = request()->header('User-Agent');
-
             $oldIp = $user->last_login_ip;
             $oldAgent = $user->last_user_agent;
-
-            $user->update([
-                'last_login_ip' => $ip,
-                'last_user_agent' => $userAgent
-            ]);
 
             if (!empty($oldIp)) {
                 if ($oldIp !== $ip || $oldAgent !== $userAgent) {
                     $user->sendNewLoginNotification($ip, $userAgent);
                 }
             }
+
+            $user->update([
+                'last_login_ip' => $ip,
+                'last_user_agent' => $userAgent
+            ]);
         });
     }
 }

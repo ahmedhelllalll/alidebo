@@ -20,9 +20,7 @@ class FacebookController extends Controller
     {
         try {
             $user = Socialite::driver('facebook')->stateless()->user();
-
             $email = $user->email ?? $user->id . '@facebook.com';
-
             $existingUser = User::where('email', $email)->first();
 
             if ($existingUser) {
@@ -41,10 +39,10 @@ class FacebookController extends Controller
                     'password' => bcrypt(Str::random(16)),
                     'register_ip' => request()->ip(),
                     'last_login_ip' => request()->ip(),
+                    'last_user_agent' => request()->header('User-Agent'),
                 ]);
 
                 $newUser->sendWelcomeNotification();
-
                 Auth::login($newUser);
             }
 

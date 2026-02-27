@@ -33,6 +33,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
             'register_ip' => $request->ip(),
             'last_login_ip' => $request->ip(),
+            'last_user_agent' => $request->header('User-Agent'),
         ]);
 
         event(new Registered($user));
