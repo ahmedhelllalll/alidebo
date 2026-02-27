@@ -20,8 +20,10 @@ class AppServiceProvider extends ServiceProvider
             $ip = request()->ip();
             $userAgent = request()->header('User-Agent');
 
-            if ($user->last_login_ip !== $ip || $user->last_user_agent !== $userAgent) {
-                $user->sendNewLoginNotification($ip, $userAgent);
+            if ($user->last_login_ip !== null) {
+                if ($user->last_login_ip !== $ip || $user->last_user_agent !== $userAgent) {
+                    $user->sendNewLoginNotification($ip, $userAgent);
+                }
             }
 
             $user->update([
