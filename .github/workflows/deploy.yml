@@ -1,25 +1,24 @@
-name: Deploy API to Server
+name: Deploy API via FTP
 
 on:
   push:
     branches:
-      - main  # تأكد أن اسم الفرع عندك main (لو master غيره هنا)
+      - main
 
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Deploy Files via SSH Key
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }} # استخدام المفتاح الذي أضفته في Secrets
-          port: 21098 # هذا البورت الشائع في ليبيا سبايدر (لو فشل غيره لـ 22)
-          source: "."   
-          target: "/home/alideboc/api.alidebo.com"
-          rm: false     # لعدم مسح الملفات الموجودة مسبقاً مثل .env
-          strip_components: 0
+    - name: Get latest code
+      uses: actions/checkout@v3
+    
+    - name: Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        # المسار هنا للـ FTP بيبدأ من بعد الدخول، جرب المسار ده:
+        server-dir: api.alidebo.com/
