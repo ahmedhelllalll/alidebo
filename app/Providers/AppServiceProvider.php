@@ -8,17 +8,11 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         Event::listen(Login::class, function ($event) {
@@ -26,11 +20,13 @@ class AppServiceProvider extends ServiceProvider
             $ip = request()->ip();
             $userAgent = request()->header('User-Agent');
 
+            if ($user->last_login_ip !== $ip) {
+                $user->sendNewLoginNotification($ip, $userAgent);
+            }
+
             $user->update([
                 'last_login_ip' => $ip
             ]);
-
-            $user->sendNewLoginNotification($ip, $userAgent);
         });
     }
 }
