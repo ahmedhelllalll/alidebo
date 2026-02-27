@@ -5,14 +5,10 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Jenssegers\Agent\Agent; // استدعاء المكتبة
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        //
-    }
-
     public function boot(): void
     {
         Event::listen(Login::class, function ($event) {
@@ -22,20 +18,30 @@ class AppServiceProvider extends ServiceProvider
                 return;
             }
 
+            $agent = new Agent();
             $ip = request()->ip();
-            $userAgent = request()->header('User-Agent');
+            $userAgentRaw = request()->header('User-Agent');
+
+            // تحويل الكود لاسم جهاز ومتصفح مفهوم
+            $browser = $agent->browser(); // مثال: Chrome
+            $platform = $agent->platform(); // مثال: Windows
+            $device = $agent->device(); // مثال: iPhone أو Macintosh
+
+            $readableAgent = "$platform - $browser ($device)";
+
             $oldIp = $user->last_login_ip;
             $oldAgent = $user->last_user_agent;
 
             if (!empty($oldIp)) {
-                if ($oldIp !== $ip || $oldAgent !== $userAgent) {
-                    $user->sendNewLoginNotification($ip, $userAgent);
+                if ($oldIp !== $ip || $oldAgent !== $userAgentRaw) {
+                    // نبعت الاسم المفهوم للإيميل
+                    $user->sendNewLoginNotification($ip, $readableAgent);
                 }
             }
 
             $user->update([
                 'last_login_ip' => $ip,
-                'last_user_agent' => $userAgent
+                'last_user_agent' => $userAgentRaw
             ]);
         });
     }
