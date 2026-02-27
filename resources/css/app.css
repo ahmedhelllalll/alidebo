@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary: rgb(244, 80, 24);
+    --primary-hover: #d14916;
+    --bg-dark: #0f1720;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --input-bg: rgba(255, 255, 255, 0.05);
+    --text-muted: #94a3b8;
+}

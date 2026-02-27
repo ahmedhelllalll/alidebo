@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; background-color: #f8fafc; color: #334155; }
+        .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .header { background: linear-gradient(135deg, #f45018 0%, #fb923c 100%); padding: 40px 20px; text-align: center; color: white; }
+        .content { padding: 40px 30px; text-align: center; line-height: 1.8; }
+        .footer { background: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b; }
+        .btn { display: inline-block; padding: 16px 40px; background-color: #f45018; color: #ffffff !important; text-decoration: none; border-radius: 16px; font-weight: 800; margin-top: 25px; box-shadow: 0 10px 20px rgba(244,80,24,0.2); }
+        .logo { width: 60px; margin-bottom: 15px; }
+        h1 { font-weight: 900; margin: 0; font-size: 28px; }
+        p { font-size: 16px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="logo">
+            <h1>أهلاً بك في مجتمع alidebo!</h1>
+        </div>
+
+        <div class="content">
+            <p style="font-size: 20px; color: #0f172a; font-weight: 700;">مرحباً بك يا بطل!</p>
+            <p>سعداء جداً بانضمامك إلينا. أنت الآن على بُعد خطوة واحدة من امتلاك بروفايل احترافي يضع أعمالك في المقدمة ويجذب إليك العملاء الذين تستحقهم.</p>
+            
+            <p style="margin-top: 20px; color: #64748b;">لكي نبدأ رحلة النجاح معاً، يرجى تأكيد بريدك الإلكتروني بالضغط على الزر أدناه:</p>
+            
+            <a href="{{ $url }}" class="btn">تأكيد حسابي الآن</a>
+            
+            <p style="margin-top: 30px; font-size: 14px; color: #94a3b8;">إذا لم تكن قد أنشأت حساباً معنا، يمكنك تجاهل هذا الإيميل بسلام.</p>
+        </div>
+
+        <div class="footer">
+            <p>نحن هنا لمساعدتك دائماً.</p>
+            <div style="margin-top: 10px;">
+                <a href="#" style="color: #f45018; text-decoration: none; font-weight: bold;">مركز المساعدة</a> • 
+                <a href="#" style="color: #f45018; text-decoration: none; font-weight: bold;">تواصل معنا</a>
+            </div>
+            <p style="margin-top: 15px;">© 2026 alidebo. جميع الحقوق محفوظة.</p>
+        </div>
+    </div>
+</body>
+</html>
