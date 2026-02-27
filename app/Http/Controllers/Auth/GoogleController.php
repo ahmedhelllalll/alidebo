@@ -20,10 +20,10 @@ class GoogleController extends Controller
     {
         try {
             $user = Socialite::driver('google')->stateless()->user();
-            
+
             $existingUser = User::where('email', $user->email)->first();
 
-            if($existingUser){
+            if ($existingUser) {
                 $existingUser->update([
                     'google_id' => $user->id,
                     'email_verified_at' => $existingUser->email_verified_at ?? now(),
@@ -33,10 +33,12 @@ class GoogleController extends Controller
                 $newUser = User::create([
                     'name' => $user->name,
                     'email' => $user->email,
-                    'google_id'=> $user->id,
-                    'role' => 'user', 
+                    'google_id' => $user->id,
+                    'role' => 'user',
                     'email_verified_at' => now(),
                     'password' => bcrypt(Str::random(16)),
+                    'register_ip' => request()->ip(),
+                    'last_login_ip' => request()->ip(),
                 ]);
 
                 $newUser->sendWelcomeNotification();

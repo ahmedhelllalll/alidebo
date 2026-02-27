@@ -20,7 +20,7 @@ class FacebookController extends Controller
     {
         try {
             $user = Socialite::driver('facebook')->stateless()->user();
-            
+
             $email = $user->email ?? $user->id . '@facebook.com';
 
             $existingUser = User::where('email', $email)->first();
@@ -39,6 +39,8 @@ class FacebookController extends Controller
                     'role' => 'user',
                     'email_verified_at' => now(),
                     'password' => bcrypt(Str::random(16)),
+                    'register_ip' => request()->ip(),
+                    'last_login_ip' => request()->ip(),
                 ]);
 
                 $newUser->sendWelcomeNotification();
