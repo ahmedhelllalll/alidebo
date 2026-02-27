@@ -25,6 +25,11 @@ class AppServiceProvider extends ServiceProvider
             $user = $event->user;
             $ip = request()->ip();
             $userAgent = request()->header('User-Agent');
+
+            $user->update([
+                'last_login_ip' => $ip
+            ]);
+
             $user->sendNewLoginNotification($ip, $userAgent);
         });
     }

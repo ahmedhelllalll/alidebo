@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Http;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,7 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'role',
         'google_id',
         'facebook_id',
-        'email_verified_at'
+        'email_verified_at',
+        'register_ip', 
+        'last_login_ip'   
     ];
 
     protected $hidden = [
@@ -79,6 +82,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendNewLoginNotification($ip, $userAgent)
     {
+        $location = "";
+        try {
+            $response = Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=status,country&lang=ar");
+            if ($response->successful() && $response['status'] === 'success') {
+                $location = $response['country'] . " ";
+            }
+        } catch (\Exception $e) {
+        }
+
         $device = 'جهاز غير معروف';
         if (str_contains($userAgent, 'Windows')) $device = 'Windows PC';
         elseif (str_contains($userAgent, 'iPhone')) $device = 'iPhone';
@@ -93,7 +105,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         Mail::send('emails.new-login', [
             'name' => $this->name,
-            'ip' => $ip,
+            'ip' => $location . "(" . $ip . ")",
             'device' => $browser . ' على ' . $device,
             'time' => now()->format('Y-m-d H:i')
         ], function ($message) {

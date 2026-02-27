@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('email_verified_at')->nullable()->after('email');
+            $table->string('register_ip')->nullable()->after('password');
+            $table->string('last_login_ip')->nullable()->after('register_ip');
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn(['register_ip', 'last_login_ip']);
         });
     }
 };
