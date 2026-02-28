@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -9,25 +10,31 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\ProfileMedia;
 use App\Models\BusinessProfile;
 use App\Models\ProfileSection;
+use App\Models\User;
 
-class DashboardController extends Controller
+class BusinessProfileController extends Controller
 {
     public function index()
     {
-        /** @var \App\Models\User $user */
         $user = Auth::user();
-        $businesses = $user->businessProfiles;
+
+        if (!$user instanceof User) {
+            abort(403);
+        }
+
+        $businesses = $user->businessProfiles()
+            ->withCount('media')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         $isEmpty = $businesses->isEmpty();
 
-        return view('dashboard.index', [
-            'isEmpty' => $isEmpty,
-            'businesses' => $businesses
-        ]);
+        return view('user.business.index', compact('businesses', 'isEmpty'));
     }
 
     public function create()
     {
-        return view('dashboard.create_business');
+        return view('user.business.create');
     }
 
     public function store(Request $request)
@@ -38,8 +45,11 @@ class DashboardController extends Controller
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        /** @var \App\Models\User $user */
         $user = Auth::user();
+
+        if (!$user instanceof User) {
+            abort(403);
+        }
 
         $logoPath = null;
         if ($request->hasFile('logo')) {
@@ -47,9 +57,9 @@ class DashboardController extends Controller
         }
 
         $business = $user->businessProfiles()->create([
-            'name' => $request->name,
-            'meta_description' => $request->meta_description,
-            'slug' => Str::slug($request->name) . '-' . Str::random(5),
+            'name' => $request->input('name'),
+            'meta_description' => $request->input('meta_description'),
+            'slug' => Str::slug($request->input('name')) . '-' . Str::random(5),
             'status' => 'pending',
             'logo' => $logoPath,
         ]);
@@ -70,23 +80,35 @@ class DashboardController extends Controller
             ]);
         }
 
-        return redirect()->route('dashboard')->with('success', 'تم إنشاء البروفايل بنجاح');
+        return redirect()->route('business.index')->with('success', 'تم إنشاء البروفايل بنجاح');
     }
 
     public function edit($id)
     {
-        $business = Auth::user()->businessProfiles()
-            ->with(['media', 'sections' => function($q) {
+        $user = Auth::user();
+
+        if (!$user instanceof User) {
+            abort(403);
+        }
+
+        $business = $user->businessProfiles()
+            ->with(['media', 'sections' => function ($q) {
                 $q->orderBy('sort_order', 'asc');
             }])
             ->findOrFail($id);
 
-        return view('dashboard.edit_business', compact('business'));
+        return view('user.business.edit', compact('business'));
     }
 
     public function update(Request $request, $id)
     {
-        $business = Auth::user()->businessProfiles()->findOrFail($id);
+        $user = Auth::user();
+
+        if (!$user instanceof User) {
+            abort(403);
+        }
+
+        $business = $user->businessProfiles()->findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255|min:3',
@@ -95,8 +117,8 @@ class DashboardController extends Controller
         ]);
 
         $data = [
-            'name' => $request->name,
-            'meta_description' => $request->meta_description,
+            'name' => $request->input('name'),
+            'meta_description' => $request->input('meta_description'),
         ];
 
         if ($request->hasFile('logo')) {
@@ -113,7 +135,13 @@ class DashboardController extends Controller
 
     public function uploadMedia(Request $request, $id)
     {
-        $business = Auth::user()->businessProfiles()->withCount('media')->findOrFail($id);
+        $user = Auth::user();
+
+        if (!$user instanceof User) {
+            abort(403);
+        }
+
+        $business = $user->businessProfiles()->withCount('media')->findOrFail($id);
         $currentCount = $business->media_count;
 
         if (!$request->hasFile('images')) {
@@ -159,10 +187,16 @@ class DashboardController extends Controller
             'section_type' => 'required|string|in:hero,about,services,gallery,contact',
         ]);
 
-        $business = Auth::user()->businessProfiles()->findOrFail($request->business_profile_id);
+        $user = Auth::user();
+
+        if (!$user instanceof User) {
+            abort(403);
+        }
+
+        $business = $user->businessProfiles()->findOrFail($request->input('business_profile_id'));
 
         $business->sections()->create([
-            'section_type' => $request->section_type,
+            'section_type' => $request->input('section_type'),
             'template_key' => 'default',
             'content' => [],
             'sort_order' => $business->sections()->count()
@@ -178,8 +212,8 @@ class DashboardController extends Controller
         })->findOrFail($sectionId);
 
         $section->update([
-            'content' => $request->content,
-            'template_key' => $request->template_key ?? $section->template_key
+            'content' => $request->input('content'),
+            'template_key' => $request->input('template_key') ?? $section->template_key
         ]);
 
         return redirect()->back()->with('success', 'تم تحديث القسم');
@@ -198,12 +232,13 @@ class DashboardController extends Controller
 
     public function showPublicProfile($slug)
     {
-        $business = BusinessProfile::with(['media', 'sections' => function($q) {
+        $business = BusinessProfile::with(['media', 'sections' => function ($q) {
             $q->orderBy('sort_order', 'asc');
         }])->where('slug', $slug)->firstOrFail();
 
         if ($business->status !== 'approved') {
-            if (!Auth::check() || (Auth::id() !== $business->user_id && !Auth::user()->isAdmin())) {
+            $user = Auth::user();
+            if (!Auth::check() || ($user instanceof User && $user->id !== $business->user_id && !$user->isAdmin())) {
                 abort(403, 'هذا البروفايل قيد المراجعة حالياً.');
             }
         }

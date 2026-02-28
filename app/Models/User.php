@@ -85,19 +85,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $location = "";
         try {
-            // بنحاول نجيب الدولة بناءً على الـ IP
             $response = Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=status,country&lang=ar");
             if ($response->successful() && $response['status'] === 'success') {
                 $location = $response['country'] . " ";
             }
         } catch (\Exception $e) {
-            // لو حصل مشكلة في الـ API بنكمل عادي
+            // 
         }
 
         Mail::send('emails.new-login', [
             'name'   => $this->name,
             'ip'     => $location . "(" . $ip . ")",
-            'device' => $deviceInfo, // هنا بنعرض البيانات اللي جاية من مكتبة Agent مباشرة
+            'device' => $deviceInfo,
             'time'   => now()->format('Y-m-d H:i')
         ], function ($message) {
             $message->to($this->email)
@@ -115,5 +114,3 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'admin';
     }
 }
-
-// 

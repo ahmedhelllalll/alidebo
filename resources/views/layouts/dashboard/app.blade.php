@@ -55,7 +55,6 @@
             left: 20%;
             width: 70%;
             height: 60%;
-            /* background: radial-gradient(circle, rgba(244, 80, 24, 0.07) 0%, transparent 70%); */
         }
 
         .sidebar-right {
@@ -94,7 +93,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 48px;
+            margin-bottom: 18px;
             padding: 0 8px;
         }
 
@@ -179,8 +178,7 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        .sidebar-collapsed .action-item:hover .side-tooltip,
-        .sidebar-collapsed .user-section:hover .side-tooltip {
+        .sidebar-collapsed .action-item:hover .side-tooltip {
             opacity: 1;
             visibility: visible;
             transform: translateY(-50%) translateX(0);
@@ -198,59 +196,10 @@
             display: none;
         }
 
-        .user-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px;
-            border-radius: 20px;
-            transition: 0.3s;
-            width: 100%;
-        }
-
-        .sidebar-collapsed .user-section {
-            justify-content: center;
-            padding: 12px 0;
-        }
-
-        .user-box {
-            width: 44px;
-            height: 44px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #f45018, #e11d48);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: white;
-            flex-shrink: 0;
-            box-shadow: 0 8px 20px -5px rgba(244, 80, 24, 0.4);
-        }
-
-        .logout-btn {
-            padding: 10px;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        }
-
-        .sidebar-collapsed .logout-btn {
-            display: none;
-        }
-
-        .logout-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #ef4444 !important;
-        }
-
         .main-wrapper {
             margin-right: 340px;
-            min-height: auto;
+            padding-top: 100px;
+            min-height: 100vh;
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
@@ -274,13 +223,6 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .nav-dock.scrolled {
-            padding: 8px 16px;
-            opacity: 0.95;
-            top: 15px;
-            transform: scale(0.98);
-        }
-
         html.dark .nav-dock {
             background: rgba(20, 20, 22, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -291,6 +233,10 @@
             background: rgba(255, 255, 255, 0.85);
             border: 1px solid rgba(0, 0, 0, 0.08);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+        }
+
+        section {
+            scroll-margin-top: 120px;
         }
 
         .nav-link {
@@ -319,20 +265,7 @@
             display: none;
             cursor: pointer;
             padding: 8px;
-            border-radius: 12px;
-            transition: 0.3s;
-            position: relative;
             z-index: 1001;
-        }
-
-        .hamburger svg {
-            width: 32px;
-            height: 32px;
-        }
-
-        .hamburger path {
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-            transform-origin: center;
         }
 
         .nav-logo-mobile {
@@ -349,7 +282,7 @@
             z-index: 999;
             opacity: 0;
             visibility: hidden;
-            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.4s;
         }
 
         .sidebar-overlay.active {
@@ -365,10 +298,8 @@
                 height: 100vh;
                 width: 300px !important;
                 border-radius: 0;
-                border-top-right-radius: 32px;
-                border-bottom-right-radius: 32px;
-                padding: 32px 24px;
-                display: flex;
+                border-top-left-radius: 32px;
+                border-bottom-left-radius: 32px;
             }
 
             .sidebar-right.active {
@@ -377,7 +308,7 @@
 
             .main-wrapper {
                 margin-right: 0 !important;
-                padding: 110px 20px;
+                padding-top: 90px;
             }
 
             .nav-dock {
@@ -385,12 +316,6 @@
                 right: 12px;
                 justify-content: space-between;
                 width: auto;
-                padding: 10px 16px;
-                border-radius: 20px;
-            }
-
-            .nav-link {
-                display: none;
             }
 
             .hamburger,
@@ -398,17 +323,8 @@
                 display: flex;
             }
 
-            .menu-open .line-1 {
-                transform: translateY(6px) rotate(45deg);
-            }
-
-            .menu-open .line-2 {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-
-            .menu-open .line-3 {
-                transform: translateY(-6px) rotate(-45deg);
+            .nav-link {
+                display: none;
             }
         }
     </style>
@@ -423,10 +339,10 @@
 
     @include('layouts.dashboard.sidebar')
 
-    <main class="main-wrapper" style="background: transparent !important;" id="main-wrapper">
+    <main class="main-wrapper" id="main-wrapper">
         @include('layouts.dashboard.nav-dock')
 
-        <div class="max-w-6xl w-full mx-auto mt-2 px-4" style="background: transparent !important;">
+        <div class="max-w-6xl w-full mx-auto px-4">
             @yield('content')
         </div>
     </main>
@@ -436,23 +352,18 @@
             const nav = document.getElementById('nav-dock');
             if (window.scrollY > 50) {
                 nav.classList.add('scrolled');
+                nav.style.transform = 'scale(0.95) translateY(-5px)';
             } else {
                 nav.classList.remove('scrolled');
+                nav.style.transform = 'scale(1) translateY(0)';
             }
         });
 
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const wrapper = document.getElementById('main-wrapper');
-            const path = document.getElementById('icon-path');
             sidebar.classList.toggle('sidebar-collapsed');
             wrapper.classList.toggle('wrapper-expanded');
-
-            if (sidebar.classList.contains('sidebar-collapsed')) {
-                path.setAttribute('d', 'M4 6h16M4 12h8m-8 6h16');
-            } else {
-                path.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
-            }
         }
 
         function toggleMobileMenu() {
@@ -462,7 +373,6 @@
             sidebar.classList.toggle('active');
             hamburger.classList.toggle('menu-open');
             overlay.classList.toggle('active');
-
             document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : 'auto';
         }
 

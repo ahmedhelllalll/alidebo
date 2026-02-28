@@ -10,7 +10,7 @@
     <div class="benefit-section" style="background-color: #f8f9fa;">
         <p style="margin: 5px 0;"><strong>الوقت:</strong> {{ $time }}</p>
         <p style="margin: 5px 0;"><strong>الجهاز/المتصفح:</strong> {{ $device }}</p>
-        <p style="margin: 5px 0;"><strong>الموقع:</strong> {{ $ip }}</p>
+        <p style="margin: 5px 0;"><strong>عنوان الـ IP:</strong> {{ $ip }}</p>
     </div>
 
     <p>إذا كنت أنت من قام بهذا الإجراء، يمكنك تجاهل هذا الإيميل بأمان.</p>

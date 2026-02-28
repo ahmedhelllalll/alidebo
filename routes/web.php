@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\BusinessProfileController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\Auth\FacebookController;
 use Illuminate\Support\Facades\Route;
@@ -16,27 +17,31 @@ Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallba
 Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook'])->name('facebook.login');
 Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    Route::get('/dashboard/business/create', [DashboardController::class, 'create'])->name('business.create');
-    Route::post('/dashboard/business/store', [DashboardController::class, 'store'])->name('business.store');
-    Route::get('/dashboard/business/{id}/edit', [DashboardController::class, 'edit'])->name('business.edit');
-    Route::put('/dashboard/business/{id}/update', [DashboardController::class, 'update'])->name('business.update');
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
 
-    Route::post('/dashboard/business/{id}/media', [DashboardController::class, 'uploadMedia'])->name('business.media.upload');
-    Route::delete('/dashboard/media/{id}', [DashboardController::class, 'destroyMedia'])->name('business.media.destroy');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::post('/dashboard/sections', [DashboardController::class, 'storeSection'])->name('sections.store');
-    Route::put('/dashboard/sections/{id}', [DashboardController::class, 'updateSection'])->name('sections.update');
-    Route::delete('/dashboard/sections/{id}', [DashboardController::class, 'destroySection'])->name('sections.destroy');
+    Route::prefix('business')->group(function () {
+        Route::get('/', [BusinessProfileController::class, 'index'])->name('business.index');
+        Route::get('/create', [BusinessProfileController::class, 'create'])->name('business.create');
+        Route::post('/store', [BusinessProfileController::class, 'store'])->name('business.store');
+        Route::get('/{id}/edit', [BusinessProfileController::class, 'edit'])->name('business.edit');
+        Route::put('/{id}/update', [BusinessProfileController::class, 'update'])->name('business.update');
+        Route::post('/{id}/media', [BusinessProfileController::class, 'uploadMedia'])->name('business.media.upload');
+        Route::delete('/media/{id}', [BusinessProfileController::class, 'destroyMedia'])->name('business.media.destroy');
+    });
+
+    Route::prefix('sections')->group(function () {
+        Route::post('/', [BusinessProfileController::class, 'storeSection'])->name('sections.store');
+        Route::put('/{id}', [BusinessProfileController::class, 'updateSection'])->name('sections.update');
+        Route::delete('/{id}', [BusinessProfileController::class, 'destroySection'])->name('sections.destroy');
+    });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+require __DIR__ . '/auth.php';
 
-require __DIR__.'/auth.php';
-
-Route::get('/{slug}', [DashboardController::class, 'showPublicProfile'])->name('profile.show');
+Route::get('/{slug}', [BusinessProfileController::class, 'showPublicProfile'])->name('profile.show');
