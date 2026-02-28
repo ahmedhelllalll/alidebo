@@ -81,34 +81,24 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
-    public function sendNewLoginNotification($ip, $userAgent)
+    public function sendNewLoginNotification($ip, $deviceInfo)
     {
         $location = "";
         try {
+            // بنحاول نجيب الدولة بناءً على الـ IP
             $response = Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=status,country&lang=ar");
             if ($response->successful() && $response['status'] === 'success') {
                 $location = $response['country'] . " ";
             }
         } catch (\Exception $e) {
+            // لو حصل مشكلة في الـ API بنكمل عادي
         }
 
-        $device = 'جهاز غير معروف';
-        if (str_contains($userAgent, 'Windows')) $device = 'Windows PC';
-        elseif (str_contains($userAgent, 'iPhone')) $device = 'iPhone';
-        elseif (str_contains($userAgent, 'Android')) $device = 'Android Device';
-        elseif (str_contains($userAgent, 'Macintosh')) $device = 'MacBook/iMac';
-
-        $browser = 'متصفح غير معروف';
-        if (str_contains($userAgent, 'Chrome')) $browser = 'Google Chrome';
-        elseif (str_contains($userAgent, 'Firefox')) $browser = 'Mozilla Firefox';
-        elseif (str_contains($userAgent, 'Safari') && !str_contains($userAgent, 'Chrome')) $browser = 'Apple Safari';
-        elseif (str_contains($userAgent, 'Edge')) $browser = 'Microsoft Edge';
-
         Mail::send('emails.new-login', [
-            'name' => $this->name,
-            'ip' => $location . "(" . $ip . ")",
-            'device' => $browser . ' على ' . $device,
-            'time' => now()->format('Y-m-d H:i')
+            'name'   => $this->name,
+            'ip'     => $location . "(" . $ip . ")",
+            'device' => $deviceInfo, // هنا بنعرض البيانات اللي جاية من مكتبة Agent مباشرة
+            'time'   => now()->format('Y-m-d H:i')
         ], function ($message) {
             $message->to($this->email)
                 ->subject('تنبيه أمان: تسجيل دخول جديد لـ alidebo');

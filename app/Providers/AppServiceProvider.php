@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use Jenssegers\Agent\Agent; // استدعاء المكتبة
+use Jenssegers\Agent\Agent;
 
 class AppServiceProvider extends ServiceProvider
 {
