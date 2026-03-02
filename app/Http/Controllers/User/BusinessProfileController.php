@@ -11,16 +11,15 @@ use App\Models\ProfileMedia;
 use App\Models\BusinessProfile;
 use App\Models\ProfileSection;
 use App\Models\User;
+use App\Models\Category;
+use App\Models\City;
 
 class BusinessProfileController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-
-        if (!$user instanceof User) {
-            abort(403);
-        }
+        if (!$user instanceof User) abort(403);
 
         $businesses = $user->businessProfiles()
             ->withCount('media')
@@ -34,41 +33,78 @@ class BusinessProfileController extends Controller
 
     public function create()
     {
-        return view('user.business.create');
+        $user = Auth::user();
+        if ($user->businessProfiles()->exists()) {
+            return redirect()->route('business.index');
+        }
+
+        $categories = Category::all();
+        $cities = City::all();
+        return view('user.business.onboarding', compact('categories', 'cities'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255|min:3',
-            'meta_description' => 'nullable|string|max:1000',
+            'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
+            'whatsapp' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20',
+            'website' => 'nullable|url',
+            'social_links' => 'nullable|array',
+            'city_id' => 'required|exists:cities,id',
+            'address' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $user = Auth::user();
+        if (!$user instanceof User) abort(403);
 
-        if (!$user instanceof User) {
-            abort(403);
-        }
-
-        $logoPath = null;
-        if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('logos', 'public');
-        }
+        $logoPath = $request->hasFile('logo')
+            ? $request->file('logo')->store('logos', 'public')
+            : null;
 
         $business = $user->businessProfiles()->create([
-            'name' => $request->input('name'),
-            'meta_description' => $request->input('meta_description'),
-            'slug' => Str::slug($request->input('name')) . '-' . Str::random(5),
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'city_id' => $request->city_id,
+            'description' => $request->description,
+            'whatsapp' => $request->whatsapp,
+            'phone' => $request->phone,
+            'website' => $request->website,
+            'social_links' => $request->social_links,
+            'address' => $request->address,
+            'slug' => Str::slug($request->name) . '-' . Str::random(5),
             'status' => 'pending',
             'logo' => $logoPath,
         ]);
 
         $defaultSections = [
-            ['type' => 'hero', 'order' => 0, 'content' => ['title' => $business->name, 'subtitle' => 'مرحباً بكم في بروفايل شركتنا']],
-            ['type' => 'about', 'order' => 1, 'content' => ['text' => $business->meta_description ?? 'اكتب نبذة تعريفية عن شركتك هنا...']],
-            ['type' => 'gallery', 'order' => 2, 'content' => ['title' => 'معرض أعمالنا']],
-            ['type' => 'contact', 'order' => 3, 'content' => ['phone' => '', 'email' => $user->email]],
+            [
+                'type' => 'hero',
+                'order' => 0,
+                'content' => ['title' => $business->name, 'subtitle' => 'مرحباً بكم في بروفايل شركتنا']
+            ],
+            [
+                'type' => 'about',
+                'order' => 1,
+                'content' => ['text' => $business->description ?? 'اكتب نبذة تعريفية عن شركتك هنا...']
+            ],
+            [
+                'type' => 'gallery',
+                'order' => 2,
+                'content' => ['title' => 'معرض أعمالنا']
+            ],
+            [
+                'type' => 'contact',
+                'order' => 3,
+                'content' => [
+                    'phone' => $request->phone ?? $request->whatsapp,
+                    'email' => $user->email,
+                    'website' => $request->website
+                ]
+            ],
         ];
 
         foreach ($defaultSections as $section) {
@@ -80,51 +116,51 @@ class BusinessProfileController extends Controller
             ]);
         }
 
-        return redirect()->route('business.index')->with('success', 'تم إنشاء البروفايل بنجاح');
+        if (!$user->has_completed_onboarding) {
+            $user->update(['has_completed_onboarding' => true]);
+        }
+
+        return redirect()->route('business.index')->with('success', 'تم إنشاء البروفايل وتفعيل حسابك بنجاح');
     }
 
     public function edit($id)
     {
         $user = Auth::user();
-
-        if (!$user instanceof User) {
-            abort(403);
-        }
+        if (!$user instanceof User) abort(403);
 
         $business = $user->businessProfiles()
-            ->with(['media', 'sections' => function ($q) {
-                $q->orderBy('sort_order', 'asc');
-            }])
+            ->with(['media', 'sections' => fn($q) => $q->orderBy('sort_order', 'asc')])
             ->findOrFail($id);
 
-        return view('user.business.edit', compact('business'));
+        $categories = Category::all();
+        $cities = City::all();
+
+        return view('user.business.edit', compact('business', 'categories', 'cities'));
     }
 
     public function update(Request $request, $id)
     {
         $user = Auth::user();
-
-        if (!$user instanceof User) {
-            abort(403);
-        }
+        if (!$user instanceof User) abort(403);
 
         $business = $user->businessProfiles()->findOrFail($id);
 
         $request->validate([
             'name' => 'required|string|max:255|min:3',
-            'meta_description' => 'nullable|string|max:1000',
+            'category_id' => 'required|exists:categories,id',
+            'city_id' => 'required|exists:cities,id',
+            'whatsapp' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20',
+            'website' => 'nullable|url',
+            'social_links' => 'nullable|array',
+            'description' => 'nullable|string',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
-        $data = [
-            'name' => $request->input('name'),
-            'meta_description' => $request->input('meta_description'),
-        ];
+        $data = $request->only(['name', 'category_id', 'city_id', 'whatsapp', 'phone', 'website', 'social_links', 'description', 'address']);
 
         if ($request->hasFile('logo')) {
-            if ($business->logo) {
-                Storage::disk('public')->delete($business->logo);
-            }
+            if ($business->logo) Storage::disk('public')->delete($business->logo);
             $data['logo'] = $request->file('logo')->store('logos', 'public');
         }
 
@@ -133,35 +169,48 @@ class BusinessProfileController extends Controller
         return redirect()->back()->with('success', 'تم التحديث بنجاح');
     }
 
+    public function syncSections(Request $request, $id)
+    {
+        $user = Auth::user();
+        $business = $user->businessProfiles()->findOrFail($id);
+
+        $incomingSections = $request->input('sections', []);
+        $keepIds = [];
+
+        foreach ($incomingSections as $index => $sectionData) {
+            $section = $business->sections()->updateOrCreate(
+                ['id' => $sectionData['id'] ?? null],
+                [
+                    'section_type' => $sectionData['section_type'],
+                    'template_key' => $sectionData['template_key'] ?? 'default',
+                    'content' => $sectionData['content'],
+                    'sort_order' => $index
+                ]
+            );
+            $keepIds[] = $section->id;
+        }
+
+        $business->sections()->whereNotIn('id', $keepIds)->delete();
+
+        return response()->json(['status' => 'success', 'message' => 'تم مزامنة الأقسام بنجاح']);
+    }
+
     public function uploadMedia(Request $request, $id)
     {
         $user = Auth::user();
-
-        if (!$user instanceof User) {
-            abort(403);
-        }
-
         $business = $user->businessProfiles()->withCount('media')->findOrFail($id);
-        $currentCount = $business->media_count;
 
-        if (!$request->hasFile('images')) {
-            return redirect()->back()->with('error', 'خطأ في الرفع');
-        }
+        if (!$request->hasFile('images')) return redirect()->back()->with('error', 'خطأ في الرفع');
 
         $files = $request->file('images');
-        $incomingCount = count($files);
-
-        if ($incomingCount < 3 || ($currentCount + $incomingCount) > 12) {
-            return redirect()->back()->with('error', 'يجب رفع من 3 إلى 12 صورة');
+        if (count($files) < 1 || ($business->media_count + count($files)) > 12) {
+            return redirect()->back()->with('error', 'الحد الأقصى للميديا هو 12 صورة');
         }
 
         foreach ($files as $image) {
             if ($image->isValid()) {
                 $path = $image->store('business_media/' . $id, 'public');
-                $business->media()->create([
-                    'file_path' => $path,
-                    'type' => 'image',
-                ]);
+                $business->media()->create(['file_path' => $path, 'type' => 'image']);
             }
         }
 
@@ -170,71 +219,16 @@ class BusinessProfileController extends Controller
 
     public function destroyMedia($id)
     {
-        $media = ProfileMedia::whereHas('businessProfile', function ($q) {
-            $q->where('user_id', Auth::id());
-        })->findOrFail($id);
-
+        $media = ProfileMedia::whereHas('businessProfile', fn($q) => $q->where('user_id', Auth::id()))->findOrFail($id);
         Storage::disk('public')->delete($media->file_path);
         $media->delete();
-
         return redirect()->back()->with('success', 'تم الحذف');
-    }
-
-    public function storeSection(Request $request)
-    {
-        $request->validate([
-            'business_profile_id' => 'required|exists:business_profiles,id',
-            'section_type' => 'required|string|in:hero,about,services,gallery,contact',
-        ]);
-
-        $user = Auth::user();
-
-        if (!$user instanceof User) {
-            abort(403);
-        }
-
-        $business = $user->businessProfiles()->findOrFail($request->input('business_profile_id'));
-
-        $business->sections()->create([
-            'section_type' => $request->input('section_type'),
-            'template_key' => 'default',
-            'content' => [],
-            'sort_order' => $business->sections()->count()
-        ]);
-
-        return redirect()->back()->with('success', 'تم إضافة القسم بنجاح');
-    }
-
-    public function updateSection(Request $request, $sectionId)
-    {
-        $section = ProfileSection::whereHas('businessProfile', function ($q) {
-            $q->where('user_id', Auth::id());
-        })->findOrFail($sectionId);
-
-        $section->update([
-            'content' => $request->input('content'),
-            'template_key' => $request->input('template_key') ?? $section->template_key
-        ]);
-
-        return redirect()->back()->with('success', 'تم تحديث القسم');
-    }
-
-    public function destroySection($id)
-    {
-        $section = ProfileSection::whereHas('businessProfile', function ($q) {
-            $q->where('user_id', Auth::id());
-        })->findOrFail($id);
-
-        $section->delete();
-
-        return redirect()->back()->with('success', 'تم حذف القسم بنجاح');
     }
 
     public function showPublicProfile($slug)
     {
-        $business = BusinessProfile::with(['media', 'sections' => function ($q) {
-            $q->orderBy('sort_order', 'asc');
-        }])->where('slug', $slug)->firstOrFail();
+        $business = BusinessProfile::with(['media', 'sections' => fn($q) => $q->orderBy('sort_order', 'asc')])
+            ->where('slug', $slug)->firstOrFail();
 
         if ($business->status !== 'approved') {
             $user = Auth::user();

@@ -23,18 +23,15 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 
     Route::prefix('business')->group(function () {
         Route::get('/', [BusinessProfileController::class, 'index'])->name('business.index');
-        Route::get('/create', [BusinessProfileController::class, 'create'])->name('business.create');
+        Route::get('/onboarding', [BusinessProfileController::class, 'create'])->name('business.create');
         Route::post('/store', [BusinessProfileController::class, 'store'])->name('business.store');
         Route::get('/{id}/edit', [BusinessProfileController::class, 'edit'])->name('business.edit');
         Route::put('/{id}/update', [BusinessProfileController::class, 'update'])->name('business.update');
+
+        Route::post('/{id}/sections/sync', [BusinessProfileController::class, 'syncSections'])->name('business.sections.sync');
+
         Route::post('/{id}/media', [BusinessProfileController::class, 'uploadMedia'])->name('business.media.upload');
         Route::delete('/media/{id}', [BusinessProfileController::class, 'destroyMedia'])->name('business.media.destroy');
-    });
-
-    Route::prefix('sections')->group(function () {
-        Route::post('/', [BusinessProfileController::class, 'storeSection'])->name('sections.store');
-        Route::put('/{id}', [BusinessProfileController::class, 'updateSection'])->name('sections.update');
-        Route::delete('/{id}', [BusinessProfileController::class, 'destroySection'])->name('sections.destroy');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

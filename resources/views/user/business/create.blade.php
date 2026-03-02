@@ -1,256 +1,234 @@
 @extends('layouts.dashboard.app')
 
+@section('nav_links')
+<a href="#data-section" class="nav-link">1. البيانات</a>
+<a href="#preview-section" class="nav-link">2. المعاينة</a>
+<a href="#steps-section" class="nav-link">3. ما بعد الإنشاء</a>
+@endsection
+
 @section('content')
-<main class="flex flex-col lg:flex-row min-h-screen bg-white dark:bg-[#09090b] overflow-hidden">
-    <section class="w-full lg:w-[45%] flex flex-col justify-center px-8 py-12 lg:px-16 bg-white dark:bg-zinc-950 border-l border-slate-100 dark:border-zinc-900 order-2 lg:order-1 relative z-10 shadow-2xl">
-        <div class="w-full max-w-md mx-auto fade-in">
+<div class="min-h-screen bg-transparent pb-32">
+    <div class="sticky top-0 z-40 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-100 dark:border-zinc-900 mb-12">
+        <div class="max-w-4xl mx-auto px-6 py-6">
+            <div class="relative h-2 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                <div id="progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-accent w-1/3 transition-all duration-700 ease-out animate-progress-glow"></div>
+            </div>
+            <div class="flex justify-between mt-3 text-[10px] font-black uppercase tracking-widest text-zinc-400">
+                <span id="step-label">تعبئة البيانات</span>
+                <span class="text-primary font-bold">جاري بناء هويتك الرقمية ✨</span>
+                <span id="progress-percent">35%</span>
+            </div>
+        </div>
+    </div>
 
-            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 text-slate-400 hover:text-primary font-bold text-sm mb-10 transition-all group">
-                <div class="p-2 rounded-full bg-slate-50 dark:bg-zinc-900 group-hover:bg-primary/10 transition-colors">
-                    <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </div>
-                العودة للوحة التحكم
-            </a>
+    <div class="max-w-5xl mx-auto px-6 space-y-32">
 
-            <header class="mb-10 text-right">
-                <h1 class="text-4xl font-[900] text-slate-900 dark:text-white mb-3 tracking-tight">ابدأ رحلتك الآن 🚀</h1>
-                <p class="text-slate-500 dark:text-zinc-400 font-medium leading-relaxed">
-                    خطوة واحدة تفصلك عن امتلاك صفحة احترافية تليق بعلامتك التجارية.
-                </p>
-            </header>
+        <section id="data-section" class="scroll-mt-40">
+            <div class="text-right mb-12">
+                <h2 class="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter mb-4">لنبدأ بالأساسيات</h2>
+                <p class="text-zinc-500 font-bold text-lg">أدخل معلومات نشاطك التجاري بدقة ليتم أرشفة بروفايلك بشكل صحيح.</p>
+            </div>
 
-            <form id="create-business-form" method="POST" action="{{ route('business.store') }}" enctype="multipart/form-data" class="space-y-8">
+            <form id="main-form" action="{{ route('business.store') }}" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white dark:bg-zinc-900 p-8 md:p-12 rounded-[3rem] border border-zinc-100 dark:border-zinc-800 shadow-sm">
                 @csrf
 
-                <div class="group space-y-2">
-                    <label class="text-sm font-black text-slate-700 dark:text-zinc-300 px-1 block text-right group-focus-within:text-primary transition-colors">اسم الشركة أو النشاط</label>
-                    <div class="relative">
-                        <input type="text" name="name" id="input-name" required value="{{ old('name') }}" maxlength="30" placeholder="مثال: ديبو ديزاين"
-                            class="w-full px-6 py-4 bg-slate-50 dark:bg-zinc-900/50 border-2 border-slate-100 dark:border-zinc-800 rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all dark:text-white font-bold text-right shadow-sm placeholder:text-slate-300 dark:placeholder:text-zinc-700" />
-                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 dark:text-zinc-700 font-mono text-xs" id="name-counter">0/30</div>
-                    </div>
-                    @error('name') <p class="text-red-500 text-xs mt-1 text-right font-bold">{{ $message }}</p> @enderror
+                <div class="space-y-3 md:col-span-2">
+                    <label class="text-xs font-black uppercase tracking-widest text-zinc-400 pr-2">اسم البيزنس / البراند</label>
+                    <input type="text" name="name" id="input-name" required placeholder="مثلاً: علي ديبو ستوديو"
+                        class="w-full px-6 py-5 bg-zinc-50 dark:bg-zinc-800/50 border-2 border-zinc-100 dark:border-zinc-800 rounded-2xl focus:border-primary outline-none transition-all dark:text-white font-black text-xl shadow-inner">
                 </div>
 
-                <div class="group space-y-2">
-                    <label class="text-sm font-black text-slate-700 dark:text-zinc-300 px-1 block text-right group-focus-within:text-primary transition-colors">وصف مختصر (SEO)</label>
-                    <textarea name="meta_description" id="input-desc" rows="4" maxlength="160" placeholder="ما الذي يميز شركتك؟ اجذب عملاءك بكلمات بسيطة.."
-                        class="w-full px-6 py-4 bg-slate-50 dark:bg-zinc-900/50 border-2 border-slate-100 dark:border-zinc-800 rounded-2xl focus:border-primary focus:ring-0 outline-none transition-all dark:text-white font-medium text-right shadow-sm resize-none placeholder:text-slate-300 dark:placeholder:text-zinc-700 leading-relaxed">{{ old('meta_description') }}</textarea>
-                    <div class="flex justify-between items-center px-1">
-                        <p class="text-[10px] text-slate-400 font-bold">هذا الوصف يظهر في محركات البحث مثل جوجل.</p>
-                        <span class="text-xs font-mono text-slate-300 dark:text-zinc-700" id="desc-counter">0/160</span>
-                    </div>
-                    @error('meta_description') <p class="text-red-500 text-xs mt-1 text-right font-bold">{{ $message }}</p> @enderror
+                <div class="space-y-3">
+                    <label class="text-xs font-black uppercase tracking-widest text-zinc-400 pr-2">التصنيف</label>
+                    <select name="category_id" required class="w-full px-6 py-5 bg-zinc-50 dark:bg-zinc-800/50 border-2 border-zinc-100 dark:border-zinc-800 rounded-2xl focus:border-primary outline-none transition-all dark:text-white font-bold appearance-none cursor-pointer">
+                        <option value="">اختر التصنيف...</option>
+                        @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="group space-y-2">
-                    <label class="text-sm font-black text-slate-700 dark:text-zinc-300 px-1 block text-right">شعار الشركة (اختياري)</label>
-                    <div class="relative group/file">
-                        <input type="file" name="logo" id="input-logo" accept="image/*"
-                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" />
-                        <div class="w-full px-6 py-4 bg-slate-50 dark:bg-zinc-900/50 border-2 border-dashed border-slate-200 dark:border-zinc-800 rounded-2xl flex items-center justify-between group-hover/file:border-primary/50 transition-colors">
-                            <span class="text-primary font-bold text-sm">اختر ملف</span>
-                            <span class="text-slate-400 text-sm truncate max-w-[180px]" id="file-name">لم يتم اختيار صورة</span>
-                            <div class="p-2 bg-white dark:bg-zinc-800 rounded-xl shadow-sm">
-                                <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                            </div>
+                <div class="space-y-3">
+                    <label class="text-xs font-black uppercase tracking-widest text-zinc-400 pr-2">المدينة</label>
+                    <select name="city_id" required class="w-full px-6 py-5 bg-zinc-50 dark:bg-zinc-800/50 border-2 border-zinc-100 dark:border-zinc-800 rounded-2xl focus:border-primary outline-none transition-all dark:text-white font-bold appearance-none cursor-pointer">
+                        <option value="">اختر المدينة...</option>
+                        @foreach($cities as $city)
+                        <option value="{{ $city->id }}">{{ $city->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-xs font-black uppercase tracking-widest text-zinc-400 pr-2">رقم الواتساب</label>
+                    <input type="tel" name="whatsapp" required placeholder="01xxxxxxxxx"
+                        class="w-full px-6 py-5 bg-zinc-50 dark:bg-zinc-800/50 border-2 border-zinc-100 dark:border-zinc-800 rounded-2xl focus:border-primary outline-none transition-all dark:text-white font-bold text-left ltr shadow-inner">
+                </div>
+
+                <div class="space-y-3">
+                    <label class="text-xs font-black uppercase tracking-widest text-zinc-400 pr-2">اللوجو (اختياري)</label>
+                    <div class="relative group h-[68px]">
+                        <input type="file" name="logo" id="input-logo" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                        <div class="flex items-center justify-between px-6 py-5 bg-zinc-50 dark:bg-zinc-800/50 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl transition-all group-hover:border-primary">
+                            <span class="text-zinc-400 text-sm font-bold" id="file-name">اختر ملف الصورة...</span>
+                            <span class="text-primary text-xl">🖼️</span>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" id="submit-btn" class="group relative w-full overflow-hidden bg-primary text-white py-5 rounded-2xl font-black text-xl shadow-[0_20px_40px_rgba(244,80,24,0.25)] hover:shadow-primary/40 hover:-translate-y-1 transition-all duration-300">
-                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                    <span id="btn-text" class="flex items-center justify-center gap-3">
-                        إطلاق الملف التجاري
-                        <svg class="w-6 h-6 animate-bounce-x" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                <div class="md:col-span-2 pt-6">
+                    <button type="submit" class="w-full py-6 bg-zinc-900 dark:bg-white text-white dark:text-black rounded-[2rem] font-black text-2xl hover:scale-[1.02] transition-transform shadow-2xl active:scale-95 flex items-center justify-center gap-3">
+                        <span>إنشاء البيزنس الآن</span>
+                        <svg class="w-6 h-6 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
-                    </span>
-                    <div id="btn-loader" class="loader hidden mx-auto"></div>
-                </button>
+                    </button>
+                </div>
             </form>
-        </div>
-    </section>
+        </section>
 
-    <section class="w-full lg:w-[55%] p-10 lg:p-24 flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0c0c0e] relative overflow-hidden order-1 lg:order-2">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] -mr-40 -mt-40"></div>
-        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-500/5 rounded-full blur-[100px] -ml-20 -mb-20"></div>
-
-        <div class="relative z-10 w-full max-w-lg mx-auto text-center">
-            <div class="fade-in mb-12">
-                <h2 class="text-3xl lg:text-5xl font-black text-slate-800 dark:text-zinc-100 leading-tight mb-4">
-                    كيف سيبدو <span class="glow-text">مشروعك؟</span>
-                </h2>
-                <p class="text-slate-400 dark:text-zinc-500 font-bold">شاهد معاينة مباشرة لبطاقة تعريفك الرقمية</p>
+        <section id="preview-section" class="scroll-mt-40 flex flex-col items-center">
+            <div class="text-center mb-16">
+                <span class="px-4 py-1 bg-primary/10 text-primary text-[10px] font-black rounded-full uppercase tracking-widest mb-4 inline-block">Visual Verification</span>
+                <h2 class="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">معاينة حية لبروفايلك</h2>
             </div>
 
-            <div class="group relative">
-                <div class="absolute -inset-1.5 bg-gradient-to-r from-primary via-orange-400 to-primary rounded-[3rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-                <div class="relative bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800/50 p-10 rounded-[3rem] shadow-2xl transition-all duration-500">
+            <div class="relative w-full max-w-2xl group">
+                <div class="absolute inset-0 bg-primary/5 blur-[120px] rounded-full transform group-hover:scale-110 transition-transform duration-700"></div>
 
-                    <div class="w-24 h-24 bg-slate-50 dark:bg-zinc-800 rounded-3xl mx-auto mb-8 flex items-center justify-center shadow-inner border border-slate-100 dark:border-zinc-700 overflow-hidden group-hover:scale-110 transition-transform duration-500">
-                        <img id="preview-logo-img" src="" class="w-full h-full object-cover hidden">
-                        <span id="preview-logo-emoji" class="text-5xl group-hover:rotate-12 transition-transform">💎</span>
+                <div class="relative bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 p-12 md:p-16 rounded-[4rem] shadow-2xl text-center overflow-hidden transition-all duration-500 hover:-rotate-1">
+                    <div class="w-32 h-32 md:w-40 md:h-40 bg-zinc-100 dark:bg-zinc-800 rounded-[3rem] mx-auto mb-10 flex items-center justify-center border-4 border-white dark:border-zinc-800 shadow-xl overflow-hidden group-hover:rotate-6 transition-transform">
+                        <img id="preview-logo" src="" class="w-full h-full object-cover hidden">
+                        <span id="preview-placeholder" class="text-6xl">💎</span>
                     </div>
 
-                    <div class="space-y-4">
-                        <h3 id="preview-name" class="text-3xl font-black dark:text-white text-slate-900 truncate">اسم نشاطك</h3>
-                        <div class="flex justify-center gap-2">
-                            <span class="px-3 py-1 bg-green-500/10 text-green-500 text-[10px] font-black rounded-full uppercase tracking-widest animate-pulse">Live Preview</span>
-                        </div>
-                        <p id="preview-desc" class="text-slate-400 dark:text-zinc-500 font-medium leading-relaxed text-sm line-clamp-3 italic">
-                            هنا سيظهر وصف مشروعك الذي يبرز قيمتك الفريدة لعملائك..
-                        </p>
+                    <h3 id="preview-name-text" class="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white mb-6 tracking-tighter">اسم نشاطك</h3>
+
+                    <div class="flex flex-wrap justify-center gap-3 opacity-50">
+                        <span class="px-5 py-2 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-black uppercase tracking-widest dark:text-zinc-400">Category</span>
+                        <span class="px-5 py-2 bg-zinc-100 dark:bg-zinc-800 rounded-full text-xs font-black uppercase tracking-widest dark:text-zinc-400">City</span>
                     </div>
 
-                    <div class="mt-10 pt-8 border-t border-slate-50 dark:border-zinc-800/50 flex items-center justify-between">
-                        <div class="flex gap-1.5">
-                            <div class="w-2 h-2 rounded-full bg-slate-200 dark:bg-zinc-700"></div>
-                            <div class="w-2 h-2 rounded-full bg-slate-200 dark:bg-zinc-700"></div>
-                            <div class="w-2 h-2 rounded-full bg-slate-200 dark:bg-zinc-700"></div>
+                    <div class="mt-12 flex justify-center">
+                        <div class="w-full max-w-xs py-4 bg-green-500/10 text-green-600 rounded-2xl font-black flex items-center justify-center gap-2 border border-green-500/20">
+                            <span class="text-xl">💬</span> واتساب مفعل
                         </div>
-                        <div class="text-[10px] font-black uppercase tracking-[0.2em] text-primary/50">alidebo platform</div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="mt-12 flex items-center justify-center gap-8 text-slate-400 dark:text-zinc-600 font-bold text-xs uppercase tracking-tighter">
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                    </svg> محركات بحث جاهزة</span>
-                <span class="flex items-center gap-2"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                    </svg> سرعة صاروخية</span>
+        <section id="steps-section" class="scroll-mt-40">
+            <div class="text-right mb-16">
+                <h2 class="text-4xl md:text-5xl font-black text-zinc-900 dark:text-white tracking-tighter mb-4">ماذا يحدث بعد الضغط على إنشاء؟</h2>
+                <p class="text-zinc-500 font-bold text-lg">رحلتك للاحترافية تبدأ بمجرد ضغطة زر.</p>
             </div>
-        </div>
-    </section>
-</main>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-10 bg-zinc-50 dark:bg-zinc-900/50 rounded-[3rem] border border-zinc-100 dark:border-zinc-800 relative group overflow-hidden">
+                    <div class="text-5xl mb-6 group-hover:scale-110 transition-transform block">📧</div>
+                    <h4 class="text-xl font-black mb-3 dark:text-white text-zinc-900">رسالة التأكيد</h4>
+                    <p class="text-zinc-500 dark:text-zinc-400 font-medium text-sm leading-relaxed">ستصلك رسالة بريد إلكتروني تحتوي على تفاصيل الدخول لوحة تحكم نشاطك الجديد.</p>
+                    <span class="absolute -bottom-4 -left-4 text-8xl font-black opacity-[0.03] dark:opacity-[0.05]">01</span>
+                </div>
+
+                <div class="p-10 bg-zinc-900 rounded-[3rem] border border-zinc-800 relative group overflow-hidden shadow-2xl">
+                    <div class="text-5xl mb-6 group-hover:scale-110 transition-transform block">🛠️</div>
+                    <h4 class="text-xl font-black mb-3 text-white">إكمال البروفايل</h4>
+                    <p class="text-zinc-400 font-medium text-sm leading-relaxed">يجب عليك إضافة معرض أعمالك، الروابط الاجتماعية، وساعات العمل ليصبح البروفايل "احترافياً".</p>
+                    <span class="absolute -bottom-4 -left-4 text-8xl font-black opacity-10 text-white">02</span>
+                </div>
+
+                <div class="p-10 bg-zinc-50 dark:bg-zinc-900/50 rounded-[3rem] border border-zinc-100 dark:border-zinc-800 relative group overflow-hidden">
+                    <div class="text-5xl mb-6 group-hover:scale-110 transition-transform block">📈</div>
+                    <h4 class="text-xl font-black mb-3 dark:text-white text-zinc-900">تقدم الإنجاز</h4>
+                    <p class="text-zinc-500 dark:text-zinc-400 font-medium text-sm leading-relaxed">كلما أضفت تفاصيل أكثر، زاد شريط تقدم حسابك (Progress) وظهرت في نتائج بحث المنصة بشكل أفضل.</p>
+                    <span class="absolute -bottom-4 -left-4 text-8xl font-black opacity-[0.03] dark:opacity-[0.05]">03</span>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
 
 <style>
-    .fade-in {
-        animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .glow-text {
-        background: linear-gradient(to left, #f45018, #fb923c, #f45018);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: shine 3s linear infinite;
-    }
-
-    @keyframes shine {
-        to {
-            background-position: 200% center;
-        }
-    }
-
-    .loader {
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top: 3px solid #fff;
-        width: 28px;
-        height: 28px;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
-
-    .animate-bounce-x {
-        animation: bounce-x 1s infinite;
-    }
-
-    @keyframes bounce-x {
+    @keyframes progress-glow {
 
         0%,
         100% {
-            transform: translateX(0);
+            filter: brightness(1) drop-shadow(0 0 2px rgba(244, 80, 24, 0.5));
         }
 
         50% {
-            transform: translateX(5px);
+            filter: brightness(1.3) drop-shadow(0 0 10px rgba(244, 80, 24, 0.8));
         }
     }
 
-    input:focus,
-    textarea:focus {
-        box-shadow: 0 10px 15px -3px rgba(244, 80, 24, 0.05) !important;
+    .animate-progress-glow {
+        animation: progress-glow 3s infinite;
+    }
+
+    .scroll-mt-40 {
+        scroll-margin-top: 10rem;
+    }
+
+    .ltr {
+        direction: ltr;
     }
 </style>
 
 <script>
-    const form = document.getElementById('create-business-form');
-    const btn = document.getElementById('submit-btn');
-    const loader = document.getElementById('btn-loader');
-    const text = document.getElementById('btn-text');
-
-    // عناصر الإدخال
+    // Live Preview Logic
     const inputName = document.getElementById('input-name');
-    const inputDesc = document.getElementById('input-desc');
+    const previewName = document.getElementById('preview-name-text');
     const inputLogo = document.getElementById('input-logo');
+    const previewLogo = document.getElementById('preview-logo');
+    const previewPlaceholder = document.getElementById('preview-placeholder');
+    const fileName = document.getElementById('file-name');
 
-    // عناصر المعاينة
-    const previewName = document.getElementById('preview-name');
-    const previewDesc = document.getElementById('preview-desc');
-    const previewLogoImg = document.getElementById('preview-logo-img');
-    const previewLogoEmoji = document.getElementById('preview-logo-emoji');
-    const fileNameText = document.getElementById('file-name');
-
-    // تحديث المعاينة للاسم
     inputName.addEventListener('input', (e) => {
-        const val = e.target.value;
-        previewName.innerText = val || "اسم نشاطك";
-        document.getElementById('name-counter').innerText = `${val.length}/30`;
+        previewName.innerText = e.target.value || "اسم نشاطك";
+        updateProgress();
     });
 
-    // تحديث المعاينة للوصف
-    inputDesc.addEventListener('input', (e) => {
-        const val = e.target.value;
-        previewDesc.innerText = val || "هنا سيظهر وصف مشروعك الذي يبرز قيمتك الفريدة لعملائك..";
-        document.getElementById('desc-counter').innerText = `${val.length}/160`;
-    });
-
-    // تحديث المعاينة للشعار
     inputLogo.addEventListener('change', function() {
         if (this.files && this.files[0]) {
+            fileName.innerText = this.files[0].name;
             const reader = new FileReader();
-            fileNameText.innerText = this.files[0].name;
-
             reader.onload = function(e) {
-                previewLogoImg.src = e.target.result;
-                previewLogoImg.classList.remove('hidden');
-                previewLogoEmoji.classList.add('hidden');
+                previewLogo.src = e.target.result;
+                previewLogo.classList.remove('hidden');
+                previewPlaceholder.classList.add('hidden');
             }
             reader.readAsDataURL(this.files[0]);
         }
+        updateProgress();
     });
 
-    // إرسال النموذج
-    form.addEventListener('submit', function() {
-        btn.disabled = true;
-        text.classList.add('hidden');
-        loader.classList.remove('hidden');
-        btn.classList.replace('hover:-translate-y-1', 'opacity-80');
+    // Dynamic Progress Bar
+    function updateProgress() {
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
+        const stepLabel = document.getElementById('step-label');
+
+        // Simple logic: if name is filled +25%, if logo +10%, base is 25%
+        let progress = 25;
+        if (inputName.value.length > 2) progress += 25;
+        if (inputLogo.files.length > 0) progress += 15;
+
+        progressBar.style.width = progress + '%';
+        progressPercent.innerText = progress + '%';
+
+        if (progress > 50) stepLabel.innerText = "أوشكت على الانتهاء";
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('.nav-link').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
     });
 </script>
 @endsection

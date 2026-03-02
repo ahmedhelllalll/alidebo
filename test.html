@@ -1,46 +1,781 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protection Meter - Onboarding Widget</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
-        body { font-family: 'Cairo', sans-serif; margin: 0; padding: 0; background-color: #f8fafc; color: #334155; }
-        .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .header { background: linear-gradient(135deg, #f45018 0%, #fb923c 100%); padding: 40px 20px; text-align: center; color: white; }
-        .content { padding: 40px 30px; text-align: center; line-height: 1.8; }
-        .footer { background: #f1f5f9; padding: 20px; text-align: center; font-size: 12px; color: #64748b; }
-        .btn { display: inline-block; padding: 16px 40px; background-color: #f45018; color: #ffffff !important; text-decoration: none; border-radius: 16px; font-weight: 800; margin-top: 25px; box-shadow: 0 10px 20px rgba(244,80,24,0.2); }
-        .logo { width: 60px; margin-bottom: 15px; }
-        h1 { font-weight: 900; margin: 0; font-size: 28px; }
-        p { font-size: 16px; margin-bottom: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e8e0f0 0%, #d4d0e8 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .widget-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .shield-container {
+            text-align: center;
+            margin-bottom: 24px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .shield {
+            width: 80px;
+            height: 90px;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .shield-bg {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .shield-bg::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: white;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        .shield-icon {
+            position: relative;
+            z-index: 1;
+            font-size: 32px;
+            color: #ccc;
+            transition: all 0.5s ease;
+        }
+
+        .shield.completed .shield-bg {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .shield.completed .shield-icon {
+            color: white;
+        }
+
+        .shield.completed::after {
+            content: '✓';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 28px;
+            height: 28px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .crown {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            width: 50px;
+            height: 25px;
+            transition: all 0.5s ease;
+        }
+
+        .shield.completed .crown {
+            transform: translateX(-50%) scale(1);
+        }
+
+        .crown svg {
+            width: 100%;
+            height: 100%;
+            fill: #fbbf24;
+            filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.4));
+        }
+
+        .title {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .title h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .title p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .progress-container {
+            margin: 24px 0;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6 0%, #7c3aed 100%);
+            border-radius: 4px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .steps-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .step-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .step-item:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .step-item.completed {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .step-item.active {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .step-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            background: white;
+        }
+
+        .step-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-number {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #d1d5db;
+            color: #9ca3af;
+        }
+
+        .step-item.completed .step-number {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .step-item.active .step-number {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            transition: color 0.3s ease;
+        }
+
+        .step-item.completed .step-title {
+            color: #059669;
+        }
+
+        .step-toggle {
+            font-size: 12px;
+            color: #8b5cf6;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .step-toggle svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .step-item.expanded .step-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        .step-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            background: #fafafa;
+        }
+
+        .step-item.expanded .step-content {
+            max-height: 300px;
+            padding: 0 20px 20px;
+        }
+
+        .step-inner {
+            padding-top: 16px;
+        }
+
+        .step-description {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .step-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .search-box input::placeholder {
+            color: #9ca3af;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 20px;
+            font-size: 13px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tag:hover {
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+            background: #f5f3ff;
+        }
+
+        .tag.selected {
+            background: #8b5cf6;
+            color: white;
+            border-color: #8b5cf6;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .completion-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: #d1fae5;
+            color: #059669;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: auto;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: #8b5cf6;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #8b5cf6;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .status-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .status-text.completed {
+            color: #10b981;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .shield.completed {
+            animation: pulse 0.6s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-item {
+            animation: slideIn 0.4s ease forwards;
+        }
+
+        .step-item:nth-child(1) { animation-delay: 0.1s; }
+        .step-item:nth-child(2) { animation-delay: 0.2s; }
+        .step-item:nth-child(3) { animation-delay: 0.3s; }
+        .step-item:nth-child(4) { animation-delay: 0.4s; }
+        .step-item:nth-child(5) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="logo">
-            <h1>أهلاً بك في مجتمع alidebo!</h1>
-        </div>
-
-        <div class="content">
-            <p style="font-size: 20px; color: #0f172a; font-weight: 700;">مرحباً بك يا بطل!</p>
-            <p>سعداء جداً بانضمامك إلينا. أنت الآن على بُعد خطوة واحدة من امتلاك بروفايل احترافي يضع أعمالك في المقدمة ويجذب إليك العملاء الذين تستحقهم.</p>
-            
-            <p style="margin-top: 20px; color: #64748b;">لكي نبدأ رحلة النجاح معاً، يرجى تأكيد بريدك الإلكتروني بالضغط على الزر أدناه:</p>
-            
-            <a href="{{ $url }}" class="btn">تأكيد حسابي الآن</a>
-            
-            <p style="margin-top: 30px; font-size: 14px; color: #94a3b8;">إذا لم تكن قد أنشأت حساباً معنا، يمكنك تجاهل هذا الإيميل بسلام.</p>
-        </div>
-
-        <div class="footer">
-            <p>نحن هنا لمساعدتك دائماً.</p>
-            <div style="margin-top: 10px;">
-                <a href="#" style="color: #f45018; text-decoration: none; font-weight: bold;">مركز المساعدة</a> • 
-                <a href="#" style="color: #f45018; text-decoration: none; font-weight: bold;">تواصل معنا</a>
+    <div class="widget-container">
+        <div class="shield-container">
+            <div class="shield" id="shield">
+                <div class="crown">
+                    <svg viewBox="0 0 50 25">
+                        <path d="M25 0 L30 10 L40 5 L40 20 L25 15 L10 20 L10 5 L20 10 Z"/>
+                    </svg>
+                </div>
+                <div class="shield-bg">
+                    <span class="shield-icon">🛡️</span>
+                </div>
             </div>
-            <p style="margin-top: 15px;">© 2026 alidebo. جميع الحقوق محفوظة.</p>
         </div>
+
+        <div class="title">
+            <h2>Protection Meter</h2>
+            <p>Complete all 5 steps to be secure.</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="steps-list" id="stepsList">
+            <!-- Steps will be generated by JavaScript -->
+        </div>
+
+        <div class="status-text" id="statusText">0 of 5 steps completed</div>
     </div>
+
+    <script>
+        const steps = [
+            {
+                id: 1,
+                title: 'Locations',
+                description: 'Locations your team works from:',
+                type: 'locations',
+                completed: false,
+                data: {
+                    search: '',
+                    selected: []
+                }
+            },
+            {
+                id: 2,
+                title: 'Traveling',
+                description: 'Set up your travel security preferences:',
+                type: 'traveling',
+                completed: false,
+                data: {
+                    options: [
+                        { id: 'vpn', label: 'Enable VPN for travel', checked: false },
+                        { id: '2fa', label: 'Require 2FA when traveling', checked: false },
+                        { id: 'notify', label: 'Notify admin of travel plans', checked: false }
+                    ]
+                }
+            },
+            {
+                id: 3,
+                title: 'Salesforce Access',
+                description: 'Configure Salesforce security settings:',
+                type: 'salesforce',
+                completed: false,
+                data: {
+                    options: [
+                        { id: 'ip', label: 'Restrict by IP range', checked: false },
+                        { id: 'session', label: 'Short session timeout', checked: false },
+                        { id: 'audit', label: 'Enable audit logging', checked: false }
+                    ]
+                }
+            },
+            {
+                id: 4,
+                title: 'Installing Applications',
+                description: 'Manage application installation permissions:',
+                type: 'applications',
+                completed: false,
+                data: {
+                    options: [
+                        { id: 'whitelist', label: 'Use app whitelist', checked: false },
+                        { id: 'store', label: 'Restrict to official stores only', checked: false },
+                        { id: 'scan', label: 'Require security scan', checked: false }
+                    ]
+                }
+            },
+            {
+                id: 5,
+                title: 'API Access',
+                description: 'Secure your API endpoints:',
+                type: 'api',
+                completed: false,
+                data: {
+                    options: [
+                        { id: 'keys', label: 'Rotate API keys regularly', checked: false },
+                        { id: 'rate', label: 'Enable rate limiting', checked: false },
+                        { id: 'oauth', label: 'Use OAuth 2.0', checked: false }
+                    ]
+                }
+            }
+        ];
+
+        const suggestedLocations = ['United States', 'Canada', 'Germany', 'United Kingdom', 'France', 'Australia'];
+
+        function init() {
+            renderSteps();
+            updateProgress();
+        }
+
+        function renderSteps() {
+            const container = document.getElementById('stepsList');
+            container.innerHTML = '';
+
+            steps.forEach((step, index) => {
+                const stepEl = document.createElement('div');
+                stepEl.className = `step-item ${step.completed ? 'completed' : ''} ${index === 0 && !step.completed ? 'active' : ''}`;
+                stepEl.dataset.id = step.id;
+
+                const isFirstIncomplete = steps.findIndex(s => !s.completed) === index;
+                const shouldExpand = isFirstIncomplete && !step.completed;
+
+                if (shouldExpand) {
+                    stepEl.classList.add('expanded');
+                }
+
+                stepEl.innerHTML = `
+                    <div class="step-header" onclick="toggleStep(${step.id})">
+                        <div class="step-left">
+                            <div class="step-number">${step.completed ? '✓' : step.id}</div>
+                            <span class="step-title">${step.id}. ${step.title}</span>
+                        </div>
+                        ${step.completed ? 
+                            '<span class="completion-badge">✓ Completed</span>' : 
+                            `<span class="step-toggle">${shouldExpand ? 'Hide' : 'Start'} <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></span>`
+                        }
+                    </div>
+                    <div class="step-content">
+                        <div class="step-inner">
+                            ${getStepContent(step)}
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(stepEl);
+            });
+        }
+
+        function getStepContent(step) {
+            if (step.type === 'locations') {
+                const selectedTags = step.data.selected.map(loc => 
+                    `<span class="tag selected" onclick="toggleLocation('${loc}')">${loc} ✕</span>`
+                ).join('');
+
+                const availableTags = suggestedLocations
+                    .filter(loc => !step.data.selected.includes(loc))
+                    .map(loc => 
+                        `<span class="tag" onclick="toggleLocation('${loc}')">${loc}</span>`
+                    ).join('');
+
+                return `
+                    <p class="step-description">${step.description}</p>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search for a country" value="${step.data.search}" oninput="updateSearch(${step.id}, this.value)" onkeypress="handleSearchKeypress(event, '${step.data.search}')">
+                    </div>
+                    <div style="margin-top: 12px;">
+                        ${step.data.selected.length > 0 ? `<div style="margin-bottom: 8px; font-size: 12px; color: #6b7280;">Selected:</div><div class="tags">${selectedTags}</div>` : ''}
+                        ${availableTags ? `<div style="margin-top: 12px; margin-bottom: 8px; font-size: 12px; color: #6b7280;">Suggested locations to add:</div><div class="tags">${availableTags}</div>` : ''}
+                    </div>
+                    <div class="action-buttons" style="margin-top: 16px;">
+                        <button class="btn btn-primary" onclick="completeStep(${step.id})" ${step.data.selected.length === 0 ? 'style="opacity: 0.5; cursor: not-allowed;" disabled' : ''}>Save Locations</button>
+                    </div>
+                `;
+            } else {
+                const checkboxes = step.data.options.map(opt => `
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="${step.id}_${opt.id}" ${opt.checked ? 'checked' : ''} onchange="toggleOption(${step.id}, '${opt.id}')">
+                        <label for="${step.id}_${opt.id}">${opt.label}</label>
+                    </div>
+                `).join('');
+
+                return `
+                    <p class="step-description">${step.description}</p>
+                    <div class="checkbox-group">
+                        ${checkboxes}
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="completeStep(${step.id})">Save Settings</button>
+                    </div>
+                `;
+            }
+        }
+
+        function toggleStep(id) {
+            const step = steps.find(s => s.id === id);
+            if (step.completed) return;
+
+            document.querySelectorAll('.step-item').forEach(el => {
+                if (parseInt(el.dataset.id) === id) {
+                    el.classList.toggle('expanded');
+                    const toggle = el.querySelector('.step-toggle');
+                    if (toggle && !step.completed) {
+                        const isExpanded = el.classList.contains('expanded');
+                        toggle.innerHTML = `${isExpanded ? 'Hide' : 'Start'} <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>`;
+                    }
+                } else {
+                    el.classList.remove('expanded', 'active');
+                }
+            });
+
+            document.querySelector(`[data-id="${id}"]`).classList.add('active');
+        }
+
+        function updateSearch(stepId, value) {
+            const step = steps.find(s => s.id === stepId);
+            step.data.search = value;
+        }
+
+        function handleSearchKeypress(event, value) {
+            if (event.key === 'Enter' && value.trim()) {
+                toggleLocation(value.trim());
+            }
+        }
+
+        function toggleLocation(location) {
+            const step = steps.find(s => s.id === 1);
+            const index = step.data.selected.indexOf(location);
+            
+            if (index > -1) {
+                step.data.selected.splice(index, 1);
+            } else {
+                step.data.selected.push(location);
+            }
+            
+            renderSteps();
+            // Re-expand the current step
+            setTimeout(() => {
+                document.querySelector('[data-id="1"]').classList.add('expanded', 'active');
+            }, 10);
+        }
+
+        function toggleOption(stepId, optionId) {
+            const step = steps.find(s => s.id === stepId);
+            const option = step.data.options.find(o => o.id === optionId);
+            option.checked = !option.checked;
+        }
+
+        function completeStep(id) {
+            const step = steps.find(s => s.id === id);
+            
+            if (id === 1 && step.data.selected.length === 0) {
+                return;
+            }
+
+            step.completed = true;
+            
+            // Find next incomplete step
+            const nextStep = steps.find(s => !s.completed);
+            
+            renderSteps();
+            updateProgress();
+
+            // Auto-expand next step
+            if (nextStep) {
+                setTimeout(() => {
+                    toggleStep(nextStep.id);
+                }, 300);
+            }
+        }
+
+        function updateProgress() {
+            const completed = steps.filter(s => s.completed).length;
+            const percentage = (completed / steps.length) * 100;
+            
+            document.getElementById('progressFill').style.width = percentage + '%';
+            document.getElementById('statusText').textContent = `${completed} of ${steps.length} steps completed`;
+            
+            const shield = document.getElementById('shield');
+            if (completed === steps.length) {
+                shield.classList.add('completed');
+                document.getElementById('statusText').classList.add('completed');
+                document.getElementById('statusText').innerHTML = '🎉 All steps completed! Your account is now secure.';
+            } else {
+                shield.classList.remove('completed');
+                document.getElementById('statusText').classList.remove('completed');
+            }
+        }
+
+        // Initialize
+        init();
+    </script>
 </body>
 </html>
