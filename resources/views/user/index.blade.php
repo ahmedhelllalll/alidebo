@@ -91,7 +91,7 @@
                         <div class="relative">
                             <div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full scale-110"></div>
                             <div class="relative w-48 h-48 md:w-56 md:h-56 bg-zinc-100 dark:bg-zinc-800 rounded-[3rem] overflow-hidden border-4 border-white dark:border-zinc-800 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                                <img src="{{ asset('assets/images/ali-debo-avatar.png') }}" alt="Ali Debo" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all">
+                                <!-- <img src="{{ asset('assets/images/ali-debo-avatar.png') }}" alt="Ali Debo" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"> -->
                             </div>
                         </div>
                     </div>
