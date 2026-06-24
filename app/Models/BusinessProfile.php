@@ -30,6 +30,7 @@ class BusinessProfile extends Model
         'meta_title',
         'meta_description',
         'approved_at',
+        'disk',
     ];
 
     protected $casts = [
@@ -39,6 +40,18 @@ class BusinessProfile extends Model
         'is_claimed' => 'boolean',
         'approved_at' => 'datetime',
     ];
+
+    protected $appends = ['logo_url', 'cover_url'];
+
+    public function getLogoUrlAttribute()
+    {
+        return $this->logo ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->logo) : null;
+    }
+
+    public function getCoverUrlAttribute()
+    {
+        return $this->cover ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->cover) : null;
+    }
 
     public function user(): BelongsTo
     {

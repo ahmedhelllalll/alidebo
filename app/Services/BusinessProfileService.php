@@ -47,13 +47,13 @@ class BusinessProfileService
     public function handleImageUpload(?UploadedFile $file, string $directory): ?string
     {
         if (!$file) return null;
-        return $file->store($directory, 'public');
+        return $file->store($directory, 'r2');
     }
 
-    public function deleteImage(?string $path): void
+    public function deleteImage(?string $path, string $disk = 'public'): void
     {
         if ($path && !str_contains($path, 'categories')) {
-            Storage::disk('public')->delete($path);
+            Storage::disk($disk)->delete($path);
         }
     }
 
@@ -79,6 +79,7 @@ class BusinessProfileService
             'status' => 'pending',
             'meta_title' => ['ar' => $validated['name'], 'en' => $validated['name']],
             'meta_description' => ['ar' => Str::limit($validated['description'] ?? '', 150), 'en' => ''],
+            'disk' => 'r2',
         ];
 
         return BusinessProfile::create($data);
@@ -91,18 +92,21 @@ class BusinessProfileService
         ])->toArray();
 
         if ($request->hasFile('logo')) {
-            $this->deleteImage($business->logo);
+            $this->deleteImage($business->logo, $business->disk ?? 'public');
             $data['logo'] = $this->handleImageUpload($request->file('logo'), 'logos');
+            $data['disk'] = 'r2';
         }
 
         if ($request->cover_source === 'upload' && $request->hasFile('cover')) {
-            $this->deleteImage($business->cover);
+            $this->deleteImage($business->cover, $business->disk ?? 'public');
             $data['cover'] = $this->handleImageUpload($request->file('cover'), 'covers');
+            $data['disk'] = 'r2';
         } elseif ($request->cover_source === 'from_category' && !empty($validated['selected_category_cover'])) {
             $category = Category::find($validated['selected_category_cover']);
             if ($category && $category->image) {
-                $this->deleteImage($business->cover);
+                $this->deleteImage($business->cover, $business->disk ?? 'public');
                 $data['cover'] = $category->image;
+                $data['disk'] = $category->disk ?? 'public';
             }
         }
 
@@ -123,10 +127,11 @@ class BusinessProfileService
                 'type' => 'image',
                 'caption' => $captions[$index] ?? null,
                 'order' => $existingCount + $index,
+                'disk' => 'r2',
             ]);
             $uploaded[] = [
                 'id' => $media->id,
-                'file_path' => asset('storage/' . $path),
+                'file_path' => $media->file_url,
                 'caption' => $media->caption,
             ];
         }
@@ -148,7 +153,7 @@ class BusinessProfileService
 
     public function deleteMedia(BusinessMedia $media): void
     {
-        $this->deleteImage($media->file_path);
+        $this->deleteImage($media->file_path, $media->disk ?? 'public');
         $media->delete();
     }
 }

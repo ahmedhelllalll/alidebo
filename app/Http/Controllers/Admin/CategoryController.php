@@ -55,7 +55,8 @@ class CategoryController extends Controller
         
         // Image handling
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('categories', 'public');
+            $data['image'] = $request->file('image')->store('categories', 'r2');
+            $data['disk'] = 'r2';
         }
 
         $category = Category::create($data);
@@ -76,9 +77,10 @@ class CategoryController extends Controller
         // Image handling
         if ($request->hasFile('image')) {
             if ($category->image && !str_starts_with($category->image, 'http')) {
-                Storage::disk('public')->delete($category->image);
+                Storage::disk($category->disk ?? 'public')->delete($category->image);
             }
-            $data['image'] = $request->file('image')->store('categories', 'public');
+            $data['image'] = $request->file('image')->store('categories', 'r2');
+            $data['disk'] = 'r2';
         }
 
         $category->update($data);
@@ -93,7 +95,7 @@ class CategoryController extends Controller
 
         try {
             if ($category->image && !str_starts_with($category->image, 'http')) {
-                Storage::disk('public')->delete($category->image);
+                Storage::disk($category->disk ?? 'public')->delete($category->image);
             }
             
             $category->delete();

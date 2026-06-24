@@ -11,8 +11,16 @@ class BusinessMedia extends Model
         'file_path',
         'type',
         'caption',
-        'order'
+        'order',
+        'disk'
     ];
+
+    protected $appends = ['file_url'];
+
+    public function getFileUrlAttribute()
+    {
+        return $this->file_path ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->file_path) : null;
+    }
 
     public function businessProfile(): BelongsTo
     {

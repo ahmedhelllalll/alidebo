@@ -61,7 +61,7 @@
                 <div class="gsap-stagger bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/[0.04] rounded-2xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-transform hover:-translate-y-0.5 duration-300">
                     <div class="relative h-40 bg-zinc-100 dark:bg-zinc-800/50">
                         @if($business->cover)
-                            <img src="{{ asset('storage/' . $business->cover) }}" class="w-full h-full object-cover">
+                            <img src="{{ $business->cover_url }}" class="w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-zinc-100 to-zinc-50 dark:from-zinc-900 dark:to-zinc-800/50">
                                 <svg class="w-10 h-10 text-zinc-300 dark:text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
@@ -72,7 +72,7 @@
                     <div class="px-6 md:px-8 pb-8 relative flex flex-col md:flex-row gap-5 items-start md:items-end -mt-12">
                         <div class="relative p-1 bg-white dark:bg-zinc-900 rounded-[1.25rem] shadow-sm shrink-0">
                             @if($business->logo)
-                                <img src="{{ asset('storage/' . $business->logo) }}" class="w-20 h-20 md:w-24 md:h-24 rounded-xl object-contain bg-zinc-50 dark:bg-[#09090b] border border-black/5 dark:border-white/[0.04]">
+                                <img src="{{ $business->logo_url }}" class="w-20 h-20 md:w-24 md:h-24 rounded-xl object-contain bg-zinc-50 dark:bg-[#09090b] border border-black/5 dark:border-white/[0.04]">
                             @else
                                 <div class="w-20 h-20 md:w-24 md:h-24 rounded-xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center">
                                     <span class="text-2xl font-bold text-zinc-400 dark:text-zinc-500 uppercase">{{ mb_substr($business->name, 0, 1) }}</span>

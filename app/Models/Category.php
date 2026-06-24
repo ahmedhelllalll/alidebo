@@ -7,8 +7,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
-    protected $fillable = ['name_en', 'name_ar', 'slug', 'image', 'icon', 'status'];
-    protected $appends = ['name'];
+    protected $fillable = ['name_en', 'name_ar', 'slug', 'image', 'icon', 'status', 'disk'];
+    protected $appends = ['name', 'image_url', 'icon_url'];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->image) : null;
+    }
+
+    public function getIconUrlAttribute()
+    {
+        return $this->icon ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->icon) : null;
+    }
 
     public function getNameAttribute()
     {

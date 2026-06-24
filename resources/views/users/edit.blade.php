@@ -197,7 +197,7 @@
                             <label class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">{{ __('forms.business.logo') ?? 'Logo' }}</label>
                             <div class="relative h-52 bg-zinc-50 dark:bg-zinc-900/60 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center cursor-pointer group hover:border-primary/50 hover:bg-primary/[0.02] transition-all duration-300"
                                  onclick="document.getElementById('logoInput').click()">
-                                <img id="logoPreview" src="{{ $business->logo ? asset('storage/'.$business->logo) : '' }}"
+                                <img id="logoPreview" src="{{ $business->logo ? $business->logo_url : '' }}"
                                      class="absolute inset-0 w-full h-full object-contain p-4 rounded-xl {{ $business->logo ? '' : 'hidden' }}">
                                 <div id="logoPlaceholder" class="text-center text-zinc-400 group-hover:text-primary transition-colors {{ $business->logo ? 'hidden' : '' }}">
                                     <div class="w-11 h-11 rounded-xl bg-zinc-100 dark:bg-zinc-800 group-hover:bg-primary/10 flex items-center justify-center mx-auto mb-2 transition-colors">
@@ -220,7 +220,7 @@
                             <label class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">{{ __('forms.business.cover_image') ?? 'Cover Image' }}</label>
                             <div class="relative h-52 bg-zinc-50 dark:bg-zinc-900/60 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center cursor-pointer group hover:border-primary/50 hover:bg-primary/[0.02] transition-all duration-300"
                                  onclick="document.getElementById('coverInput').click()">
-                                <img id="coverPreview" src="{{ $business->cover ? asset('storage/'.$business->cover) : '' }}"
+                                <img id="coverPreview" src="{{ $business->cover ? $business->cover_url : '' }}"
                                      class="absolute inset-0 w-full h-full object-cover rounded-xl {{ $business->cover ? '' : 'hidden' }}">
                                 <div id="coverPlaceholder" class="text-center text-zinc-400 group-hover:text-primary transition-colors relative z-10 {{ $business->cover ? 'hidden' : '' }}">
                                     <div class="w-11 h-11 rounded-xl bg-zinc-100 dark:bg-zinc-800 group-hover:bg-primary/10 flex items-center justify-center mx-auto mb-2 transition-colors">
@@ -397,7 +397,7 @@
                         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="galleryGrid">
                             @forelse($business->media as $media)
                             <div class="group relative aspect-square bg-zinc-50 dark:bg-zinc-900/50 border border-black/[0.04] dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm" data-id="{{ $media->id }}">
-                                <img src="{{ asset('storage/'.$media->file_path) }}" class="w-full h-full object-cover pointer-events-none">
+                                <img src="{{ $media->file_url }}" class="w-full h-full object-cover pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-zinc-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
                                     <div class="flex justify-end">
                                         <button type="button" onclick="deleteMedia({{ $media->id }},this)"

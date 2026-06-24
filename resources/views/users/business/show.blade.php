@@ -66,7 +66,7 @@
             {{-- Cover Image --}}
             <div class="relative h-48 sm:h-64 w-full">
                 @if($business->cover)
-                    <img src="{{ str_contains($business->cover, 'categories') ? asset($business->cover) : asset('storage/' . $business->cover) }}" 
+                    <img src="{{ str_contains($business->cover, 'categories') ? asset($business->cover) : $business->cover_url }}" 
                          alt="{{ $business->name }}" 
                          class="w-full h-full object-cover">
                 @else
@@ -82,7 +82,7 @@
                     <div class="shrink-0">
                         <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white dark:bg-slate-800 border-4 border-white dark:border-slate-900 shadow-lg overflow-hidden">
                             @if($business->logo)
-                                <img src="{{ asset('storage/' . $business->logo) }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
+                                <img src="{{ $business->logo_url }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full flex items-center justify-center bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 text-2xl font-bold">
                                     {{ substr($business->name, 0, 1) }}
@@ -184,8 +184,8 @@
             @if($count === 1)
                 {{-- Single image: full width --}}
                 <div class="group relative aspect-[16/9] rounded-2xl overflow-hidden cursor-pointer bg-slate-200 dark:bg-slate-800" 
-                     onclick="openLightbox('{{ asset('storage/' . $media[0]->file_path) }}', '{{ $media[0]->caption }}')">
-                    <img src="{{ asset('storage/' . $media[0]->file_path) }}" 
+                     onclick="openLightbox('{{ $media[0]->file_url }}', '{{ $media[0]->caption }}')">
+                    <img src="{{ $media[0]->file_url }}" 
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     @if($media[0]->caption)
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
@@ -199,8 +199,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     @foreach($media as $item)
                     <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-slate-200 dark:bg-slate-800"
-                         onclick="openLightbox('{{ asset('storage/' . $item->file_path) }}', '{{ $item->caption }}')">
-                        <img src="{{ asset('storage/' . $item->file_path) }}" 
+                         onclick="openLightbox('{{ $item->file_url }}', '{{ $item->caption }}')">
+                        <img src="{{ $item->file_url }}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         @if($item->caption)
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
@@ -215,8 +215,8 @@
                 {{-- Three images: featured + two stacked --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="group relative aspect-[4/3] sm:aspect-auto sm:row-span-2 rounded-2xl overflow-hidden cursor-pointer bg-slate-200 dark:bg-slate-800"
-                         onclick="openLightbox('{{ asset('storage/' . $media[0]->file_path) }}', '{{ $media[0]->caption }}')">
-                        <img src="{{ asset('storage/' . $media[0]->file_path) }}" 
+                         onclick="openLightbox('{{ $media[0]->file_url }}', '{{ $media[0]->caption }}')">
+                        <img src="{{ $media[0]->file_url }}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         @if($media[0]->caption)
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
@@ -226,8 +226,8 @@
                     </div>
                     @foreach($media->slice(1, 2) as $item)
                     <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-slate-200 dark:bg-slate-800"
-                         onclick="openLightbox('{{ asset('storage/' . $item->file_path) }}', '{{ $item->caption }}')">
-                        <img src="{{ asset('storage/' . $item->file_path) }}" 
+                         onclick="openLightbox('{{ $item->file_url }}', '{{ $item->caption }}')">
+                        <img src="{{ $item->file_url }}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         @if($item->caption)
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-5">
@@ -243,8 +243,8 @@
                 <div class="grid grid-cols-2 gap-3">
                     @foreach($media as $item)
                     <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer bg-slate-200 dark:bg-slate-800"
-                         onclick="openLightbox('{{ asset('storage/' . $item->file_path) }}', '{{ $item->caption }}')">
-                        <img src="{{ asset('storage/' . $item->file_path) }}" 
+                         onclick="openLightbox('{{ $item->file_url }}', '{{ $item->caption }}')">
+                        <img src="{{ $item->file_url }}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         @if($item->caption)
                         <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
@@ -260,8 +260,8 @@
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     @foreach($media->take(6) as $index => $item)
                     <div class="group relative {{ $index === 0 ? 'col-span-2 sm:col-span-2 sm:row-span-2 aspect-[16/9] sm:aspect-auto' : 'aspect-square' }} rounded-2xl overflow-hidden cursor-pointer bg-slate-200 dark:bg-slate-800"
-                         onclick="openLightbox('{{ asset('storage/' . $item->file_path) }}', '{{ $item->caption }}')">
-                        <img src="{{ asset('storage/' . $item->file_path) }}" 
+                         onclick="openLightbox('{{ $item->file_url }}', '{{ $item->caption }}')">
+                        <img src="{{ $item->file_url }}" 
                              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
 
                         @if($index === 5 && $count > 6)
