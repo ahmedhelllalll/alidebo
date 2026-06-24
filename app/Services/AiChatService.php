@@ -51,11 +51,11 @@ class AiChatService
                 'Authorization' => 'Bearer ' . $this->apiKey,
                 'Content-Type' => 'application/json',
             ])->timeout(15)->post($this->baseUrl, [
-                'model' => $this->model,
-                'messages' => $messages,
-                'temperature' => 0.4,
-                'max_tokens' => 800,
-            ]);
+                        'model' => $this->model,
+                        'messages' => $messages,
+                        'temperature' => 0.4,
+                        'max_tokens' => 800,
+                    ]);
 
             if ($response->successful()) {
                 $data = $response->json();
@@ -76,7 +76,7 @@ class AiChatService
     {
         $platformName = ($locale === 'ar') ? 'علي ديبو' : 'alidebo';
         $toneExample = $this->getToneExample($locale, $platformName);
-        
+
         $baseRules = "You are 'ديبو' (Dibo), the official AI assistant for the '{$platformName}' platform.
 
 --- ABOUT {$platformName} ---
@@ -111,7 +111,7 @@ If asked how to add a business, structure your response EXACTLY like this premiu
 ";
 
         $languageRequirements = [
-            'ar' => "Language Requirement: Speak professionally, politely, and clearly in Egyptian Arabic. The tone must feel like a premium SaaS service (modern, elegant, and corporate yet engaging). Avoid literal translation style or casual slang (e.g., do NOT say 'تجيب شركتك', 'تروح على', 'بعد كدا', 'بتقدر'). Instead, use polished business phrases (e.g., 'إضافة وتنمية نشاطك التجاري', 'الانتقال إلى لوحة التحكم', 'تعبئة بيانات الشركة'). Keep spelling standard and correct (e.g., 'بروفايل', 'تملأ').",
+            'ar' => "Language Requirement: Speak professionally, politely, and clearly in Arabic. The tone must feel like a premium SaaS service (modern, elegant, and corporate yet engaging). Avoid literal translation style or casual slang (e.g., do NOT say 'تجيب شركتك', 'تروح على', 'بعد كدا', 'بتقدر'). Instead, use polished business phrases (e.g., 'إضافة وتنمية نشاطك التجاري', 'الانتقال إلى لوحة التحكم', 'تعبئة بيانات الشركة'). Keep spelling standard and correct (e.g., 'بروفايل', 'تملأ').",
             'de' => "Language Requirement: Speak professionally and clearly in German. Maintain a premium, corporate SaaS tone. Use formal address (Sie).",
             'es' => "Language Requirement: Speak professionally and clearly in Spanish. Maintain a premium, corporate SaaS tone. Use formal address (usted).",
             'zh' => "Language Requirement: Speak professionally and clearly in Chinese (Simplified). Maintain a premium, corporate SaaS tone.",
