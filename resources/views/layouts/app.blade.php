@@ -177,19 +177,10 @@
             .hero-dashboard { animation: none !important; }
         }
 
-        /* Glass nav - Glassy/light background & shadow initially */
+        /* Glass nav - Transparent initially */
         .glass-nav {
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            background: rgba(255, 255, 255, 0.75);
-            border-color: rgba(226, 232, 240, 0.7);
-            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 8px -2px rgba(15, 23, 42, 0.02);
-            transition: all 0.5s ease-[cubic-bezier(0.4,0,0.2,1)];
-        }
-        .dark .glass-nav {
-            background: rgba(18, 18, 20, 0.7);
-            border-color: rgba(63, 63, 70, 0.4);
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25), 0 2px 8px -2px rgba(0, 0, 0, 0.15);
+            background: transparent;
+            border-color: transparent;
         }
 
         /* Scrollbar minimal */
@@ -225,12 +216,14 @@
         .glass-nav.is-scrolled {
             background: #ffffff;
             border-color: rgba(226, 232, 240, 0.85);
-            box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 1px 3px -1px rgba(15, 23, 42, 0.03);
+            box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
         }
         .dark .glass-nav.is-scrolled {
-            background: rgba(9, 9, 11, 0.85);
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            background: rgba(9, 9, 11, 0.8);
             border-color: rgba(63, 63, 70, 0.55);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.35), 0 1px 3px -1px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
 
         /* ── Mobile nav ── */

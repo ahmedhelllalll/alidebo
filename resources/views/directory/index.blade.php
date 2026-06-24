@@ -235,76 +235,14 @@
                     <!-- Locations (Custom Select UI) -->
                     <div class="space-y-2">
                         <label class="text-xs font-bold text-slate-900 dark:text-white px-1">{{ __('directory.locations') }}</label>
-                        <input type="hidden" name="city" id="city-filter-input" value="{{ request('city') }}">
-                        <div x-data="{
-                                open: false,
-                                selectedId: '{{ request('city') }}',
-                                selectedName: '{{ request('city') ? ($cities->firstWhere('id', request('city'))->name ?? __('directory.all_locations')) : __('directory.all_locations') }}',
-                                selectOption(id, name) {
-                                    this.selectedId = id;
-                                    this.selectedName = name;
-                                    this.open = false;
-                                    document.getElementById('city-filter-input').value = id;
-                                    this.$el.closest('form').submit();
-                                }
-                             }"
-                             class="relative w-full"
-                             @click.away="open = false"
-                        >
-                            <!-- Dropdown Button -->
-                            <button type="button" 
-                                    @click="open = !open" 
-                                    class="w-full flex items-center justify-between bg-white dark:bg-zinc-900/60 border border-slate-200 dark:border-zinc-800 rounded-xl py-3 px-4 text-sm font-medium text-slate-900 dark:text-white transition-all hover:border-slate-300 dark:hover:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm"
-                            >
-                                <div class="flex items-center gap-2.5 min-w-0">
-                                    <!-- Location Pin Icon -->
-                                    <svg class="w-4 h-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                    <span class="truncate" x-text="selectedName"></span>
-                                </div>
-                                <svg class="w-4 h-4 text-slate-400 transition-transform duration-300 shrink-0" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-
-                            <!-- Dropdown List -->
-                            <div x-show="open" 
-                                 x-cloak
-                                 x-transition:enter="transition ease-out duration-100"
-                                 x-transition:enter-start="opacity-0 scale-95"
-                                 x-transition:enter-end="opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-75"
-                                 x-transition:leave-start="opacity-100 scale-100"
-                                 x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute left-0 right-0 z-[3000] mt-2 max-h-60 overflow-y-auto bg-white dark:bg-[#121214] border border-slate-200 dark:border-zinc-800 rounded-xl shadow-lg p-1.5 space-y-0.5 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-zinc-800"
-                            >
-                                <!-- All Locations Option -->
-                                <button type="button" 
-                                        @click="selectOption('', '{{ __('directory.all_locations') }}')"
-                                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors"
-                                        :class="selectedId === '' ? 'bg-primary/5 dark:bg-primary/10 text-primary font-bold' : ''"
-                                >
-                                    <span>{{ __('directory.all_locations') }}</span>
-                                    <template x-if="selectedId === ''">
-                                        <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </template>
-                                </button>
-
+                        <div class="relative">
+                            <select name="city" onchange="this.form.submit()" class="w-full bg-transparent border border-slate-200 dark:border-zinc-800 rounded-xl py-3 px-4 text-sm font-medium text-slate-900 dark:text-white focus:ring-2 focus:ring-primary/50 transition-all cursor-pointer hover:border-slate-300 dark:hover:border-zinc-700">
+                                <option value="" class="dark:bg-[#121214]">{{ __('directory.all_locations') }}</option>
                                 @foreach($cities as $city)
-                                    <button type="button" 
-                                            @click="selectOption('{{ $city->id }}', '{{ $city->name }}')"
-                                            class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors"
-                                            :class="selectedId === '{{ $city->id }}' ? 'bg-primary/5 dark:bg-primary/10 text-primary font-bold' : ''"
-                                    >
-                                        <span>{{ $city->name }}</span>
-                                        <template x-if="selectedId === '{{ $city->id }}'">
-                                            <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                        </template>
-                                    </button>
+                                    <option value="{{ $city->id }}" {{ request('city') == $city->id ? 'selected' : '' }} class="dark:bg-[#121214]">{{ $city->name }}</option>
                                 @endforeach
-                            </div>
+                            </select>
+                            <svg class="w-4 h-4 absolute top-3.5 end-4 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </div>
                     </div>
 
@@ -322,101 +260,14 @@
                     
                     <div class="flex items-center gap-3 w-full sm:w-auto">
                         <label class="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest shrink-0">{{ __('directory.sort_by') }}</label>
-                        <input type="hidden" name="sort" id="sort-filter-input" value="{{ request('sort', 'newest') }}">
-                        @php
-                            $currentSort = request('sort', 'newest');
-                            $sortNames = [
-                                'newest' => __('directory.sort_newest'),
-                                'oldest' => __('directory.sort_oldest'),
-                                'a-z' => __('directory.sort_az'),
-                                'z-a' => __('directory.sort_za')
-                            ];
-                            $currentSortName = $sortNames[$currentSort] ?? __('directory.sort_newest');
-                        @endphp
-                        <div x-data="{
-                                open: false,
-                                selectedSort: '{{ $currentSort }}',
-                                selectedSortName: '{{ $currentSortName }}',
-                                selectSort(val, name) {
-                                    this.selectedSort = val;
-                                    this.selectedSortName = name;
-                                    this.open = false;
-                                    document.getElementById('sort-filter-input').value = val;
-                                    this.$el.closest('form').submit();
-                                }
-                             }"
-                             class="relative w-full sm:w-44"
-                             @click.away="open = false"
-                        >
-                            <!-- Dropdown Button -->
-                            <button type="button" 
-                                    @click="open = !open" 
-                                    class="w-full flex items-center justify-between bg-white/60 dark:bg-zinc-900/40 border border-slate-200 dark:border-zinc-800/80 rounded-xl py-2 px-3.5 text-sm font-bold text-slate-900 dark:text-white transition-all hover:border-slate-300 dark:hover:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm"
-                            >
-                                <div class="flex items-center gap-2 min-w-0">
-                                    <!-- Sort Icon (Fit Icon) -->
-                                    <svg class="w-4 h-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"/>
-                                    </svg>
-                                    <span class="truncate" x-text="selectedSortName"></span>
-                                </div>
-                                <svg class="w-4 h-4 text-slate-400 transition-transform duration-300 shrink-0" :class="open ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                                </svg>
-                            </button>
-
-                            <!-- Dropdown List -->
-                            <div x-show="open" 
-                                 x-cloak
-                                 x-transition:enter="transition ease-out duration-100"
-                                 x-transition:enter-start="opacity-0 scale-95"
-                                 x-transition:enter-end="opacity-100 scale-100"
-                                 x-transition:leave="transition ease-in duration-75"
-                                 x-transition:leave-start="opacity-100 scale-100"
-                                 x-transition:leave-end="opacity-0 scale-95"
-                                 class="absolute right-0 z-[3000] mt-2 w-44 bg-white dark:bg-[#121214] border border-slate-200 dark:border-zinc-800 rounded-xl shadow-lg p-1.5 space-y-0.5"
-                            >
-                                <button type="button" 
-                                        @click="selectSort('newest', '{{ __('directory.sort_newest') }}')"
-                                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors"
-                                        :class="selectedSort === 'newest' ? 'bg-primary/5 dark:bg-primary/10 text-primary font-bold' : ''"
-                                >
-                                    <span>{{ __('directory.sort_newest') }}</span>
-                                    <template x-if="selectedSort === 'newest'">
-                                        <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </template>
-                                </button>
-                                <button type="button" 
-                                        @click="selectSort('oldest', '{{ __('directory.sort_oldest') }}')"
-                                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors"
-                                        :class="selectedSort === 'oldest' ? 'bg-primary/5 dark:bg-primary/10 text-primary font-bold' : ''"
-                                >
-                                    <span>{{ __('directory.sort_oldest') }}</span>
-                                    <template x-if="selectedSort === 'oldest'">
-                                        <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </template>
-                                </button>
-                                <button type="button" 
-                                        @click="selectSort('a-z', '{{ __('directory.sort_az') }}')"
-                                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors"
-                                        :class="selectedSort === 'a-z' ? 'bg-primary/5 dark:bg-primary/10 text-primary font-bold' : ''"
-                                >
-                                    <span>{{ __('directory.sort_az') }}</span>
-                                    <template x-if="selectedSort === 'a-z'">
-                                        <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </template>
-                                </button>
-                                <button type="button" 
-                                        @click="selectSort('z-a', '{{ __('directory.sort_za') }}')"
-                                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors"
-                                        :class="selectedSort === 'z-a' ? 'bg-primary/5 dark:bg-primary/10 text-primary font-bold' : ''"
-                                >
-                                    <span>{{ __('directory.sort_za') }}</span>
-                                    <template x-if="selectedSort === 'z-a'">
-                                        <svg class="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-                                    </template>
-                                </button>
-                            </div>
+                        <div class="relative w-full sm:w-40">
+                            <select name="sort" onchange="this.form.submit()" class="w-full bg-transparent border-0 py-2 px-3 pe-8 text-sm font-bold text-slate-900 dark:text-white focus:ring-0 cursor-pointer">
+                                <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }} class="dark:bg-[#121214]">{{ __('directory.sort_newest') }}</option>
+                                <option value="oldest" {{ request('sort') == 'oldest' ? 'selected' : '' }} class="dark:bg-[#121214]">{{ __('directory.sort_oldest') }}</option>
+                                <option value="a-z" {{ request('sort') == 'a-z' ? 'selected' : '' }} class="dark:bg-[#121214]">{{ __('directory.sort_az') }}</option>
+                                <option value="z-a" {{ request('sort') == 'z-a' ? 'selected' : '' }} class="dark:bg-[#121214]">{{ __('directory.sort_za') }}</option>
+                            </select>
+                            <svg class="w-4 h-4 absolute top-2.5 end-1 text-slate-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                         </div>
                     </div>
                 </div>
