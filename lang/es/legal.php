@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'privacy_title' => 'Política de Privacidad',
+    'privacy_intro' => 'En alidebo, creemos que sus datos son suyos. Esta política explica en un lenguaje sencillo qué recopilamos, por qué lo recopilamos y cómo lo protegemos.',
+    'privacy_collect_title' => '1. Qué Recopilamos',
+    'privacy_collect_desc' => 'Solo recopilamos la información necesaria para proporcionar nuestros servicios, como su nombre, correo electrónico y los detalles comerciales que decida compartir públicamente.',
+    'privacy_use_title' => '2. Cómo lo Usamos',
+    'privacy_use_desc' => 'Su información se usa estrictamente para potenciar su perfil comercial, mejorar nuestra plataforma y mantener su cuenta segura. Nunca vendemos sus datos personales.',
+    'privacy_security_title' => '3. Seguridad de Datos',
+    'privacy_security_desc' => 'Utilizamos cifrado y prácticas de seguridad estándar de la industria para proteger sus datos personales y comerciales.',
+    'terms_title' => 'Términos de Servicio',
+    'terms_intro' => 'Bienvenido a alidebo. Al utilizar nuestra plataforma, acepta estas simples reglas para mantener nuestra comunidad segura y profesional.',
+    'terms_account_title' => '1. Su Cuenta',
+    'terms_account_desc' => 'Usted es responsable de mantener seguras sus credenciales de inicio de sesión. La información que publique debe ser precisa y veraz.',
+    'terms_content_title' => '2. Propiedad del Contenido',
+    'terms_content_desc' => 'Usted conserva la propiedad total de los logotipos, textos y medios que sube. Al subirlos, nos otorga permiso para mostrarlos en su perfil público.',
+    'terms_rules_title' => '3. Uso Aceptable',
+    'terms_rules_desc' => 'Esperamos que todos los usuarios mantengan un estándar profesional. El spam o el contenido ilegal resultará en la terminación inmediata de la cuenta.',
+    'cookies_title' => 'Política de Cookies',
+    'cookies_intro' => 'Usamos cookies para hacer que alidebo sea más rápido, seguro y fácil de usar. Aquí está exactamente lo que hacen y cómo puede controlarlas.',
+    'cookies_what_title' => '1. ¿Qué son las Cookies?',
+    'cookies_what_desc' => 'Las cookies son pequeños archivos de texto guardados en su dispositivo que ayudan a nuestro sitio web a recordar sus preferencias.',
+    'cookies_how_title' => '2. Cómo las Usamos',
+    'cookies_how_desc' => 'Usamos cookies esenciales para iniciar sesión de forma segura y cookies analíticas para entender cómo se usa nuestro directorio para mejorarlo.',
+    'cookies_manage_title' => '3. Gestión de Cookies',
+    'cookies_manage_desc' => 'Usted tiene el control. Puede borrar o deshabilitar las cookies en cualquier momento a través de la configuración de su navegador.',
+];

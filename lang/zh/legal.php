@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'privacy_title' => '隐私政策',
+    'privacy_intro' => '在 alidebo，我们认为您的数据属于您自己。本政策用简单的语言解释了我们收集什么、为什么收集以及如何保护您的数据。',
+    'privacy_collect_title' => '1. 我们收集什么',
+    'privacy_collect_desc' => '我们仅收集提供服务所需的必要信息，例如您的姓名、电子邮件以及您选择公开分享的业务详细信息。',
+    'privacy_use_title' => '2. 我们如何使用它',
+    'privacy_use_desc' => '您的信息严格用于驱动您的业务个人资料、改善我们的平台并确保您的帐户安全。我们绝不会出售您的个人数据。',
+    'privacy_security_title' => '3. 数据安全',
+    'privacy_security_desc' => '我们使用行业标准的加密和安全实践来保护您的个人和商业数据免受未经授权的访问。',
+    'terms_title' => '服务条款',
+    'terms_intro' => '欢迎来到 alidebo。使用我们的平台，即表示您同意这些简单的规则，以保持我们社区的安全和专业。',
+    'terms_account_title' => '1. 您的帐户',
+    'terms_account_desc' => '您有责任确保您的登录凭据安全。您在业务资料上发布的信息必须准确、真实。',
+    'terms_content_title' => '2. 内容所有权',
+    'terms_content_desc' => '您保留对上传的徽标、文本和媒体的完全所有权。通过上传它们，您授权我们在您的公开个人资料上展示它们。',
+    'terms_rules_title' => '3. 可接受的使用',
+    'terms_rules_desc' => '我们希望所有用户保持专业标准。垃圾邮件或非法内容将导致帐户立即被终止。',
+    'cookies_title' => 'Cookie 政策',
+    'cookies_intro' => '我们使用 cookie 使 alidebo 更快、更安全、更易于使用。以下是它们的作用以及您如何控制它们。',
+    'cookies_what_title' => '1. 什么是 Cookie？',
+    'cookies_what_desc' => 'Cookie 是保存在您设备上的微小文本文件，可帮助我们的网站记住您的偏好设置。',
+    'cookies_how_title' => '2. 我们如何使用它们',
+    'cookies_how_desc' => '我们使用必要的 cookie 来安全地登录您，并使用分析 cookie 来了解我们的目录是如何被使用的，以便进行改进。',
+    'cookies_manage_title' => '3. 管理 Cookie',
+    'cookies_manage_desc' => '您可以完全掌控。您可以随时通过浏览器设置清除或禁用 cookie。',
+];

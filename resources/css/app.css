@@ -1,0 +1,108 @@
+@import '@fontsource/cairo/300.css';
+@import '@fontsource/cairo/400.css';
+@import '@fontsource/cairo/500.css';
+@import '@fontsource/cairo/600.css';
+@import '@fontsource/cairo/700.css';
+@import '@fontsource/cairo/800.css';
+@import '@fontsource/cairo/900.css';
+
+@import '@fontsource/plus-jakarta-sans/200.css';
+@import '@fontsource/plus-jakarta-sans/300.css';
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/500.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
+@import '@fontsource/plus-jakarta-sans/700.css';
+@import '@fontsource/plus-jakarta-sans/800.css';
+
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .glass-card {
+        @apply bg-white/80 dark:bg-zinc-900/60 backdrop-blur-md border border-white/20 dark:border-zinc-700/30;
+    }
+
+    .glow-text {
+        background: linear-gradient(to left, #f45018, #fb923c, #f45018);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shine 3s linear infinite;
+    }
+
+    .sidebar-item-active {
+        @apply border-r-4 border-primary text-primary bg-gradient-to-l from-primary/10 to-transparent;
+    }
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+/* ── Hero brand marquee ── */
+.brand-marquee {
+    --marquee-shift: 0px;
+    --marquee-duration: 52s;
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        #000 10%,
+        #000 90%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        #000 10%,
+        #000 90%,
+        transparent 100%
+    );
+}
+.brand-marquee-content {
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+}
+@keyframes brand-marquee-ltr {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(calc(var(--marquee-shift) * -1), 0, 0); }
+}
+@keyframes brand-marquee-rtl {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(var(--marquee-shift), 0, 0); }
+}
+.animate-brand-marquee {
+    animation: brand-marquee-ltr var(--marquee-duration) linear infinite;
+}
+[dir="rtl"] .animate-brand-marquee {
+    animation-name: brand-marquee-rtl;
+}
+.brand-marquee.is-paused .animate-brand-marquee {
+    animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+    .animate-brand-marquee {
+        animation: none !important;
+        transform: none !important;
+    }
+    .brand-marquee {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+    .brand-marquee-fallback {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    .brand-marquee-card {
+        scroll-snap-align: start;
+    }
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #f45018; border-radius: 10px; }

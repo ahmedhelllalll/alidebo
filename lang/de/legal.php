@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'privacy_title' => 'Datenschutzrichtlinie',
+    'privacy_intro' => 'Wir bei alidebo glauben, dass Ihre Daten Ihnen gehören. Diese Richtlinie erklärt verständlich, was wir sammeln, warum wir es sammeln und wie wir es schützen.',
+    'privacy_collect_title' => '1. Was wir sammeln',
+    'privacy_collect_desc' => 'Wir sammeln nur Informationen, die zur Bereitstellung unserer Dienste erforderlich sind, z. B. Ihren Namen, Ihre E-Mail-Adresse und die Geschäftsdaten, die Sie veröffentlichen möchten.',
+    'privacy_use_title' => '2. Wie wir es verwenden',
+    'privacy_use_desc' => 'Ihre Informationen werden ausschließlich verwendet, um Ihr Unternehmensprofil zu betreiben, unsere Plattform zu verbessern und Ihr Konto sicher zu halten. Wir verkaufen Ihre Daten nicht.',
+    'privacy_security_title' => '3. Datensicherheit',
+    'privacy_security_desc' => 'Wir verwenden branchenübliche Verschlüsselung und Sicherheitspraktiken, um Ihre persönlichen und geschäftlichen Daten vor unbefugtem Zugriff zu schützen.',
+    'terms_title' => 'Nutzungsbedingungen',
+    'terms_intro' => 'Willkommen bei alidebo. Durch die Nutzung unserer Plattform stimmen Sie diesen einfachen Regeln zu, um unsere Community sicher und professionell zu halten.',
+    'terms_account_title' => '1. Ihr Konto',
+    'terms_account_desc' => 'Sie sind dafür verantwortlich, Ihre Anmeldeinformationen sicher aufzubewahren. Die Informationen in Ihrem Unternehmensprofil müssen korrekt und wahrheitsgemäß sein.',
+    'terms_content_title' => '2. Eigentum an Inhalten',
+    'terms_content_desc' => 'Sie behalten das volle Eigentum an den von Ihnen hochgeladenen Logos, Texten und Medien. Mit dem Hochladen erteilen Sie uns die Erlaubnis, diese öffentlich anzuzeigen.',
+    'terms_rules_title' => '3. Akzeptable Nutzung',
+    'terms_rules_desc' => 'Wir erwarten von allen Nutzern einen professionellen Standard. Spam oder illegale Inhalte führen zur sofortigen Kündigung des Kontos.',
+    'cookies_title' => 'Cookie-Richtlinie',
+    'cookies_intro' => 'Wir verwenden Cookies, um alidebo schneller, sicherer und einfacher zu machen. Hier erfahren Sie, was sie tun und wie Sie sie kontrollieren können.',
+    'cookies_what_title' => '1. Was sind Cookies?',
+    'cookies_what_desc' => 'Cookies sind winzige Textdateien, die auf Ihrem Gerät gespeichert werden und unserer Website helfen, sich an Ihre Präferenzen zu erinnern.',
+    'cookies_how_title' => '2. Wie wir sie verwenden',
+    'cookies_how_desc' => 'Wir verwenden essenzielle Cookies zur sicheren Anmeldung und analytische Cookies, um zu verstehen, wie unser Verzeichnis genutzt wird.',
+    'cookies_manage_title' => '3. Cookies verwalten',
+    'cookies_manage_desc' => 'Sie haben die volle Kontrolle. Sie können Cookies jederzeit über Ihre Browsereinstellungen löschen oder deaktivieren.',
+];

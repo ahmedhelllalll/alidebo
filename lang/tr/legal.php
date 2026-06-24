@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'privacy_title' => 'Gizlilik Politikası',
+    'privacy_intro' => 'alidebo olarak verilerinizin size ait olduğuna inanıyoruz. Bu politika, neleri topladığımızı, neden topladığımızı ve nasıl koruduğumuzu sade bir dille açıklar.',
+    'privacy_collect_title' => '1. Neleri Topluyoruz',
+    'privacy_collect_desc' => 'Hizmetlerimizi sunmak için yalnızca adınız, e-postanız ve herkese açık olarak paylaşmayı seçtiğiniz işletme detayları gibi gerekli bilgileri topluyoruz.',
+    'privacy_use_title' => '2. Nasıl Kullanıyoruz',
+    'privacy_use_desc' => 'Bilgileriniz yalnızca işletme profilinizi güçlendirmek, platformumuzu iyileştirmek ve hesabınızı güvende tutmak için kullanılır. Verilerinizi asla satmayız.',
+    'privacy_security_title' => '3. Veri Güvenliği',
+    'privacy_security_desc' => 'Kişisel ve ticari verilerinizi yetkisiz erişimden korumak için endüstri standardı şifreleme ve güvenlik uygulamaları kullanıyoruz.',
+    'terms_title' => 'Hizmet Şartları',
+    'terms_intro' => 'alidebo\'ya hoş geldiniz. Platformumuzu kullanarak, topluluğumuzu güvenli ve profesyonel tutmak için bu basit kuralları kabul etmiş olursunuz.',
+    'terms_account_title' => '1. Hesabınız',
+    'terms_account_desc' => 'Giriş bilgilerinizi güvende tutmaktan siz sorumlusunuz. İşletme profilinizde yayınladığınız bilgiler doğru ve gerçeğe uygun olmalıdır.',
+    'terms_content_title' => '2. İçerik Mülkiyeti',
+    'terms_content_desc' => 'Yüklediğiniz logolar, metinler ve medyanın tam mülkiyeti sizde kalır. Bunları yükleyerek, herkese açık profilinizde sergilememize izin vermiş olursunuz.',
+    'terms_rules_title' => '3. Kabul Edilebilir Kullanım',
+    'terms_rules_desc' => 'Tüm kullanıcılardan profesyonel bir standart sürdürmelerini bekliyoruz. Spam veya yasa dışı içerikler hesabın anında kapatılmasıyla sonuçlanacaktır.',
+    'cookies_title' => 'Çerez Politikası',
+    'cookies_intro' => 'alidebo\'yu daha hızlı, daha güvenli ve kullanımı daha kolay hale getirmek için çerezler kullanıyoruz. İşte çerezlerin tam olarak ne yaptığı ve nasıl kontrol edebileceğiniz.',
+    'cookies_what_title' => '1. Çerez Nedir?',
+    'cookies_what_desc' => 'Çerezler, web sitemizin tercihlerinizi hatırlamasına yardımcı olan, cihazınıza kaydedilen küçük metin dosyalarıdır.',
+    'cookies_how_title' => '2. Onları Nasıl Kullanıyoruz',
+    'cookies_how_desc' => 'Güvenli giriş yapmanız için temel çerezleri, dizinimizin nasıl kullanıldığını anlayıp iyileştirmek için analitik çerezleri kullanıyoruz.',
+    'cookies_manage_title' => '3. Çerezleri Yönetme',
+    'cookies_manage_desc' => 'Kontrol tamamen sizde. Çerezleri tarayıcı ayarlarınızdan istediğiniz zaman temizleyebilir veya devre dışı bırakabilirsiniz.',
+];

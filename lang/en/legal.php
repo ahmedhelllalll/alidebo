@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'privacy_title' => 'Privacy Policy',
+    'privacy_intro' => 'At alidebo, we believe your data is yours. This policy explains in plain language what we collect, why we collect it, and how we protect it.',
+    'privacy_collect_title' => '1. What We Collect',
+    'privacy_collect_desc' => 'We only collect information necessary to provide our services, such as your name, email address, and the business details you choose to share publicly.',
+    'privacy_use_title' => '2. How We Use It',
+    'privacy_use_desc' => 'Your information is used strictly to power your business profile, improve our platform, and keep your account secure. We never sell your personal data to third parties.',
+    'privacy_security_title' => '3. Data Security',
+    'privacy_security_desc' => 'We use industry-standard encryption and security practices to protect your personal and business data from unauthorized access.',
+    'terms_title' => 'Terms of Service',
+    'terms_intro' => 'Welcome to alidebo. By using our platform, you agree to these simple rules to keep our community safe, professional, and reliable.',
+    'terms_account_title' => '1. Your Account',
+    'terms_account_desc' => 'You are responsible for keeping your login credentials secure. The information you post on your business profile must be accurate, truthful, and representative of your actual business.',
+    'terms_content_title' => '2. Content Ownership',
+    'terms_content_desc' => 'You retain full ownership of the logos, text, and media you upload. By uploading them, you grant us permission to display them on your public directory profile.',
+    'terms_rules_title' => '3. Acceptable Use',
+    'terms_rules_desc' => 'We expect all users to maintain a professional standard. Spam, deceptive practices, illegal content, or harassment will result in immediate account termination.',
+    'cookies_title' => 'Cookie Policy',
+    'cookies_intro' => 'We use cookies to make alidebo faster, safer, and easier to use. Here is exactly what they do and how you can control them.',
+    'cookies_what_title' => '1. What Are Cookies?',
+    'cookies_what_desc' => 'Cookies are tiny text files saved on your device that help our website remember your preferences, like keeping you logged in between visits.',
+    'cookies_how_title' => '2. How We Use Them',
+    'cookies_how_desc' => 'We use essential cookies to securely log you in, and analytical cookies to understand how our directory is used so we can continuously improve the user experience.',
+    'cookies_manage_title' => '3. Managing Cookies',
+    'cookies_manage_desc' => 'You are entirely in control. You can clear or disable cookies at any time through your browser settings, though doing so may prevent you from logging into your account.',
+];
