@@ -954,15 +954,15 @@
             }
 
             // Preview Logo and Cover
-            if (business.logo) {
+            if (business.logo_url) {
                 const logoPreview = document.getElementById('logo-preview-inplace');
-                logoPreview.src = '/storage/' + business.logo;
+                logoPreview.src = business.logo_url;
                 logoPreview.classList.remove('hidden');
                 document.getElementById('logo-placeholder-inplace').classList.add('hidden');
             }
-            if (business.cover) {
+            if (business.cover_url) {
                 const coverPreview = document.getElementById('cover-preview-inplace');
-                coverPreview.src = '/storage/' + business.cover;
+                coverPreview.src = business.cover_url;
                 coverPreview.classList.remove('hidden');
                 document.getElementById('cover-placeholder-inplace').classList.add('hidden');
             }

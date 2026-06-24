@@ -2,8 +2,6 @@
 <link rel="preload" href="{{ asset('images/home-background.webp') }}" as="image" type="image/webp" fetchpriority="high">
 @endpush
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800;900&display=swap');
 .hero-font { font-family: 'Plus Jakarta Sans', 'Cairo', system-ui, sans-serif; }
 
 /* Smooth Fade Up Animations */
@@ -24,7 +22,7 @@
 
     {{-- Image Background --}}
     <div class="absolute inset-0 pointer-events-none">
-        <img src="{{ asset('images/home-background.webp') }}" alt="Background" fetchpriority="high" decoding="sync" class="absolute inset-0 w-full h-full object-cover">
+        <img src="{{ asset('images/home-background.webp') }}" alt="" fetchpriority="high" decoding="sync" class="absolute inset-0 w-full h-full object-cover">
         {{-- Dark Overlay --}}
         <div class="absolute inset-0 bg-gradient-to-r from-[#09090b]/90 via-[#09090b]/70 to-[#09090b]/30 rtl:from-[#09090b]/30 rtl:via-[#09090b]/70 rtl:to-[#09090b]/90"></div>
         <div class="absolute inset-0 bg-[#09090b]/30 backdrop-blur-[2px]"></div>

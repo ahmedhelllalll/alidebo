@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $this->authorize('viewAny', Category::class);
 
-        $query = Category::select('id', 'name_en', 'name_ar', 'icon', 'image', 'status', 'slug');
+        $query = Category::select('id', 'name_en', 'name_ar', 'icon', 'image', 'status', 'slug', 'disk');
 
         // Smart Search
         if ($request->filled('search')) {

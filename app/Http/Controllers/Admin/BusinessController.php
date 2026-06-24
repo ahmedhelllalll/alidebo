@@ -40,7 +40,8 @@ class BusinessController extends Controller
                 'business_profiles.owner_id',
                 'business_profiles.status', 
                 'business_profiles.logo', 
-                'business_profiles.created_at'
+                'business_profiles.created_at',
+                'business_profiles.disk'
             )
             ->with([
                 'category:id,name_en,name_ar',
@@ -73,7 +74,7 @@ class BusinessController extends Controller
                     'id' => $biz->id,
                     'name' => $biz->name,
                     'slug' => $biz->slug,
-                    'logo' => $biz->logo ? asset('storage/' . $biz->logo) : null,
+                    'logo' => $biz->logo_url,
                     'status' => $biz->status,
                     'category' => $biz->category->name ?? 'N/A',
                     'city' => $biz->city->name ?? 'N/A',
@@ -221,8 +222,8 @@ class BusinessController extends Controller
         $this->authorize('delete', $business);
 
         // Delete images
-        if ($business->logo) $this->profileService->deleteImage($business->logo);
-        if ($business->cover) $this->profileService->deleteImage($business->cover);
+        if ($business->logo) $this->profileService->deleteImage($business->logo, $business->disk ?? 'public');
+        if ($business->cover) $this->profileService->deleteImage($business->cover, $business->disk ?? 'public');
         
         $business->delete();
 

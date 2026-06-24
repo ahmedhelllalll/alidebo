@@ -13,10 +13,10 @@
         scrollToTopBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (window.lenis) {
-                // Use a premium ease-out easing function
+                // Use a smoother and slightly faster quartic ease-out function
                 window.lenis.scrollTo(0, { 
-                    duration: 1.5, 
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                    duration: 1.0, 
+                    easing: (t) => 1 - Math.pow(1 - t, 4)
                 });
             } else {
                 window.scrollTo({ top: 0, behavior: 'smooth' });

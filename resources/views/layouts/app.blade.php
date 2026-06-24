@@ -17,6 +17,9 @@
     </script>
 
     {{-- Fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -174,10 +177,19 @@
             .hero-dashboard { animation: none !important; }
         }
 
-        /* Glass nav - Transparent initially */
+        /* Glass nav - Glassy/light background & shadow initially */
         .glass-nav {
-            background: transparent;
-            border-color: transparent;
+            backdrop-filter: blur(20px) saturate(1.8);
+            -webkit-backdrop-filter: blur(20px) saturate(1.8);
+            background: rgba(255, 255, 255, 0.75);
+            border-color: rgba(226, 232, 240, 0.7);
+            box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 8px -2px rgba(15, 23, 42, 0.02);
+            transition: all 0.5s ease-[cubic-bezier(0.4,0,0.2,1)];
+        }
+        .dark .glass-nav {
+            background: rgba(18, 18, 20, 0.7);
+            border-color: rgba(63, 63, 70, 0.4);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.25), 0 2px 8px -2px rgba(0, 0, 0, 0.15);
         }
 
         /* Scrollbar minimal */
@@ -213,14 +225,12 @@
         .glass-nav.is-scrolled {
             background: #ffffff;
             border-color: rgba(226, 232, 240, 0.85);
-            box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+            box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 1px 3px -1px rgba(15, 23, 42, 0.03);
         }
         .dark .glass-nav.is-scrolled {
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            background: rgba(9, 9, 11, 0.8);
+            background: rgba(9, 9, 11, 0.85);
             border-color: rgba(63, 63, 70, 0.55);
-            box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.35), 0 1px 3px -1px rgba(0, 0, 0, 0.15);
         }
 
         /* ── Mobile nav ── */
@@ -276,6 +286,9 @@
                 transition: none !important;
             }
         }
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
     @stack('styles')
 </head>
@@ -285,7 +298,7 @@
     {{-- ═══════════════════════════════════════ --}}
     {{-- NAVIGATION --}}
     {{-- ═══════════════════════════════════════ --}}
-    <nav id="main-nav" class="absolute top-3 sm:top-5 inset-x-3 sm:inset-x-6 lg:inset-x-8 z-[9999] glass-nav border border-transparent rounded-2xl lg:rounded-[1.5rem] transition-all duration-300">
+    <nav id="main-nav" class="fixed top-3 sm:top-5 inset-x-3 sm:inset-x-6 lg:inset-x-8 z-[99999] glass-nav border border-transparent rounded-2xl lg:rounded-[1.5rem] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
         <div class="nav-mobile-shell relative w-full px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 lg:h-[72px]">
 
@@ -318,7 +331,7 @@
 
                     {{-- Language Switcher --}}
                     <div class="relative" id="langDropdownContainer">
-                        <button onclick="toggleLangDropdown()" id="lang-toggle-btn" class="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 rounded-[0.85rem] text-sm font-bold text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800/60 border border-transparent hover:border-slate-200 dark:hover:border-zinc-700 transition-all duration-200">
+                        <button onclick="toggleLangDropdown()" id="lang-toggle-btn" aria-label="Toggle language" class="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 rounded-[0.85rem] text-sm font-bold text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800/60 border border-transparent hover:border-slate-200 dark:hover:border-zinc-700 transition-all duration-200">
                             @if(app()->getLocale() == 'en')
                                 <img src="https://flagcdn.com/w40/us.png" alt="EN" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
                                 <span class="hidden sm:inline">EN</span>
@@ -435,7 +448,7 @@
 
     {{-- Mobile Menu — perfectly synced with floating pill nav --}}
     <div id="mobile-menu"
-         class="lg:hidden fixed inset-0 z-[9998]"
+         class="lg:hidden fixed inset-0 z-[99998]"
          aria-hidden="true">
         
         {{-- Soft Backdrop --}}
@@ -507,7 +520,7 @@
                     {{-- Brand Column (Left) --}}
                     <div class="sm:col-span-2 lg:col-span-1">
                         <div class="flex items-center gap-3 mb-6">
-                            <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="w-8 h-8 hover:scale-110 transition-transform duration-300">
+                            <img src="{{ asset('images/logo.webp') }}" alt="" loading="lazy" decoding="async" class="w-8 h-8 hover:scale-110 transition-transform duration-300">
                             <span class="text-2xl font-[900] tracking-tighter text-zinc-100">alidebo</span>
                         </div>
                         <p class="text-base text-zinc-400 leading-relaxed max-w-sm">
@@ -517,7 +530,7 @@
 
                     {{-- Quick Links --}}
                     <div class="sm:col-span-1">
-                        <h4 class="text-sm font-bold text-zinc-100 mb-6 tracking-wide">{{ __('landing.footer_company') ?? 'Company' }}</h4>
+                        <h3 class="text-sm font-bold text-zinc-100 mb-6 tracking-wide">{{ __('landing.footer_company') ?? 'Company' }}</h3>
                         <ul class="space-y-4">
                             <li><a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('home') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_home') ?? 'Home' }}</a></li>
                             <li><a href="{{ route('directory.index') }}" class="text-sm font-medium {{ request()->routeIs('directory.*') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('directory.*') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_companies') ?? 'Companies' }}</a></li>
@@ -528,7 +541,7 @@
 
                     {{-- Legal Links --}}
                     <div class="sm:col-span-1">
-                        <h4 class="text-sm font-bold text-zinc-100 mb-6 tracking-wide">{{ __('landing.footer_legal') }}</h4>
+                        <h3 class="text-sm font-bold text-zinc-100 mb-6 tracking-wide">{{ __('landing.footer_legal') }}</h3>
                         <ul class="space-y-4">
                             <li><a href="{{ route('privacy') }}" class="text-sm font-medium {{ request()->routeIs('privacy') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('privacy') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.footer_privacy') }}</a></li>
                             <li><a href="{{ route('terms') }}" class="text-sm font-medium {{ request()->routeIs('terms') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('terms') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.footer_terms') }}</a></li>
@@ -658,6 +671,7 @@
         }
 
         let lastScrollY = window.scrollY;
+        let ticking = false;
 
         function updateNavScrollState() {
             if (!nav) return;
@@ -667,44 +681,34 @@
             const shouldGlass = currentScrollY > 20 || isMobileOpen;
             nav.classList.toggle('is-scrolled', shouldGlass);
 
-            // If we are at the very top, perfectly align it as absolute so it can scroll away naturally
+            // Handle scroll direction and hide/show
             if (currentScrollY <= 10) {
-                if (nav.classList.contains('fixed')) {
-                    nav.style.transition = 'none';
-                    nav.classList.remove('fixed', '-translate-y-[150%]', 'opacity-0', 'pointer-events-none');
-                    nav.classList.add('absolute');
-                    void nav.offsetWidth;
-                    nav.style.transition = '';
-                }
+                // At the top: always show
+                nav.classList.remove('-translate-y-[150%]', 'opacity-0', 'pointer-events-none');
             } else {
                 if (currentScrollY > lastScrollY && !isMobileOpen) {
-                    // Scrolling down: hide it if it was fixed
-                    if (nav.classList.contains('fixed')) {
-                        nav.classList.add('-translate-y-[150%]', 'opacity-0', 'pointer-events-none');
-                    }
+                    // Scrolling down: hide
+                    nav.classList.add('-translate-y-[150%]', 'opacity-0', 'pointer-events-none');
                 } else if (currentScrollY < lastScrollY || isMobileOpen) {
-                    // Scrolling up: make fixed and show it
-                    if (nav.classList.contains('absolute')) {
-                        // Temporarily disable transition to snap it hidden at the top
-                        nav.style.transition = 'none';
-                        nav.classList.remove('absolute');
-                        nav.classList.add('fixed', '-translate-y-[150%]', 'opacity-0', 'pointer-events-none');
-                        // Force reflow so it registers the hidden state
-                        void nav.offsetWidth;
-                        nav.style.transition = ''; // Restore transition
-                    }
-                    // Now let it animate into view
-                    nav.classList.add('fixed');
+                    // Scrolling up: show
                     nav.classList.remove('-translate-y-[150%]', 'opacity-0', 'pointer-events-none');
                 }
             }
             
             lastScrollY = currentScrollY;
+            ticking = false;
         }
 
         if (nav) {
             updateNavScrollState();
-            window.addEventListener('scroll', updateNavScrollState, { passive: true });
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateNavScrollState();
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
         }
 
         document.addEventListener('keydown', (e) => {

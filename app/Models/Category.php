@@ -12,12 +12,20 @@ class Category extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->image) : null;
+        if (!$this->image) return null;
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->image);
     }
 
     public function getIconUrlAttribute()
     {
-        return $this->icon ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->icon) : null;
+        if (!$this->icon) return null;
+        if (str_starts_with($this->icon, 'http://') || str_starts_with($this->icon, 'https://')) {
+            return $this->icon;
+        }
+        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->icon);
     }
 
     public function getNameAttribute()

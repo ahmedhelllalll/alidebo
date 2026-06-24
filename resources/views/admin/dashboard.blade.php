@@ -177,7 +177,7 @@
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-700/50 flex items-center justify-center font-[900] text-slate-400 dark:text-zinc-500 shadow-sm overflow-hidden shrink-0 group-hover:border-primary/30 transition-colors">
                             @if($business->logo)
-                                <img src="{{ asset('storage/' . $business->logo) }}" class="w-full h-full object-cover">
+                                <img src="{{ $business->logo_url }}" class="w-full h-full object-cover">
                             @else
                                 {{ substr($business->name, 0, 1) }}
                             @endif

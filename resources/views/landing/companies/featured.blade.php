@@ -25,9 +25,9 @@
                     <div class="h-32 sm:h-40 bg-slate-100 dark:bg-zinc-800 relative overflow-hidden shrink-0 border-b border-slate-100 dark:border-zinc-800/50">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
                         @if($company->cover)
-                            <img src="{{ Storage::url($company->cover) }}" alt="{{ $company->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <img src="{{ $company->cover_url }}" alt="{{ $company->name }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         @else
-                            <img src="{{ asset('images/home-background.webp') }}" alt="Cover Placeholder" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80">
+                            <img src="{{ asset('images/home-background.webp') }}" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80">
                         @endif
                     </div>
 
@@ -37,7 +37,7 @@
                         {{-- SaaS Logo Avatar --}}
                         <div class="absolute -top-10 start-6 sm:start-8 w-16 h-16 rounded-2xl bg-white dark:bg-zinc-900 border-4 border-white dark:border-[#09090b] shadow-sm flex items-center justify-center overflow-hidden z-20 transition-transform duration-300 group-hover:-translate-y-1">
                             @if($company->logo)
-                                <img src="{{ Storage::url($company->logo) }}" alt="{{ $company->name }}" class="w-full h-full object-cover">
+                                <img src="{{ $company->logo_url }}" alt="{{ $company->name }} logo" loading="lazy" decoding="async" class="w-full h-full object-cover">
                             @else
                                 <div class="w-full h-full bg-primary/10 text-primary flex items-center justify-center font-[900] text-xl">
                                     {{ mb_substr($company->name, 0, 1) }}

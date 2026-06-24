@@ -39,7 +39,7 @@
                             <!-- Background Image -->
                             <div class="absolute inset-0 w-full h-full">
                                 @if($company->cover)
-                                    <img src="{{ Storage::url($company->cover) }}" alt="" class="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105">
+                                    <img src="{{ $company->cover_url }}" alt="" class="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105">
                                 @else
                                     <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200&h=600" alt="" class="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-105">
                                 @endif
@@ -58,7 +58,7 @@
                                 <div class="relative mb-5 group-hover:scale-105 transition-transform duration-500">
                                     <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden shadow-2xl shadow-black/20">
                                         @if($company->logo)
-                                            <img src="{{ Storage::url($company->logo) }}" alt="{{ $company->name }}" class="w-full h-full object-cover">
+                                            <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="w-full h-full object-cover">
                                         @else
                                             <div class="w-full h-full bg-gradient-to-br from-indigo-500/40 to-slate-900 text-white flex items-center justify-center font-black text-3xl">
                                                 {{ mb_substr($company->name, 0, 1) }}
@@ -132,7 +132,7 @@
                        class="group/card relative flex items-center gap-3 p-3 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-200 dark:hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300">
                         <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden shrink-0 group-hover/card:scale-110 transition-transform duration-300">
                             @if($company->logo)
-                                <img src="{{ Storage::url($company->logo) }}" alt="" class="w-full h-full object-cover">
+                                <img src="{{ $company->logo_url }}" alt="" class="w-full h-full object-cover">
                             @else
                                 <span class="font-bold text-slate-600 dark:text-slate-400 text-sm">{{ mb_substr($company->name, 0, 1) }}</span>
                             @endif

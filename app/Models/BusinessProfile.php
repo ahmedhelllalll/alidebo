@@ -45,12 +45,20 @@ class BusinessProfile extends Model
 
     public function getLogoUrlAttribute()
     {
-        return $this->logo ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->logo) : null;
+        if (!$this->logo) return null;
+        if (str_starts_with($this->logo, 'http://') || str_starts_with($this->logo, 'https://')) {
+            return $this->logo;
+        }
+        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->logo);
     }
 
     public function getCoverUrlAttribute()
     {
-        return $this->cover ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->cover) : null;
+        if (!$this->cover) return null;
+        if (str_starts_with($this->cover, 'http://') || str_starts_with($this->cover, 'https://')) {
+            return $this->cover;
+        }
+        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->cover);
     }
 
     public function user(): BelongsTo

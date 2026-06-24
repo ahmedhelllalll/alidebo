@@ -138,6 +138,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 require __DIR__ . '/auth.php';
 
 Route::get('/directory', [DirectoryController::class, 'index'])->name('directory.index');
+Route::get('/directory/search', [DirectoryController::class, 'liveSearch'])->name('directory.search');
 
 Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');

@@ -15,7 +15,7 @@
             <td class="px-6 py-4 whitespace-nowrap">
                 <div class="w-12 h-12 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-700/50 flex items-center justify-center font-[900] text-slate-400 dark:text-zinc-500 shadow-sm overflow-hidden shrink-0 group-hover:border-primary/30 group-hover:text-primary transition-colors">
                     @if($category->image)
-                        <img src="{{ str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image) }}" class="w-full h-full object-cover">
+                        <img src="{{ $category->image_url }}" class="w-full h-full object-cover">
                     @elseif($category->icon)
                        <i class="fa-solid {!! $category->icon !!}"></i> 
                     @else
@@ -70,7 +70,7 @@
             <div class="flex items-center gap-4">
                 <div class="w-14 h-14 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-700/50 flex items-center justify-center font-[900] text-slate-400 dark:text-zinc-500 shadow-sm shrink-0 overflow-hidden">
                     @if($category->image)
-                        <img src="{{ str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image) }}" class="w-full h-full object-cover">
+                        <img src="{{ $category->image_url }}" class="w-full h-full object-cover">
                     @elseif($category->icon)
                        <i class="fa-solid {!! $category->icon !!} text-xl"></i> 
                     @else

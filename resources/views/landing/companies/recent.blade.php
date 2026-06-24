@@ -19,7 +19,7 @@
                 
                 @if($company->logo)
                     <div class="strip-bg absolute -inset-5 bg-cover bg-center will-change-transform scale-115 transition-transform duration-600" 
-                         style="background-image: url('{{ Storage::url($company->logo) }}');">
+                         style="background-image: url('{{ $company->logo_url }}');">
                     </div>
                 @else
                     <div class="strip-bg absolute -inset-5 bg-gradient-to-br from-[#16161f] via-[#0b0b10] to-[#030305] flex items-center justify-center will-change-transform scale-115 transition-transform duration-600">
@@ -33,7 +33,7 @@
                 
                 @if($company->logo)
                     <div class="hover-logo-capsule absolute top-1/2 left-1/2 w-24 h-24 bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex items-center justify-center pointer-events-none z-2">
-                        <img src="{{ Storage::url($company->logo) }}" alt="{{ $company->name }}" class="max-w-full max-h-full object-contain filter drop-shadow-md">
+                        <img src="{{ $company->logo_url }}" alt="{{ $company->name }}" class="max-w-full max-h-full object-contain filter drop-shadow-md">
                     </div>
                 @else
                     <div class="hover-logo-capsule absolute top-1/2 left-1/2 w-24 h-24 bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl flex items-center justify-center pointer-events-none z-2">

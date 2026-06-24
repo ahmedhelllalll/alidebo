@@ -345,8 +345,8 @@
         const preview = document.getElementById('edit_image_preview');
         const placeholder = document.getElementById('edit_image_placeholder');
         const img = document.getElementById('edit_image_display');
-        if (category.image) {
-            img.src = category.image.startsWith('http') ? category.image : `/storage/${category.image}`;
+        if (category.image_url) {
+            img.src = category.image_url;
             preview.classList.remove('hidden');
             placeholder.classList.add('hidden');
         } else {

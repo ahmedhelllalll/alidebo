@@ -2,12 +2,12 @@
     <div class="absolute inset-0 opacity-20">
         <div class="absolute inset-0 bg-gradient-to-br from-primary to-transparent"></div>
         @if($business->logo)
-            <img src="{{ asset('storage/' . $business->logo) }}" class="w-full h-full object-cover blur-3xl">
+            <img src="{{ $business->logo_url }}" class="w-full h-full object-cover blur-3xl">
         @endif
     </div>
     <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
         @if($business->logo)
-            <img src="{{ asset('storage/' . $business->logo) }}" class="w-24 h-24 mx-auto mb-8 rounded-3xl shadow-2xl border-2 border-white/10 object-cover">
+            <img src="{{ $business->logo_url }}" class="w-24 h-24 mx-auto mb-8 rounded-3xl shadow-2xl border-2 border-white/10 object-cover">
         @endif
         <h1 class="text-5xl md:text-7xl font-black text-white mb-6 tracking-tight">
             {{ $content['title'] ?? $business->name }}

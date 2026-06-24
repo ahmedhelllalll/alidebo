@@ -21,4 +21,11 @@ return [
     'view_profile' => 'View Profile',
     'no_results' => 'No businesses found matching your criteria.',
     'try_different' => 'Try adjusting your filters or search term.',
+    'searching' => 'Searching...',
+    'no_results_for' => 'No results found for',
+    'company' => 'Company',
+    'category' => 'Category',
+    'country' => 'Country',
+    'city' => 'City',
+    'view_all_results' => 'View all results for',
 ];
