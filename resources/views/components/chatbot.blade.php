@@ -54,7 +54,6 @@
 
     /* Strict Mobile-Only Fullscreen Override */
     @media (max-width: 639px) {
-        #dibo-chatbot-container { z-index: 9999 !important; }
         #chatbot-window:not(.hidden-state) {
             position: fixed !important;
             inset: 0 !important;
@@ -65,12 +64,12 @@
             margin: 0 !important;
             border-radius: 0 !important;
             border: none !important;
-            z-index: 9999 !important;
+            z-index: 100000 !important;
         }
     }
 </style>
 
-<div id="dibo-chatbot-container" class="fixed bottom-6 left-6 rtl:left-auto rtl:right-6 z-[999] flex flex-col items-start pointer-events-none" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+<div id="dibo-chatbot-container" class="fixed bottom-6 left-6 rtl:left-auto rtl:right-6 z-[90000] flex flex-col items-start pointer-events-none" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
     
     {{-- Chat Window --}}
     <div id="chatbot-window" class="hidden-state pointer-events-auto mb-4 w-[350px] sm:w-[380px] h-[500px] max-h-[calc(100vh-6rem)] max-w-[calc(100vw-3rem)] bg-white dark:bg-[#09090b] rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] border border-slate-200/60 dark:border-zinc-800/60 overflow-hidden flex flex-col">
@@ -223,11 +222,16 @@
         
         const iconOpen = document.getElementById('chatbot-icon-open');
         const iconClose = document.getElementById('chatbot-icon-close');
+        const container = document.getElementById('dibo-chatbot-container');
         
         if (isChatOpen) {
             chatbotWindow.classList.remove('hidden-state');
             iconOpen.classList.add('opacity-0', 'scale-50');
             iconClose.classList.remove('opacity-0', 'scale-50');
+            if(container) {
+                container.classList.remove('z-[90000]');
+                container.classList.add('z-[100000]');
+            }
             
             // Disable body scroll on mobile
             if (window.innerWidth < 640) {
@@ -239,6 +243,10 @@
             chatbotWindow.classList.add('hidden-state');
             iconOpen.classList.remove('opacity-0', 'scale-50');
             iconClose.classList.add('opacity-0', 'scale-50');
+            if(container) {
+                container.classList.remove('z-[100000]');
+                container.classList.add('z-[90000]');
+            }
             
             // Re-enable body scroll
             document.body.classList.remove('overflow-hidden');

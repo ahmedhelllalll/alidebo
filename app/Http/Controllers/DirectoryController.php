@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\BusinessProfile;
 use App\Models\Category;
 use App\Models\City;
+use App\Models\Country;
 
 class DirectoryController extends Controller
 {
@@ -24,14 +25,16 @@ class DirectoryController extends Controller
 
         // Apply Country Filter
         if ($request->filled('country')) {
-            $query->whereHas('city', function($q) use ($request) {
-                $q->where('country_id', $request->country);
+            $countries = is_array($request->country) ? $request->country : explode(',', $request->country);
+            $query->whereHas('city', function($q) use ($countries) {
+                $q->whereIn('country_id', $countries);
             });
         }
 
         // Apply Category Filter
         if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
+            $categories = is_array($request->category) ? $request->category : explode(',', $request->category);
+            $query->whereIn('category_id', $categories);
         }
 
         // Apply City Filter
@@ -58,9 +61,16 @@ class DirectoryController extends Controller
         $businesses = $query->paginate(12)->withQueryString();
         
         $categories = Category::where('status', 'active')->get();
-        $cities = City::where('status', 'active')->get();
+        $countries = Country::where('status', 'active')->get();
 
-        return view('directory.index', compact('businesses', 'categories', 'cities'));
+        if ($request->ajax() || $request->header('X-Alpine-Request')) {
+            if ($request->boolean('append')) {
+                return view('directory.index', compact('businesses', 'categories', 'countries'))->fragment('business-items');
+            }
+            return view('directory.index', compact('businesses', 'categories', 'countries'))->fragment('business-grid');
+        }
+
+        return view('directory.index', compact('businesses', 'categories', 'countries'));
     }
 
     public function liveSearch(Request $request)
@@ -68,10 +78,12 @@ class DirectoryController extends Controller
         $search = $request->query('q');
 
         if (empty($search)) {
-            return response()->json([]);
+            return response()->json([
+                'categories' => [],
+                'locations' => [],
+                'companies' => []
+            ]);
         }
-
-        $results = collect();
 
         // 1. Search Categories
         $categories = \App\Models\Category::where('status', 'active')
@@ -90,7 +102,6 @@ class DirectoryController extends Controller
                     'url' => route('directory.index', ['category' => $item->id])
                 ];
             });
-        $results = $results->concat($categories);
 
         // 2. Search Countries
         $countries = \App\Models\Country::where('status', 'active')
@@ -108,7 +119,6 @@ class DirectoryController extends Controller
                     'url' => route('directory.index', ['country' => $item->id])
                 ];
             });
-        $results = $results->concat($countries);
 
         // 3. Search Cities
         $cities = \App\Models\City::with('country')->where('status', 'active')
@@ -121,12 +131,12 @@ class DirectoryController extends Controller
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
+                    'country_id' => $item->country_id,
                     'type' => 'city',
                     'name' => $item->name . ($item->country ? ', ' . $item->country->name : ''),
                     'url' => route('directory.index', ['city' => $item->id])
                 ];
             });
-        $results = $results->concat($cities);
 
         // 4. Search Businesses
         $businesses = BusinessProfile::with('category')
@@ -147,8 +157,12 @@ class DirectoryController extends Controller
                     'url' => route('business.view', $business->slug)
                 ];
             });
-        $results = $results->concat($businesses);
 
-        return response()->json($results);
+        return response()->json([
+            'categories' => $categories,
+            'locations' => $countries->concat($cities),
+            'companies' => $businesses
+        ]);
     }
 }
+

@@ -11,10 +11,13 @@ use App\Models\BusinessProfile;
 use App\Policies\BusinessProfilePolicy;
 use Illuminate\Support\Facades\Gate;
 
+use Illuminate\Pagination\Paginator;
+
 class AppServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        Paginator::useTailwind();
         Gate::policy(BusinessProfile::class, BusinessProfilePolicy::class);
 
         Event::listen(Login::class, function ($event) {

@@ -28,4 +28,8 @@ return [
     'country' => 'Country',
     'city' => 'City',
     'view_all_results' => 'View all results for',
+    'explore_popular_categories' => 'Explore Popular Categories',
+    'search_no_results' => 'No results found',
+    'search_no_results_desc' => 'We couldn\'t find anything matching your search. Please try again with different keywords.',
 ];
+

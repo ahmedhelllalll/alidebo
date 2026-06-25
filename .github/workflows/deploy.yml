@@ -25,9 +25,9 @@ jobs:
         exclude: |
           **/.git*
           **/.git*/**
-          **/node_modules/**
-          **/vendor/**
-          **/storage/**
+          node_modules/**
+          vendor/**
+          storage/**
           *.zip
           *.rar
           *.tar.gz
