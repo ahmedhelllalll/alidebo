@@ -65,7 +65,7 @@ class BusinessProfileService
 
         $data = [
             'user_id' => $user?->id,
-            'owner_id' => $validated['owner_id'] ?? null,
+            'owner_id' => array_key_exists('owner_id', $validated) ? $validated['owner_id'] : $user?->id,
             'name' => $validated['name'],
             'slug' => $validated['slug'] ?? $this->generateUniqueSlug($validated['name']),
             'category_id' => $validated['category_id'],

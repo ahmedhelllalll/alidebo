@@ -154,7 +154,7 @@ class DirectoryController extends Controller
                     'name' => $business->name,
                     'logo' => $business->logo_url,
                     'category' => $business->category ? $business->category->name : null,
-                    'url' => route('business.view', $business->slug)
+                    'url' => route('directory.business.view', $business->slug)
                 ];
             });
 

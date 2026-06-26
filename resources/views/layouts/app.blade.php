@@ -291,32 +291,62 @@
     {{-- ═══════════════════════════════════════ --}}
     {{-- NAVIGATION --}}
     {{-- ═══════════════════════════════════════ --}}
+    @if(!request()->routeIs('business.view'))
     <nav id="main-nav" class="fixed top-3 sm:top-5 inset-x-3 sm:inset-x-6 lg:inset-x-8 z-[99999] glass-nav border border-transparent rounded-2xl lg:rounded-[1.5rem] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
         <div class="nav-mobile-shell relative w-full px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 lg:h-[72px]">
 
                 {{-- Logo --}}
                 <div class="flex flex-1 justify-start">
-                    <a href="/" class="flex items-center gap-2.5 group shrink-0" id="nav-logo">
-                        <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="w-8 h-8 transition-transform duration-300 group-hover:scale-110">
-                        <span class="text-xl font-[900] tracking-tighter">alidebo</span>
-                    </a>
+                    @if(request()->routeIs('business.view') && isset($business))
+                        <a href="#discover" class="flex items-center gap-2.5 group shrink-0">
+                            @if($business->logo)
+                                <img src="{{ $business->logo_url }}" alt="{{ $business->name }}" class="w-8 h-8 rounded-lg object-cover border border-slate-200/50 dark:border-zinc-800/50">
+                            @else
+                                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                                    {{ mb_substr($business->name, 0, 1) }}
+                                </div>
+                            @endif
+                            <span class="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate max-w-[120px] sm:max-w-[200px]">{{ $business->name }}</span>
+                        </a>
+                    @else
+                        <a href="/" class="flex items-center gap-2.5 group shrink-0" id="nav-logo">
+                            <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="w-8 h-8 transition-transform duration-300 group-hover:scale-110">
+                            <span class="text-xl font-[900] tracking-tighter">alidebo</span>
+                        </a>
+                    @endif
                 </div>
 
                 {{-- Desktop Navigation --}}
                 <div class="hidden lg:flex items-center justify-center gap-1 shrink-0">
-                    <a href="{{ route('home') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('home') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                        {{ __('landing.nav_home') ?? 'Home' }}
-                    </a>
-                    <a href="{{ route('directory.index') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('directory.*') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                        {{ __('landing.nav_companies') ?? 'Companies' }}
-                    </a>
-                    <a href="{{ route('about') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('about') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                        {{ __('landing.nav_about') ?? 'About Us' }}
-                    </a>
-                    <a href="{{ route('contact') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('contact') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                        {{ __('landing.nav_contact') ?? 'Contact' }}
-                    </a>
+                    @if(request()->routeIs('business.view') && isset($business))
+                        <a href="#discover" class="nav-link-effect px-4 py-2 text-sm font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
+                            {{ __('landing.nav_home') ?? 'Home' }}
+                        </a>
+                        @if($business->description)
+                        <a href="#about-section" class="nav-link-effect px-4 py-2 text-sm font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
+                            {{ __('directory.profile_about') ?? 'About' }}
+                        </a>
+                        @endif
+                        @if($business->media->count() > 0)
+                        <a href="#gallery-section" class="nav-link-effect px-4 py-2 text-sm font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
+                            {{ __('directory.profile_gallery') ?? 'Gallery' }}
+                        </a>
+                        @endif
+                    @else
+                        <a href="{{ route('home') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('home') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                            {{ __('landing.nav_home') ?? 'Home' }}
+                        </a>
+                        <a href="{{ route('directory.index') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('directory.*') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                            {{ __('landing.nav_companies') ?? 'Companies' }}
+                        </a>
+                        <a href="{{ route('about') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('about') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                            {{ __('landing.nav_about') ?? 'About Us' }}
+                        </a>
+                        <a href="{{ route('contact') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('contact') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                            {{ __('landing.nav_contact') ?? 'Contact' }}
+                        </a>
+                    @endif
                 </div>
 
                 {{-- Right Actions --}}
@@ -403,21 +433,49 @@
                         </svg>
                     </button>
 
-                    {{-- Auth Actions --}}
+                    {{-- Auth Actions / Business CTA --}}
                     <div class="hidden sm:flex items-center gap-1.5">
-                        @guest
-                            <a href="{{ route('login') }}" class="px-3 py-1.5 text-sm font-bold text-slate-700 dark:text-zinc-300 hover:text-primary transition-colors rounded-[0.85rem]">
-                                {{ __('landing.login') }}
-                            </a>
-                            <a href="{{ route('register') }}" id="nav-cta-btn" class="px-4 py-2 bg-primary text-white rounded-[0.85rem] font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:bg-primary-light active:scale-[0.97] transition-all duration-200">
-                                {{ __('landing.get_started') }}
-                            </a>
+                        @if(request()->routeIs('business.view') && isset($business))
+                            @php
+                                $contacts = $business->contact_methods ?? [];
+                                $ctaUrl = null;
+                                $ctaLabel = __('directory.profile_connect') ?? 'Connect';
+                                if (!empty($contacts['whatsapp'])) {
+                                    $ctaUrl = "https://wa.me/" . preg_replace('/[^0-9]/', '', $contacts['whatsapp']);
+                                } elseif (!empty($contacts['phone'])) {
+                                    $ctaUrl = "tel:" . $contacts['phone'];
+                                } elseif (!empty($contacts['email'])) {
+                                    $ctaUrl = "mailto:" . $contacts['email'];
+                                } elseif (!empty($contacts['website'])) {
+                                    $ctaUrl = $contacts['website'];
+                                }
+                            @endphp
+
+                            @if($ctaUrl)
+                                <a href="{{ $ctaUrl }}" target="_blank" rel="noopener" class="px-4 py-2 bg-primary text-white rounded-[0.85rem] font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:bg-primary-light active:scale-[0.97] transition-all duration-200 flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                    {{ $ctaLabel }}
+                                </a>
+                            @else
+                                <button @click="shareProfile()" class="px-4 py-2 bg-primary text-white rounded-[0.85rem] font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:bg-primary-light active:scale-[0.97] transition-all duration-200">
+                                    {{ __('directory.profile_share') ?? 'Share' }}
+                                </button>
+                            @endif
                         @else
-                            <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="px-4 py-2 bg-primary text-white rounded-[0.85rem] font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:bg-primary-light active:scale-[0.97] transition-all duration-200 flex items-center gap-2 group">
-                                <svg class="w-4 h-4 text-white/80 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                                {{ __('nav.dashboard') ?? 'Dashboard' }}
-                            </a>
-                        @endguest
+                            @guest
+                                <a href="{{ route('login') }}" class="px-3 py-1.5 text-sm font-bold text-slate-700 dark:text-zinc-300 hover:text-primary transition-colors rounded-[0.85rem]">
+                                    {{ __('landing.login') }}
+                                </a>
+                                <a href="{{ route('register') }}" id="nav-cta-btn" class="px-4 py-2 bg-primary text-white rounded-[0.85rem] font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:bg-primary-light active:scale-[0.97] transition-all duration-200">
+                                    {{ __('landing.get_started') }}
+                                </a>
+                            @else
+                                <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="px-4 py-2 bg-primary text-white rounded-[0.85rem] font-bold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:bg-primary-light active:scale-[0.97] transition-all duration-200 flex items-center gap-2 group">
+                                    <svg class="w-4 h-4 text-white/80 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                                    {{ __('nav.dashboard') ?? 'Dashboard' }}
+                                </a>
+                            @endguest
+                        @endif
                     </div>
 
                     {{-- Mobile Menu Toggle --}}
@@ -453,43 +511,86 @@
         <div class="mobile-menu-panel absolute top-[5rem] sm:top-[6.5rem] bottom-3 sm:bottom-5 inset-x-3 sm:inset-x-6 overflow-y-auto bg-white/85 dark:bg-[#0a0a0c]/85 backdrop-blur-2xl border border-white/50 dark:border-zinc-800/50 rounded-[1.5rem] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)] flex flex-col p-2.5">
             
             <nav class="space-y-1" aria-label="Mobile navigation">
-                @foreach([
-                    ['href' => route('home'), 'route' => 'home', 'label' => __('landing.nav_home') ?? 'Home'],
-                    ['href' => route('directory.index'), 'route' => 'directory.*', 'label' => __('landing.nav_companies') ?? 'Companies'],
-                    ['href' => route('about'), 'route' => 'about', 'label' => __('landing.nav_about') ?? 'About Us'],
-                    ['href' => route('contact'), 'route' => 'contact', 'label' => __('landing.nav_contact') ?? 'Contact'],
-                ] as $link)
-                <a href="{{ $link['href'] }}"
-                   onclick="closeMobileMenu()"
-                   class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 {{ request()->routeIs($link['route']) ? 'text-primary bg-primary/10 font-black' : 'font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary' }}">
-                    <span>{{ $link['label'] }}</span>
-                    <svg class="w-4 h-4 transition-colors shrink-0 {{ request()->routeIs($link['route']) ? 'text-primary' : 'text-slate-300 dark:text-zinc-600 group-hover:text-primary' }} rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                </a>
-                @endforeach
+                @if(request()->routeIs('business.view') && isset($business))
+                    <a href="#discover"
+                       onclick="closeMobileMenu()"
+                       class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary">
+                        <span>{{ __('landing.nav_home') ?? 'Home' }}</span>
+                        <svg class="w-4 h-4 text-slate-300 dark:text-zinc-600 group-hover:text-primary rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    @if($business->description)
+                    <a href="#about-section"
+                       onclick="closeMobileMenu()"
+                       class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary">
+                        <span>{{ __('directory.profile_about') ?? 'About' }}</span>
+                        <svg class="w-4 h-4 text-slate-300 dark:text-zinc-600 group-hover:text-primary rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    @endif
+                    @if($business->media->count() > 0)
+                    <a href="#gallery-section"
+                       onclick="closeMobileMenu()"
+                       class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary">
+                        <span>{{ __('directory.profile_gallery') ?? 'Gallery' }}</span>
+                        <svg class="w-4 h-4 text-slate-300 dark:text-zinc-600 group-hover:text-primary rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    @endif
+                @else
+                    @foreach([
+                        ['href' => route('home'), 'route' => 'home', 'label' => __('landing.nav_home') ?? 'Home'],
+                        ['href' => route('directory.index'), 'route' => 'directory.*', 'label' => __('landing.nav_companies') ?? 'Companies'],
+                        ['href' => route('about'), 'route' => 'about', 'label' => __('landing.nav_about') ?? 'About Us'],
+                        ['href' => route('contact'), 'route' => 'contact', 'label' => __('landing.nav_contact') ?? 'Contact'],
+                    ] as $link)
+                    <a href="{{ $link['href'] }}"
+                       onclick="closeMobileMenu()"
+                       class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 {{ request()->routeIs($link['route']) ? 'text-primary bg-primary/10 font-black' : 'font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary' }}">
+                        <span>{{ $link['label'] }}</span>
+                        <svg class="w-4 h-4 transition-colors shrink-0 {{ request()->routeIs($link['route']) ? 'text-primary' : 'text-slate-300 dark:text-zinc-600 group-hover:text-primary' }} rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                    @endforeach
+                @endif
             </nav>
 
             <div class="mt-auto pt-4 border-t border-slate-200/50 dark:border-zinc-800/50 space-y-2">
-                @guest
-                    <a href="{{ route('login') }}"
-                       onclick="closeMobileMenu()"
-                       class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl text-sm font-bold text-slate-700 dark:text-zinc-300 text-center hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-primary transition-colors">
-                        {{ __('landing.login') }}
-                    </a>
-                    <a href="{{ route('register') }}"
-                       onclick="closeMobileMenu()"
-                       class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
-                        {{ __('landing.get_started') }}
-                    </a>
+                @if(request()->routeIs('business.view') && isset($business))
+                    @if($ctaUrl)
+                        <a href="{{ $ctaUrl }}"
+                           target="_blank"
+                           rel="noopener"
+                           onclick="closeMobileMenu()"
+                           class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
+                            {{ $ctaLabel }}
+                        </a>
+                    @else
+                        <button @click="shareProfile(); closeMobileMenu();"
+                           class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
+                            {{ __('directory.profile_share') ?? 'Share' }}
+                        </button>
+                    @endif
                 @else
-                    <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}"
-                       onclick="closeMobileMenu()"
-                       class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
-                        {{ __('nav.dashboard') ?? 'Dashboard' }}
-                    </a>
-                @endguest
+                    @guest
+                        <a href="{{ route('login') }}"
+                           onclick="closeMobileMenu()"
+                           class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl text-sm font-bold text-slate-700 dark:text-zinc-300 text-center hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-primary transition-colors">
+                            {{ __('landing.login') }}
+                        </a>
+                        <a href="{{ route('register') }}"
+                           onclick="closeMobileMenu()"
+                           class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
+                            {{ __('landing.get_started') }}
+                        </a>
+                    @else
+                        <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}"
+                           onclick="closeMobileMenu()"
+                           class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
+                            {{ __('nav.dashboard') ?? 'Dashboard' }}
+                        </a>
+                    @endguest
+                @endif
             </div>
         </div>
     </div>
+    @endif
 
     {{-- ═══════════════════════════════════════ --}}
     {{-- MAIN CONTENT --}}

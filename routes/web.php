@@ -139,6 +139,7 @@ require __DIR__ . '/auth.php';
 
 Route::get('/directory', [DirectoryController::class, 'index'])->name('directory.index');
 Route::get('/directory/search', [DirectoryController::class, 'liveSearch'])->name('directory.search');
+Route::get('/directory/{slug}', [BusinessProfileController::class, 'show'])->name('directory.business.view');
 
 Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');

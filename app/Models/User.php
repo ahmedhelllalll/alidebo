@@ -110,7 +110,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function businessProfile(): HasOne
     {
-        return $this->hasOne(BusinessProfile::class);
+        return $this->hasOne(BusinessProfile::class, 'owner_id');
     }
 
     public function isAdmin(): bool

@@ -71,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="{{ route('business.view', $company->slug ?? '') }}" class="absolute inset-0 z-30" aria-label="View Company"></a>
+                    <a href="{{ route('directory.business.view', $company->slug ?? '') }}" class="absolute inset-0 z-30" aria-label="View Company"></a>
                 </div>
                 @endforeach
             </div>

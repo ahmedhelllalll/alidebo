@@ -207,7 +207,7 @@ class BusinessProfileController extends Controller
 
         $media = BusinessMedia::where('id', $id)
             ->whereHas('businessProfile', function ($q) {
-                $q->where('user_id', Auth::id());
+                $q->where('owner_id', Auth::id());
             })->firstOrFail();
 
         $this->profileService->updateMediaCaption($media, $request->caption);
@@ -219,7 +219,7 @@ class BusinessProfileController extends Controller
     {
         $media = BusinessMedia::where('id', $id)
             ->whereHas('businessProfile', function ($q) {
-                $q->where('user_id', Auth::id());
+                $q->where('owner_id', Auth::id());
             })->firstOrFail();
 
         $this->profileService->deleteMedia($media);
@@ -235,7 +235,7 @@ class BusinessProfileController extends Controller
 
         // Status-based visibility guard
         if (in_array($business->status, ['pending', 'rejected'])) {
-            if (!Auth::check() || Auth::id() !== $business->user_id) {
+            if (!Auth::check() || Auth::id() !== $business->owner_id) {
                 abort(404);
             }
         }

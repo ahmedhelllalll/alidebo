@@ -225,7 +225,7 @@
                                     </svg>
                                 </button>
 
-                                <button type="button" @click="showDropdown = false; submitForm()"
+                                <button type="button" @click="if(query.trim()) { showSearchHint = false; showDropdown = false; submitForm() } else { showSearchHint = true; setTimeout(() => showSearchHint = false, 2500) }"
                                     class="hidden md:flex items-center justify-center w-11 h-11 bg-primary hover:bg-primary-light text-white rounded-xl shadow-lg shadow-primary/20 transition-all duration-300 active:scale-95 shrink-0 me-1"
                                     aria-label="Search">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -233,6 +233,23 @@
                                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </button>
+
+                                {{-- Search hint message --}}
+                                <div x-show="showSearchHint" x-cloak
+                                    x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 translate-y-1"
+                                    x-transition:enter-end="opacity-100 translate-y-0"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100 translate-y-0"
+                                    x-transition:leave-end="opacity-0 translate-y-1"
+                                    class="absolute top-full left-0 right-0 mt-2 z-[99999]">
+                                    <div class="flex items-center gap-2 px-4 py-2.5 bg-amber-50 dark:bg-amber-500/10 border border-amber-200/80 dark:border-amber-500/20 rounded-xl text-amber-700 dark:text-amber-400 text-sm font-semibold">
+                                        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <span>{{ __('directory.search_hint') }}</span>
+                                    </div>
+                                </div>
 
                                 <!-- Search Dropdown -->
                                 <div x-ref="dropdown" x-show="showDropdown" x-cloak
@@ -568,7 +585,7 @@
                                     class="bg-white dark:bg-zinc-900 p-4 rounded-2xl shadow-xl border border-slate-200/50 dark:border-zinc-800/50 flex items-center gap-3">
                                     <div class="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin">
                                     </div>
-                                    <span class="text-sm font-bold text-slate-700 dark:text-zinc-300">Loading...</span>
+                                    <span class="text-sm font-bold text-slate-700 dark:text-zinc-300">{{ __('directory.loading') ?? 'Loading...' }}</span>
                                 </div>
                             </div>
 
@@ -663,9 +680,9 @@
                                                     </div>
                                                 </div>
 
-                                                <a href="{{ route('business.view', $business->slug) }}"
+                                                <a href="{{ route('directory.business.view', $business->slug) }}"
                                                     class="absolute inset-0 z-30 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset rounded-2xl sm:rounded-[1.5rem]"
-                                                    aria-label="View {{ $business->name }}"></a>
+                                                    aria-label="{{ __('directory.view_profile') }} {{ $business->name }}"></a>
                                             </div>
                                         @endforeach
                                     @endfragment
@@ -836,6 +853,7 @@
                 results: { categories: [], locations: [], companies: [] },
                 loading: false,
                 showDropdown: false,
+                showSearchHint: false,
                 activeIndex: -1,
                 get flatResults() {
                     let list = [];
@@ -899,7 +917,7 @@
                     const items = this.flatResults;
                     if (this.activeIndex >= 0 && this.activeIndex < items.length) {
                         this.selectResult(items[this.activeIndex]);
-                    } else if (this.query.length > 0) {
+                    } else if (this.query.trim().length > 0) {
                         this.showDropdown = false;
                         // Triggers the parent form's submitForm
                         document.getElementById('directory-form').dispatchEvent(new Event('submit', { cancelable: true }));
