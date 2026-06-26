@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin;
 use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\ContactMessageController;
 
 use App\Models\BusinessProfile;
 use App\Models\Category;
@@ -142,7 +143,12 @@ Route::get('/directory/search', [DirectoryController::class, 'liveSearch'])->nam
 Route::get('/directory/{slug}', [BusinessProfileController::class, 'show'])->name('directory.business.view');
 
 Route::view('/about', 'about')->name('about');
-Route::view('/contact', 'contact')->name('contact');
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+Route::post('/contact', [ContactMessageController::class, 'store'])
+    ->middleware('throttle:5,1')
+    ->name('contact.store');
 
 // Legal Pages
 Route::view('/privacy', 'pages.privacy')->name('privacy');

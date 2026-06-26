@@ -857,7 +857,7 @@
     {{-- Luxury Toast Container --}}
     <div id="luxury-toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none opacity-0 translate-y-4">
         <div class="glass-panel flex items-center gap-4 px-6 py-4 rounded-2xl border border-white/20 dark:border-white/10 shadow-2xl shadow-black/20 rtl:flex-row-reverse">
-            <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+            <div id="toast-icon-container" class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                 <img id="toast-icon" src="{{ asset('images/logo.webp') }}" alt="alidebo" class="w-6 h-6 object-contain">
             </div>
             <div class="flex flex-col">
@@ -874,13 +874,20 @@
             const titleEl = document.getElementById('toast-title');
             const msgEl = document.getElementById('toast-msg');
             const iconEl = document.getElementById('toast-icon');
+            const iconContainer = document.getElementById('toast-icon-container');
 
             if (!toast || !titleEl || !msgEl || typeof gsap === 'undefined') return;
 
             // Update Content
             titleEl.innerText = title;
             msgEl.innerText = message;
-            if (icon && iconEl) iconEl.src = icon;
+
+            if (icon === false || icon === 'hide') {
+                if (iconContainer) iconContainer.style.display = 'none';
+            } else {
+                if (iconContainer) iconContainer.style.display = 'flex';
+                if (icon && iconEl) iconEl.src = icon;
+            }
 
             // Kill any active animations
             gsap.killTweensOf(toast);
