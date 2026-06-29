@@ -161,6 +161,9 @@ return [
     'status_unchanged' => 'Der Status ist bereits auf diesen Wert eingestellt',
     'try_adjusting_filters' => 'Versuchen Sie, Ihre Suche oder Filter anzupassen.',
     'registrations_last_7_days' => 'Registrierungen (Letzte 7 Tage)',
+    'platform_activity' => 'Plattform-Aktivitätstrend',
+    'week' => 'Woche',
+    'month' => 'Monat',
     'business_statuses' => 'Geschäftsstatus',
     'live_custom_url' => 'Live-Custom-URL',
     'basic_info_desc' => 'Geben Sie die grundlegenden Identitätsdetails für dieses Unternehmen ein.',
@@ -318,4 +321,5 @@ return [
     'backups_soon_desc' => 'Automatische und On-Demand-Snapshots von Plattform-Datenbankeinträgen und Uploads. Halten Sie Daten mit sicheren Downloads und Wiederherstellung geschützt.',
     'contact_soon_title' => 'Kundensupport-Helpdesk',
     'contact_soon_desc' => 'Ein integrierter Anfrage-Hub zur Verfolgung von Besucherfragen, Supportanfragen und Benutzernachrichten mit integrierten Status-Updates und Sofortbenachrichtigungen.',
+    'unread_leads' => 'Ungelesene Leads',
 ];

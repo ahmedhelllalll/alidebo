@@ -545,7 +545,7 @@
         }
     }
     function bindPagination() {
-        const links = document.querySelectorAll('#business-list-container .pagination a');
+        const links = document.querySelectorAll('#pagination-container a');
         links.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -582,11 +582,12 @@
                 setTimeout(() => overlay.classList.add('hidden'), 300);
             }
             bindPagination();
+            updateBulkActionVisibility();
         }
     }
     // Initialize list reveal & Modals
     document.addEventListener('DOMContentLoaded', async () => { 
-        updateList(); 
+        bindPagination(); 
         initModals();
         
         // Search suggestions listeners

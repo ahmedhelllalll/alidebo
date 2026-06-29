@@ -8,9 +8,11 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Jenssegers\Agent\Agent;
 use App\Models\BusinessProfile;
+use App\Models\User;
+use App\Models\BusinessView;
 use App\Policies\BusinessProfilePolicy;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
@@ -59,6 +61,37 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('unreadNotificationsCount', auth()->user()->unreadNotifications->count());
                 $view->with('latestNotifications', auth()->user()->notifications()->take(5)->get());
             }
+        });
+
+        // Invalidate dashboard caches on database changes for real-time consistency
+        User::saved(function () {
+            Cache::forget('dashboard.stats');
+            Cache::forget('dashboard.chart_data.week');
+            Cache::forget('dashboard.chart_data.month');
+        });
+        User::deleted(function () {
+            Cache::forget('dashboard.stats');
+            Cache::forget('dashboard.chart_data.week');
+            Cache::forget('dashboard.chart_data.month');
+        });
+
+        BusinessProfile::saved(function () {
+            Cache::forget('dashboard.stats');
+            Cache::forget('dashboard.business_statuses');
+            Cache::forget('dashboard.chart_data.week');
+            Cache::forget('dashboard.chart_data.month');
+        });
+        BusinessProfile::deleted(function () {
+            Cache::forget('dashboard.stats');
+            Cache::forget('dashboard.business_statuses');
+            Cache::forget('dashboard.chart_data.week');
+            Cache::forget('dashboard.chart_data.month');
+        });
+
+        BusinessView::created(function () {
+            Cache::forget('dashboard.stats');
+            Cache::forget('dashboard.chart_data.week');
+            Cache::forget('dashboard.chart_data.month');
         });
     }
 }

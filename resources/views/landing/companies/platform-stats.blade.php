@@ -40,7 +40,7 @@
                         +24.5%
                     </span>
                 </div>
-                <div class="relative flex-1 w-full min-h-[300px]">
+                <div class="relative flex-1 w-full h-[300px]">
                     <canvas id="growthChart"></canvas>
                 </div>
             </div>

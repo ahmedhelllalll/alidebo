@@ -222,7 +222,7 @@
         </div>
 
         {{-- Analytics Section --}}
-        @if($business->status == 'approved' && $totalViews > 0)
+        @if($business->status == 'approved')
             <div class="gsap-stagger bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/[0.04] rounded-2xl p-6 md:p-8 mt-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
                     <div class="flex items-center gap-3">
@@ -237,7 +237,7 @@
                     </div>
                 </div>
 
-                <div class="relative min-h-[300px]">
+                <div class="relative h-[300px]">
                     <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm z-20 hidden rounded-xl">
                         <div class="w-6 h-6 border-2 border-zinc-200 border-t-primary dark:border-zinc-700 dark:border-t-primary rounded-full animate-spin"></div>
                     </div>
@@ -444,7 +444,7 @@
         }
     });
 
-    @if($business && $business->status == 'approved' && $totalViews > 0)
+    @if($business && $business->status == 'approved')
         document.addEventListener('DOMContentLoaded', () => {
             setChartPeriod('month');
 

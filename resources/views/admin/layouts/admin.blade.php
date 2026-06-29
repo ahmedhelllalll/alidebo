@@ -454,7 +454,7 @@
                 <i class="fa-solid fa-blog w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
                 <div class="flex-1 flex items-center justify-between sidebar-text">
                     <span>{{ __('admin.blogs') }}</span>
-                    <span class="text-[8px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm">{{ __('admin.coming_soon') }}</span>
+                    <span class="font-bold uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm" style="font-size: 9px;">{{ __('admin.soon') }}</span>
                 </div>
                 <span class="sidebar-tooltip">{{ __('admin.blogs') }}</span>
             </a>
@@ -478,17 +478,27 @@
                 <span class="sidebar-tooltip">{{ __('admin.users') }}</span>
             </a>
 
-            {{-- Contact Channel --}}
-            <a href="{{ route('admin.coming-soon', ['feature' => 'contact_channel']) }}"
+            {{-- Leads --}}
+            @php
+                $unreadLeadsCount = \App\Models\ContactMessage::where('status', '!=', 'read')->orWhereNull('status')->count();
+            @endphp
+            <a href="{{ route('admin.leads.index') }}"
                 class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.coming-soon') && (request()->query('feature') === 'contact_channel' || !request()->query('feature')) ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar {{ request()->routeIs('admin.coming-soon') && (request()->query('feature') === 'contact_channel' || !request()->query('feature')) ? '' : 'hidden' }}"></span>
-                <i class="fa-solid fa-headset w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
-                <div class="flex-1 flex items-center justify-between sidebar-text">
-                    <span>{{ __('admin.contact_channel') ?? 'Contact' }}</span>
-                    <span class="text-[8px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm">{{ __('admin.coming_soon') ?? 'Soon' }}</span>
+                {{ request()->routeIs('admin.leads.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                <span class="nav-active-bar {{ request()->routeIs('admin.leads.*') ? '' : 'hidden' }}"></span>
+                <div class="relative">
+                    <i class="fa-solid fa-headset w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                    @if($unreadLeadsCount > 0)
+                        <span class="absolute -top-1 -end-1 w-2.5 h-2.5 bg-orange-500 rounded-full border-[1.5px] border-white dark:border-[#09090b] lg:hidden lg:group-has-[[data-collapsed="true"]]:block" style="display: var(--collapsed-dot-display, none);"></span>
+                    @endif
                 </div>
-                <span class="sidebar-tooltip">{{ __('admin.contact_channel') ?? 'Contact' }}</span>
+                <div class="flex-1 flex items-center justify-between sidebar-text">
+                    <span>{{ __('admin.leads') ?? 'Leads' }}</span>
+                    @if($unreadLeadsCount > 0)
+                        <span class="flex items-center justify-center min-w-[20px] h-[20px] px-1 text-[10px] font-black bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-lg shadow-sm border border-orange-500/20">{{ $unreadLeadsCount > 99 ? '99+' : $unreadLeadsCount }}</span>
+                    @endif
+                </div>
+                <span class="sidebar-tooltip">{{ __('admin.leads') ?? 'Leads' }} @if($unreadLeadsCount > 0) ({{ $unreadLeadsCount }}) @endif</span>
             </a>
 
             {{-- Backups --}}
@@ -499,7 +509,7 @@
                 <i class="fa-solid fa-cloud-arrow-up w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
                 <div class="flex-1 flex items-center justify-between sidebar-text">
                     <span>{{ __('admin.backups') ?? 'Backups' }}</span>
-                    <span class="text-[8px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm">{{ __('admin.coming_soon') ?? 'Soon' }}</span>
+                    <span class="font-bold uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm" style="font-size: 9px;">{{ __('admin.soon') }}</span>
                 </div>
                 <span class="sidebar-tooltip">{{ __('admin.backups') ?? 'Backups' }}</span>
             </a>

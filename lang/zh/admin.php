@@ -161,6 +161,9 @@ return [
     'status_unchanged' => '状态已设为此值',
     'try_adjusting_filters' => '尝试调整搜索或过滤器以找到您要查找的内容。',
     'registrations_last_7_days' => '注册（最近7天）',
+    'platform_activity' => '平台活动趋势',
+    'week' => '周',
+    'month' => '月',
     'business_statuses' => '业务状态',
     'live_custom_url' => '实时自定义 URL',
     'basic_info_desc' => '输入此商家的核心身份信息。',
@@ -316,4 +319,5 @@ return [
     'backups_soon_desc' => '自动及按需生成的平台数据库记录和上传文件的快照。通过安全下载和恢复功能，完全保证数据的安全。',
     'contact_soon_title' => '客户支持服务台',
     'contact_soon_desc' => '一个集成的咨询中心，用于追踪访客申诉、支持请求和用户消息，并配有内置状态管理与即时提醒。',
+    'unread_leads' => '未读留言',
 ];

@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\BusinessProfile;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\BusinessView;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -42,6 +45,10 @@ class DashboardController extends Controller
             ];
         });
 
+        // Real-time stats that shouldn't be cached
+        $stats['unread_leads'] = \App\Models\ContactMessage::where('status', '!=', 'read')->orWhereNull('status')->count();
+        $stats['total_leads'] = \App\Models\ContactMessage::count();
+
         // Eager load related data
         $recent_users = User::latest()->take(5)->get();
         $recent_businesses = BusinessProfile::with(['user', 'city.country'])->latest()->take(5)->get();
@@ -54,30 +61,57 @@ class DashboardController extends Controller
                 ->toArray();
         });
 
-        // Registration trends for the past 7 days
-        $registrations = \Illuminate\Support\Facades\Cache::remember('dashboard.registrations', 3600, function () {
-            $dates = collect();
-            for ($i = 6; $i >= 0; $i--) {
-                $dates->push(\Carbon\Carbon::now()->subDays($i)->format('Y-m-d'));
-            }
+        // Registration trends are now loaded dynamically via AJAX
+        return view('admin.dashboard', compact('stats', 'recent_users', 'recent_businesses', 'businessStatuses'));
+    }
 
-            $users = User::select(\Illuminate\Support\Facades\DB::raw('DATE(created_at) as date'), \Illuminate\Support\Facades\DB::raw('count(*) as count'))
-                ->where('created_at', '>=', \Carbon\Carbon::now()->subDays(6)->startOfDay())
-                ->groupBy('date')
-                ->pluck('count', 'date');
-
-            $businesses = BusinessProfile::select(\Illuminate\Support\Facades\DB::raw('DATE(created_at) as date'), \Illuminate\Support\Facades\DB::raw('count(*) as count'))
-                ->where('created_at', '>=', \Carbon\Carbon::now()->subDays(6)->startOfDay())
-                ->groupBy('date')
-                ->pluck('count', 'date');
-
-            return [
-                'categories' => $dates->map(function ($date) { return \Carbon\Carbon::parse($date)->format('M d'); })->toArray(),
-                'users' => $dates->map(function ($date) use ($users) { return $users->get($date, 0); })->toArray(),
-                'businesses' => $dates->map(function ($date) use ($businesses) { return $businesses->get($date, 0); })->toArray(),
-            ];
-        });
-
-        return view('admin.dashboard', compact('stats', 'recent_users', 'recent_businesses', 'businessStatuses', 'registrations'));
+    public function chartData(Request $request)
+    {
+        try {
+            $period = $request->get('period', 'week');
+            $cacheKey = "dashboard.chart_data.{$period}";
+            
+            $data = \Illuminate\Support\Facades\Cache::remember($cacheKey, 300, function () use ($period) {
+                $days = ($period === 'month') ? 30 : 7;
+                
+                $dates = collect();
+                for ($i = $days - 1; $i >= 0; $i--) {
+                    $dates->push(now()->subDays($i)->format('Y-m-d'));
+                }
+                
+                $startDate = now()->subDays($days - 1)->startOfDay();
+                $endDate = now()->endOfDay();
+                
+                $users = User::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->groupBy('date')
+                    ->pluck('count', 'date');
+                    
+                $businesses = BusinessProfile::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->groupBy('date')
+                    ->pluck('count', 'date');
+                    
+                $views = BusinessView::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
+                    ->whereBetween('created_at', [$startDate, $endDate])
+                    ->groupBy('date')
+                    ->pluck('count', 'date');
+                    
+                $labels = $dates->map(function ($date) use ($period) { 
+                    return $period === 'week' ? \Carbon\Carbon::parse($date)->format('D') : \Carbon\Carbon::parse($date)->format('d M'); 
+                })->toArray();
+                
+                return [
+                    'labels' => $labels,
+                    'users' => $dates->map(fn($date) => $users->get($date, 0))->toArray(),
+                    'businesses' => $dates->map(fn($date) => $businesses->get($date, 0))->toArray(),
+                    'views' => $dates->map(fn($date) => $views->get($date, 0))->toArray(),
+                ];
+            });
+            
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

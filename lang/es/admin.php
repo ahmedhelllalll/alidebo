@@ -290,6 +290,9 @@ return [
     'backup_already_running_desc' => 'Ya hay una copia de seguridad en progreso. Por favor, espere a que finalice.',
 
     // Dashboard & Analytics
+    'platform_activity' => 'Tendencia de Actividad de la Plataforma',
+    'week' => 'Semana',
+    'month' => 'Mes',
     'active_businesses' => 'Negocios Activos',
     'pending_approvals' => 'Aprobaciones Pendientes',
     'platform_views' => 'Vistas de la Plataforma',
@@ -342,4 +345,5 @@ return [
     'backups_soon_desc' => 'Instantáneas automáticas y bajo demanda de registros de bases de datos y archivos subidos. Mantenga los datos seguros con descargas y restauración.',
     'contact_soon_title' => 'Centro de Soporte y Mensajería',
     'contact_soon_desc' => 'Un panel integrado para rastrear consultas de visitantes, solicitudes de soporte y mensajes de usuarios con alertas instantáneas.',
+    'unread_leads' => 'Prospectos no leídos',
 ];

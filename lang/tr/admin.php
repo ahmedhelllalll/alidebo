@@ -161,6 +161,9 @@ return [
     'status_unchanged' => 'Durum zaten bu değere ayarlanmış',
     'try_adjusting_filters' => 'Aradığınızı bulmak için aramanızı veya filtrelerinizi ayarlamayı deneyin.',
     'registrations_last_7_days' => 'Kayıtlar (Son 7 Gün)',
+    'platform_activity' => 'Platform Aktivite Trendi',
+    'week' => 'Hafta',
+    'month' => 'Ay',
     'business_statuses' => 'İşletme Durumları',
     'live_custom_url' => 'Canlı Özel URL',
     'basic_info_desc' => 'Bu işletme için temel kimlik ayrıntılarını girin.',
@@ -316,4 +319,5 @@ return [
     'backups_soon_desc' => 'Veritabanı kayıtlarının ve yüklenen dosyaların otomatik ve isteğe bağlı anlık görüntüleri. Güvenli indirme ve geri yükleme özellikleri ile verileri koruyun.',
     'contact_soon_title' => 'Müşteri Destek Masası',
     'contact_soon_desc' => 'Yerleşik durum yönetimi ve anlık uyarılarla ziyaretçi taleplerini, destek isteklerini ve kullanıcı mesajlarını takip etmek için entegre bir sorgu merkezi.',
+    'unread_leads' => 'Okunmamış Mesajlar',
 ];

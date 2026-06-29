@@ -325,6 +325,10 @@ return [
     'backup_already_running_desc' => 'A backup is already in progress. Please wait for it to finish.',
 
     // Dashboard & Analytics
+    'soon' => 'Soon',
+    'platform_activity' => 'Platform Activity Trend',
+    'week' => 'Week',
+    'month' => 'Month',
     'active_businesses' => 'Active Businesses',
     'pending_approvals' => 'Pending Approvals',
     'platform_views' => 'Platform Views',
@@ -333,6 +337,9 @@ return [
     'manage_users' => 'Manage Users',
     'view_business' => 'View Business',
     'add_new_business' => 'Add New Business',
+    'new_registrations' => 'New registrations over time',
+    'new_businesses_added' => 'New businesses added',
+    'total_page_views' => 'Total page views',
 
     // Bulk Operations
     'approve_selected' => 'Approve Selected',
@@ -375,5 +382,21 @@ return [
     'backups_soon_desc' => 'Automated and on-demand snapshots of platform database records and uploads. Keep data completely secure with secure downloads and restoration features.',
     'contact_soon_title' => 'Customer Support Helpdesk',
     'contact_soon_desc' => 'An integrated inquiry hub to track visitor claims, support requests, and user messages with built-in status management and instant alerts.',
+    
+    // Leads
+    'leads' => 'Leads',
+    'all_leads' => 'All Contact Messages',
+    'lead_details' => 'Lead Details',
+    'back_to_leads' => 'Back to Leads',
+    'first_name' => 'First Name',
+    'last_name' => 'Last Name',
+    'date' => 'Date',
+    'message' => 'Message',
+    'read' => 'Read',
+    'unread' => 'Unread',
+    'change_status' => 'Change Status',
+    'delete_lead_confirm_title' => 'Delete Lead',
+    'delete_lead_confirm_desc' => 'Are you sure you want to delete this lead? This action cannot be undone.',
 
+    'unread_leads' => 'Unread Leads',
 ];

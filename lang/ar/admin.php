@@ -294,6 +294,10 @@ return [
     'backup_already_running_desc' => 'هناك نسخة احتياطية قيد الإنشاء. يرجى الانتظار حتى اكتمالها.',
 
     // Dashboard & Analytics
+    'soon' => 'قريباً',
+    'platform_activity' => 'مؤشر نشاط المنصة',
+    'week' => 'أسبوع',
+    'month' => 'شهر',
     'active_businesses' => 'الأعمال النشطة',
     'pending_approvals' => 'بانتظار الموافقة',
     'platform_views' => 'مشاهدات المنصة',
@@ -302,6 +306,9 @@ return [
     'manage_users' => 'إدارة المستخدمين',
     'view_business' => 'عرض العمل',
     'add_new_business' => 'إضافة عمل جديد',
+    'new_registrations' => 'التسجيلات الجديدة بمرور الوقت',
+    'new_businesses_added' => 'الأعمال الجديدة المضافة',
+    'total_page_views' => 'إجمالي مشاهدات الصفحات',
 
     // Bulk Operations
     'approve_selected' => 'موافقة على المحدد',
@@ -345,4 +352,20 @@ return [
     'contact_soon_title' => 'مكتب دعم وتواصل العملاء',
     'contact_soon_desc' => 'مركز متكامل لتتبع استفسارات الزوار وطلبات الدعم ورسائل المستخدمين مع إدارة حالة الطلبات وتنبيهات فورية.',
 
+    // Leads
+    'leads' => 'العملاء المحتملين',
+    'all_leads' => 'كل رسائل التواصل',
+    'lead_details' => 'تفاصيل العميل المحتمل',
+    'back_to_leads' => 'العودة للعملاء المحتملين',
+    'first_name' => 'الاسم الأول',
+    'last_name' => 'الاسم الأخير',
+    'date' => 'التاريخ',
+    'message' => 'الرسالة',
+    'read' => 'مقروء',
+    'unread' => 'غير مقروء',
+    'change_status' => 'تغيير الحالة',
+    'delete_lead_confirm_title' => 'حذف العميل',
+    'delete_lead_confirm_desc' => 'هل أنت متأكد من حذف هذا العميل؟ لا يمكن التراجع عن هذا الإجراء.',
+
+    'unread_leads' => 'الرسائل غير المقروءة',
 ];

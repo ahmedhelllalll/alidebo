@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard/chart-data', [Admin\DashboardController::class, 'chartData'])->name('dashboard.chart-data');
         Route::view('/coming-soon', 'admin.coming-soon')->name('coming-soon');
         Route::get('/search', [Admin\GlobalSearchController::class, 'index'])->name('search');
         Route::resource('categories', Admin\CategoryController::class);
@@ -58,6 +59,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::patch('/users/{user}/role', [Admin\UserController::class, 'updateRole'])->name('users.update-role');
         Route::resource('users', Admin\UserController::class)->only(['index', 'destroy']);
+        
+        Route::patch('/leads/{lead}/status', [Admin\LeadController::class, 'updateStatus'])->name('leads.update-status');
+        Route::resource('leads', Admin\LeadController::class)->only(['index', 'show', 'destroy']);
         
         Route::get('/backups', [Admin\BackupController::class, 'index'])->name('backups.index');
         Route::post('/backups', [Admin\BackupController::class, 'create'])->name('backups.create');
