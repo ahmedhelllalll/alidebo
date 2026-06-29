@@ -18,15 +18,14 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-5 relative z-10">
         {{-- Active Businesses --}}
         <div class="stat-card group relative overflow-hidden rounded-[22px] bg-white dark:bg-[#18181b] border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(16,185,129,0.12)] hover:-translate-y-1.5 cursor-default">
-            {{-- Accent top border --}}
-            <div class="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500 rounded-t-[22px] opacity-80 group-hover:opacity-100 transition-opacity"></div>
+
             {{-- Glow --}}
-            <div class="absolute -top-20 -end-20 w-48 h-48 bg-emerald-500/[0.06] dark:bg-emerald-500/[0.04] rounded-full blur-3xl group-hover:scale-[1.8] transition-transform duration-700"></div>
+            <div class="absolute -top-20 -end-20 w-48 h-48 bg-emerald-500/[0.03] dark:bg-emerald-500/[0.02] rounded-full blur-3xl group-hover:scale-[1.4] transition-transform duration-700"></div>
             <div class="relative z-10 p-5 pb-3">
                 {{-- Header row: icon + label + growth --}}
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/15 to-teal-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 dark:text-emerald-400 group-hover:scale-110 transition-transform duration-500">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/10 to-teal-500/5 border border-emerald-500/10 flex items-center justify-center text-emerald-500 dark:text-emerald-400 group-hover:scale-110 transition-transform duration-500">
                             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <p class="text-[12px] font-bold text-slate-500 dark:text-zinc-500 uppercase ltr:tracking-wider leading-tight">{{ __('admin.active_businesses') ?? 'Active Businesses' }}</p>
@@ -39,19 +38,19 @@
                     @endif
                 </div>
                 {{-- Big number --}}
-                <h3 class="gsap-counter text-[38px] lg:text-[44px] font-[900] text-slate-900 dark:text-white tracking-tight leading-none mt-1" data-value="{{ $stats['active_businesses'] ?? 0 }}">0</h3>
+                <h3 class="gsap-counter text-[30px] lg:text-[34px] font-[800] text-slate-900 dark:text-white tracking-tight leading-none" data-value="{{ $stats['active_businesses'] ?? 0 }}">0</h3>
             </div>
             {{-- Mini sparkline --}}
             <div class="stat-sparkline h-12 w-full opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-color="#10b981" data-values="3,5,4,7,6,8,9"></div>
         </div>
         {{-- Total Users --}}
         <div class="stat-card group relative overflow-hidden rounded-[22px] bg-white dark:bg-[#18181b] border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(99,102,241,0.12)] hover:-translate-y-1.5 cursor-default">
-            <div class="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-indigo-400 via-indigo-500 to-purple-500 rounded-t-[22px] opacity-80 group-hover:opacity-100 transition-opacity"></div>
-            <div class="absolute -top-20 -end-20 w-48 h-48 bg-indigo-500/[0.06] dark:bg-indigo-500/[0.04] rounded-full blur-3xl group-hover:scale-[1.8] transition-transform duration-700"></div>
+
+            <div class="absolute -top-20 -end-20 w-48 h-48 bg-indigo-500/[0.03] dark:bg-indigo-500/[0.02] rounded-full blur-3xl group-hover:scale-[1.4] transition-transform duration-700"></div>
             <div class="relative z-10 p-5 pb-3">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500/15 to-purple-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-500 dark:text-indigo-400 group-hover:scale-110 transition-transform duration-500">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500/10 to-purple-500/5 border border-indigo-500/10 flex items-center justify-center text-indigo-500 dark:text-indigo-400 group-hover:scale-110 transition-transform duration-500">
                             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                         </div>
                         <p class="text-[12px] font-bold text-slate-500 dark:text-zinc-500 uppercase ltr:tracking-wider leading-tight">{{ __('admin.users') }}</p>
@@ -63,18 +62,18 @@
                         </span>
                     @endif
                 </div>
-                <h3 class="gsap-counter text-[38px] lg:text-[44px] font-[900] text-slate-900 dark:text-white tracking-tight leading-none mt-1" data-value="{{ $stats['users'] ?? 0 }}">0</h3>
+                <h3 class="gsap-counter text-[30px] lg:text-[34px] font-[800] text-slate-900 dark:text-white tracking-tight leading-none" data-value="{{ $stats['users'] ?? 0 }}">0</h3>
             </div>
             <div class="stat-sparkline h-12 w-full opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-color="#6366f1" data-values="2,4,3,5,7,6,8"></div>
         </div>
         {{-- Platform Views --}}
         <div class="stat-card group relative overflow-hidden rounded-[22px] bg-white dark:bg-[#18181b] border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(244,80,24,0.12)] hover:-translate-y-1.5 cursor-default">
-            <div class="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-orange-400 via-primary to-red-500 rounded-t-[22px] opacity-80 group-hover:opacity-100 transition-opacity"></div>
-            <div class="absolute -top-20 -end-20 w-48 h-48 bg-primary/[0.06] dark:bg-primary/[0.04] rounded-full blur-3xl group-hover:scale-[1.8] transition-transform duration-700"></div>
+
+            <div class="absolute -top-20 -end-20 w-48 h-48 bg-primary/[0.03] dark:bg-primary/[0.02] rounded-full blur-3xl group-hover:scale-[1.4] transition-transform duration-700"></div>
             <div class="relative z-10 p-5 pb-3">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/15 to-orange-400/10 border border-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/10 to-orange-400/5 border border-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
                             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                         </div>
                         <p class="text-[12px] font-bold text-slate-500 dark:text-zinc-500 uppercase ltr:tracking-wider leading-tight">{{ __('admin.platform_views') ?? 'Platform Views' }}</p>
@@ -86,18 +85,18 @@
                         </span>
                     @endif
                 </div>
-                <h3 class="gsap-counter text-[38px] lg:text-[44px] font-[900] text-slate-900 dark:text-white tracking-tight leading-none mt-1" data-value="{{ $stats['total_views'] ?? 0 }}">0</h3>
+                <h3 class="gsap-counter text-[30px] lg:text-[34px] font-[800] text-slate-900 dark:text-white tracking-tight leading-none" data-value="{{ $stats['total_views'] ?? 0 }}">0</h3>
             </div>
             <div class="stat-sparkline h-12 w-full opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-color="#f45018" data-values="5,3,6,4,8,7,10"></div>
         </div>
         {{-- Pending Approvals --}}
         <div class="stat-card group relative overflow-hidden rounded-[22px] bg-white dark:bg-[#18181b] border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(245,158,11,0.12)] hover:-translate-y-1.5 cursor-default">
-            <div class="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-yellow-400 via-amber-500 to-orange-500 rounded-t-[22px] opacity-80 group-hover:opacity-100 transition-opacity"></div>
-            <div class="absolute -top-20 -end-20 w-48 h-48 bg-amber-500/[0.06] dark:bg-amber-500/[0.04] rounded-full blur-3xl group-hover:scale-[1.8] transition-transform duration-700"></div>
+
+            <div class="absolute -top-20 -end-20 w-48 h-48 bg-amber-500/[0.03] dark:bg-amber-500/[0.02] rounded-full blur-3xl group-hover:scale-[1.4] transition-transform duration-700"></div>
             <div class="relative z-10 p-5 pb-3">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/15 to-orange-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500 dark:text-amber-400 group-hover:scale-110 transition-transform duration-500">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/5 border border-amber-500/10 flex items-center justify-center text-amber-500 dark:text-amber-400 group-hover:scale-110 transition-transform duration-500">
                             <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <p class="text-[12px] font-bold text-slate-500 dark:text-zinc-500 uppercase ltr:tracking-wider leading-tight">{{ __('admin.approvals') }}</p>
@@ -109,18 +108,18 @@
                         </span>
                     @endif
                 </div>
-                <h3 class="gsap-counter text-[38px] lg:text-[44px] font-[900] text-slate-900 dark:text-white tracking-tight leading-none mt-1" data-value="{{ $stats['pending'] ?? 0 }}">0</h3>
+                <h3 class="gsap-counter text-[30px] lg:text-[34px] font-[800] text-slate-900 dark:text-white tracking-tight leading-none" data-value="{{ $stats['pending'] ?? 0 }}">0</h3>
             </div>
             <div class="stat-sparkline h-12 w-full opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-color="#f59e0b" data-values="4,6,3,5,2,4,3"></div>
         </div>
         {{-- Unread Leads --}}
         <div class="stat-card group relative overflow-hidden rounded-[22px] bg-white dark:bg-[#18181b] border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_50px_rgba(249,115,22,0.12)] hover:-translate-y-1.5 cursor-default">
-            <div class="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-rose-400 via-orange-500 to-amber-500 rounded-t-[22px] opacity-80 group-hover:opacity-100 transition-opacity"></div>
-            <div class="absolute -top-20 -end-20 w-48 h-48 bg-orange-500/[0.06] dark:bg-orange-500/[0.04] rounded-full blur-3xl group-hover:scale-[1.8] transition-transform duration-700"></div>
+
+            <div class="absolute -top-20 -end-20 w-48 h-48 bg-orange-500/[0.03] dark:bg-orange-500/[0.02] rounded-full blur-3xl group-hover:scale-[1.4] transition-transform duration-700"></div>
             <div class="relative z-10 p-5 pb-3">
                 <div class="flex items-center justify-between mb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500/15 to-red-500/10 border border-orange-500/20 flex items-center justify-center text-orange-500 dark:text-orange-400 group-hover:scale-110 transition-transform duration-500">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500/10 to-red-500/5 border border-orange-500/10 flex items-center justify-center text-orange-500 dark:text-orange-400 group-hover:scale-110 transition-transform duration-500">
                             <i class="fa-solid fa-headset text-[14px]"></i>
                         </div>
                         <p class="text-[12px] font-bold text-slate-500 dark:text-zinc-500 uppercase ltr:tracking-wider leading-tight">{{ __('admin.unread_leads') ?? 'Unread Leads' }}</p>
@@ -132,7 +131,7 @@
                         </span>
                     @endif
                 </div>
-                <h3 class="gsap-counter text-[38px] lg:text-[44px] font-[900] text-slate-900 dark:text-white tracking-tight leading-none mt-1" data-value="{{ $stats['unread_leads'] ?? 0 }}">0</h3>
+                <h3 class="gsap-counter text-[30px] lg:text-[34px] font-[800] text-slate-900 dark:text-white tracking-tight leading-none" data-value="{{ $stats['unread_leads'] ?? 0 }}">0</h3>
             </div>
             <div class="stat-sparkline h-12 w-full opacity-60 group-hover:opacity-100 transition-opacity duration-500" data-color="#f97316" data-values="6,4,7,5,8,6,9"></div>
         </div>

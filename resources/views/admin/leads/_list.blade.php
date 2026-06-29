@@ -99,8 +99,8 @@
         <div class="w-20 h-20 bg-slate-50 dark:bg-zinc-800/50 rounded-full flex items-center justify-center text-slate-300 dark:text-zinc-600 mx-auto mb-5 shadow-inner ring-4 ring-slate-100/50 dark:ring-zinc-800/20">
             <i class="fa-solid fa-inbox text-3xl"></i>
         </div>
-        <p class="text-[16px] font-[900] text-slate-900 dark:text-white capitalize tracking-tight">{{ __('admin.no_results_found') }}</p>
-        <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mt-2">{{ __('admin.try_adjusting_filters') ?? 'Try adjusting your search to find what you are looking for.' }}</p>
+        <p class="text-[16px] font-[900] text-slate-900 dark:text-white capitalize tracking-tight">{{ __('admin.no_leads_yet') ?? 'No leads yet' }}</p>
+        <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mt-2">{{ __('admin.no_leads_desc') ?? 'When users contact you, their messages will appear here.' }}</p>
     </div>
     @endforelse
 </div>

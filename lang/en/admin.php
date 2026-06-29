@@ -399,4 +399,6 @@ return [
     'delete_lead_confirm_desc' => 'Are you sure you want to delete this lead? This action cannot be undone.',
 
     'unread_leads' => 'Unread Leads',
+    'no_leads_yet' => 'No Leads Yet',
+    'no_leads_desc' => 'When users contact you, their messages will appear here.',
 ];
