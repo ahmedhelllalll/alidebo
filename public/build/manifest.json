@@ -417,9 +417,15 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-MbUm8YEB.js",
+    "file": "assets/app-Cjyaz3HI.js",
     "name": "app",
     "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/dashboard.js": {
+    "file": "assets/dashboard-DOJJHEWo.js",
+    "name": "dashboard",
+    "src": "resources/js/dashboard.js",
     "isEntry": true
   }
 }
