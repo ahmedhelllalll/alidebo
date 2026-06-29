@@ -7,7 +7,7 @@ return [
     'send' => 'Senden',
     'suggest_title' => 'Sie können mich fragen nach:',
     'suggest_1' => 'Was ist alidebo?',
-    'suggest_2' => 'Wie kann ich mein Unternehmen hinzufügen?',
-    'suggest_3' => 'Gibt es Abonnementgebühren?',
+    'suggest_2' => 'Wie kann ich mein Unternehmen hinzuf�gen?',
+    'suggest_3' => 'Gibt es Abonnementgeb�hren?',
     'error' => 'Tut mir leid, ich habe gerade Verbindungsprobleme. Bitte versuchen Sie es später noch einmal.',
 ];

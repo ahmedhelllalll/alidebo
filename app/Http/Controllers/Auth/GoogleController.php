@@ -20,7 +20,7 @@ class GoogleController extends Controller
     public function handleGoogleCallback()
     {
         try {
-            $socialUser = Socialite::driver('google')->stateless()->user();
+            $socialUser = Socialite::driver('google')->user();
             
             $user = User::where('email', $socialUser->email)->first();
 
@@ -38,6 +38,9 @@ class GoogleController extends Controller
                 ]);
                 $user->sendWelcomeNotification();
             } else {
+                if (!$user->google_id) {
+                    return redirect('login')->with('error', 'An account with this email already exists. Please log in with your password to link your account.');
+                }
                 $user->update([
                     'google_id' => $socialUser->id,
                     'last_login_ip' => request()->ip(),
@@ -58,6 +61,7 @@ class GoogleController extends Controller
             }
 
             Auth::login($user);
+            session()->regenerate();
 
             return redirect()->intended('dashboard');
         } catch (Exception $e) {

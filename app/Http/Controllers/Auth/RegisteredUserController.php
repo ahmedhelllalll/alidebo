@@ -23,9 +23,18 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        $existingUser = User::where('email', $request->email)->first();
+
+        if ($existingUser) {
+            // To prevent user enumeration, we silently succeed the request
+            // but do not log the user in since they didn't provide the correct password.
+            // They will be redirected to the dashboard, and then bounced to login by the auth middleware.
+            return redirect(route('dashboard', absolute: false));
+        }
 
         $user = User::create([
             'name' => $request->name,

@@ -4,7 +4,7 @@ return [
     'hub_label' => 'Hub',
     'account_label' => 'Konto',
     'sidebar' => [
-        'main' => 'Hauptmenü',
+        'main' => 'Hauptmen�',
         'settings' => 'Einstellungen',
         'business' => 'Geschäftsdateiverwaltung',
         'developer' => 'Entwickler'
@@ -19,9 +19,9 @@ return [
         'create_profile_desc' => 'Erstellen Sie Ihr Business-Profil, um mehr lokale Kunden zu erreichen und Ihre Sichtbarkeit zu erhöhen.',
         'create_profile_btn' => 'Profil jetzt erstellen',
         'edit_cover' => 'Titelbild bearbeiten',
-        'add_cover' => 'Titelbild hinzufügen',
+        'add_cover' => 'Titelbild hinzuf�gen',
         'status_verified' => 'Verifiziert',
-        'status_pending' => 'Prüfung ausstehend',
+        'status_pending' => 'Pr�fung ausstehend',
         'status_rejected' => 'Aktion erforderlich',
         'not_specified' => 'Nicht angegeben',
         'general_category' => 'Allgemein',
@@ -50,14 +50,14 @@ return [
         'business_ready_notification' => 'Statusbenachrichtigung',
         'business_ready_msg' => 'Sie erhalten eine E-Mail, wenn Ihr Unternehmensprofil bereit ist.',
         'review_overlay' => [
-            'title' => 'Elite-Profil in Prüfung',
+            'title' => 'Elite-Profil in Pr�fung',
             'subtitle' => 'Exklusive private Ansicht',
             'message' => 'Unser spezialisiertes Team verifiziert derzeit Ihre digitale Identität. Nur Sie haben das Privileg, diese private Vorschau während der Elite-Verifizierungsphase zu sehen.',
             'cta' => 'Verstanden',
         ],
         'rejected_overlay' => [
             'title' => 'Verfeinerung erforderlich',
-            'message' => 'Um die Elite-Standards von AliDebo zu wahren, erfordert Ihr Profil verfeinerte Anpassungen. Bitte überprüfen Sie das Verifizierungs-Feedback, um Ihre Identität zu finalisieren.',
+            'message' => 'Um die Elite-Standards von AliDebo zu wahren, erfordert Ihr Profil verfeinerte Anpassungen. Bitte �berpr�fen Sie das Verifizierungs-Feedback, um Ihre Identität zu finalisieren.',
             'reason_label' => 'Elite-Verifizierungs-Feedback',
             'cta' => 'Modifizieren & Perfektionieren',
         ],

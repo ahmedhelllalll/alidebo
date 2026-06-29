@@ -11,6 +11,6 @@ return [
     'business_profile' => 'İşletme Profili',
     'my_account' => 'Hesabım',
     'logout' => 'Çıkış Yap',
-    'edit_profile' => 'Profili Düzenle',
-    'lang_switch' => 'Türkçe'
+    'edit_profile' => 'Profili D�zenle',
+    'lang_switch' => 'T�rk�e'
 ];

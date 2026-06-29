@@ -15,8 +15,8 @@ return [
 
     'reset' => 'Şifreniz sıfırlandı',
     'sent' => 'Şifre sıfırlama bağlantınızı e-posta ile gönderdik.',
-    'throttled' => 'Lütfen tekrar denemeden önce bekleyin.',
-    'token' => 'Bu şifre sıfırlama anahtarı geçersiz.',
+    'throttled' => 'L�tfen tekrar denemeden önce bekleyin.',
+    'token' => 'Bu şifre sıfırlama anahtarı ge�ersiz.',
     'user' => "Bu e-posta adresi ile kayıtlı bir kullanıcı bulamıyoruz.",
 
 ];

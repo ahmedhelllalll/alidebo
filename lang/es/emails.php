@@ -1,7 +1,7 @@
 <?php
 return [
     'subjects' => [
-        'welcome' => 'Bienvenido a alidebo - ¡Comienza tu viaje al éxito!',
+        'welcome' => 'Bienvenido a alidebo - ¡Comienza tu viaje al �xito!',
         'verify' => 'Activa tu cuenta de alidebo',
         'reset_password' => 'Restablecer contraseña - alidebo',
         'password_changed' => 'Alerta de seguridad: Tu contraseña ha sido cambiada - alidebo',
@@ -13,7 +13,7 @@ return [
         'team' => 'El equipo de alidebo',
         'trouble_clicking' => 'Si tienes problemas al hacer clic en el botón, copia y pega la URL de abajo en tu navegador:',
         'support' => 'Soporte',
-        'terms' => 'Términos de servicio',
+        'terms' => 'T�rminos de servicio',
         'privacy' => 'Política de privacidad',
     ],
     'welcome' => [
@@ -32,13 +32,13 @@ return [
         'desc' => 'Estimado socio, gracias por elegir alidebo como tu puerta a la profesionalidad. Valoramos tu confianza y nos emociona acompañarte en el viaje de transformar tu negocio en una marca destacada.',
         'desc_2' => 'Para activar tu cuenta y comenzar a construir tu perfil profesional, pulsa abajo:',
         'action' => 'Activa mi cuenta ahora',
-        'what_awaits' => '¿Qué te espera dentro?',
+        'what_awaits' => '¿Qu� te espera dentro?',
         'awaits_desc' => 'Una vez dentro, tendrás acceso a herramientas diseñadas para promocionar tus habilidades, organizar tu trabajo y abrir nuevos horizontes.',
         'vision_note' => 'Gracias por ser parte de nuestra visión. Estamos comprometidos a hacer que tu presencia digital sea la más fuerte del mercado.',
     ],
     'reset' => [
         'title' => '¿Olvidaste tu contraseña? No te preocupes..',
-        'desc' => 'Estimado socio, recibimos una solicitud de restablecimiento de contraseña. Estamos aquí para devolverte a tu camino al éxito lo antes posible.',
+        'desc' => 'Estimado socio, recibimos una solicitud de restablecimiento de contraseña. Estamos aquí para devolverte a tu camino al �xito lo antes posible.',
         'desc_2' => 'Simplemente haz clic en el botón de abajo para establecer una nueva contraseña:',
         'action' => 'Restablecer contraseña',
         'security_note' => 'Nota de seguridad importante:',
@@ -46,11 +46,11 @@ return [
         'support_note' => 'Proteger tus datos es nuestra prioridad. Si tienes dificultades, nuestro equipo está listo para ayudar.',
     ],
     'password_changed' => [
-        'title' => 'Contraseña actualizada con éxito',
-        'desc' => 'Estimado socio, te notificamos que la contraseña de tu cuenta ha sido cambiada con éxito.',
-        'desc_2' => 'Si fuiste tú, no hay de qué preocuparse; puedes seguir usando tu cuenta normalmente.',
+        'title' => 'Contraseña actualizada con �xito',
+        'desc' => 'Estimado socio, te notificamos que la contraseña de tu cuenta ha sido cambiada con �xito.',
+        'desc_2' => 'Si fuiste tú, no hay de qu� preocuparse; puedes seguir usando tu cuenta normalmente.',
         'problem_question' => '¿Tuviste algún problema?',
-        'warning' => 'Si no cambiaste tu contraseña, contacta a nuestro equipo de soporte inmediatamente o asegura tu cuenta restableciéndola.',
+        'warning' => 'Si no cambiaste tu contraseña, contacta a nuestro equipo de soporte inmediatamente o asegura tu cuenta restableci�ndola.',
         'security_note' => 'Aplicamos los más altos estándares de seguridad para garantizar una experiencia segura.',
     ],
     'new_login' => [

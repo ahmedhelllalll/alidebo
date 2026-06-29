@@ -20,8 +20,10 @@ class FacebookController extends Controller
     public function handleFacebookCallback()
     {
         try {
-            $socialUser = Socialite::driver('facebook')->stateless()->user();
+            $socialUser = Socialite::driver('facebook')->user();
             $email = $socialUser->email ?? $socialUser->id . '@facebook.com';
+            
+            $isFallbackEmail = str_ends_with($email, '@facebook.com');
             
             $user = User::where('email', $email)->first();
 
@@ -32,13 +34,16 @@ class FacebookController extends Controller
                     'facebook_id' => $socialUser->id,
                     'password' => Hash::make(Str::random(16)),
                     'role' => 'user',
-                    'email_verified_at' => now(),
+                    'email_verified_at' => $isFallbackEmail ? null : now(),
                     'register_ip' => request()->ip(),
                     'last_login_ip' => request()->ip(),
                     'last_user_agent' => request()->header('User-Agent'),
                 ]);
                 $user->sendWelcomeNotification();
             } else {
+                if (!$user->facebook_id) {
+                    return redirect('login')->with('error', 'An account with this email already exists. Please log in with your password to link your account.');
+                }
                 $user->update([
                     'facebook_id' => $socialUser->id,
                     'last_login_ip' => request()->ip(),
@@ -59,6 +64,7 @@ class FacebookController extends Controller
             }
 
             Auth::login($user);
+            session()->regenerate();
 
             return redirect()->intended('dashboard');
         } catch (Exception $e) {

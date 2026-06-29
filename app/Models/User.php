@@ -82,8 +82,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $location = "";
         try {
-            $response = Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=status,country&lang=ar");
-            if ($response->successful() && $response['status'] === 'success') {
+            $response = Http::timeout(3)->get("https://ipwho.is/{$ip}?lang=ar");
+            if ($response->successful() && $response['success']) {
                 $location = $response['country'] . " ";
             }
         } catch (\Exception $e) {}

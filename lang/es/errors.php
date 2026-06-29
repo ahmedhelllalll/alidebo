@@ -6,7 +6,7 @@ return [
     ],
     '403' => [
         'title' => 'Acceso Prohibido',
-        'desc' => 'Su presencia aquí está restringida. No tiene las credenciales de élite requeridas para esta sección.',
+        'desc' => 'Su presencia aquí está restringida. No tiene las credenciales de �lite requeridas para esta sección.',
     ],
     '404' => [
         'title' => 'El Vacío',
@@ -18,7 +18,7 @@ return [
     ],
     '429' => [
         'title' => 'Demasiadas Solicitudes',
-        'desc' => 'Se mueve más rápido de lo que nuestro sistema puede procesar. Espere un momento e inténtelo de nuevo.',
+        'desc' => 'Se mueve más rápido de lo que nuestro sistema puede procesar. Espere un momento e int�ntelo de nuevo.',
     ],
     '500' => [
         'title' => 'Disturbio Interno',

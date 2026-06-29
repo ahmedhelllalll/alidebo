@@ -254,7 +254,8 @@ return [
     'business_rejected_line3' => 'Por favor, realiza los cambios necesarios y vuelve a enviarlo.',
     'business_rejected_notif' => 'Tu perfil de negocio ":name" fue rechazado. Motivo: :reason',
     'user_management' => 'Gestión de Usuarios',
-    'view_categories' => 'Ver Cate    // System Backups
+    'view_categories' => 'Ver Categorías',
+    // System Backups
     'backups' => 'Copias de Seguridad',
     'manage_secure_backups' => 'Gestionar y archivar los datos de la plataforma de forma segura',
     'create_backup' => 'Crear Copia de Seguridad',

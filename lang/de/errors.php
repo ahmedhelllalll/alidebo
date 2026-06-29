@@ -6,7 +6,7 @@ return [
     ],
     '403' => [
         'title' => 'Zugriff Verboten',
-        'desc' => 'Ihre Anwesenheit hier ist eingeschränkt. Sie verfügen nicht über die für diesen Bereich erforderlichen Elite-Anmeldedaten.',
+        'desc' => 'Ihre Anwesenheit hier ist eingeschränkt. Sie verf�gen nicht �ber die f�r diesen Bereich erforderlichen Elite-Anmeldedaten.',
     ],
     '404' => [
         'title' => 'Die Leere',
@@ -26,8 +26,8 @@ return [
     ],
     '503' => [
         'title' => 'Kurze Wartung',
-        'desc' => 'Wir verbessern derzeit das alidebo-Erlebnis. Wir sind in Kürze mit mehr Eleganz zurück.',
+        'desc' => 'Wir verbessern derzeit das alidebo-Erlebnis. Wir sind in K�rze mit mehr Eleganz zur�ck.',
     ],
-    'back_home' => 'Zurück zu alidebo',
+    'back_home' => 'Zur�ck zu alidebo',
     'go_back' => 'Vorheriger Schritt',
 ];
