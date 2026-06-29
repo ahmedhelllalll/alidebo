@@ -346,4 +346,24 @@ return [
     'contact_soon_title' => 'Centro de Soporte y Mensajería',
     'contact_soon_desc' => 'Un panel integrado para rastrear consultas de visitantes, solicitudes de soporte y mensajes de usuarios con alertas instantáneas.',
     'unread_leads' => 'Prospectos no leídos',
+
+    // Backups
+    'auto_backup_active' => 'Copias de seguridad automatizadas activas',
+    'auto_backup_desc' => '¡Tranquilo! Su sistema genera automáticamente y almacena de forma segura una instantánea nueva y cifrada de todos los registros de su base de datos cada 12 horas.',
+    'system_protected' => 'Sistema protegido',
+    'delete_snapshot_title' => '¿Eliminar instantánea?',
+    'delete_snapshot_desc' => '¿Está absolutamente seguro de que desea eliminar permanentemente esta instantánea? Esta acción no se puede deshacer.',
+    'snapshot_deleted_desc' => 'Instantánea eliminada exitosamente.',
+    'deleted' => '¡Eliminado!',
+
+    'local_status' => 'Local',
+    'cloud_status' => 'Nube R2',
+    'in_progress' => 'En progreso',
+    'failed' => 'Fallido',
+    'saved' => 'Guardado',
+    'not_saved' => 'No guardado',
+    'uploaded' => 'Subido',
+    'not_uploaded' => 'No subido',
+    'backup_completed' => '¡Copia de seguridad completada exitosamente!',
+    'delete_failed' => 'Error al eliminar la instantánea.',
 ];

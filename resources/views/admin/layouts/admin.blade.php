@@ -502,14 +502,13 @@
             </a>
 
             {{-- Backups --}}
-            <a href="{{ route('admin.coming-soon', ['feature' => 'backups']) }}"
+            <a href="{{ route('admin.backups.index') }}"
                 class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'backups' ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'backups' ? '' : 'hidden' }}"></span>
+                {{ request()->routeIs('admin.backups.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                <span class="nav-active-bar"></span>
                 <i class="fa-solid fa-cloud-arrow-up w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
                 <div class="flex-1 flex items-center justify-between sidebar-text">
                     <span>{{ __('admin.backups') ?? 'Backups' }}</span>
-                    <span class="font-bold uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm" style="font-size: 9px;">{{ __('admin.soon') }}</span>
                 </div>
                 <span class="sidebar-tooltip">{{ __('admin.backups') ?? 'Backups' }}</span>
             </a>

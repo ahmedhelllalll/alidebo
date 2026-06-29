@@ -62,11 +62,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::patch('/leads/{lead}/status', [Admin\LeadController::class, 'updateStatus'])->name('leads.update-status');
         Route::resource('leads', Admin\LeadController::class)->only(['index', 'show', 'destroy']);
-        
         Route::get('/backups', [Admin\BackupController::class, 'index'])->name('backups.index');
+        Route::get('/backups/status', [Admin\BackupController::class, 'status'])->name('backups.status');
         Route::post('/backups', [Admin\BackupController::class, 'create'])->name('backups.create');
-        Route::get('/backups/download', [Admin\BackupController::class, 'download'])->name('backups.download');
-        Route::delete('/backups', [Admin\BackupController::class, 'destroy'])->name('backups.destroy');
+        Route::get('/backups/{id}/download', [Admin\BackupController::class, 'download'])->name('backups.download');
+        Route::delete('/backups/{id}', [Admin\BackupController::class, 'destroy'])->name('backups.destroy');
         Route::post('/backups/settings', [Admin\BackupController::class, 'updateSettings'])->name('backups.settings');
         
         Route::get('/businesses/check-slug', [Admin\BusinessController::class, 'checkSlug'])->name('businesses.check-slug');

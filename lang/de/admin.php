@@ -322,4 +322,24 @@ return [
     'contact_soon_title' => 'Kundensupport-Helpdesk',
     'contact_soon_desc' => 'Ein integrierter Anfrage-Hub zur Verfolgung von Besucherfragen, Supportanfragen und Benutzernachrichten mit integrierten Status-Updates und Sofortbenachrichtigungen.',
     'unread_leads' => 'Ungelesene Leads',
+
+    // Backups
+    'auto_backup_active' => 'Automatisierte Backups aktiv',
+    'auto_backup_desc' => 'Seien Sie beruhigt! Ihr System erstellt automatisch alle 12 Stunden einen neuen, verschlüsselten Snapshot aller Ihrer Datenbankeinträge und speichert ihn sicher.',
+    'system_protected' => 'System geschützt',
+    'delete_snapshot_title' => 'Snapshot löschen?',
+    'delete_snapshot_desc' => 'Sind Sie absolut sicher, dass Sie diesen Snapshot dauerhaft löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.',
+    'snapshot_deleted_desc' => 'Snapshot erfolgreich gelöscht.',
+    'deleted' => 'Gelöscht!',
+
+    'local_status' => 'Lokal',
+    'cloud_status' => 'Cloud R2',
+    'in_progress' => 'In Bearbeitung',
+    'failed' => 'Fehlgeschlagen',
+    'saved' => 'Gespeichert',
+    'not_saved' => 'Nicht gespeichert',
+    'uploaded' => 'Hochgeladen',
+    'not_uploaded' => 'Nicht hochgeladen',
+    'backup_completed' => 'Backup erfolgreich abgeschlossen!',
+    'delete_failed' => 'Snapshot konnte nicht gelöscht werden.',
 ];

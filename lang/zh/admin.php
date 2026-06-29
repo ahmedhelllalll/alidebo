@@ -320,4 +320,24 @@ return [
     'contact_soon_title' => '客户支持服务台',
     'contact_soon_desc' => '一个集成的咨询中心，用于追踪访客申诉、支持请求和用户消息，并配有内置状态管理与即时提醒。',
     'unread_leads' => '未读留言',
+
+    // Backups
+    'auto_backup_active' => '自动备份已激活',
+    'auto_backup_desc' => '放心吧！您的系统每 12 小时自动生成并安全存储所有数据库记录的全新加密快照。',
+    'system_protected' => '系统受保护',
+    'delete_snapshot_title' => '删除快照？',
+    'delete_snapshot_desc' => '您绝对确定要永久删除此快照吗？此操作无法撤消。',
+    'snapshot_deleted_desc' => '快照已成功删除。',
+    'deleted' => '已删除！',
+
+    'local_status' => '本地',
+    'cloud_status' => '云 R2',
+    'in_progress' => '进行中',
+    'failed' => '失败',
+    'saved' => '已保存',
+    'not_saved' => '未保存',
+    'uploaded' => '已上传',
+    'not_uploaded' => '未上传',
+    'backup_completed' => '备份成功完成！',
+    'delete_failed' => '删除快照失败。',
 ];

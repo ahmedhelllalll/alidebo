@@ -3,173 +3,318 @@
 @section('title', __('admin.backups') ?? 'System Backups')
 
 @section('content')
-<div class="space-y-6">
-    {{-- Header & Stats --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-[900] tracking-tight ltr:bg-gradient-to-r rtl:bg-gradient-to-l from-slate-900 to-slate-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
-                {{ __('admin.backups') ?? 'System Backups' }}
-            </h1>
-            <p class="text-sm font-medium text-slate-500 dark:text-zinc-500 mt-1 sm:mt-1.5">
-                {{ __('admin.manage_secure_backups') ?? 'Securely archive and restore your platform data' }}
-            </p>
-        </div>
-        
-        <div class="relative dropdown-wrapper" id="backup-generate-wrapper">
-            <button id="create-backup-btn" onclick="toggleDropdown('backup-generate-dropdown')" class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-light text-white rounded-xl font-[900] text-[14px] shadow-[0_8px_20px_rgba(244,80,24,0.25)] hover:shadow-[0_12px_25px_rgba(244,80,24,0.35)] transition-all active:scale-[0.98] {{ $isGenerating ? 'opacity-50 pointer-events-none' : '' }}" {{ $isGenerating ? 'disabled' : '' }}>
-                <i class="fa-solid {{ $isGenerating ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up' }}"></i>
-                {{ $isGenerating ? (__('admin.backup_in_progress_short') ?? 'Generating...') : (__('admin.create_backup') ?? 'Create Backup') }}
-                @if(!$isGenerating)<i class="fa-solid fa-chevron-down ms-1 text-[10px]"></i>@endif
-            </button>
+<div id="backups-main-wrapper" class="relative min-h-[600px]">
+    <div class="space-y-6 transition-all duration-500">
 
-            <div id="backup-generate-dropdown" class="absolute hidden top-full mt-2 end-0 w-48 bg-white/95 dark:bg-[#121214]/95 backdrop-blur-md border border-slate-200/60 dark:border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.5)] rounded-3xl overflow-hidden z-50 transform origin-top-right">
-                <button onclick="startBackup('all'); toggleDropdown('backup-generate-dropdown')" class="w-full text-start flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 dark:text-zinc-300 hover:bg-primary/5 hover:text-primary transition-colors border-b border-black/5 dark:border-white/5">
-                    <i class="fa-solid fa-database w-4 text-center"></i>
-                    <span>{{ __('admin.backup_all') ?? 'All (DB + Code)' }}</span>
-                </button>
-                <button onclick="startBackup('db'); toggleDropdown('backup-generate-dropdown')" class="w-full text-start flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 dark:text-zinc-300 hover:bg-primary/5 hover:text-primary transition-colors border-b border-black/5 dark:border-white/5">
-                    <i class="fa-solid fa-server w-4 text-center"></i>
-                    <span>{{ __('admin.backup_db') ?? 'Database Only' }}</span>
-                </button>
-                <button onclick="startBackup('files'); toggleDropdown('backup-generate-dropdown')" class="w-full text-start flex items-center gap-3 px-4 py-3 text-sm font-bold text-slate-700 dark:text-zinc-300 hover:bg-primary/5 hover:text-primary transition-colors">
-                    <i class="fa-regular fa-folder w-4 text-center"></i>
-                    <span>{{ __('admin.backup_files') ?? 'Files Only' }}</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    {{-- Generating Alert --}}
-    @if($isGenerating)
-    <div id="backup-pooling" class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-between">
-        <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">
-                <i class="fa-solid fa-spinner fa-spin text-lg"></i>
+        {{-- Auto-Backup Info Card --}}
+        <div class="flex items-start sm:items-center gap-4 p-5 bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/5 rounded-2xl shadow-sm">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                <i class="fa-solid fa-clock-rotate-left"></i>
             </div>
             <div>
-                <h3 class="text-sm font-[900] text-emerald-600 dark:text-emerald-400">{{ __('admin.backup_in_progress') ?? 'A Backup is Currently Generating...' }}</h3>
-                <p class="text-[12px] font-bold text-slate-500 dark:text-zinc-400">{{ __('admin.backup_background_notice') ?? 'This operates in the background. You can safely navigate away.' }}</p>
+                <h2 class="text-[14px] font-[900] text-slate-800 dark:text-white">{{ __('admin.auto_backup_active') ?? 'Automated Backups Active' }}</h2>
+                <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mt-0.5">{{ __('admin.auto_backup_desc') ?? 'Rest easy! Your system automatically generates and securely stores a fresh, encrypted snapshot of all your database records every 12 hours.' }}</p>
             </div>
         </div>
-        <div class="flex items-center gap-2">
-            <button onclick="window.location.reload()" class="px-4 py-2 bg-white dark:bg-zinc-800 rounded-lg text-xs font-bold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-700 shadow-sm transition-colors border border-black/5 dark:border-white/5">
-                <i class="fa-solid fa-rotate-right me-1"></i> {{ __('admin.refresh_list') ?? 'Refresh List' }}
-            </button>
-            <button onclick="dismissProgressAlert(this)" class="w-8 h-8 flex items-center justify-center rounded-lg bg-white dark:bg-zinc-800 text-slate-400 dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-200 shadow-sm transition-colors border border-black/5 dark:border-white/5" title="{{ __('admin.dismiss') ?? 'Dismiss' }}">
-                <i class="fa-solid fa-xmark text-sm"></i>
-            </button>
-        </div>
-    </div>
-    @endif
 
-    {{-- Storage Location Settings --}}
-    <div class="glass-card rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
-        <div class="p-6 border-b border-slate-100 dark:border-white/5">
-            <div class="flex items-center gap-3 mb-1">
-                <div class="w-9 h-9 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
-                    <i class="fa-solid fa-folder-open"></i>
-                </div>
-                <h2 class="text-[15px] font-[900] text-slate-800 dark:text-white">{{ __('admin.storage_location') ?? 'Storage Location' }}</h2>
+        {{-- Header & Actions --}}
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 dashboard-header-reveal">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-[900] tracking-tight ltr:bg-gradient-to-r rtl:bg-gradient-to-l from-slate-900 to-slate-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">
+                    {{ __('admin.backups') ?? 'System Backups' }}
+                </h1>
+                <p class="text-sm font-medium text-slate-500 dark:text-zinc-500 mt-1 sm:mt-1.5">
+                    {{ __('admin.manage_secure_backups') ?? 'Securely archive and restore your platform data' }} (<span id="total-count-header">{{ count($files) }}</span>)
+                </p>
             </div>
-            <p class="text-[12px] font-medium text-slate-400 dark:text-zinc-500 ms-12">{{ __('admin.storage_location_desc') ?? 'Set the server directory where backups will be saved' }}</p>
-        </div>
-        <div class="p-6">
-            <div class="flex flex-col sm:flex-row gap-3">
-                <div class="flex-1 relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-4 text-slate-400 dark:text-zinc-500 pointer-events-none">
-                        <i class="fa-solid fa-hard-drive text-sm"></i>
-                    </div>
-                    <input type="text" id="backup-path-input"
-                        value="{{ $backupPath }}"
-                        placeholder="{{ __('admin.storage_path_placeholder') ?? 'e.g. C:\\backups or /var/backups' }}"
-                        class="w-full ps-11 pe-4 py-3 bg-slate-50 dark:bg-zinc-900/60 border border-slate-200/70 dark:border-white/[0.08] rounded-xl text-[13px] font-bold text-slate-700 dark:text-zinc-300 placeholder:text-slate-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" dir="ltr" />
-                </div>
-                <button onclick="saveBackupPath()" id="save-path-btn"
-                    class="flex items-center justify-center gap-2 px-6 py-3 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-zinc-200 text-white dark:text-slate-900 rounded-xl font-[900] text-[13px] transition-all shadow-md hover:shadow-lg active:scale-[0.97] whitespace-nowrap">
-                    <i class="fa-solid fa-floppy-disk" id="save-path-icon"></i>
-                    <span id="save-path-text">{{ __('admin.save_path') ?? 'Save Path' }}</span>
+            <div class="flex items-center gap-3">
+                <button onclick="window.location.reload()" class="p-2.5 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-white/10 text-slate-500 hover:text-primary rounded-xl shadow-sm hover:shadow-md transition-all active:scale-[0.98] group" title="{{ __('admin.refresh') ?? 'Refresh' }}">
+                    <svg class="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                </button>
+                <button id="create-backup-btn" onclick="startBackup()" class="flex items-center justify-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-light text-white rounded-xl font-[900] text-[14px] shadow-[0_8px_20px_rgba(244,80,24,0.25)] hover:shadow-[0_12px_25px_rgba(244,80,24,0.35)] transition-all active:scale-[0.98] {{ $isGenerating ? 'opacity-50 pointer-events-none' : '' }}" {{ $isGenerating ? 'disabled' : '' }}>
+                    <i class="fa-solid {{ $isGenerating ? 'fa-spinner fa-spin' : 'fa-cloud-arrow-up' }} backup-btn-icon"></i>
+                    <span class="backup-btn-text">{{ $isGenerating ? (__('admin.backup_in_progress_short') ?? 'Generating...') : (__('admin.create_backup') ?? 'Create Backup') }}</span>
                 </button>
             </div>
-            {{-- Success feedback --}}
-            <div id="path-save-feedback" class="hidden mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500 shrink-0">
-                    <i class="fa-solid fa-circle-check"></i>
-                </div>
-                <p class="text-[13px] font-bold text-emerald-600 dark:text-emerald-400" id="path-save-message"></p>
-            </div>
-            {{-- Error feedback --}}
-            <div id="path-error-feedback" class="hidden mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3">
-                <div class="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-500 shrink-0">
-                    <i class="fa-solid fa-circle-exclamation"></i>
-                </div>
-                <p class="text-[13px] font-bold text-red-600 dark:text-red-400" id="path-error-message"></p>
-            </div>
         </div>
-    </div>
 
-    {{-- Backups List --}}
-    <div class="glass-card rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
-        @if(count($files) > 0)
-        <div class="overflow-x-auto custom-scrollbar">
-            <table class="w-full text-start border-collapse">
-                <thead>
-                    <tr class="border-b border-slate-200/50 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
-                        <th class="py-4 px-6 text-start text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.file_name') ?? 'Archive Name' }}</th>
-                        <th class="py-4 px-6 text-start text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.size') ?? 'Size' }}</th>
-                        <th class="py-4 px-6 text-start text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.date') ?? 'Date Created' }}</th>
-                        <th class="py-4 px-6 text-end text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.actions') ?? 'Actions' }}</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-white/5">
-                    @foreach($files as $key => $file)
-                    <tr class="hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors group">
-                        <td class="py-4 px-6">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                                    <i class="fa-solid fa-file-zipper"></i>
+        {{-- Management Bar --}}
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4 bg-white/50 dark:bg-zinc-900/30 backdrop-blur-xl p-4 rounded-2xl border border-white/60 dark:border-white/[0.05] shadow-sm">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                <span class="text-[12px] font-[900] text-slate-400 uppercase tracking-widest">{{ __('admin.management') ?? 'Management' }}</span>
+            </div>
+            @if($isGenerating)
+            <div class="flex items-center gap-3 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-xl" id="backup-pooling">
+                <div class="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">
+                    <i class="fa-solid fa-spinner fa-spin text-xs"></i>
+                </div>
+                <span class="text-[12px] font-[900] text-emerald-600 dark:text-emerald-400">{{ __('admin.backup_in_progress') ?? 'Generating backup...' }}</span>
+                <button onclick="dismissProgressAlert(this)" class="w-5 h-5 flex items-center justify-center rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-zinc-200 transition-colors" title="{{ __('admin.dismiss') ?? 'Dismiss' }}">
+                    <i class="fa-solid fa-xmark text-[10px]"></i>
+                </button>
+            </div>
+            @endif
+        </div>
+
+        {{-- Backups Table Card --}}
+        <div class="list-card bg-white/90 dark:bg-[#121214]/85 backdrop-blur-md rounded-[24px] border border-white/60 dark:border-white/[0.05] shadow-[0_4px_24px_rgba(0,0,0,0.02)] relative z-10 w-full min-h-[300px] reveal-item">
+            @if(count($files) > 0)
+
+            {{-- Desktop Table --}}
+            <div class="hidden md:block overflow-x-auto custom-scrollbar">
+                <table class="w-full text-start border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-200/50 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
+                            <th class="py-4 px-6 text-start text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.file_name') ?? 'File Name' }}</th>
+                            <th class="py-4 px-6 text-start text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.date') ?? 'Date & Time' }}</th>
+                            <th class="py-4 px-6 text-center text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.local_status') ?? 'Local' }}</th>
+                            <th class="py-4 px-6 text-center text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.cloud_status') ?? 'Cloud R2' }}</th>
+                            <th class="py-4 px-6 text-start text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.size') ?? 'File Size' }}</th>
+                            <th class="py-4 px-6 text-center text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.status') ?? 'Status' }}</th>
+                            <th class="py-4 px-6 text-end text-[11px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.actions') ?? 'Actions' }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+                        @foreach($files as $file)
+                        <tr class="hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors group backup-row" data-id="{{ $file->id }}">
+                            <td class="py-4 px-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors shrink-0">
+                                        <i class="fa-solid fa-file-zipper"></i>
+                                    </div>
+                                    <span class="text-[13px] font-bold text-slate-700 dark:text-zinc-300 truncate max-w-[220px]" title="{{ $file->filename }}">{{ $file->filename }}</span>
                                 </div>
-                                <span class="text-[13px] font-bold text-slate-700 dark:text-zinc-300">{{ $file['name'] }}</span>
+                            </td>
+                            <td class="py-4 px-6 text-[13px] font-bold text-slate-500 dark:text-zinc-400 whitespace-nowrap">
+                                {{ $file->backup_date->format('Y-m-d H:i') }}
+                            </td>
+                            <td class="py-4 px-6 text-center text-[15px]">
+                                @if($file->stored_locally)
+                                    <span class="text-emerald-500" title="{{ __('admin.saved') ?? 'Saved' }}"><i class="fa-solid fa-circle-check"></i></span>
+                                @else
+                                    <span class="text-slate-300 dark:text-zinc-700" title="{{ __('admin.not_saved') ?? 'Not Saved' }}"><i class="fa-solid fa-circle-xmark"></i></span>
+                                @endif
+                            </td>
+                            <td class="py-4 px-6 text-center text-[15px]">
+                                @if($file->stored_on_r2)
+                                    <span class="text-emerald-500" title="{{ __('admin.uploaded') ?? 'Uploaded' }}"><i class="fa-solid fa-circle-check"></i></span>
+                                @else
+                                    <span class="text-slate-300 dark:text-zinc-700" title="{{ __('admin.not_uploaded') ?? 'Not Uploaded' }}"><i class="fa-solid fa-circle-xmark"></i></span>
+                                @endif
+                            </td>
+                            <td class="py-4 px-6 text-[13px] font-bold text-slate-500 dark:text-zinc-400 whitespace-nowrap">
+                                {{ $file->formatted_size }}
+                            </td>
+                            <td class="py-4 px-6 text-center">
+                                @if($file->status === 'success')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-[11px] font-[900] uppercase tracking-wider">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]"></div>
+                                        {{ __('admin.success') ?? 'Success' }}
+                                    </span>
+                                @elseif($file->status === 'in_progress')
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg text-[11px] font-[900] uppercase tracking-wider">
+                                        <i class="fa-solid fa-spinner fa-spin text-[9px]"></i>
+                                        {{ __('admin.in_progress') ?? 'In Progress' }}
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-500/10 text-red-600 dark:text-red-400 rounded-lg text-[11px] font-[900] uppercase tracking-wider cursor-help" title="{{ $file->error_message }}">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.5)]"></div>
+                                        {{ __('admin.failed') ?? 'Failed' }}
+                                    </span>
+                                @endif
+                            </td>
+                            <td class="py-4 px-6 text-end">
+                                <div class="flex items-center justify-end gap-2">
+                                    @if($file->status === 'success' && ($file->stored_locally || $file->stored_on_r2))
+                                    <a href="{{ route('admin.backups.download', $file->id) }}" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-zinc-800/80 text-slate-500 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 transition-colors" title="{{ __('admin.download') ?? 'Download' }}">
+                                        <i class="fa-solid fa-download text-[13px]"></i>
+                                    </a>
+                                    @endif
+                                    <button onclick="confirmDelete('{{ $file->id }}', this)" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-zinc-800/80 text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors" title="{{ __('admin.delete') ?? 'Delete' }}">
+                                        <i class="fa-solid fa-trash-can text-[13px]"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            {{-- Mobile Cards --}}
+            <div class="md:hidden divide-y divide-slate-100 dark:divide-white/5">
+                @foreach($files as $file)
+                <div class="p-5 mobile-card backup-row" data-id="{{ $file->id }}">
+                    <div class="flex items-start justify-between gap-3 mb-4">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                                <i class="fa-solid fa-file-zipper text-lg"></i>
                             </div>
-                        </td>
-                        <td class="py-4 px-6 text-[13px] font-bold text-slate-500 dark:text-zinc-400">
-                            {{ $file['size'] }}
-                        </td>
-                        <td class="py-4 px-6 text-[13px] font-bold text-slate-500 dark:text-zinc-400">
-                            {{ $file['date'] }}
-                        </td>
-                        <td class="py-4 px-6 text-end">
-                            <div class="flex items-center justify-end gap-2 text-xl">
-                                <a href="{{ route('admin.backups.download', ['path' => $file['path']]) }}" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-zinc-800/80 text-emerald-600 hover:bg-emerald-500 hover:text-white transition-all shadow-sm">
-                                    <i class="fa-solid fa-download text-sm"></i>
-                                </a>
-                                <button onclick="deleteBackup('{{ $file['path'] }}', this)" class="w-9 h-9 flex items-center justify-center rounded-xl bg-slate-100 dark:bg-zinc-800/80 text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-sm">
-                                    <i class="fa-solid fa-trash-can text-sm"></i>
-                                </button>
+                            <div class="min-w-0">
+                                <p class="text-[13px] font-bold text-slate-700 dark:text-zinc-300 truncate">{{ $file->filename }}</p>
+                                <p class="text-[11px] font-medium text-slate-400 dark:text-zinc-500 mt-0.5">{{ $file->backup_date->format('Y-m-d H:i') }}</p>
                             </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        </div>
+                        @if($file->status === 'success')
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-lg text-[10px] font-[900] uppercase tracking-wider shrink-0">
+                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                {{ __('admin.success') ?? 'OK' }}
+                            </span>
+                        @elseif($file->status === 'in_progress')
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg text-[10px] font-[900] uppercase tracking-wider shrink-0">
+                                <i class="fa-solid fa-spinner fa-spin text-[8px]"></i>
+                                {{ __('admin.in_progress') ?? 'Running' }}
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-500/10 text-red-600 dark:text-red-400 rounded-lg text-[10px] font-[900] uppercase tracking-wider shrink-0">
+                                <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                                {{ __('admin.failed') ?? 'Failed' }}
+                            </span>
+                        @endif
+                    </div>
+
+                    {{-- Info Grid --}}
+                    <div class="grid grid-cols-3 gap-3 mb-4 p-3 bg-slate-50/80 dark:bg-zinc-900/40 rounded-xl">
+                        <div class="text-center">
+                            <p class="text-[10px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{{ __('admin.local_status') ?? 'Local' }}</p>
+                            @if($file->stored_locally)
+                                <span class="text-emerald-500 text-lg"><i class="fa-solid fa-circle-check"></i></span>
+                            @else
+                                <span class="text-slate-300 dark:text-zinc-700 text-lg"><i class="fa-solid fa-circle-xmark"></i></span>
+                            @endif
+                        </div>
+                        <div class="text-center">
+                            <p class="text-[10px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{{ __('admin.cloud_status') ?? 'Cloud' }}</p>
+                            @if($file->stored_on_r2)
+                                <span class="text-emerald-500 text-lg"><i class="fa-solid fa-circle-check"></i></span>
+                            @else
+                                <span class="text-slate-300 dark:text-zinc-700 text-lg"><i class="fa-solid fa-circle-xmark"></i></span>
+                            @endif
+                        </div>
+                        <div class="text-center">
+                            <p class="text-[10px] font-[900] text-slate-400 dark:text-zinc-500 uppercase tracking-wider mb-1">{{ __('admin.size') ?? 'Size' }}</p>
+                            <span class="text-[13px] font-bold text-slate-600 dark:text-zinc-300">{{ $file->formatted_size }}</span>
+                        </div>
+                    </div>
+
+                    {{-- Actions --}}
+                    <div class="flex items-center gap-2">
+                        @if($file->status === 'success' && ($file->stored_locally || $file->stored_on_r2))
+                        <a href="{{ route('admin.backups.download', $file->id) }}" class="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[12px] font-[900] bg-emerald-50/50 dark:bg-emerald-500/5 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500/10 transition-all shadow-sm">
+                            <i class="fa-solid fa-download"></i> {{ __('admin.download') ?? 'Download' }}
+                        </a>
+                        @endif
+                        <button onclick="confirmDelete('{{ $file->id }}', this)" class="flex-1 max-w-[100px] flex items-center justify-center gap-2 px-3 py-2 text-[12px] font-[900] bg-red-50/50 dark:bg-red-500/5 text-red-500 rounded-xl hover:bg-red-500/10 transition-all shadow-sm">
+                            <i class="fa-solid fa-trash-can"></i> {{ __('admin.delete') ?? 'Delete' }}
+                        </button>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            @else
+            {{-- Empty State --}}
+            <div class="p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
+                <div class="w-20 h-20 rounded-full bg-slate-50 dark:bg-zinc-800 flex items-center justify-center text-slate-300 dark:text-zinc-600 mb-6 ring-4 ring-slate-50 dark:ring-zinc-800 border-[8px] border-white dark:border-[#09090b] shadow-xl">
+                    <i class="fa-solid fa-server text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-[900] text-slate-900 dark:text-white mb-2">{{ __('admin.no_backups') ?? 'No Backups Generated' }}</h3>
+                <p class="text-[14px] font-medium text-slate-500 dark:text-zinc-400 mb-6 max-w-md">{{ __('admin.no_backups_desc') ?? 'Keep your system safe by generating automated or manual platform snapshots. Click create to start archiving.' }}</p>
+                <button onclick="startBackup()" class="flex items-center justify-center gap-2 px-6 py-2.5 bg-primary hover:bg-primary-light text-white rounded-xl font-[900] text-[14px] transition-all shadow-[0_8px_20px_rgba(244,80,24,0.25)] hover:shadow-[0_12px_25px_rgba(244,80,24,0.35)] hover:scale-105 active:scale-95">
+                    <i class="fa-solid fa-plus"></i> {{ __('admin.generate_snapshot') ?? 'Generate First Snapshot' }}
+                </button>
+            </div>
+            @endif
         </div>
-        @else
-        <div class="p-12 text-center flex flex-col items-center justify-center min-h-[400px]">
-             <div class="w-20 h-20 rounded-full bg-slate-50 dark:bg-zinc-800 flex items-center justify-center text-slate-300 dark:text-zinc-600 mb-6 ring-4 ring-slate-50 dark:ring-zinc-800 border-[8px] border-white dark:border-[#09090b] shadow-xl">
-                 <i class="fa-solid fa-server text-3xl"></i>
-             </div>
-             <h3 class="text-xl font-[900] text-slate-900 dark:text-white mb-2">{{ __('admin.no_backups') ?? 'No Backups Generated' }}</h3>
-             <p class="text-[14px] font-medium text-slate-500 dark:text-zinc-400 mb-6 max-w-md">{{ __('admin.no_backups_desc') ?? 'Keep your system safe by generating automated or manual platform snapshots. Click create to start archiving.' }}</p>
-             <button onclick="startBackup('all')" class="flex items-center justify-center gap-2 px-6 py-2.5 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-zinc-200 text-white dark:text-slate-900 rounded-xl font-[900] text-[14px] transition-all shadow-md hover:scale-105 active:scale-95">
-                 <i class="fa-solid fa-plus"></i> {{ __('admin.generate_snapshot') ?? 'Generate First Snapshot' }}
-             </button>
-        </div>
-        @endif
     </div>
 </div>
+
+{{-- Delete Confirmation Modal --}}
+<x-admin.modal id="deleteConfirmModal" :title="__('admin.warning')" class="max-w-md">
+    <div class="text-center px-4 py-8">
+        <div class="w-20 h-20 rounded-full bg-red-100 dark:bg-red-500/10 flex items-center justify-center text-red-500 mx-auto mb-6 shadow-inner ring-4 ring-red-50 dark:ring-red-500/5">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+        </div>
+        <h3 class="text-2xl font-[900] text-slate-900 dark:text-white mb-3 tracking-tight">{{ __('admin.delete_snapshot_title') ?? 'Delete Snapshot?' }}</h3>
+        <p class="text-[14px] font-medium text-slate-500 dark:text-zinc-400">{{ __('admin.delete_snapshot_desc') ?? 'Are you absolutely sure you want to permanently delete this snapshot? This action cannot be undone.' }}</p>
+    </div>
+    <x-slot name="footer">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full pb-2">
+            <button type="button" onclick="closeModal('deleteConfirmModal')" class="w-full sm:flex-1 px-5 py-3 bg-white dark:bg-[#121214]/80 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-[900] text-[14px] hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors shadow-sm">
+                {{ __('admin.cancel') }}
+            </button>
+            <button type="button" id="confirmDeleteBtn" class="w-full sm:flex-1 px-5 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-[900] text-[14px] shadow-[0_8px_20px_rgba(239,68,68,0.25)] hover:shadow-[0_12px_25px_rgba(239,68,68,0.35)] transition-all active:scale-[0.98]">
+                {{ __('admin.delete') }}
+            </button>
+        </div>
+    </x-slot>
+</x-admin.modal>
 
 @push('scripts')
 <script>
     let isBackupRunning = {{ $isGenerating ? 'true' : 'false' }};
+    let progressInterval = null;
+    let backupToDeleteId = null;
+    let backupDeleteBtnEl = null;
+
+    // ─── GSAP Entrance Animations ─────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof gsap === 'undefined') return;
+
+        // Note: .reveal-item is automatically animated by the global timeline in admin.blade.php
+        
+        // Header
+        gsap.from('.dashboard-header-reveal', {
+            y: -20,
+            opacity: 0,
+            duration: 0.8,
+            delay: 0.1,
+            ease: "power3.out",
+            clearProps: "all"
+        });
+
+        // Table rows / mobile cards
+        gsap.from('.backup-row', {
+            y: 15,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.05,
+            delay: 0.3,
+            ease: "power2.out",
+            clearProps: "all"
+        });
+    });
+
+    // ─── Real-time Polling ─────────────────────────────────────
+    if (isBackupRunning) {
+        startPollingProgress();
+    }
+
+    function startPollingProgress() {
+        if (progressInterval) return;
+
+        progressInterval = setInterval(async () => {
+            try {
+                const res = await fetch('{{ route("admin.backups.status") }}', {
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await res.json();
+
+                if (!data.isGenerating) {
+                    clearInterval(progressInterval);
+                    if (typeof showToast === 'function') {
+                        showToast('success', '{{ __("admin.success") ?? "Success" }}', '{{ __("admin.backup_completed") ?? "Backup completed successfully!" }}');
+                    }
+                    setTimeout(() => window.location.reload(), 1000);
+                }
+            } catch (e) {
+                console.error('Error polling backup status:', e);
+            }
+        }, 3000);
+    }
 
     function dismissProgressAlert(btn) {
         const alert = btn.closest('#backup-pooling');
@@ -180,146 +325,137 @@
         }
     }
 
-    async function startBackup(type) {
-        // Prevent duplicate processes
+    // ─── Create Backup ─────────────────────────────────────────
+    async function startBackup() {
         if (isBackupRunning) {
             if (typeof showToast === 'function') {
                 showToast('warning', '{{ __("admin.backup_already_running") ?? "Already Running" }}', '{{ __("admin.backup_already_running_desc") ?? "A backup is already in progress. Please wait for it to finish." }}');
-            } else {
-                alert('{{ __("admin.backup_already_running_desc") ?? "A backup is already in progress. Please wait for it to finish." }}');
             }
             return;
         }
 
         isBackupRunning = true;
 
-        // Disable the button visually
         const btn = document.getElementById('create-backup-btn');
         if (btn) {
             btn.classList.add('opacity-50', 'pointer-events-none');
             btn.disabled = true;
         }
 
-        const btnIcon = document.querySelector('.fa-cloud-arrow-up');
-        if (btnIcon) {
-            btnIcon.className = 'fa-solid fa-spinner fa-spin';
-        }
+        const btnIcon = document.querySelector('.backup-btn-icon');
+        const btnText = document.querySelector('.backup-btn-text');
+        if (btnIcon) btnIcon.className = 'fa-solid fa-spinner fa-spin backup-btn-icon';
+        if (btnText) btnText.textContent = '{{ __("admin.backup_in_progress_short") ?? "Generating..." }}';
 
         try {
-            const res = await fetch(`{{ route('admin.backups.create') }}`, {
+            const res = await fetch('{{ route("admin.backups.create") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
-                },
-                body: JSON.stringify({ type: type })
+                }
             });
 
             if (res.ok) {
                 if (typeof showToast === 'function') {
-                    showToast('success', '{{ __('admin.backup_queued') ?? 'Backup Queued' }}', '{{ __('admin.backup_queued_desc') ?? 'Your backup is compressing beautifully in the background.' }}');
-                    setTimeout(() => window.location.reload(), 1500);
-                } else {
-                    window.location.reload();
+                    showToast('success', '{{ __("admin.backup_queued") ?? "Backup Queued" }}', '{{ __("admin.backup_queued_desc") ?? "Your backup is compressing beautifully in the background." }}');
                 }
+                setTimeout(() => window.location.reload(), 1500);
             } else {
                 isBackupRunning = false;
                 if (btn) { btn.classList.remove('opacity-50', 'pointer-events-none'); btn.disabled = false; }
-                alert('{{ __('admin.backup_failed') ?? 'Triggering backup failed: Backend error' }}');
-                if (btnIcon) btnIcon.className = 'fa-solid fa-cloud-arrow-up';
+                if (btnIcon) btnIcon.className = 'fa-solid fa-cloud-arrow-up backup-btn-icon';
+                if (btnText) btnText.textContent = '{{ __("admin.create_backup") ?? "Create Backup" }}';
+                if (typeof showToast === 'function') {
+                    showToast('error', '{{ __("admin.error") ?? "Error" }}', '{{ __("admin.backup_failed") ?? "Triggering backup failed." }}');
+                }
             }
         } catch (e) {
             isBackupRunning = false;
             if (btn) { btn.classList.remove('opacity-50', 'pointer-events-none'); btn.disabled = false; }
+            if (btnIcon) btnIcon.className = 'fa-solid fa-cloud-arrow-up backup-btn-icon';
             console.error(e);
         }
     }
 
-    async function deleteBackup(path, btn) {
-        if (!confirm('{{ __('admin.confirm_delete_snapshot') ?? 'Are you absolutely certain you want to permanently delete this snapshot?' }}')) return;
-        
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-sm"></i>';
-        
+    // ─── Delete Logic ──────────────────────────────────────────
+    window.confirmDelete = function(id, btn) {
+        backupToDeleteId = id;
+        backupDeleteBtnEl = btn;
+
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        confirmBtn.onclick = executeDeleteBackup;
+
+        if (window.modals && window.modals['deleteConfirmModal']) {
+            window.modals['deleteConfirmModal'].show();
+        } else {
+            const m = document.getElementById('deleteConfirmModal');
+            if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
+        }
+    };
+
+    async function executeDeleteBackup() {
+        if (!backupToDeleteId) return;
+        const btn = document.getElementById('confirmDeleteBtn');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> {{ __("admin.delete") }}...';
+
         try {
-            const res = await fetch(`{{ route('admin.backups.destroy') }}`, {
+            const res = await fetch(`{{ url("admin/backups") }}/${backupToDeleteId}`, {
                 method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ path: path })
-            });
-
-            if (res.ok) {
-                const tr = btn.closest('tr');
-                gsap.to(tr, { opacity: 0, scale: 0.95, duration: 0.3, onComplete: () => tr.remove() });
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    async function saveBackupPath() {
-        const input = document.getElementById('backup-path-input');
-        const icon = document.getElementById('save-path-icon');
-        const text = document.getElementById('save-path-text');
-        const successBox = document.getElementById('path-save-feedback');
-        const errorBox = document.getElementById('path-error-feedback');
-        const successMsg = document.getElementById('path-save-message');
-        const errorMsg = document.getElementById('path-error-message');
-
-        const path = input.value.trim();
-        if (!path) { input.focus(); return; }
-
-        // Loading state
-        icon.className = 'fa-solid fa-spinner fa-spin';
-        text.textContent = '{{ __("admin.saving") ?? "Saving..." }}';
-
-        // Hide previous feedback
-        successBox.classList.add('hidden');
-        errorBox.classList.add('hidden');
-
-        try {
-            const res = await fetch('{{ route("admin.backups.settings") }}', {
-                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     'Accept': 'application/json'
-                },
-                body: JSON.stringify({ backup_path: path })
+                }
             });
 
-            const data = await res.json();
-
             if (res.ok) {
-                // Show success feedback with animation
-                successMsg.textContent = data.message;
-                successBox.classList.remove('hidden');
-                if (typeof gsap !== 'undefined') {
-                    gsap.fromTo(successBox, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.4)' });
-                }
+                // Close modal
+                if (window.modals && window.modals['deleteConfirmModal']) window.modals['deleteConfirmModal'].hide();
+                else document.getElementById('deleteConfirmModal')?.classList.add('hidden');
+
                 if (typeof showToast === 'function') {
-                    showToast('success', '{{ __("admin.success") }}', data.message);
+                    showToast('success', '{{ __("admin.deleted") ?? "Deleted!" }}', '{{ __("admin.snapshot_deleted_desc") ?? "Snapshot deleted successfully." }}');
+                }
+
+                // Animate removal
+                const rows = document.querySelectorAll(`.backup-row[data-id="${backupToDeleteId}"]`);
+                if (typeof gsap !== 'undefined') {
+                    gsap.to(rows, { opacity: 0, x: 20, height: 0, padding: 0, margin: 0, duration: 0.4, stagger: 0.1, onComplete: () => {
+                        rows.forEach(r => r.remove());
+                        // Update count
+                        const counter = document.getElementById('total-count-header');
+                        if (counter) counter.textContent = Math.max(0, parseInt(counter.textContent) - 1);
+                    }});
+                } else {
+                    rows.forEach(r => r.remove());
                 }
             } else {
-                // Show error feedback
-                errorMsg.textContent = data.message || '{{ __("admin.error") }}';
-                errorBox.classList.remove('hidden');
-                if (typeof gsap !== 'undefined') {
-                    gsap.fromTo(errorBox, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.4, ease: 'back.out(1.4)' });
+                if (typeof showToast === 'function') {
+                    showToast('error', '{{ __("admin.error") ?? "Error" }}', '{{ __("admin.delete_failed") ?? "Failed to delete snapshot." }}');
                 }
             }
         } catch (e) {
-            errorMsg.textContent = '{{ __("admin.network_error") }}';
-            errorBox.classList.remove('hidden');
+            console.error(e);
+            if (typeof showToast === 'function') {
+                showToast('error', '{{ __("admin.error") ?? "Error" }}', '{{ __("admin.delete_failed") ?? "Failed to delete snapshot." }}');
+            }
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            backupToDeleteId = null;
+            backupDeleteBtnEl = null;
         }
-
-        // Reset button
-        icon.className = 'fa-solid fa-floppy-disk';
-        text.textContent = '{{ __("admin.save_path") ?? "Save Path" }}';
     }
+
+    // Modal Global for inline close
+    window.closeModal = window.closeModal || ((id) => {
+        if (window.modals && window.modals[id]) window.modals[id].hide();
+        else document.getElementById(id)?.classList.add('hidden');
+    });
 </script>
 @endpush
 @endsection

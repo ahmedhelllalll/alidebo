@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use App\Models\BackupLog;
 
 class BackupController extends Controller
 {
@@ -20,31 +21,11 @@ class BackupController extends Controller
 
     public function index()
     {
-        $disk = Storage::disk(config('backup.backup.destination.disks')[0] ?? 'local');
-        $backupName = config('backup.backup.name');
-
-        $files = [];
-        if ($disk->exists($backupName)) {
-            $rawFiles = $disk->files($backupName);
-            foreach ($rawFiles as $file) {
-                if (pathinfo($file, PATHINFO_EXTENSION) === 'zip') {
-                    $files[] = [
-                        'name' => basename($file),
-                        'size' => $this->formatSize($disk->size($file)),
-                        'date' => date('Y-m-d H:i:s', $disk->lastModified($file)),
-                        'path' => $file,
-                    ];
-                }
-            }
-        }
-
-        // Sort newest first
-        usort($files, function ($a, $b) {
-            return strtotime($b['date']) - strtotime($a['date']);
-        });
+        $files = BackupLog::orderBy('backup_date', 'desc')->get();
 
         // Check if queue runner is busy
-        $isGenerating = \DB::table('jobs')->where('payload', 'LIKE', '%backup%')->exists();
+        $isGenerating = \DB::table('jobs')->where('payload', 'LIKE', '%db:backup%')->exists()
+            || BackupLog::where('status', 'in_progress')->exists();
 
         // Current backup storage path for the settings card
         $backupPath = $this->getBackupPath();
@@ -52,10 +33,22 @@ class BackupController extends Controller
         return view('admin.backups.index', compact('files', 'isGenerating', 'backupPath'));
     }
 
+    public function status(Request $request)
+    {
+        $isGenerating = \DB::table('jobs')->where('payload', 'LIKE', '%db:backup%')->exists()
+            || BackupLog::where('status', 'in_progress')->exists();
+            
+        return response()->json([
+            'isGenerating' => $isGenerating
+        ]);
+    }
+
     public function create(Request $request)
     {
         // Prevent duplicate backup processes
-        $alreadyRunning = \DB::table('jobs')->where('payload', 'LIKE', '%backup%')->exists();
+        $alreadyRunning = \DB::table('jobs')->where('payload', 'LIKE', '%db:backup%')->exists()
+            || BackupLog::where('status', 'in_progress')->exists();
+            
         if ($alreadyRunning) {
             return response()->json([
                 'status' => 'error',
@@ -63,45 +56,68 @@ class BackupController extends Controller
             ], 409);
         }
 
-        $type = $request->input('type', 'all');
-
-        $command = 'backup:run';
-        $params = [];
-
-        if ($type === 'db') {
-            $params['--only-db'] = true;
-        } elseif ($type === 'files') {
-            $params['--only-files'] = true;
-        }
-
-        Artisan::queue($command, $params);
+        Artisan::queue('db:backup');
 
         return response()->json(['status' => 'success', 'message' => __('admin.backup_started')]);
     }
 
-    public function download(Request $request)
+    public function download(Request $request, $id)
     {
-        $disk = Storage::disk(config('backup.backup.destination.disks')[0] ?? 'local');
-        $path = $request->input('path');
+        $backup = BackupLog::findOrFail($id);
+        $filename = $backup->filename;
+        
+        // Use direct path to guarantee we find it where the command saved it
+        $localPath = storage_path("app/private/backups/{$filename}");
+        $r2Path = "backups/{$filename}";
 
-        if (!$disk->exists($path)) {
-            abort(404, "Backup file not found.");
+        if (File::exists($localPath)) {
+            // Clear any stray output buffers (whitespace, warnings) before sending the binary file.
+            // This prevents "The archive is corrupt" errors in WinRAR/Windows.
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+            return response()->download($localPath);
         }
 
-        return $disk->download($path);
+        if ($backup->stored_on_r2 && Storage::disk('r2')->exists($r2Path)) {
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+            return Storage::disk('r2')->download($r2Path);
+        }
+
+        abort(404, "Backup file not found locally or on R2.");
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
-        $disk = Storage::disk(config('backup.backup.destination.disks')[0] ?? 'local');
-        $path = $request->input('path');
+        $backup = BackupLog::findOrFail($id);
+        $filename = $backup->filename;
 
-        if ($disk->exists($path)) {
-            $disk->delete($path);
-            return response()->json(['status' => 'success']);
+        // Force delete from local storage regardless of db flag, using absolute path
+        $localPath = storage_path("app/private/backups/{$filename}");
+        try {
+            if (File::exists($localPath)) {
+                File::delete($localPath);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Local backup deletion failed: ' . $e->getMessage());
         }
 
-        return response()->json(['status' => 'error', 'message' => 'File not found'], 404);
+        try {
+            if ($backup->stored_on_r2) {
+                $r2Path = "backups/{$filename}";
+                if (Storage::disk('r2')->exists($r2Path)) {
+                    Storage::disk('r2')->delete($r2Path);
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('R2 backup deletion failed: ' . $e->getMessage());
+        }
+
+        $backup->delete();
+
+        return response()->json(['status' => 'success']);
     }
 
     /**

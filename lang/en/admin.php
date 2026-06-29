@@ -401,4 +401,24 @@ return [
     'unread_leads' => 'Unread Leads',
     'no_leads_yet' => 'No Leads Yet',
     'no_leads_desc' => 'When users contact you, their messages will appear here.',
+
+    // Backups
+    'auto_backup_active' => 'Automated Backups Active',
+    'auto_backup_desc' => 'Rest easy! Your system automatically generates and securely stores a fresh, encrypted snapshot of all your database records every 12 hours.',
+    'system_protected' => 'System Protected',
+    'delete_snapshot_title' => 'Delete Snapshot?',
+    'delete_snapshot_desc' => 'Are you absolutely sure you want to permanently delete this snapshot? This action cannot be undone.',
+    'snapshot_deleted_desc' => 'Snapshot deleted successfully.',
+    'deleted' => 'Deleted!',
+
+    'local_status' => 'Local',
+    'cloud_status' => 'Cloud R2',
+    'in_progress' => 'In Progress',
+    'failed' => 'Failed',
+    'saved' => 'Saved',
+    'not_saved' => 'Not Saved',
+    'uploaded' => 'Uploaded',
+    'not_uploaded' => 'Not Uploaded',
+    'backup_completed' => 'Backup completed successfully!',
+    'delete_failed' => 'Failed to delete snapshot.',
 ];

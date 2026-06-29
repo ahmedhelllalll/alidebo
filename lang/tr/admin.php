@@ -320,4 +320,24 @@ return [
     'contact_soon_title' => 'Müşteri Destek Masası',
     'contact_soon_desc' => 'Yerleşik durum yönetimi ve anlık uyarılarla ziyaretçi taleplerini, destek isteklerini ve kullanıcı mesajlarını takip etmek için entegre bir sorgu merkezi.',
     'unread_leads' => 'Okunmamış Mesajlar',
+
+    // Backups
+    'auto_backup_active' => 'Otomatik Yedeklemeler Aktif',
+    'auto_backup_desc' => 'İçiniz rahat olsun! Sisteminiz her 12 saatte bir tüm veritabanı kayıtlarınızın yeni, şifrelenmiş bir anlık görüntüsünü otomatik olarak oluşturur ve güvenli bir şekilde saklar.',
+    'system_protected' => 'Sistem Korumalı',
+    'delete_snapshot_title' => 'Anlık Görüntüyü Sil?',
+    'delete_snapshot_desc' => 'Bu anlık görüntüyü kalıcı olarak silmek istediğinizden kesinlikle emin misiniz? Bu işlem geri alınamaz.',
+    'snapshot_deleted_desc' => 'Anlık görüntü başarıyla silindi.',
+    'deleted' => 'Silindi!',
+
+    'local_status' => 'Yerel',
+    'cloud_status' => 'Bulut R2',
+    'in_progress' => 'Devam Ediyor',
+    'failed' => 'Başarısız',
+    'saved' => 'Kaydedildi',
+    'not_saved' => 'Kaydedilmedi',
+    'uploaded' => 'Yüklendi',
+    'not_uploaded' => 'Yüklenmedi',
+    'backup_completed' => 'Yedekleme başarıyla tamamlandı!',
+    'delete_failed' => 'Anlık görüntü silinemedi.',
 ];
