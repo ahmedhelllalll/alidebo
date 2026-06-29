@@ -75,7 +75,7 @@
     <body class="rtl:font-cairo ltr:font-jakarta bg-white dark:bg-[#09090b] transition-colors duration-500 overflow-x-hidden text-start">
         @yield('theme_toggle')
         <main class="flex flex-col lg:flex-row min-h-screen text-center">
-            <section class="w-full lg:w-[45%] flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-s border-slate-100 dark:border-zinc-900 order-2 lg:order-1">
+            <section class="w-full lg:w-[45%] flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-e border-slate-100 dark:border-zinc-900 order-2 lg:order-1">
                 <div class="w-full max-w-md mx-auto fade-in">
                     <header class="mb-10 relative">
                         <div class="flex items-center justify-between mb-10">

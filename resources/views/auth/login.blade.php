@@ -3,7 +3,7 @@
 @section('title', __('forms.login_title'))
 
 @section('theme_toggle')
-<button onclick="toggleTheme()" class="absolute top-6 left-6 z-50 p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group">
+<button onclick="toggleTheme()" class="absolute top-6 end-6 z-50 p-3 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 shadow-xl hover:scale-110 active:scale-95 transition-all duration-300 group">
     <svg id="theme-toggle-dark-icon" class="w-5 h-5 text-orange-500 dark:hidden" fill="currentColor" viewBox="0 0 20 20">
         <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path>
     </svg>
@@ -79,7 +79,7 @@
         <div class="relative group">
             <input id="password" type="password" name="password" required placeholder="{{ __('forms.password_placeholder') }}" dir="ltr"
                 class="w-full px-6 py-5 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl focus:ring-8 focus:ring-primary/5 focus:border-primary outline-none transition-all dark:text-white placeholder:text-slate-200 dark:placeholder:text-zinc-800 font-black text-sm shadow-sm" />
-            <button type="button" onclick="togglePasswordVisibility()" class="absolute end-0 top-0 bottom-0 w-14 flex items-center justify-center text-slate-300 hover:text-primary transition-colors z-10">
+            <button type="button" onclick="togglePasswordVisibility()" class="absolute right-0 top-0 bottom-0 w-14 flex items-center justify-center text-slate-300 hover:text-primary transition-colors z-10">
                 <svg id="eye-icon" class="w-6 h-6 eye-transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />

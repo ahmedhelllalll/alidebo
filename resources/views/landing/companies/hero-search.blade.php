@@ -33,7 +33,7 @@
         <div class="flex flex-col items-start text-start w-full lg:w-3/5 gap-8 sm:gap-10">
 
             {{-- Headline --}}
-            <h1 class="hero-fade-element text-3xl sm:text-4xl md:text-5xl lg:text-6xl rtl:lg:text-[3.25rem] font-bold leading-tight rtl:leading-[1.4] text-white mb-4">
+            <h1 class="hero-fade-element text-3xl sm:text-4xl md:text-5xl lg:text-6xl rtl:lg:text-[3.25rem] font-bold leading-[1.2] text-white mb-4">
                 <span>{{ __('landing.hero_unified_headline_1') }}</span>
                 <span class="relative inline-block mx-1 md:mx-2 z-10">
                     <span class="relative z-10 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light drop-shadow-sm">{{ __('landing.hero_unified_highlight') }}</span>
