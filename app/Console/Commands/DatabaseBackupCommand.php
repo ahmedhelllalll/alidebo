@@ -209,13 +209,7 @@ class DatabaseBackupCommand extends Command
         
         foreach ($emails as $emailAddress) {
             try {
-                Mail::raw(
-                    "Success! Backup created and distributed.\n\nFile: {$zipFilename}\nSize: {$sizeMb}MB",
-                    function ($message) use ($emailAddress) {
-                        $message->to($emailAddress)
-                                ->subject('Automated Database Backup Successful');
-                    }
-                );
+                Mail::to($emailAddress)->send(new \App\Mail\BackupSuccessfulMail($zipFilename, $sizeMb));
                 $this->info("Notification sent to {$emailAddress}.");
             } catch (\Exception $e) {
                 $this->error("Failed to send notification email to {$emailAddress}: " . $e->getMessage());
