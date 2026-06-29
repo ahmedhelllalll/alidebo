@@ -7,6 +7,26 @@
     <meta name="description" content="@yield('meta_description', __('landing.meta_description'))">
     <title>@yield('title') | alidebo</title>
 
+    <!-- Search Engine & Indexing Optimization -->
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title') | alidebo">
+    <meta property="og:description" content="@yield('meta_description', __('landing.meta_description'))">
+    <meta property="og:image" content="{{ asset('images/logo.webp') }}">
+    <meta property="og:site_name" content="alidebo">
+    <meta property="og:locale" content="{{ app()->getLocale() == 'ar' ? 'ar_AR' : 'en_US' }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('title') | alidebo">
+    <meta property="twitter:description" content="@yield('meta_description', __('landing.meta_description'))">
+    <meta property="twitter:image" content="{{ asset('images/logo.webp') }}">
+
     {{-- Anti-FOUC: Theme --}}
     <script>
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -916,7 +936,7 @@
     </script>
 
     <!-- Lenis Smooth Scroll -->
-    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const lenis = new Lenis({

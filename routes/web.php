@@ -16,44 +16,14 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
-    // Fetch real data from the database
-    $featuredCompanies = BusinessProfile::with('category')->where('status', 'approved')->inRandomOrder()->limit(6)->get();
-    $suggestedCompanies = collect(); // Removing from view
-    $recentCompanies = collect(); // Removing from view
-
-    // Prepare search data for the Alpine.js frontend search bar
-    $searchCategories = Category::where('status', 'active')->get()->map(function($cat) {
-        return ['type' => 'category', 'name' => $cat->name, 'slug' => $cat->slug, 'id' => $cat->id, 'icon' => $cat->icon];
-    });
-    $companyCount = BusinessProfile::where('status', 'approved')->count();
-    $searchCompanies = BusinessProfile::where('status', 'approved')->get()->map(function($comp) {
-        return ['type' => 'company', 'name' => $comp->name, 'slug' => $comp->slug, 'logo' => $comp->logo ? Storage::url($comp->logo) : null];
-    });
-    $searchData = $searchCategories->concat($searchCompanies);
-
-    $heroMarquee = BusinessProfile::query()
+    // Fetch featured companies with category and city relationships eager loaded
+    $featuredCompanies = BusinessProfile::with(['category', 'city'])
         ->where('status', 'approved')
-        ->whereNotNull('logo')
         ->inRandomOrder()
-        ->limit(24)
-        ->get(['id', 'name', 'slug', 'logo', 'cover'])
-        ->map(fn ($company) => [
-            'name' => $company->name,
-            'slug' => $company->slug,
-            'logo' => '/storage/' . $company->logo,
-            'cover' => $company->cover ? '/storage/' . $company->cover : null,
-            'url' => route('business.view', $company->slug),
-        ])
-        ->values();
+        ->limit(6)
+        ->get();
 
-    return view('welcome', compact(
-        'featuredCompanies',
-        'suggestedCompanies',
-        'recentCompanies',
-        'searchData',
-        'heroMarquee',
-        'companyCount',
-    ));
+    return view('welcome', compact('featuredCompanies'));
 })->name('home');
 
 Route::get('lang/{locale}', function ($locale) {
