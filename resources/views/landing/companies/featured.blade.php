@@ -9,7 +9,7 @@
                     {{ __('landing.featured_desc') ?? 'Discover the top-rated businesses leading the industry with exceptional services.' }}
                 </p>
             </div>
-            <a href="#" class="shrink-0 flex items-center gap-2 text-primary font-bold hover:text-primary-light transition-colors group px-4 py-2 rounded-xl hover:bg-primary/5">
+            <a href="{{ route('directory.index') }}" class="shrink-0 flex items-center gap-2 text-primary font-bold hover:text-primary-light transition-colors group px-4 py-2 rounded-xl hover:bg-primary/5">
                 {{ __('landing.view_all') ?? 'View All Featured' }}
                 <svg class="w-4 h-4 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>

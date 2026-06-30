@@ -91,6 +91,51 @@ class BusinessProfile extends Model
         return $this->hasMany(BusinessView::class);
     }
 
+    public function translations(): HasMany
+    {
+        return $this->hasMany(BusinessProfileTranslation::class);
+    }
+
+    public function getNameAttribute($value)
+    {
+        $locale = app()->getLocale();
+        $translation = $this->translations->where('locale', $locale)->first();
+        return $translation ? $translation->name : $value;
+    }
+
+    public function getDescriptionAttribute($value)
+    {
+        $locale = app()->getLocale();
+        $translation = $this->translations->where('locale', $locale)->first();
+        return $translation ? $translation->description : $value;
+    }
+
+    public function getMetaTitleAttribute($value)
+    {
+        $locale = app()->getLocale();
+        $translation = $this->translations->where('locale', $locale)->first();
+        
+        if ($translation && $translation->meta_title) {
+            return $translation->meta_title;
+        }
+
+        $decodedValue = is_string($value) ? json_decode($value, true) : $value;
+        return $decodedValue[$locale] ?? ($decodedValue['en'] ?? $this->name);
+    }
+
+    public function getMetaDescriptionAttribute($value)
+    {
+        $locale = app()->getLocale();
+        $translation = $this->translations->where('locale', $locale)->first();
+        
+        if ($translation && $translation->meta_description) {
+            return $translation->meta_description;
+        }
+
+        $decodedValue = is_string($value) ? json_decode($value, true) : $value;
+        return $decodedValue[$locale] ?? ($decodedValue['en'] ?? null);
+    }
+
     public function getCompletionPercentage()
     {
         $fields = ['description', 'logo', 'contact_methods', 'category_id', 'address'];

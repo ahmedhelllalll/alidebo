@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
+use App\Jobs\OptimizeProfileContent;
 
 class BusinessProfileService
 {
@@ -82,7 +83,11 @@ class BusinessProfileService
             'disk' => 'r2',
         ];
 
-        return BusinessProfile::create($data);
+        $business = BusinessProfile::create($data);
+        
+        OptimizeProfileContent::dispatch($business);
+
+        return $business;
     }
 
     public function updateProfile(BusinessProfile $business, array $validated, $request): void
@@ -113,6 +118,8 @@ class BusinessProfileService
         $data['contact_methods'] = $this->formatContactMethods($validated);
 
         $business->update($data);
+
+        OptimizeProfileContent::dispatch($business);
     }
 
     public function uploadMedia(BusinessProfile $business, array $files, ?array $captions): array
