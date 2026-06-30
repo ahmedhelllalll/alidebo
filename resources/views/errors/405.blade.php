@@ -1,11 +1,11 @@
 @extends('errors.layout')
-@section('title', 'طريقة غير مسموحة')
+@section('title', __('errors.405.title'))
 @section('primary_color', '#6366f1')
 @section('toggle_icon_color', 'text-indigo-500')
 @section('glow_colors', '#6366f1, #a5b4fc, #6366f1')
 @section('float_animation', 'floating 5s ease-in-out infinite')
 @section('content')
-    <section class="w-full lg:w-[55%] min-h-screen p-10 lg:p-24 flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0c0c0e] relative overflow-hidden text-center order-1 lg:order-2">
+    <section class="w-full lg:w-[55%] min-h-screen p-10 lg:p-24 flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0c0c0e] relative overflow-hidden text-center {{ app()->getLocale() == 'ar' ? 'order-1 lg:order-2' : 'order-1' }}">
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[120px]"></div>
         <div class="relative z-10 w-full max-w-2xl mx-auto flex flex-col items-center">
             <div class="floating inline-block w-full max-w-sm mb-12">
@@ -27,11 +27,11 @@
                 <div class="w-[20px] h-[32px] border-2 border-slate-300 dark:border-zinc-700 rounded-full relative">
                     <div class="w-1 h-2 bg-indigo-500 rounded-full absolute top-1.5 left-1/2 -translate-x-1/2 animate-scroll-ar"></div>
                 </div>
-                <span class="text-[9px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-[0.2em]">انزل للتفاصيل</span>
+                <span class="text-[9px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-[0.2em]">{{ __('errors.scroll_down') }}</span>
             </div>
         </div>
     </section>
-    <section class="w-full lg:w-[45%] min-h-screen flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-r lg:border-l border-slate-100 dark:border-zinc-900 order-2 lg:order-1 text-right">
+    <section class="w-full lg:w-[45%] min-h-screen flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'border-r lg:border-l order-2 lg:order-1 text-right' : 'border-l lg:border-r order-2 text-left' }}">
         <div class="w-full max-w-md mx-auto fade-in">
             <header class="mb-10">
                 <div class="flex items-center justify-start gap-3 mb-10 group cursor-pointer" onclick="window.location.href='/'">
@@ -39,14 +39,15 @@
                     <span class="text-3xl font-[900] tracking-tighter text-slate-900 dark:text-white">alidebo</span>
                 </div>
                 <div class="inline-flex items-center justify-center gap-2 mb-6 px-4 py-2 rounded-full bg-indigo-500/10 text-indigo-600 font-bold text-sm">
-                    <span>خطأ 405</span>
+                    <div class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></div>
+                    <span>{{ __('errors.405.title') }}</span>
                 </div>
-                <h1 class="text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-white mb-4 leading-tight">طلب غير <br><span class="glow-text">منطقي!</span></h1>
-                <p class="text-slate-500 dark:text-zinc-400 font-medium text-lg leading-relaxed">الطريقة التي تحاول استخدامها للوصول لهذا الرابط غير مدعومة. يرجى العودة للخلف واستخدام الروابط الرسمية للموقع.</p>
+                <h1 class="text-3xl lg:text-4xl font-[900] text-slate-900 dark:text-white mb-4 leading-relaxed py-2 glow-text">{{ __('errors.405.title') }}</h1>
+                <p class="text-slate-500 dark:text-zinc-400 font-medium text-lg leading-relaxed">{{ __('errors.405.desc') }}</p>
             </header>
             <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                <a href="{{ url('/') }}" class="flex-1 flex items-center justify-center bg-indigo-600 text-white py-4 px-6 rounded-2xl font-black text-lg shadow-[0_10px_30px_rgba(99,102,241,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">العودة للرئيسية</a>
-                <button onclick="window.history.back()" class="flex-1 flex items-center justify-center bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 py-4 px-6 rounded-2xl font-bold text-lg hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all duration-300">الرجوع للخلف</button>
+                <a href="{{ url('/') }}" class="flex-1 flex items-center justify-center bg-indigo-600 text-white py-3 px-5 rounded-2xl font-black text-base shadow-[0_10px_30px_rgba(99,102,241,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">{{ __('errors.back_home') }}</a>
+                <button onclick="window.history.back()" class="flex-1 flex items-center justify-center bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 py-3 px-5 rounded-2xl font-bold text-base hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all duration-300">{{ __('errors.go_back') }}</button>
             </div>
         </div>
     </section>

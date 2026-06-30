@@ -16,6 +16,14 @@
 .hero-fade-element:nth-child(1) { animation-delay: 0.2s; }
 .hero-fade-element:nth-child(2) { animation-delay: 0.4s; }
 .hero-fade-element:nth-child(3) { animation-delay: 0.6s; }
+
+@media (max-width: 768px) {
+    .hero-fade-element {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+}
 </style>
 <div class="hero-font px-3 sm:px-6 lg:px-8 pb-3 sm:pb-6 lg:pb-8 pt-20 sm:pt-24">
 <section id="discover" class="relative w-full z-40 flex flex-col min-h-[85vh] justify-center scroll-mt-24 rounded-[2rem] shadow-[0_20px_50px_-12px_rgba(0,0,0,0.25)] overflow-hidden">
@@ -63,11 +71,10 @@
                 @endauth
 
                 {{-- Secondary: Explore Companies --}}
-                <button type="button"
-                        onclick="event.preventDefault(); document.getElementById('featured').scrollIntoView({ behavior: 'smooth', block: 'start' });"
+                <a href="{{ route('directory.index') }}"
                         class="group h-[3.5rem] sm:h-[3.75rem] px-8 sm:px-10 rounded-[1.25rem] bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white flex items-center justify-center transition-all duration-500 font-bold text-base sm:text-lg hover:-translate-y-0.5 active:scale-[0.98]">
                     <span>{{ __('landing.hero_unified_btn') }}</span>
-                </button>
+                </a>
             </div>
 
         </div>

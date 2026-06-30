@@ -1,32 +1,32 @@
 @extends('errors.layout')
-@section('title', 'تسجيل الدخول مطلوب')
+@section('title', __('errors.401.title'))
 @section('primary_color', '#3b82f6')
 @section('toggle_icon_color', 'text-blue-500')
 @section('glow_colors', '#3b82f6, #60a5fa, #3b82f6')
 @section('float_animation', 'floating 5s ease-in-out infinite')
 @section('content')
-<section class="w-full lg:w-[45%] flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-l border-slate-100 dark:border-zinc-900 order-2 lg:order-1">
+<section class="w-full lg:w-[45%] flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'border-l order-2 lg:order-1 text-right' : 'border-r order-2 text-left' }}">
     <div class="w-full max-w-md mx-auto fade-in">
         <header class="mb-10 text-right">
             <div class="inline-flex items-center justify-center gap-2 mb-6 px-4 py-2 rounded-full bg-blue-500/10 text-blue-600 font-bold text-sm">
-                <span>خطأ 401</span>
+                <span>{{ __('errors.401.title') }}</span>
             </div>
-            <h1 class="text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-white mb-4 leading-tight">عفواً، هويتك <br><span class="glow-text">مجهولة!</span></h1>
+            <h1 class="text-3xl lg:text-4xl font-[900] text-slate-900 dark:text-white mb-4 leading-relaxed py-2 glow-text">{{ __('errors.401.title') }}</h1>
             <p class="text-slate-500 dark:text-zinc-400 font-medium text-lg leading-relaxed">
-                لا يمكنك الوصول إلى هذه الصفحة قبل إثبات هويتك. يرجى تسجيل الدخول أولاً للتمتع بصلاحيات الوصول.
+                {{ __('errors.401.desc') }}
             </p>
         </header>
         <div class="flex flex-col sm:flex-row gap-4 mt-8">
-            <a href="{{ route('login') }}" class="flex-1 flex items-center justify-center bg-primary text-white py-4 px-6 rounded-2xl font-black text-lg shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
-                تسجيل الدخول
+            <a href="{{ route('login') }}" class="flex-1 flex items-center justify-center bg-primary text-white py-3 px-5 rounded-2xl font-black text-base shadow-[0_10px_30px_rgba(59,130,246,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+                {{ __('errors.login') }}
             </a>
-            <button onclick="window.history.back()" class="flex-1 flex items-center justify-center bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 py-4 px-6 rounded-2xl font-bold text-lg hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all duration-300">
-                الرجوع للخلف
+            <button onclick="window.history.back()" class="flex-1 flex items-center justify-center bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 py-3 px-5 rounded-2xl font-bold text-base hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all duration-300">
+                {{ __('errors.go_back') }}
             </button>
         </div>
     </div>
 </section>
-<section class="w-full lg:w-[55%] p-10 lg:p-24 flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0c0c0e] relative overflow-hidden text-center order-1 lg:order-2">
+<section class="w-full lg:w-[55%] p-10 lg:p-24 flex flex-col items-center justify-center bg-slate-50 dark:bg-[#0c0c0e] relative overflow-hidden text-center {{ app()->getLocale() == 'ar' ? 'order-1 lg:order-2' : 'order-1' }}">
     <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px]"></div>
     <div class="relative z-10 w-full max-w-2xl mx-auto">
         <div class="floating inline-block w-full max-w-sm">

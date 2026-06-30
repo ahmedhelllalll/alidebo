@@ -31,7 +31,7 @@
             </div>
         </div>
     </section>
-    <section class="w-full lg:w-[45%] min-h-screen flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-r lg:border-l border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'order-2 lg:order-1 text-right' : 'order-2 text-left' }}">
+    <section class="w-full lg:w-[45%] min-h-screen flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'border-r lg:border-l order-2 lg:order-1 text-right' : 'border-l lg:border-r order-2 text-left' }}">
         <div class="w-full max-w-md mx-auto fade-in">
             <header class="mb-10">
                 <div class="flex items-center justify-start gap-3 mb-10 group cursor-pointer" onclick="window.location.href='/'">
@@ -41,12 +41,12 @@
                 <div class="inline-flex items-center justify-center gap-2 mb-6 px-4 py-2 rounded-full bg-primary/10 text-primary font-bold text-sm">
                     <span>{{ __('errors.404.title') }}</span>
                 </div>
-                <h1 class="text-4xl lg:text-5xl font-[900] text-slate-900 dark:text-white mb-4 leading-tight glow-text">{{ __('errors.404.title') }}</h1>
+                <h1 class="text-3xl lg:text-4xl font-[900] text-slate-900 dark:text-white mb-4 leading-relaxed py-2 glow-text">{{ __('errors.404.title') }}</h1>
                 <p class="text-slate-500 dark:text-zinc-400 font-medium text-lg leading-relaxed">{{ __('errors.404.desc') }}</p>
             </header>
             <div class="flex flex-col sm:flex-row gap-4 mt-8">
-                <a href="{{ url('/') }}" class="flex-1 flex items-center justify-center bg-primary text-white py-4 px-6 rounded-2xl font-black text-lg shadow-[0_10px_30px_rgba(244,80,24,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">{{ __('errors.back_home') }}</a>
-                <button onclick="window.history.back()" class="flex-1 flex items-center justify-center bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 py-4 px-6 rounded-2xl font-bold text-lg hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all duration-300">{{ __('errors.go_back') }}</button>
+                <a href="{{ url('/') }}" class="flex-1 flex items-center justify-center bg-primary text-white py-3 px-5 rounded-2xl font-black text-base shadow-[0_10px_30px_rgba(244,80,24,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">{{ __('errors.back_home') }}</a>
+                <button onclick="window.history.back()" class="flex-1 flex items-center justify-center bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 py-3 px-5 rounded-2xl font-bold text-base hover:bg-slate-200 dark:hover:bg-zinc-800 transition-all duration-300">{{ __('errors.go_back') }}</button>
             </div>
         </div>
     </section>
