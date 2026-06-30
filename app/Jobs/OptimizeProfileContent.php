@@ -31,9 +31,9 @@ class OptimizeProfileContent implements ShouldQueue
      */
     public function handle(): void
     {
-        $apiKey = config('services.groq.api_key');
+        $apiKey = config('services.groq.optimization_api_key');
         if (!$apiKey || $apiKey === '[REDACTED]') {
-            throw new \Exception('Groq API Key is missing or invalid in config.');
+            throw new \Exception('Groq Optimization API Key is missing or invalid in config.');
         }
 
         $prompt = $this->buildPrompt();
