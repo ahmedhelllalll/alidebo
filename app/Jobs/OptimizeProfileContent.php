@@ -16,6 +16,7 @@ class OptimizeProfileContent implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    public $tries = 5;
     public $businessProfile;
 
     /**
@@ -58,10 +59,19 @@ class OptimizeProfileContent implements ShouldQueue
             
             if (is_array($parsedContent) && !empty($parsedContent)) {
                 $this->saveTranslations($parsedContent);
+                
+                // Introduce a 15-second delay to pace the worker and respect Groq's rate limits
+                sleep(15);
             } else {
                 throw new \Exception('Groq AI returned invalid or empty JSON: ' . $content);
             }
         } else {
+            // Auto-Retry Safety Net: If Groq hits a rate limit (429), wait 60 seconds and try again
+            if ($response->status() === 429) {
+                $this->release(60);
+                return;
+            }
+            
             throw new \Exception('Groq API Error: ' . $response->status() . ' - ' . $response->body());
         }
     }
