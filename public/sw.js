@@ -8,9 +8,18 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        return cache.addAll(urlsToCache);
+        // Use addAll safely, but don't fail the SW install if it fails
+        return cache.addAll(urlsToCache).catch(err => {
+            console.log('SW Cache error: ', err);
+        });
       })
   );
+  // Force immediate activation
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+    event.waitUntil(self.clients.claim());
 });
 
 self.addEventListener('fetch', event => {
