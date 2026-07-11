@@ -5,7 +5,9 @@ $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
 use App\Models\Country;
 
-$countries = Country::all()->toArray();
+$countries = Country::all()->map(function($country) {
+    return $country->getAttributes();
+})->toArray();
 
 $phpCode = "<?php\n"
          . "require __DIR__ . '/vendor/autoload.php';\n"

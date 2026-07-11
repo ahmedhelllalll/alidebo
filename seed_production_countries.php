@@ -21,9 +21,8 @@ $data = array (
     'name_zh' => '阿富汗',
     'code' => 'AF',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أفغانستان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   1 => 
   array (
@@ -36,9 +35,8 @@ $data = array (
     'name_zh' => '阿尔及利亚',
     'code' => 'AL',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'الجزائر',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   2 => 
   array (
@@ -51,9 +49,8 @@ $data = array (
     'name_zh' => '美属萨摩亚',
     'code' => 'AM',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'ساموا الأمريكية',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   3 => 
   array (
@@ -66,9 +63,8 @@ $data = array (
     'name_zh' => '安圭拉',
     'code' => 'AE',
     'status' => 'active',
-    'created_at' => '2026-04-10T22:23:25.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أنغويلا',
+    'created_at' => '2026-04-11 00:23:25',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   4 => 
   array (
@@ -81,9 +77,8 @@ $data = array (
     'name_zh' => '南极洲',
     'code' => 'KW',
     'status' => 'active',
-    'created_at' => '2026-04-10T22:23:25.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أنتارتيكا',
+    'created_at' => '2026-04-11 00:23:25',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   5 => 
   array (
@@ -96,9 +91,8 @@ $data = array (
     'name_zh' => '阿鲁巴',
     'code' => 'AR',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أروبا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   6 => 
   array (
@@ -111,9 +105,8 @@ $data = array (
     'name_zh' => '奥地利',
     'code' => 'AU',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'النمسا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   7 => 
   array (
@@ -126,9 +119,8 @@ $data = array (
     'name_zh' => '阿塞拜疆',
     'code' => 'AZ',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أذربيجان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   8 => 
   array (
@@ -141,9 +133,8 @@ $data = array (
     'name_zh' => '巴巴多斯',
     'code' => 'BA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'باربادوس',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   9 => 
   array (
@@ -156,9 +147,8 @@ $data = array (
     'name_zh' => '百慕大',
     'code' => 'BE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'برمودا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   10 => 
   array (
@@ -171,9 +161,8 @@ $data = array (
     'name_zh' => '不丹',
     'code' => 'BH',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'بوتان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   11 => 
   array (
@@ -186,9 +175,8 @@ $data = array (
     'name_zh' => '布维岛',
     'code' => 'BO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'جزر بوفيه',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   12 => 
   array (
@@ -201,9 +189,8 @@ $data = array (
     'name_zh' => '文莱',
     'code' => 'BR',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'بروناي',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   13 => 
   array (
@@ -216,9 +203,8 @@ $data = array (
     'name_zh' => '开曼群岛',
     'code' => 'CA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'جزر كايمان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   14 => 
   array (
@@ -231,9 +217,8 @@ $data = array (
     'name_zh' => '圣诞岛',
     'code' => 'CH',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'جزيرة كريسماس',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   15 => 
   array (
@@ -246,9 +231,8 @@ $data = array (
     'name_zh' => '哥斯达黎加',
     'code' => 'CO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'كوستاريكا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   16 => 
   array (
@@ -261,9 +245,8 @@ $data = array (
     'name_zh' => '克罗地亚',
     'code' => 'CR',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'كرواتيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   17 => 
   array (
@@ -276,9 +259,8 @@ $data = array (
     'name_zh' => '库拉索',
     'code' => 'CU',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'كوراساو',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   18 => 
   array (
@@ -291,9 +273,8 @@ $data = array (
     'name_zh' => '塞浦路斯',
     'code' => 'CY',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'قبرص',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   19 => 
   array (
@@ -306,9 +287,8 @@ $data = array (
     'name_zh' => '捷克',
     'code' => 'CZ',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'التشيك',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   20 => 
   array (
@@ -321,9 +301,8 @@ $data = array (
     'name_zh' => '丹麦',
     'code' => 'DE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'الدنمارك',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   21 => 
   array (
@@ -336,9 +315,8 @@ $data = array (
     'name_zh' => '吉布提',
     'code' => 'DJ',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'جيبوتي',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   22 => 
   array (
@@ -351,9 +329,8 @@ $data = array (
     'name_zh' => '多明尼加',
     'code' => 'DO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'جمهورية الدومينيكان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   23 => 
   array (
@@ -366,9 +343,8 @@ $data = array (
     'name_zh' => '厄瓜多尔',
     'code' => 'EC',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'الإكوادور',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   24 => 
   array (
@@ -381,9 +357,8 @@ $data = array (
     'name_zh' => '埃及',
     'code' => 'EG',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'مصر',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   25 => 
   array (
@@ -396,9 +371,8 @@ $data = array (
     'name_zh' => '厄立特里亚',
     'code' => 'ER',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'إريتريا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   26 => 
   array (
@@ -411,9 +385,8 @@ $data = array (
     'name_zh' => '斯威士兰',
     'code' => 'ES',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'إسواتيني',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   27 => 
   array (
@@ -426,9 +399,8 @@ $data = array (
     'name_zh' => '埃塞俄比亚',
     'code' => 'ET',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'إثيوبيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   28 => 
   array (
@@ -441,9 +413,8 @@ $data = array (
     'name_zh' => '芬兰',
     'code' => 'FI',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'فنلندا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   29 => 
   array (
@@ -456,9 +427,8 @@ $data = array (
     'name_zh' => '加蓬',
     'code' => 'GA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'الغابون',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   30 => 
   array (
@@ -471,9 +441,8 @@ $data = array (
     'name_zh' => '德国',
     'code' => 'GE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'ألمانيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   31 => 
   array (
@@ -486,9 +455,8 @@ $data = array (
     'name_zh' => '加纳',
     'code' => 'GH',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'غانا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   32 => 
   array (
@@ -501,9 +469,8 @@ $data = array (
     'name_zh' => '格林纳达',
     'code' => 'GR',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'غرينادا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   33 => 
   array (
@@ -516,9 +483,8 @@ $data = array (
     'name_zh' => '圭亚那',
     'code' => 'GU',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'غيانا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   34 => 
   array (
@@ -531,9 +497,8 @@ $data = array (
     'name_zh' => '匈牙利',
     'code' => 'HU',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'المجر',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   35 => 
   array (
@@ -546,9 +511,8 @@ $data = array (
     'name_zh' => '印度尼西亚',
     'code' => 'IN',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'إندونيسيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   36 => 
   array (
@@ -561,9 +525,8 @@ $data = array (
     'name_zh' => '爱尔兰',
     'code' => 'IR',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أيرلندا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   37 => 
   array (
@@ -576,9 +539,8 @@ $data = array (
     'name_zh' => '以色列',
     'code' => 'IS',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'إسرائيل',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   38 => 
   array (
@@ -591,9 +553,8 @@ $data = array (
     'name_zh' => '意大利',
     'code' => 'IT',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'إيطاليا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   39 => 
   array (
@@ -606,9 +567,8 @@ $data = array (
     'name_zh' => '泽西岛',
     'code' => 'JE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'جيرزي',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   40 => 
   array (
@@ -621,9 +581,8 @@ $data = array (
     'name_zh' => '约旦',
     'code' => 'JO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'الأردن',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   41 => 
   array (
@@ -636,9 +595,8 @@ $data = array (
     'name_zh' => '肯尼亚',
     'code' => 'KE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'كينيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   42 => 
   array (
@@ -651,9 +609,8 @@ $data = array (
     'name_zh' => '基里巴斯',
     'code' => 'KI',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'كيريباتي',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   43 => 
   array (
@@ -666,9 +623,8 @@ $data = array (
     'name_zh' => '吉尔吉斯斯坦',
     'code' => 'KY',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'قيرغيزستان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   44 => 
   array (
@@ -681,9 +637,8 @@ $data = array (
     'name_zh' => '拉脱维亚',
     'code' => 'LA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'لاتفيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   45 => 
   array (
@@ -696,9 +651,8 @@ $data = array (
     'name_zh' => '立陶宛',
     'code' => 'LI',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'ليتوانيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   46 => 
   array (
@@ -711,9 +665,8 @@ $data = array (
     'name_zh' => '卢森堡',
     'code' => 'LU',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'لوكسمبورغ',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   47 => 
   array (
@@ -726,9 +679,8 @@ $data = array (
     'name_zh' => '马约特',
     'code' => 'MA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'مايوت',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   48 => 
   array (
@@ -741,9 +693,8 @@ $data = array (
     'name_zh' => '墨西哥',
     'code' => 'ME',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'المسكيك',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   49 => 
   array (
@@ -756,9 +707,8 @@ $data = array (
     'name_zh' => '缅甸',
     'code' => 'MY',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'ميانمار',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   50 => 
   array (
@@ -771,9 +721,8 @@ $data = array (
     'name_zh' => '瑙鲁',
     'code' => 'NA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'ناورو',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   51 => 
   array (
@@ -786,9 +735,8 @@ $data = array (
     'name_zh' => '新西兰',
     'code' => 'NE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'نيوزيلندا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   52 => 
   array (
@@ -801,9 +749,8 @@ $data = array (
     'name_zh' => '纽埃',
     'code' => 'NI',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'نييوي',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   53 => 
   array (
@@ -816,9 +763,8 @@ $data = array (
     'name_zh' => '挪威',
     'code' => 'NO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'النرويج',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   54 => 
   array (
@@ -831,9 +777,8 @@ $data = array (
     'name_zh' => '阿曼',
     'code' => 'OM',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'عمان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   55 => 
   array (
@@ -846,9 +791,8 @@ $data = array (
     'name_zh' => '巴拉圭',
     'code' => 'PA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'باراغواي',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   56 => 
   array (
@@ -861,9 +805,8 @@ $data = array (
     'name_zh' => '秘鲁',
     'code' => 'PE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'بيرو',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   57 => 
   array (
@@ -876,9 +819,8 @@ $data = array (
     'name_zh' => '菲律宾',
     'code' => 'PH',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'الفلبين',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   58 => 
   array (
@@ -891,9 +833,8 @@ $data = array (
     'name_zh' => '卡塔尔',
     'code' => 'QA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'قطر',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   59 => 
   array (
@@ -906,9 +847,8 @@ $data = array (
     'name_zh' => '罗马尼亚',
     'code' => 'RO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'رومانيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   60 => 
   array (
@@ -921,9 +861,8 @@ $data = array (
     'name_zh' => '俄罗斯',
     'code' => 'RU',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'روسيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   61 => 
   array (
@@ -936,9 +875,8 @@ $data = array (
     'name_zh' => '卢旺达',
     'code' => 'RW',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'رواندا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   62 => 
   array (
@@ -951,9 +889,8 @@ $data = array (
     'name_zh' => '沙特阿拉伯',
     'code' => 'SA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'السعودية',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   63 => 
   array (
@@ -966,9 +903,8 @@ $data = array (
     'name_zh' => '塞舌尔',
     'code' => 'SE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'سيشل',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   64 => 
   array (
@@ -981,9 +917,8 @@ $data = array (
     'name_zh' => '斯洛文尼亚',
     'code' => 'SL',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'سلوفينيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   65 => 
   array (
@@ -996,9 +931,8 @@ $data = array (
     'name_zh' => '南苏丹',
     'code' => 'SO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'جنوب السودان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   66 => 
   array (
@@ -1011,9 +945,8 @@ $data = array (
     'name_zh' => '斯里兰卡',
     'code' => 'SR',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'سريلانكا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   67 => 
   array (
@@ -1026,9 +959,8 @@ $data = array (
     'name_zh' => '叙利亚',
     'code' => 'SY',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'سوريا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   68 => 
   array (
@@ -1041,9 +973,8 @@ $data = array (
     'name_zh' => '汤加',
     'code' => 'TO',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'تونغا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   69 => 
   array (
@@ -1056,9 +987,8 @@ $data = array (
     'name_zh' => '特立尼达和多巴哥',
     'code' => 'TR',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'ترينيداد وتوباغو',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   70 => 
   array (
@@ -1071,9 +1001,8 @@ $data = array (
     'name_zh' => '乌干达',
     'code' => 'UG',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أوغندا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   71 => 
   array (
@@ -1086,9 +1015,8 @@ $data = array (
     'name_zh' => '乌兹别克斯坦',
     'code' => 'UZ',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'أوزباكستان',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   72 => 
   array (
@@ -1101,9 +1029,8 @@ $data = array (
     'name_zh' => '委内瑞拉',
     'code' => 'VE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'فنزويلا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   73 => 
   array (
@@ -1116,9 +1043,8 @@ $data = array (
     'name_zh' => '也门',
     'code' => 'YE',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'اليمن',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
   74 => 
   array (
@@ -1131,9 +1057,8 @@ $data = array (
     'name_zh' => '赞比亚',
     'code' => 'ZA',
     'status' => 'active',
-    'created_at' => '2026-07-11T02:56:50.000000Z',
-    'updated_at' => '2026-07-11T03:30:29.000000Z',
-    'name' => 'زامبيا',
+    'created_at' => '2026-07-11 05:56:50',
+    'updated_at' => '2026-07-11 06:30:29',
   ),
 );
 
