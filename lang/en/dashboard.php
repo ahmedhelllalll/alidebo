@@ -5,9 +5,10 @@ return [
     'account_label' => 'Account',
     'sidebar' => [
         'main' => 'Main Menu',
-        'settings' => 'Preferences',
+        'settings' => 'Settings',
         'business' => 'Business file management',
-        'developer' => 'Developer'
+        'developer' => 'Developer',
+        'management' => 'Management',
     ],
     'index' => [
         'title' => 'Dashboard',
@@ -110,5 +111,18 @@ return [
         'status' => 'Status',
         'action' => 'Action',
         'statistics' => 'Statistics',
+        'quick_actions' => 'Quick Actions',
+        'edit_business' => 'Edit Business Info',
+        'manage_reviews' => 'Manage Reviews',
+        'contact_support' => 'Contact Support',
+        'update_business_details' => 'Update your business details',
+        'respond_customer_feedback' => 'Respond to customer feedback',
+        'get_help_elite_team' => 'Get help from our elite team',
+        'copy_link' => 'Copy Link',
+        'powered_by_ai' => 'Powered by AliDebo AI Routing',
+        'translations' => 'Translations',
+        'reviews' => 'Reviews',
+        'leads' => 'Leads',
+        'help_center' => 'Help Center',
     ],
 ];

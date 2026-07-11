@@ -967,7 +967,7 @@
     </script>
 
     <!-- PWA Install Prompt -->
-    <div id="pwa-install-prompt" class="fixed top-4 left-4 right-4 md:hidden z-[99999] bg-white dark:bg-[#0e0e11] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl p-5 transform transition-all duration-500 -translate-y-[150%] opacity-0 flex flex-col gap-3">
+    <div id="pwa-install-prompt" class="fixed bottom-4 left-4 right-4 md:hidden z-[99999] bg-white dark:bg-[#0e0e11] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl p-5 transform transition-all duration-500 translate-y-[150%] opacity-0 flex flex-col gap-3">
         <div class="flex items-center gap-4">
             <img src="{{ asset('web-app-manifest-192x192.png') }}" alt="AliDebo" class="w-12 h-12 rounded-xl object-contain bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
             <div>
@@ -1017,7 +1017,7 @@
             if (!localStorage.getItem('pwa_prompt_dismissed')) {
                 // Show the prompt with a slight delay
                 setTimeout(() => {
-                    pwaPrompt.classList.remove('-translate-y-[150%]', 'opacity-0');
+                    pwaPrompt.classList.remove('translate-y-[150%]', 'opacity-0');
                 }, 1500);
             }
         });
@@ -1025,7 +1025,7 @@
         if (pwaInstallBtn) {
             pwaInstallBtn.addEventListener('click', async () => {
                 if (deferredPrompt) {
-                    pwaPrompt.classList.add('-translate-y-[150%]', 'opacity-0');
+                    pwaPrompt.classList.add('translate-y-[150%]', 'opacity-0');
                     deferredPrompt.prompt();
                     const { outcome } = await deferredPrompt.userChoice;
                     if (outcome === 'accepted') {
@@ -1038,7 +1038,7 @@
 
         if (pwaDismissBtn) {
             pwaDismissBtn.addEventListener('click', () => {
-                pwaPrompt.classList.add('-translate-y-[150%]', 'opacity-0');
+                pwaPrompt.classList.add('translate-y-[150%]', 'opacity-0');
                 localStorage.setItem('pwa_prompt_dismissed', 'true');
             });
         }

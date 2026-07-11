@@ -5,9 +5,10 @@ return [
     'account_label' => 'الحساب',
     'sidebar' => [
         'main' => 'القائمة الرئيسية',
-        'settings' => 'التفضيلات',
+        'settings' => 'الإعدادات',
         'business' => 'ادارة الملف التجاري',
-        'developer' => 'المطور'
+        'developer' => 'المطور',
+        'management' => 'الإدارة',
     ],
     'index' => [
         'title' => 'لوحة التحكم',
@@ -110,5 +111,18 @@ return [
         'status' => 'الحالة',
         'action' => 'إجراء',
         'statistics' => 'الإحصائيات',
+        'quick_actions' => 'إجراءات سريعة',
+        'edit_business' => 'تعديل بيانات العمل',
+        'manage_reviews' => 'إدارة التقييمات',
+        'contact_support' => 'تواصل مع الدعم',
+        'update_business_details' => 'قم بتحديث تفاصيل عملك',
+        'respond_customer_feedback' => 'الرد على ملاحظات العملاء',
+        'get_help_elite_team' => 'احصل على مساعدة من فريق النخبة',
+        'copy_link' => 'نسخ الرابط',
+        'powered_by_ai' => 'مدعوم من التوجيه الذكي لـ AliDebo',
+        'translations' => 'الترجمات',
+        'reviews' => 'التقييمات',
+        'leads' => 'العملاء المحتملين',
+        'help_center' => 'مركز المساعدة',
     ],
 ];

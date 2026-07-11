@@ -5,9 +5,10 @@ return [
     'account_label' => '账户',
     'sidebar' => [
         'main' => '主菜单',
-        'settings' => '首选项',
+        'settings' => '设置',
         'business' => '业务文件管理',
-        'developer' => '开发者'
+        'developer' => '开发者',
+        'management' => '管理',
     ],
     'index' => [
         'title' => '仪表板',
@@ -110,5 +111,18 @@ return [
         'status' => '状态',
         'action' => '操作',
         'statistics' => '统计数据',
+        'quick_actions' => '快速操作',
+        'edit_business' => '编辑商业信息',
+        'manage_reviews' => '管理评论',
+        'contact_support' => '联系客服',
+        'update_business_details' => '更新您的业务详细信息',
+        'respond_customer_feedback' => '回应客户反馈',
+        'get_help_elite_team' => '从我们的精英团队获得帮助',
+        'copy_link' => '复制链接',
+        'powered_by_ai' => '由 AliDebo AI 路由提供支持',
+        'translations' => '翻译',
+        'reviews' => '评论',
+        'leads' => '潜在客户',
+        'help_center' => '帮助中心',
     ],
 ];

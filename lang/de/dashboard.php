@@ -7,7 +7,8 @@ return [
         'main' => 'Hauptmenü',
         'settings' => 'Einstellungen',
         'business' => 'Geschäftsdateiverwaltung',
-        'developer' => 'Entwickler'
+        'developer' => 'Entwickler',
+        'management' => 'Verwaltung',
     ],
     'index' => [
         'title' => 'Dashboard',
@@ -110,5 +111,18 @@ return [
         'status' => 'Status',
         'action' => 'Aktion',
         'statistics' => 'Statistiken',
+        'quick_actions' => 'Schnellaktionen',
+        'edit_business' => 'Geschäftsinfos bearbeiten',
+        'manage_reviews' => 'Bewertungen verwalten',
+        'contact_support' => 'Support kontaktieren',
+        'update_business_details' => 'Aktualisieren Sie Ihre Geschäftsdetails',
+        'respond_customer_feedback' => 'Reagieren Sie auf Kundenfeedback',
+        'get_help_elite_team' => 'Holen Sie sich Hilfe von unserem Elite-Team',
+        'copy_link' => 'Link kopieren',
+        'powered_by_ai' => 'Unterstützt von AliDebo AI Routing',
+        'translations' => 'Übersetzungen',
+        'reviews' => 'Bewertungen',
+        'leads' => 'Leads',
+        'help_center' => 'Hilfe-Center',
     ],
 ];
