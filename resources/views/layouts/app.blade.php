@@ -7,6 +7,10 @@
     <meta name="description" content="@yield('meta_description', __('landing.meta_description'))">
     <title>@yield('title') | alidebo</title>
 
+    <!-- PWA -->
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#ffffff">
+
     <!-- Search Engine & Indexing Optimization -->
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
@@ -960,6 +964,78 @@
             // Expose globally
             window.lenis = lenis;
         });
+    </script>
+
+    <!-- PWA Install Prompt -->
+    <div id="pwa-install-prompt" class="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:w-96 z-[1001] bg-white dark:bg-[#0e0e11] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl p-5 transform transition-all duration-500 translate-y-[150%] opacity-0 flex flex-col gap-3">
+        <div class="flex items-center gap-4">
+            <img src="{{ asset('web-app-manifest-192x192.png') }}" alt="AliDebo" class="w-12 h-12 rounded-xl object-contain bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
+            <div>
+                <h4 class="font-bold text-gray-900 dark:text-white text-sm">{{ __('pwa.install_title') }}</h4>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('pwa.install_message') }}</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 mt-1">
+            <button id="pwa-dismiss-btn" class="flex-1 px-4 py-2 text-xs font-semibold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-colors">
+                {{ __('pwa.dismiss_button') }}
+            </button>
+            <button id="pwa-install-btn" class="flex-1 px-4 py-2 text-xs font-bold text-white bg-[#f45018] hover:bg-[#d43d0f] rounded-xl transition-colors shadow-lg shadow-[#f45018]/25">
+                {{ __('pwa.install_button') }}
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => {
+                    console.log('SW registration failed: ', err);
+                });
+            });
+        }
+
+        // PWA Install Prompt Logic
+        let deferredPrompt;
+        const pwaPrompt = document.getElementById('pwa-install-prompt');
+        const pwaInstallBtn = document.getElementById('pwa-install-btn');
+        const pwaDismissBtn = document.getElementById('pwa-dismiss-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+
+            // Check if user already dismissed it
+            if (!localStorage.getItem('pwa_prompt_dismissed')) {
+                // Show the prompt with a slight delay
+                setTimeout(() => {
+                    pwaPrompt.classList.remove('translate-y-[150%]', 'opacity-0');
+                }, 1500);
+            }
+        });
+
+        if (pwaInstallBtn) {
+            pwaInstallBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    pwaPrompt.classList.add('translate-y-[150%]', 'opacity-0');
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        localStorage.setItem('pwa_prompt_dismissed', 'true');
+                    }
+                    deferredPrompt = null;
+                }
+            });
+        }
+
+        if (pwaDismissBtn) {
+            pwaDismissBtn.addEventListener('click', () => {
+                pwaPrompt.classList.add('translate-y-[150%]', 'opacity-0');
+                localStorage.setItem('pwa_prompt_dismissed', 'true');
+            });
+        }
     </script>
 
     @stack('scripts')
