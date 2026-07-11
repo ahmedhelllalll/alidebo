@@ -28,6 +28,9 @@ class PublicReviewController extends Controller
                                 ->first();
 
         if ($existingReview) {
+            if ($request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => __('directory.already_reviewed')]);
+            }
             return back()->with('error', __('directory.already_reviewed'));
         }
 
@@ -41,6 +44,9 @@ class PublicReviewController extends Controller
             'status' => 'pending', // Pending by default
         ]);
 
+        if ($request->wantsJson()) {
+            return response()->json(['success' => true, 'message' => __('directory.review_submitted')]);
+        }
         return back()->with('success', __('directory.review_submitted'));
     }
 }
