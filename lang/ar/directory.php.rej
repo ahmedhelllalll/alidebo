@@ -1,0 +1,42 @@
+diff a/lang/ar/directory.php b/lang/ar/directory.php	(rejected hunks)
+@@ -25,6 +25,18 @@
+     'searching' => 'جاري البحث...',
+     'no_results_for' => 'لم يتم العثور على نتائج لـ',
+     'company' => 'الشركة',
++    'gallery' => 'المعرض',
++    'map' => 'خريطة الموقع',
++    'sections' => 'تفاصيل العمل',
++    
++    // Leads / Contact Form
++    'get_quote' => 'إرسال رسالة / طلب تسعيرة',
++    'lead_name' => 'الاسم',
++    'lead_email' => 'البريد الإلكتروني',
++    'lead_phone' => 'رقم الهاتف',
++    'lead_message' => 'الرسالة',
++    'lead_send' => 'إرسال',
++    'lead_success' => 'تم إرسال رسالتك بنجاح!',
+     'category' => 'الفئة',
+     'country' => 'الدولة',
+     'city' => 'المدينة',
+@@ -56,6 +68,20 @@
+     'profile_verified' => 'موثّق',
+     'profile_member_since' => 'عضو منذ',
+     'profile_get_directions' => 'الاتجاهات',
+-    'profile_connect' => 'تواصل معنا',
++    'profile_connect' => 'تواصل',
+     'profile_of' => 'من',
++
++    // Reviews
++    'profile_reviews' => 'التقييمات',
++    'write_review' => 'اكتب تقييماً',
++    'rate_experience' => 'قيم تجربتك',
++    'review_comment' => 'تعليقك',
++    'submit_review' => 'إرسال التقييم',
++    'login_required_review' => 'يجب تسجيل الدخول لترك تقييم.',
++    'already_reviewed' => 'لقد قمت بتقييم هذا العمل مسبقاً.',
++    'review_submitted' => 'تم إرسال تقييمك وهو قيد المراجعة.',
++    'no_reviews_yet' => 'لا توجد تقييمات حتى الآن. كن أول من يقيّم!',
++    'business_reply' => 'رد العمل:',
++'review_name' => 'اسمك',
++    'review_email' => 'بريدك الإلكتروني (اختياري)',
+ ];

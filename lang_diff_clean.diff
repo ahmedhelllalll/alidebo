@@ -1,0 +1,761 @@
+diff --git a/lang/ar/dashboard.php b/lang/ar/dashboard.php
+index aca4830..13e09b4 100644
+--- a/lang/ar/dashboard.php
++++ b/lang/ar/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'ملاحظات فريق التدقيق',
+             'cta' => 'تعديل وكمال الهوية',
+         ],
++        'views_this_week' => 'مشاهدات هذا الأسبوع',
++        'data_locked' => 'البيانات مقفلة',
++        'data_available_after_approval' => 'ستكون بيانات التحليلات الخاصة بك متاحة هنا بمجرد الموافقة على ملف نشاطك التجاري.',
++        'views' => 'مشاهدات',
++        'profile_strength' => 'قوة الملف الشخصي',
++        'boost_visibility_msg' => 'قم بزيادة ظهورك من خلال إكمال بيانات عملك. الملف الشخصي المكتمل يحصل على :bold تفاعل أكثر بـ 3 أضعاف :endbold.',
++        'profile_optimized_msg' => 'ملفك الشخصي مُحسّن بشكل مثالي للوصول للنخبة! حافظ على تحديث المحتوى الخاص بك.',
++        'complete_profile_now' => 'أكمل الملف الشخصي الآن',
++        'update_profile' => 'تحديث الملف الشخصي',
++        'priority_support' => 'دعم النخبة الأولوية',
++        'auto_reply_msg' => 'شكراً لتواصلك معنا! سيكون وكيل الدعم النخبوي معك قريباً.',
++        'chat_started' => 'تم بدء المحادثة',
++        'type_message' => 'اكتب رسالتك...',
++        'elite_team' => 'فريق النخبة',
++        
++        // Leads CRM
++        'leads' => 'إدارة العملاء المحتملين',
++        'leads_desc' => 'إدارة طلبات العملاء وتتبع التحويلات.',
++        'status_new' => 'جديد',
++        'status_contacted' => 'تم التواصل',
++        'status_converted' => 'تم التحويل',
++        'status_lost' => 'مفقود',
++        'private_notes' => 'ملاحظات خاصة',
++        'update_lead' => 'تحديث العميل',
++        'lead_details' => 'تفاصيل العميل',
++        'no_leads' => 'ليس لديك أي عملاء محتملين بعد.',
++        'lead_updated' => 'تم تحديث العميل بنجاح',
++        
++        // Translations
++        'translations' => 'إدارة الترجمات',
++        'translations_desc' => 'قم بترجمة ملف عملك للوصول إلى جمهور عالمي.',
++        
++        // Reviews
++        'reviews' => 'تقييمات العملاء',
++        'reviews_desc' => 'إدارة سمعتك المتميزة والرد على العملاء.',
++        'review_replied' => 'تم نشر الرد بنجاح.',
++        'reply_to_review' => 'الرد على التقييم',
++        'your_reply' => 'ردك',
++        'submit_reply' => 'إرسال الرد',
++        'pending' => 'قيد المراجعة',
++        'approved' => 'معتمد',
++        'rejected' => 'مرفوض',
++        'no_reviews' => 'لا يوجد لديك تقييمات حتى الآن.',
++        'rating' => 'التقييم',
++        'comment' => 'تعليق العميل',
++        'date' => 'التاريخ',
++        'status' => 'الحالة',
++        'action' => 'إجراء',
++        'statistics' => 'الإحصائيات',
+     ],
+ ];
+diff --git a/lang/ar/directory.php b/lang/ar/directory.php
+index 1f82fef..3108e74 100644
+--- a/lang/ar/directory.php
++++ b/lang/ar/directory.php
+@@ -25,6 +25,18 @@
+     'searching' => 'جاري البحث...',
+     'no_results_for' => 'لم يتم العثور على نتائج لـ',
+     'company' => 'الشركة',
++    'gallery' => 'المعرض',
++    'map' => 'خريطة الموقع',
++    'sections' => 'تفاصيل العمل',
++    
++    // Leads / Contact Form
++    'get_quote' => 'إرسال رسالة / طلب تسعيرة',
++    'lead_name' => 'الاسم',
++    'lead_email' => 'البريد الإلكتروني',
++    'lead_phone' => 'رقم الهاتف',
++    'lead_message' => 'الرسالة',
++    'lead_send' => 'إرسال',
++    'lead_success' => 'تم إرسال رسالتك بنجاح!',
+     'category' => 'الفئة',
+     'country' => 'الدولة',
+     'city' => 'المدينة',
+@@ -56,6 +68,20 @@
+     'profile_verified' => 'موثّق',
+     'profile_member_since' => 'عضو منذ',
+     'profile_get_directions' => 'الاتجاهات',
+-    'profile_connect' => 'تواصل معنا',
++    'profile_connect' => 'تواصل',
+     'profile_of' => 'من',
++
++    // Reviews
++    'profile_reviews' => 'التقييمات',
++    'write_review' => 'اكتب تقييماً',
++    'rate_experience' => 'قيم تجربتك',
++    'review_comment' => 'تعليقك',
++    'submit_review' => 'إرسال التقييم',
++    'login_required_review' => 'يجب تسجيل الدخول لترك تقييم.',
++    'already_reviewed' => 'لقد قمت بتقييم هذا العمل مسبقاً.',
++    'review_submitted' => 'تم إرسال تقييمك وهو قيد المراجعة.',
++    'no_reviews_yet' => 'لا توجد تقييمات حتى الآن. كن أول من يقيّم!',
++    'business_reply' => 'رد العمل:',
++'review_name' => 'اسمك',
++    'review_email' => 'بريدك الإلكتروني (اختياري)',
+ ];
+diff --git a/lang/ar/landing.php b/lang/ar/landing.php
+index efec89a..22b0311 100644
+--- a/lang/ar/landing.php
++++ b/lang/ar/landing.php
+@@ -291,4 +291,5 @@
+     'success' => 'نجاح',
+     'contact_success' => 'شكرًا لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.',
+     'sending' => 'جاري الإرسال...',
++    'send_another_msg' => 'إرسال رسالة أخرى',
+ ];
+diff --git a/lang/de/dashboard.php b/lang/de/dashboard.php
+index 489312a..297bb32 100644
+--- a/lang/de/dashboard.php
++++ b/lang/de/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'Elite-Verifizierungs-Feedback',
+             'cta' => 'Modifizieren & Perfektionieren',
+         ],
++        'views_this_week' => 'Ansichten diese Woche',
++        'data_locked' => 'Daten gesperrt',
++        'data_available_after_approval' => 'Ihre Analysedaten werden hier verfügbar sein, sobald Ihr Unternehmensprofil genehmigt wurde.',
++        'views' => 'Ansichten',
++        'profile_strength' => 'Profilstärke',
++        'boost_visibility_msg' => 'Erhöhen Sie Ihre Sichtbarkeit, indem Sie Ihre Geschäftsdaten vervollständigen. Ein vollständiges Profil erhält bis zu :bold 3x mehr Engagement :endbold.',
++        'profile_optimized_msg' => 'Ihr Profil ist perfekt für die Elite-Reichweite optimiert! Halten Sie Ihre Inhalte frisch.',
++        'complete_profile_now' => 'Profil jetzt vervollständigen',
++        'update_profile' => 'Profil aktualisieren',
++        'priority_support' => 'Prioritäts-Support',
++        'auto_reply_msg' => 'Vielen Dank für Ihre Kontaktaufnahme! Ein Elite-Support-Mitarbeiter wird in Kürze bei Ihnen sein.',
++        'chat_started' => 'Chat gestartet',
++        'type_message' => 'Schreiben Sie Ihre Nachricht...',
++        'elite_team' => 'Elite-Team',
++        
++        // Leads CRM
++        'leads' => 'Leads CRM',
++        'leads_desc' => 'Verwalten Sie Ihre Business-Leads und verfolgen Sie Konvertierungen.',
++        'status_new' => 'Neu',
++        'status_contacted' => 'Kontaktiert',
++        'status_converted' => 'Konvertiert',
++        'status_lost' => 'Verloren',
++        'private_notes' => 'Private Notizen',
++        'update_lead' => 'Lead aktualisieren',
++        'lead_details' => 'Lead-Details',
++        'no_leads' => 'Sie haben noch keine Leads.',
++        'lead_updated' => 'Lead erfolgreich aktualisiert',
++
++        // Translations
++        'translations' => 'Übersetzungen verwalten',
++        'translations_desc' => 'Übersetzen Sie Ihr Unternehmensprofil, um ein globales Publikum zu erreichen.',
++
++        // Reviews
++        'reviews' => 'Kundenbewertungen',
++        'reviews_desc' => 'Verwalten Sie Ihre Elite-Reputation und antworten Sie Kunden.',
++        'review_replied' => 'Antwort erfolgreich gepostet.',
++        'reply_to_review' => 'Auf Bewertung antworten',
++        'your_reply' => 'Ihre Antwort',
++        'submit_reply' => 'Antwort senden',
++        'pending' => 'Ausstehende Moderation',
++        'approved' => 'Genehmigt',
++        'rejected' => 'Abgelehnt',
++        'no_reviews' => 'Sie haben noch keine Bewertungen.',
++        'rating' => 'Bewertung',
++        'comment' => 'Kundenkommentar',
++        'date' => 'Datum',
++        'status' => 'Status',
++        'action' => 'Aktion',
++        'statistics' => 'Statistiken',
+     ],
+ ];
+diff --git a/lang/de/directory.php b/lang/de/directory.php
+index 6fb9a92..8dac525 100644
+--- a/lang/de/directory.php
++++ b/lang/de/directory.php
+@@ -58,4 +58,18 @@
+     'profile_get_directions' => 'Route anzeigen',
+     'profile_connect' => 'Verbinden',
+     'profile_of' => 'von',
++
++    // Reviews
++    'profile_reviews' => 'Bewertungen',
++    'write_review' => 'Bewertung schreiben',
++    'rate_experience' => 'Bewerten Sie Ihre Erfahrung',
++    'review_comment' => 'Ihr Kommentar',
++    'submit_review' => 'Bewertung senden',
++    'login_required_review' => 'Sie müssen angemeldet sein, um eine Bewertung abzugeben.',
++    'already_reviewed' => 'Sie haben dieses Unternehmen bereits bewertet.',
++    'review_submitted' => 'Ihre Bewertung wurde gesendet und wartet auf Moderation.',
++    'no_reviews_yet' => 'Noch keine Bewertungen. Seien Sie der Erste!',
++    'business_reply' => 'Antwort des Unternehmens:',
++'review_name' => 'Dein Name',
++    'review_email' => 'Deine E-Mail-Adresse (optional)',
+ ];
+diff --git a/lang/de/errors.php b/lang/de/errors.php
+index ebac328..eeb0218 100644
+--- a/lang/de/errors.php
++++ b/lang/de/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Etwas ist schiefgelaufen',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Anmeldung erforderlich',
+-        'desc' => 'Bitte melden Sie sich an, um auf diese Seite zuzugreifen. Wenn Sie kein Konto haben, können Sie eines erstellen.',
+-    ],
+-    '403' => [
+-        'title' => 'Zugriff verweigert',
+-        'desc' => 'Sie haben keine Berechtigung, diese Seite anzuzeigen. Wenn Sie glauben, dass dies ein Fehler ist, wenden Sie sich bitte an den Support.',
+-    ],
+-    '404' => [
+-        'title' => 'Seite nicht gefunden',
+-        'desc' => 'Hoppla! Wir konnten die von Ihnen gesuchte Seite nicht finden. Sie wurde möglicherweise verschoben oder existiert nicht.',
+-    ],
+-    '419' => [
+-        'title' => 'Sitzung abgelaufen',
+-        'desc' => 'Ihre Sitzung ist wegen Inaktivität abgelaufen. Bitte aktualisieren Sie die Seite, um fortzufahren.',
+-    ],
+-    '429' => [
+-        'title' => 'Zu viele Anfragen',
+-        'desc' => 'Sie stellen zu viele Anfragen auf einmal. Bitte warten Sie einen Moment, bevor Sie es erneut versuchen.',
+-    ],
+-    '500' => [
+-        'title' => 'Etwas ist schiefgelaufen',
++
+         'desc' => 'Wir sind auf einen unerwarteten Fehler gestoßen. Unser Team wurde benachrichtigt und arbeitet an einer Lösung.',
+     ],
+     '503' => [
+diff --git a/lang/de/landing.php b/lang/de/landing.php
+index 4dee219..b66285b 100644
+--- a/lang/de/landing.php
++++ b/lang/de/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'Vertraut von �ber 500 Unternehmen weltweit',
+     'contact_success' => 'Vielen Dank f�r Ihre Kontaktaufnahme. Wir werden uns in K�rze bei Ihnen melden.',
+     'sending' => 'Wird gesendet...',
++    'send_another_msg' => 'Senden Sie eine weitere Nachricht',
+ ];
+diff --git a/lang/en/dashboard.php b/lang/en/dashboard.php
+index b93c7ec..94af483 100644
+--- a/lang/en/dashboard.php
++++ b/lang/en/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'Elite Verification Feedback',
+             'cta' => 'Modify & Perfect',
+         ],
++        'views_this_week' => 'Views This Week',
++        'data_locked' => 'Data Locked',
++        'data_available_after_approval' => 'Your analytics data will be available here once your business profile is approved.',
++        'views' => 'Views',
++        'profile_strength' => 'Profile Strength',
++        'boost_visibility_msg' => 'Boost your visibility by completing your business data. A complete profile gets up to :bold 3x more engagement :endbold.',
++        'profile_optimized_msg' => 'Your profile is perfectly optimized for elite reach! Keep your content fresh.',
++        'complete_profile_now' => 'Complete Profile Now',
++        'update_profile' => 'Update Profile',
++        'priority_support' => 'Priority Support',
++        'auto_reply_msg' => 'Thank you for reaching out! An elite support agent will be with you shortly.',
++        'chat_started' => 'Chat Started',
++        'type_message' => 'Type your message...',
++        'elite_team' => 'Elite Team',
++        
++        // Leads CRM
++        'leads' => 'Leads CRM',
++        'leads_desc' => 'Manage your business leads and track conversions.',
++        'status_new' => 'New',
++        'status_contacted' => 'Contacted',
++        'status_converted' => 'Converted',
++        'status_lost' => 'Lost',
++        'private_notes' => 'Private Notes',
++        'update_lead' => 'Update Lead',
++        'lead_details' => 'Lead Details',
++        'no_leads' => 'You do not have any leads yet.',
++        'lead_updated' => 'Lead updated successfully',
++        
++        // Translations
++        'translations' => 'Manage Translations',
++        'translations_desc' => 'Translate your business profile to reach a global audience.',
++        
++        // Reviews
++        'reviews' => 'Client Reviews',
++        'reviews_desc' => 'Manage your Elite Reputation and respond to clients.',
++        'review_replied' => 'Reply posted successfully.',
++        'reply_to_review' => 'Respond to Review',
++        'your_reply' => 'Your Reply',
++        'submit_reply' => 'Submit Reply',
++        'pending' => 'Pending Moderation',
++        'approved' => 'Approved',
++        'rejected' => 'Rejected',
++        'no_reviews' => 'You do not have any reviews yet.',
++        'rating' => 'Rating',
++        'comment' => 'Client Comment',
++        'date' => 'Date',
++        'status' => 'Status',
++        'action' => 'Action',
++        'statistics' => 'Statistics',
+     ],
+-];
++];
+\ No newline at end of file
+diff --git a/lang/en/directory.php b/lang/en/directory.php
+index 9c7dfe4..4b76445 100644
+--- a/lang/en/directory.php
++++ b/lang/en/directory.php
+@@ -25,6 +25,18 @@
+     'searching' => 'Searching...',
+     'no_results_for' => 'No results found for',
+     'company' => 'Company',
++    'gallery' => 'Gallery',
++    'map' => 'Location Map',
++    'sections' => 'Business Details',
++    
++    // Leads / Contact Form
++    'get_quote' => 'Send Message / Get Quote',
++    'lead_name' => 'Your Name',
++    'lead_email' => 'Email',
++    'lead_phone' => 'Phone',
++    'lead_message' => 'Message',
++    'lead_send' => 'Send',
++    'lead_success' => 'Your message has been sent successfully!',
+     'category' => 'Category',
+     'country' => 'Country',
+     'city' => 'City',
+@@ -58,4 +70,18 @@
+     'profile_get_directions' => 'Get Directions',
+     'profile_connect' => 'Connect',
+     'profile_of' => 'of',
++
++    // Reviews
++    'profile_reviews' => 'Reviews',
++    'write_review' => 'Write a Review',
++    'rate_experience' => 'Rate your experience',
++    'review_comment' => 'Your Comment',
++    'submit_review' => 'Submit Review',
++    'login_required_review' => 'You must be logged in to leave a review.',
++    'already_reviewed' => 'You have already reviewed this business.',
++    'review_submitted' => 'Your review has been submitted and is pending moderation.',
++    'no_reviews_yet' => 'No reviews yet. Be the first to review!',
++    'business_reply' => 'Business Reply:',
++'review_name' => 'Your Name',
++    'review_email' => 'Your Email (Optional)',
+ ];
+diff --git a/lang/en/landing.php b/lang/en/landing.php
+index 37f277b..5828da7 100644
+--- a/lang/en/landing.php
++++ b/lang/en/landing.php
+@@ -291,4 +291,5 @@
+     'success' => 'Success',
+     'contact_success' => 'Thank you for reaching out. We will get back to you shortly.',
+     'sending' => 'Sending...',
++    'send_another_msg' => 'Send another message',
+ ];
+diff --git a/lang/es/dashboard.php b/lang/es/dashboard.php
+index afb7fc6..ea06f05 100644
+--- a/lang/es/dashboard.php
++++ b/lang/es/dashboard.php
+@@ -48,18 +48,67 @@
+         'no_results_title' => 'No se encontraron países',
+         'of_total' => 'del total',
+         'business_ready_notification' => 'Notificación de Estado',
+-        'business_ready_msg' => 'Recibirás un correo electrónico cuando tu perfil de negocio est� listo.',
++        'business_ready_msg' => 'Recibirás un correo electrónico cuando tu perfil de negocio est listo.',
+         'review_overlay' => [
+             'title' => 'Perfil Élite en Revisión',
+             'subtitle' => 'Vista Privada Exclusiva',
+-            'message' => 'Nuestro equipo especializado está verificando su identidad digital. Solo usted tiene el privilegio de ver este avance privado durante la fase de verificación de �lite.',
++            'message' => 'Nuestro equipo especializado está verificando su identidad digital. Solo usted tiene el privilegio de ver este avance privado durante la fase de verificación de lite.',
+             'cta' => 'Entendido',
+         ],
+         'rejected_overlay' => [
+             'title' => 'Refinamiento Requerido',
+-            'message' => 'Para mantener los estándares de �lite de AliDebo, su perfil requiere ajustes refinados. Revise los comentarios de verificación para finalizar su identidad.',
++            'message' => 'Para mantener los estándares de élite de AliDebo, tu perfil requiere ajustes refinados. Por favor, revisa los comentarios de verificación para finalizar tu identidad.',
+             'reason_label' => 'Comentarios de Verificación de Élite',
+             'cta' => 'Modificar y Perfeccionar',
+         ],
++        'views_this_week' => 'Vistas Esta Semana',
++        'data_locked' => 'Datos Bloqueados',
++        'data_available_after_approval' => 'Tus datos de análisis estarán disponibles aquí una vez que tu perfil de negocio sea aprobado.',
++        'views' => 'Vistas',
++        'profile_strength' => 'Fuerza del Perfil',
++        'boost_visibility_msg' => 'Aumenta tu visibilidad completando los datos de tu negocio. Un perfil completo obtiene hasta :bold 3 veces más interacción :endbold.',
++        'profile_optimized_msg' => '¡Tu perfil está perfectamente optimizado para un alcance de élite! Mantén tu contenido actualizado.',
++        'complete_profile_now' => 'Completar Perfil Ahora',
++        'update_profile' => 'Actualizar Perfil',
++        'priority_support' => 'Soporte Prioritario',
++        'auto_reply_msg' => '¡Gracias por contactarnos! Un agente de soporte de élite estará con usted en breve.',
++        'chat_started' => 'Chat Iniciado',
++        'type_message' => 'Escribe tu mensaje...',
++        'elite_team' => 'Equipo Élite',
++        
++        // Leads CRM
++        'leads' => 'Gestión de Clientes',
++        'leads_desc' => 'Gestiona los clientes potenciales de tu negocio y rastrea conversiones.',
++        'status_new' => 'Nuevo',
++        'status_contacted' => 'Contactado',
++        'status_converted' => 'Convertido',
++        'status_lost' => 'Perdido',
++        'private_notes' => 'Notas Privadas',
++        'update_lead' => 'Actualizar Cliente',
++        'lead_details' => 'Detalles del Cliente',
++        'no_leads' => 'Aún no tienes clientes potenciales.',
++        'lead_updated' => 'Cliente actualizado con éxito',
++
++        // Translations
++        'translations' => 'Gestionar Traducciones',
++        'translations_desc' => 'Traduce tu perfil de negocio para llegar a una audiencia global.',
++
++        // Reviews
++        'reviews' => 'Reseñas de Clientes',
++        'reviews_desc' => 'Gestione su Reputación de Élite y responda a los clientes.',
++        'review_replied' => 'Respuesta publicada con éxito.',
++        'reply_to_review' => 'Responder a la Reseña',
++        'your_reply' => 'Tu Respuesta',
++        'submit_reply' => 'Enviar Respuesta',
++        'pending' => 'Pendiente de Moderación',
++        'approved' => 'Aprobado',
++        'rejected' => 'Rechazado',
++        'no_reviews' => 'Aún no tienes reseñas.',
++        'rating' => 'Calificación',
++        'comment' => 'Comentario del Cliente',
++        'date' => 'Fecha',
++        'status' => 'Estado',
++        'action' => 'Acción',
++        'statistics' => 'Estadísticas',
+     ],
+-];
++];
+\ No newline at end of file
+diff --git a/lang/es/directory.php b/lang/es/directory.php
+index 2875dcb..9eb71fa 100644
+--- a/lang/es/directory.php
++++ b/lang/es/directory.php
+@@ -58,4 +58,18 @@
+     'profile_get_directions' => 'Cómo llegar',
+     'profile_connect' => 'Conectar',
+     'profile_of' => 'de',
++
++    // Reviews
++    'profile_reviews' => 'Reseñas',
++    'write_review' => 'Escribir una Reseña',
++    'rate_experience' => 'Califica tu experiencia',
++    'review_comment' => 'Tu Comentario',
++    'submit_review' => 'Enviar Reseña',
++    'login_required_review' => 'Debes iniciar sesión para dejar una reseña.',
++    'already_reviewed' => 'Ya has reseñado este negocio.',
++    'review_submitted' => 'Tu reseña ha sido enviada y está pendiente de moderación.',
++    'no_reviews_yet' => 'Aún no hay reseñas. ¡Sé el primero en opinar!',
++    'business_reply' => 'Respuesta del Negocio:',
++'review_name' => 'Tu nombre',
++    'review_email' => 'Tu correo electrónico (opcional)',
+ ];
+diff --git a/lang/es/errors.php b/lang/es/errors.php
+index 667e589..f8da3fe 100644
+--- a/lang/es/errors.php
++++ b/lang/es/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Algo salió mal',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Inicio de sesión requerido',
+-        'desc' => 'Por favor, inicie sesión para acceder a esta página. Si no tiene una cuenta, puede crear una.',
+-    ],
+-    '403' => [
+-        'title' => 'Acceso denegado',
+-        'desc' => 'No tiene permiso para ver esta página. Si cree que se trata de un error, póngase en contacto con el soporte.',
+-    ],
+-    '404' => [
+-        'title' => 'Página no encontrada',
+-        'desc' => '¡Vaya! No pudimos encontrar la página que busca. Es posible que se haya movido o no exista.',
+-    ],
+-    '419' => [
+-        'title' => 'Sesión expirada',
+-        'desc' => 'Su sesión ha expirado por inactividad. Por favor, actualice la página para continuar.',
+-    ],
+-    '429' => [
+-        'title' => 'Demasiadas solicitudes',
+-        'desc' => 'Está realizando demasiadas solicitudes a la vez. Por favor, espere un momento antes de volver a intentarlo.',
+-    ],
+-    '500' => [
+-        'title' => 'Algo salió mal',
++
+         'desc' => 'Encontramos un error inesperado por nuestra parte. Nuestro equipo ha sido notificado y está trabajando en una solución.',
+     ],
+     '503' => [
+diff --git a/lang/es/landing.php b/lang/es/landing.php
+index e441645..f4a533c 100644
+--- a/lang/es/landing.php
++++ b/lang/es/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'Más de 500 empresas confían en nosotros en todo el mundo',
+     'contact_success' => 'Gracias por contactarnos. Nos pondremos en contacto con usted en breve.',
+     'sending' => 'Enviando...',
++    'send_another_msg' => 'Enviar otro mensaje',
+ ];
+diff --git a/lang/tr/dashboard.php b/lang/tr/dashboard.php
+index c9f0b16..82a0187 100644
+--- a/lang/tr/dashboard.php
++++ b/lang/tr/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'Elite Doğrulama Geri Bildirimi',
+             'cta' => 'D�zenle ve Kusursuzlaştır',
+         ],
++        'views_this_week' => 'Bu Hafta Görüntülenmeler',
++        'data_locked' => 'Veriler Kilitli',
++        'data_available_after_approval' => 'İşletme profiliniz onaylandıktan sonra analiz verileriniz burada görünecektir.',
++        'views' => 'Görüntülenmeler',
++        'profile_strength' => 'Profil Gücü',
++        'boost_visibility_msg' => 'İşletme verilerinizi tamamlayarak görünürlüğünüzü artırın. Tam bir profil :bold 3 kata kadar daha fazla etkileşim :endbold alır.',
++        'profile_optimized_msg' => 'Profiliniz elit erişim için mükemmel şekilde optimize edildi! İçeriğinizi güncel tutun.',
++        'complete_profile_now' => 'Profili Şimdi Tamamla',
++        'update_profile' => 'Profili Güncelle',
++        'priority_support' => 'Öncelikli Destek',
++        'auto_reply_msg' => 'Bize ulaştığınız için teşekkürler! Elit bir destek temsilcisi kısa süre içinde sizinle iletişime geçecektir.',
++        'chat_started' => 'Sohbet Başladı',
++        'type_message' => 'Mesajınızı yazın...',
++        'elite_team' => 'Elit Takım',
++        
++        // Leads CRM
++        'leads' => 'Müşteri Yönetimi (CRM)',
++        'leads_desc' => 'İşletme müşterilerinizi yönetin ve dönüşümleri takip edin.',
++        'status_new' => 'Yeni',
++        'status_contacted' => 'İletişime Geçildi',
++        'status_converted' => 'Dönüştürüldü',
++        'status_lost' => 'Kaybedildi',
++        'private_notes' => 'Özel Notlar',
++        'update_lead' => 'Müşteriyi Güncelle',
++        'lead_details' => 'Müşteri Detayları',
++        'no_leads' => 'Henüz müşteriniz yok.',
++        'lead_updated' => 'Müşteri başarıyla güncellendi',
++
++        // Translations
++        'translations' => 'Çevirileri Yönet',
++        'translations_desc' => 'Küresel bir kitleye ulaşmak için işletme profilinizi çevirin.',
++
++        // Reviews
++        'reviews' => 'Müşteri Değerlendirmeleri',
++        'reviews_desc' => 'Elit İtibarınızı yönetin ve müşterilere yanıt verin.',
++        'review_replied' => 'Yanıt başarıyla gönderildi.',
++        'reply_to_review' => 'Değerlendirmeye Yanıt Ver',
++        'your_reply' => 'Yanıtınız',
++        'submit_reply' => 'Yanıtı Gönder',
++        'pending' => 'Onay Bekliyor',
++        'approved' => 'Onaylandı',
++        'rejected' => 'Reddedildi',
++        'no_reviews' => 'Henüz hiç değerlendirmeniz yok.',
++        'rating' => 'Derecelendirme',
++        'comment' => 'Müşteri Yorumu',
++        'date' => 'Tarih',
++        'status' => 'Durum',
++        'action' => 'İşlem',
++        'statistics' => 'İstatistikler',
+     ],
+ ];
+diff --git a/lang/tr/directory.php b/lang/tr/directory.php
+index d455781..0110999 100644
+--- a/lang/tr/directory.php
++++ b/lang/tr/directory.php
+@@ -58,4 +58,18 @@
+     'profile_get_directions' => 'Yol tarifi al',
+     'profile_connect' => 'Bağlan',
+     'profile_of' => '/',
++
++    // Reviews
++    'profile_reviews' => 'Değerlendirmeler',
++    'write_review' => 'Değerlendirme Yaz',
++    'rate_experience' => 'Deneyiminizi puanlayın',
++    'review_comment' => 'Yorumunuz',
++    'submit_review' => 'Değerlendirmeyi Gönder',
++    'login_required_review' => 'Değerlendirme bırakmak için giriş yapmalısınız.',
++    'already_reviewed' => 'Bu işletmeyi zaten değerlendirdiniz.',
++    'review_submitted' => 'Değerlendirmeniz gönderildi ve onay bekliyor.',
++    'no_reviews_yet' => 'Henüz değerlendirme yok. İlk değerlendiren siz olun!',
++    'business_reply' => 'İşletme Yanıtı:',
++'review_name' => 'Adınız',
++    'review_email' => 'E-postanız (İsteğe bağlı)',
+ ];
+diff --git a/lang/tr/errors.php b/lang/tr/errors.php
+index 500c751..e9c2ebe 100644
+--- a/lang/tr/errors.php
++++ b/lang/tr/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Bir Şeyler Ters Gitti',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Giriş Yapmanız Gerekiyor',
+-        'desc' => 'Bu sayfaya erişmek için lütfen giriş yapın. Hesabınız yoksa yeni bir hesap oluşturabilirsiniz.',
+-    ],
+-    '403' => [
+-        'title' => 'Erişim Reddedildi',
+-        'desc' => 'Bu sayfayı görüntüleme izniniz yok. Bunun bir hata olduğunu düşünüyorsanız, lütfen destek ekibiyle iletişime geçin.',
+-    ],
+-    '404' => [
+-        'title' => 'Sayfa Bulunamadı',
+-        'desc' => 'Hoppala! Aradığınız sayfayı bulamadık. Taşınmış veya mevcut olmayabilir.',
+-    ],
+-    '419' => [
+-        'title' => 'Oturum Süresi Doldu',
+-        'desc' => 'Hareketsizlik nedeniyle oturumunuzun süresi doldu. Devam etmek için lütfen sayfayı yenileyin.',
+-    ],
+-    '429' => [
+-        'title' => 'Çok Fazla İstek',
+-        'desc' => 'Aynı anda çok fazla istekte bulunuyorsunuz. Lütfen tekrar denemeden önce bir süre bekleyin.',
+-    ],
+-    '500' => [
+-        'title' => 'Bir Şeyler Ters Gitti',
++
+         'desc' => 'Tarafımızda beklenmedik bir hatayla karşılaştık. Ekibimiz bilgilendirildi ve bir düzeltme üzerinde çalışıyor.',
+     ],
+     '503' => [
+diff --git a/lang/tr/landing.php b/lang/tr/landing.php
+index b439884..631faad 100644
+--- a/lang/tr/landing.php
++++ b/lang/tr/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'Dünya genelinde 500+ işletme tarafından güveniliyor',
+     'contact_success' => 'Bizimle iletişime ge�tiğiniz için teşekk�r ederiz. En kısa s�rede size geri döneceğiz.',
+     'sending' => 'Gönderiliyor...',
++    'send_another_msg' => 'Başka bir mesaj gönder',
+ ];
+diff --git a/lang/zh/dashboard.php b/lang/zh/dashboard.php
+index 9f6e554..0ddb23d 100644
+--- a/lang/zh/dashboard.php
++++ b/lang/zh/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => '精英核实反馈',
+             'cta' => '修改并完善',
+         ],
++        'views_this_week' => '本周浏览量',
++        'data_locked' => '数据已锁定',
++        'data_available_after_approval' => '您的业务档案获得批准后，分析数据将在此处可用。',
++        'views' => '浏览量',
++        'profile_strength' => '档案完整度',
++        'boost_visibility_msg' => '完善您的业务数据以提高可见度。完整的档案可获得高达 :bold 3倍的互动 :endbold。',
++        'profile_optimized_msg' => '您的档案已针对精英受众进行了完美优化！保持内容更新。',
++        'complete_profile_now' => '立即完善档案',
++        'update_profile' => '更新档案',
++        'priority_support' => '优先支持',
++        'auto_reply_msg' => '感谢您的联系！精英支持代表将很快为您服务。',
++        'chat_started' => '聊天已开始',
++        'type_message' => '输入您的消息...',
++        'elite_team' => '精英团队',
++        
++        // Leads CRM
++        'leads' => '潜在客户管理',
++        'leads_desc' => '管理您的业务线索并跟踪转化。',
++        'status_new' => '新建',
++        'status_contacted' => '已联系',
++        'status_converted' => '已转化',
++        'status_lost' => '已流失',
++        'private_notes' => '私人笔记',
++        'update_lead' => '更新线索',
++        'lead_details' => '线索详情',
++        'no_leads' => '您还没有任何潜在客户。',
++        'lead_updated' => '潜在客户已成功更新',
++
++        // Translations
++        'translations' => '管理翻译',
++        'translations_desc' => '翻译您的业务资料以吸引全球受众。',
++
++        // Reviews
++        'reviews' => '客户评价',
++        'reviews_desc' => '管理您的精英声誉并回复客户。',
++        'review_replied' => '回复发布成功。',
++        'reply_to_review' => '回复评价',
++        'your_reply' => '您的回复',
++        'submit_reply' => '提交回复',
++        'pending' => '等待审核',
++        'approved' => '已批准',
++        'rejected' => '已拒绝',
++        'no_reviews' => '您还没有任何评价。',
++        'rating' => '评分',
++        'comment' => '客户评论',
++        'date' => '日期',
++        'status' => '状态',
++        'action' => '操作',
++        'statistics' => '统计数据',
+     ],
+ ];
+diff --git a/lang/zh/directory.php b/lang/zh/directory.php
+index befe3f0..d9f8571 100644
+--- a/lang/zh/directory.php
++++ b/lang/zh/directory.php
+@@ -56,6 +56,20 @@
+     'profile_verified' => '已认证',
+     'profile_member_since' => '加入时间',
+     'profile_get_directions' => '获取路线',
+-    'profile_connect' => '联系我们',
+-    'profile_of' => '/',
++    'profile_connect' => '联系',
++    'profile_of' => '共',
++
++    // Reviews
++    'profile_reviews' => '评价',
++    'write_review' => '写评价',
++    'rate_experience' => '给您的体验打分',
++    'review_comment' => '您的评论',
++    'submit_review' => '提交评价',
++    'login_required_review' => '您必须登录才能留下评价。',
++    'already_reviewed' => '您已经评价过此商家。',
++    'review_submitted' => '您的评价已提交，正在等待审核。',
++    'no_reviews_yet' => '暂无评价。成为第一个评价的人吧！',
++    'business_reply' => '商家回复：',
++'review_name' => '你的名字',
++    'review_email' => '你的电子邮件（可选）',
+ ];
+diff --git a/lang/zh/errors.php b/lang/zh/errors.php
+index 8ef189c..6dcd3d6 100644
+--- a/lang/zh/errors.php
++++ b/lang/zh/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => '出了点问题',
+-<?php
+-return [
+-    '401' => [
+-        'title' => '需要登录',
+-        'desc' => '请登录后访问此页面。如果您还没有账号，可以先注册一个。',
+-    ],
+-    '403' => [
+-        'title' => '拒绝访问',
+-        'desc' => '您没有权限查看此页面。如果您认为这是一个错误，请联系客服。',
+-    ],
+-    '404' => [
+-        'title' => '页面未找到',
+-        'desc' => '哎呀！我们找不到您要寻找的页面。它可能已被移动或不存在。',
+-    ],
+-    '419' => [
+-        'title' => '会话已过期',
+-        'desc' => '由于长时间未操作，您的会话已过期。请刷新页面以继续。',
+-    ],
+-    '429' => [
+-        'title' => '请求过多',
+-        'desc' => '您的请求过于频繁。请稍等片刻后再试。',
+-    ],
+-    '500' => [
+-        'title' => '出了点问题',
++
+         'desc' => '我们遇到了一些意外的错误。我们的团队已收到通知并正在进行修复。',
+     ],
+     '503' => [
+diff --git a/lang/zh/landing.php b/lang/zh/landing.php
+index e4c6643..ea57470 100644
+--- a/lang/zh/landing.php
++++ b/lang/zh/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => '全球超过 500 家企业的信赖之选',
+     'contact_success' => '感谢您的联系。我们很快会回复您。',
+     'sending' => '正在发送...',
++    'send_another_msg' => '发送另一条消息',
+ ];

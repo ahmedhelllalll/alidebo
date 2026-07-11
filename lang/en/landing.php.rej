@@ -1,0 +1,7 @@
+diff a/lang/en/landing.php b/lang/en/landing.php	(rejected hunks)
+@@ -291,4 +291,5 @@
+     'success' => 'Success',
+     'contact_success' => 'Thank you for reaching out. We will get back to you shortly.',
+     'sending' => 'Sending...',
++    'send_another_msg' => 'Send another message',
+ ];

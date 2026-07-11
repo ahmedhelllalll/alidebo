@@ -59,15 +59,15 @@
             <div class="hero-fade-element relative z-50 w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-start gap-4 mt-2">
                 {{-- Primary: Join Now / Dashboard --}}
                 @auth
-                    <button type="button" onclick="window.location.href='{{ url('/dashboard') }}'"
+                    <a href="{{ url('/dashboard') }}"
                        class="group relative z-[100] pointer-events-auto cursor-pointer h-[3.5rem] sm:h-[3.75rem] px-8 sm:px-10 rounded-[1.25rem] bg-primary hover:bg-primary-light text-white flex items-center justify-center transition-all duration-500 font-bold text-base sm:text-lg shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 active:scale-[0.98]">
                         <span>{{ __('landing.nav_dashboard') ?? 'Dashboard' }}</span>
-                    </button>
+                    </a>
                 @else
-                    <button type="button" onclick="window.location.href='{{ route('register') }}'"
+                    <a href="{{ route('register') }}"
                        class="group relative z-[100] pointer-events-auto cursor-pointer h-[3.5rem] sm:h-[3.75rem] px-8 sm:px-10 rounded-[1.25rem] bg-primary hover:bg-primary-light text-white flex items-center justify-center transition-all duration-500 font-bold text-base sm:text-lg shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:-translate-y-0.5 active:scale-[0.98]">
                         <span>{{ __('landing.hero_join_cta') }}</span>
-                    </button>
+                    </a>
                 @endauth
 
                 {{-- Secondary: Explore Companies --}}

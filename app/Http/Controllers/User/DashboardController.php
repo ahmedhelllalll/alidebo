@@ -17,6 +17,8 @@ class DashboardController extends Controller
         
         $totalViews = 0;
         $viewsChange = 0;
+        $currentWeekViews = 0;
+        $weekViewsChange = 0;
         $countryStats = [];
         $dailyViews = [];
         
@@ -35,6 +37,20 @@ class DashboardController extends Controller
                 $viewsChange = round((($currentMonthViews - $lastMonthViews) / $lastMonthViews) * 100);
             } elseif ($currentMonthViews > 0) {
                 $viewsChange = 100;
+            }
+            
+            $currentWeekViews = BusinessView::where('business_profile_id', $business->id)
+                ->where('created_at', '>=', now()->subDays(7))
+                ->count();
+                
+            $lastWeekViews = BusinessView::where('business_profile_id', $business->id)
+                ->whereBetween('created_at', [now()->subDays(14), now()->subDays(7)])
+                ->count();
+                
+            if ($lastWeekViews > 0) {
+                $weekViewsChange = round((($currentWeekViews - $lastWeekViews) / $lastWeekViews) * 100);
+            } elseif ($currentWeekViews > 0) {
+                $weekViewsChange = 100;
             }
             
             $countryStats = BusinessView::where('business_profile_id', $business->id)
@@ -64,13 +80,25 @@ class DashboardController extends Controller
                 ->toArray();
         }
         
+        $totalLeads = 0;
+        $totalReviews = 0;
+
+        if ($business) {
+            $totalLeads = $business->leads()->count();
+            $totalReviews = $business->reviews()->count();
+        }
+        
         return view('users.index', [
             'business' => $business,
             'hasProfile' => (bool) $business,
             'totalViews' => $totalViews,
             'viewsChange' => $viewsChange,
+            'currentWeekViews' => $currentWeekViews,
+            'weekViewsChange' => $weekViewsChange,
             'countryStats' => $countryStats,
-            'dailyViews' => $dailyViews
+            'dailyViews' => $dailyViews,
+            'totalLeads' => $totalLeads,
+            'totalReviews' => $totalReviews
         ]);
     }
     

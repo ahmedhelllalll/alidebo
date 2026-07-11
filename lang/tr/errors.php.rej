@@ -1,0 +1,33 @@
+diff a/lang/tr/errors.php b/lang/tr/errors.php	(rejected hunks)
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Bir Şeyler Ters Gitti',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Giriş Yapmanız Gerekiyor',
+-        'desc' => 'Bu sayfaya erişmek için lütfen giriş yapın. Hesabınız yoksa yeni bir hesap oluşturabilirsiniz.',
+-    ],
+-    '403' => [
+-        'title' => 'Erişim Reddedildi',
+-        'desc' => 'Bu sayfayı görüntüleme izniniz yok. Bunun bir hata olduğunu düşünüyorsanız, lütfen destek ekibiyle iletişime geçin.',
+-    ],
+-    '404' => [
+-        'title' => 'Sayfa Bulunamadı',
+-        'desc' => 'Hoppala! Aradığınız sayfayı bulamadık. Taşınmış veya mevcut olmayabilir.',
+-    ],
+-    '419' => [
+-        'title' => 'Oturum Süresi Doldu',
+-        'desc' => 'Hareketsizlik nedeniyle oturumunuzun süresi doldu. Devam etmek için lütfen sayfayı yenileyin.',
+-    ],
+-    '429' => [
+-        'title' => 'Çok Fazla İstek',
+-        'desc' => 'Aynı anda çok fazla istekte bulunuyorsunuz. Lütfen tekrar denemeden önce bir süre bekleyin.',
+-    ],
+-    '500' => [
+-        'title' => 'Bir Şeyler Ters Gitti',
++
+         'desc' => 'Tarafımızda beklenmedik bir hatayla karşılaştık. Ekibimiz bilgilendirildi ve bir düzeltme üzerinde çalışıyor.',
+     ],
+     '503' => [

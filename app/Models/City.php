@@ -11,7 +11,7 @@ class City extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['country_id', 'name_en', 'name_ar', 'status'];
+    protected $fillable = ['country_id', 'name_en', 'name_ar', 'name_de', 'name_es', 'name_tr', 'name_zh', 'status'];
     protected $appends = ['name'];
 
     public function getNameAttribute()

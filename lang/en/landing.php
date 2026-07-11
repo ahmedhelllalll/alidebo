@@ -257,38 +257,65 @@ return [
     'cta_badge' => 'Grow With Us',
     'cta_graph_views' => 'Profile Views',
     'cta_graph_today' => 'Today',
+
     // Contact Page
+    'contact_hero_title_1' => 'How can we ',
+    'contact_hero_title_highlight' => 'help you?',
     'contact_hero_subtitle' => 'Whether you have a question about our platform, need technical support, or simply want to share your thoughts—our friendly team is always ready to listen.',
     'send_message' => 'Drop us a quick message',
+    'contact_hero_subtitle_form' => 'We usually respond within a few hours.',
     'first_name' => 'First name',
     'last_name' => 'Last name',
+    'contact_placeholder_fname' => 'e.g. John',
+    'contact_placeholder_lname' => 'e.g. Doe',
     'email_address' => 'Email address',
+    'contact_placeholder_email' => 'john@example.com',
     'message' => 'How can we help you today?',
+    'contact_placeholder_msg' => 'Tell us a little bit about what you need...',
     'send_message_btn' => 'Send message',
+    'sending' => 'Sending...',
+    'success' => 'Success!',
+    'send_another_msg' => 'Send another message',
     'reach_out' => 'Prefer to connect directly?',
     'reach_out_subtitle' => 'If you need immediate assistance or just prefer a direct conversation, feel free to reach out using the details below.',
     'call_us' => 'Give us a call',
     'email_us' => 'Send an email',
     'follow_us' => 'Connect with us',
-    'contact_hero_title_1' => 'How can we ',
-    'contact_hero_title_highlight' => 'help you?',
-    'contact_placeholder_fname' => 'e.g. John',
-    'contact_placeholder_lname' => 'e.g. Doe',
-    'contact_placeholder_email' => 'john@example.com',
-    'contact_placeholder_msg' => 'Tell us a little bit about what you need...',
-    'contact_hero_subtitle_form' => 'We usually respond within a few hours.',
-    'contact_trust_line' => 'Trusted by 500+ businesses worldwide',
-    
-    // Validation & Alerts
+    'error' => 'Error',
     'contact_error_name_min' => 'Must be at least 2 characters.',
     'contact_error_email_invalid' => 'Please enter a valid email address.',
     'contact_error_msg_min' => 'Message must be at least 10 characters.',
     'contact_error_msg_max' => 'Message is too long.',
-    'contact_rate_limit' => 'Too many requests. Please try again later.',
     'contact_error_general' => 'Something went wrong.',
+    'contact_rate_limit' => 'Too many requests. Please try again later.',
     'contact_network_error' => 'Network error. Please try again.',
-    'error' => 'Error',
-    'success' => 'Success',
+
+    // Alidebo Market Features
+    'market_feature_1_title' => 'Global Trade Network',
+    'market_feature_1_desc' => 'Connect with verified buyers and sellers from around the world in one unified, seamless marketplace.',
+    'market_feature_2_title' => 'Secure B2B Platform',
+    'market_feature_2_desc' => 'Trade with absolute confidence through our vetted company directory and encrypted communication channels.',
+    'market_feature_3_title' => 'Accelerate Growth',
+    'market_feature_3_desc' => 'Expand your market reach and discover premium business opportunities effortlessly with Alidebo.',
+
+    // Contact Success Message
     'contact_success' => 'Thank you for reaching out. We will get back to you shortly.',
-    'sending' => 'Sending...',
+
+    // Contact Social & Info Section
+    'contact_phone_label' => 'Phone',
+    'contact_email_label' => 'Email',
+    'contact_follow_title' => 'Follow us for early access',
+    'contact_follow_desc' => 'Be the first to know about new features, updates, and exclusive offers.',
+
+    // Contact Channels Title & Desc
+    'contact_channels_title' => 'Direct Channels',
+    'contact_channels_desc' => 'Get in touch directly with our support and sales team.',
+
+    // Contact Reach Card
+    'contact_reach_title' => 'Reach us directly',
+    'contact_reach_desc' => 'Get in touch through any of these channels.',
+
+    // Contact Hints
+    'contact_phone_hint' => 'Available during business hours',
+    'contact_email_hint' => 'We reply within a few hours',
 ];

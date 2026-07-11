@@ -6,6 +6,10 @@
                 <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.icon') }}</th>
                 <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.name_en') }}</th>
                 <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.name_ar') }}</th>
+                <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">DE</th>
+                <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">ES</th>
+                <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">TR</th>
+                <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">ZH</th>
                 <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.status') }}</th>
                 <th scope="col" class="px-6 py-5 text-end text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.actions') }}</th>
             </tr>
@@ -25,6 +29,10 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-[14px] font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">{{ $category->name_en }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-[14px] font-bold text-slate-900 dark:text-white font-cairo group-hover:text-primary transition-colors" dir="rtl">{{ $category->name_ar }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-[13px] text-slate-600 dark:text-zinc-400">{{ $category->name_de ?: '-' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-[13px] text-slate-600 dark:text-zinc-400">{{ $category->name_es ?: '-' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-[13px] text-slate-600 dark:text-zinc-400">{{ $category->name_tr ?: '-' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-[13px] text-slate-600 dark:text-zinc-400">{{ $category->name_zh ?: '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap">
                 <div class="relative inline-block text-left">
                     <button type="button" onclick="toggleStatusMenu(event, 'status-menu-desktop-{{ $category->id }}')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-700/50 bg-white dark:bg-zinc-900 text-[12px] font-[900] shadow-sm hover:border-slate-300 dark:hover:border-zinc-600 transition-colors status-btn-[{{ $category->id }}]">
@@ -58,7 +66,7 @@
             </td>
         </tr>
         @empty
-        <tr><td colspan="5" class="px-6 py-16 text-center text-slate-500">{{ request()->filled('search') || request()->filled('status') ? __('admin.no_results_found') : __('admin.no_data') }}</td></tr>
+        <tr><td colspan="9" class="px-6 py-16 text-center text-slate-500">{{ request()->filled('search') || request()->filled('status') ? __('admin.no_results_found') : __('admin.no_data') }}</td></tr>
         @endforelse
     </x-admin.table>
 </div>
@@ -80,6 +88,12 @@
                 <div class="space-y-0.5">
                     <h3 class="text-[15px] font-[900] text-slate-900 dark:text-white leading-snug">{{ $category->name_en }}</h3>
                     <h3 class="text-[14px] font-bold text-slate-500 dark:text-zinc-400 font-cairo leading-snug">{{ $category->name_ar }}</h3>
+                    <div class="flex flex-wrap gap-1 mt-1">
+                        <span class="text-[11px] px-1.5 py-0.5 bg-slate-100 dark:bg-zinc-800 rounded text-slate-600 dark:text-zinc-400">DE: {{ $category->name_de ?: '-' }}</span>
+                        <span class="text-[11px] px-1.5 py-0.5 bg-slate-100 dark:bg-zinc-800 rounded text-slate-600 dark:text-zinc-400">ES: {{ $category->name_es ?: '-' }}</span>
+                        <span class="text-[11px] px-1.5 py-0.5 bg-slate-100 dark:bg-zinc-800 rounded text-slate-600 dark:text-zinc-400">TR: {{ $category->name_tr ?: '-' }}</span>
+                        <span class="text-[11px] px-1.5 py-0.5 bg-slate-100 dark:bg-zinc-800 rounded text-slate-600 dark:text-zinc-400">ZH: {{ $category->name_zh ?: '-' }}</span>
+                    </div>
                 </div>
             </div>
             <div class="relative inline-block text-left">

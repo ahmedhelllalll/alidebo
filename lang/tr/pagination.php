@@ -6,5 +6,5 @@ return [
     'showing' => 'Gösterilen',
     'to' => '-',
     'of' => '/',
-    'results' => 'sonu�',
+    'results' => 'sonuç',
 ];

@@ -4,8 +4,15 @@
 
 @section('content')
 
-<!-- Floating Hero Section (Matches CTA-Ads Style from Welcome Page) -->
-<div class="hero-font max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-32 sm:pt-40">
+<div class="relative overflow-hidden bg-white dark:bg-[#0a0a0c]">
+    <!-- Ambient Corner Glows -->
+    <div class="absolute top-0 inset-x-0 h-[600px] pointer-events-none overflow-hidden z-0 opacity-40 dark:opacity-30">
+        <div class="absolute -top-40 -left-40 w-[400px] h-[400px] bg-primary/10 dark:bg-primary/10 blur-[130px] rounded-full"></div>
+        <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/10 dark:bg-primary/10 blur-[140px] rounded-full"></div>
+    </div>
+
+    <!-- Floating Hero Section (Matches CTA-Ads Style from Welcome Page) -->
+    <div class="relative z-10 hero-font max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 pt-32 sm:pt-40">
     <section class="reveal relative w-full bg-white dark:bg-[#0a0a0c] rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] flex flex-col lg:flex-row items-center justify-between">
         
         {{-- Text Content (Left) --}}
@@ -90,4 +97,5 @@
         
     </div>
 </section>
+</div>
 @endsection

@@ -1,7 +1,6 @@
 <?php
 
 return [
-    // Sidebar
     'dashboard' => 'Dashboard',
     'modules' => 'Modules',
     'categories' => 'Categories',
@@ -19,8 +18,6 @@ return [
     'logout' => 'Logout',
     'theme_dark' => 'Dark Mode',
     'theme_light' => 'Light Mode',
-
-    // Actions
     'add_new' => 'Add New',
     'create' => 'Create',
     'edit' => 'Edit',
@@ -32,8 +29,6 @@ return [
     'view_details' => 'View Details',
     'search' => 'Search...',
     'actions' => 'Actions',
-
-    // Statuses
     'status' => 'Status',
     'active' => 'Active',
     'hidden' => 'Hidden',
@@ -48,8 +43,6 @@ return [
     'click_to_upload' => 'Click to upload or drag & drop',
     'placeholder_slug' => 'e.g. tech-gadgets',
     'placeholder_icon' => 'e.g. fa-laptop-code',
-
-    // Tables & Fields
     'name' => 'Name',
     'name_en' => 'Name (EN)',
     'name_ar' => 'Name (AR)',
@@ -67,8 +60,6 @@ return [
     'no_data' => 'No records found.',
     'no_results_found' => 'No matching records found for your search.',
     'categories_empty_desc' => 'It seems you haven\'t added any categories yet. Click "Add New" to get started.',
-
-    // Alerts
     'success' => 'Success',
     'error' => 'Error',
     'warning' => 'Warning',
@@ -77,15 +68,11 @@ return [
     'deleted_successfully' => 'Record deleted successfully.',
     'status_updated' => 'Status updated successfully.',
     'cant_delete_dependency' => 'Cannot delete this record because it has dependencies attached to it.',
-
-    // Dashboard Overview
-    'welcome_overview' => "Welcome back, here's what's happening today.",
+    'welcome_overview' => 'Welcome back, here\'s what\'s happening today.',
     'approvals' => 'Approvals',
     'recent_businesses' => 'Recent Businesses',
     'recent_users' => 'Recent Users',
     'view_all' => 'View All',
-
-    // Modals
     'add_category' => 'Add New Category',
     'edit_category' => 'Edit Category',
     'business_details' => 'Business Details',
@@ -93,8 +80,6 @@ return [
     'send_message' => 'Send Message',
     'delete_confirm_title' => 'Delete Category',
     'delete_confirm_desc' => 'Are you sure you want to delete this category? This action cannot be undone and may affect related items.',
-
-    // Global Search
     'global_search' => 'Global Search',
     'type_to_search' => 'Type to search everything...',
     'searching' => 'Searching...',
@@ -114,8 +99,6 @@ return [
     'recent_searches' => 'Recent Searches',
     'no_recent_searches' => 'No recent searches yet.',
     'theme_light_dark' => 'Toggle Light/Dark Mode',
-
-    // Businesses CRUD
     'add_business' => 'Add New Business',
     'edit_business' => 'Edit Business',
     'delete_business' => 'Delete Business',
@@ -134,8 +117,6 @@ return [
     'approved_businesses' => 'Approved (Active)',
     'rejected_businesses' => 'Rejected',
     'rejection_reason_email' => 'Reason for rejection (Sent to user)',
-
-    // Multi-Step Form
     'step_1_identity' => 'Identity & Owner',
     'step_2_location' => 'Geolocation',
     'step_3_visuals' => 'Visual Branding',
@@ -156,35 +137,25 @@ return [
     'back_to_list' => 'Back to Businesses',
     'search_placeholder' => 'Search...',
     'no_options_found' => 'No options found.',
-
-    // Business Identity Section
     'identity_title' => 'Business Identity',
     'identity_subtitle' => 'Core identification and categorization',
     'business_name_placeholder' => 'e.g. alidebo Global',
     'description_placeholder' => 'Briefly describe the business and its services...',
-
-    // Geolocation Section
     'geo_title' => 'Geolocation & Reach',
     'geo_subtitle' => 'Where the business operates and how to connect',
     'address_placeholder' => 'e.g. 123 Luxury Avenue, District 1',
     'whatsapp_placeholder' => ':default',
     'phone_placeholder' => ':default',
-
-    // Visuals Section
     'visuals_title' => 'Visual Branding',
     'visuals_subtitle' => 'Logo, cover, and high-resolution gallery items',
     'premium_gallery' => 'Premium Gallery',
     'gallery_subtitle' => 'Add up to 10 showcase images',
     'gallery_count' => ':current / 10 Images',
-
-    // Social Links
     'social_links' => 'Social Networks',
     'social_subtitle' => 'Online presence and social media profiles',
     'facebook' => 'Facebook',
     'instagram' => 'Instagram',
     'website' => 'Website',
-
-    // Missing Keys — Business Module
     'owner' => 'Owner',
     'description' => 'Description',
     'whatsapp' => 'WhatsApp',
@@ -204,8 +175,6 @@ return [
     'filtering' => 'Filtering',
     'status_unchanged' => 'Status is already set to this value',
     'try_adjusting_filters' => 'Try adjusting your search or filters to find what you are looking for.',
-
-    // Dashboard Analytics
     'registrations_last_7_days' => 'Registrations (Last 7 Days)',
     'business_statuses' => 'Business Statuses',
     'live_custom_url' => 'Live Custom URL',
@@ -289,8 +258,6 @@ return [
     'suggestions' => 'Suggestions',
     'commands' => 'Commands',
     'recent_activity' => 'Recent Activity',
-
-    // System Backups
     'backups' => 'System Backups',
     'manage_secure_backups' => 'Manage and securely archive platform data',
     'create_backup' => 'Create Backup',
@@ -323,12 +290,6 @@ return [
     'backup_in_progress_short' => 'Generating...',
     'backup_already_running' => 'Already Running',
     'backup_already_running_desc' => 'A backup is already in progress. Please wait for it to finish.',
-
-    // Dashboard & Analytics
-    'soon' => 'Soon',
-    'platform_activity' => 'Platform Activity Trend',
-    'week' => 'Week',
-    'month' => 'Month',
     'active_businesses' => 'Active Businesses',
     'pending_approvals' => 'Pending Approvals',
     'platform_views' => 'Platform Views',
@@ -337,19 +298,12 @@ return [
     'manage_users' => 'Manage Users',
     'view_business' => 'View Business',
     'add_new_business' => 'Add New Business',
-    'new_registrations' => 'New registrations over time',
-    'new_businesses_added' => 'New businesses added',
-    'total_page_views' => 'Total page views',
-
-    // Bulk Operations
     'approve_selected' => 'Approve Selected',
     'reject_selected' => 'Reject Selected',
     'pend_selected' => 'Set Pending',
     'businesses_selected' => 'businesses selected',
     'status_updated_bulk' => 'Status updated for selected businesses.',
     'updated_successfully' => 'Updated successfully.',
-
-    // Profile & Settings Pages
     'profile_information' => 'Profile Information',
     'update_profile_desc' => 'Manage your personal information and password.',
     'current_password' => 'Current Password',
@@ -367,8 +321,6 @@ return [
     'save_settings' => 'Save Settings',
     'settings_updated' => 'Settings updated successfully.',
     'joined' => 'Joined',
-
-    // System & Navigation
     'system' => 'System',
     'contact_channel' => 'Contact Channel',
     'coming_soon' => 'Coming Soon',
@@ -382,43 +334,69 @@ return [
     'backups_soon_desc' => 'Automated and on-demand snapshots of platform database records and uploads. Keep data completely secure with secure downloads and restoration features.',
     'contact_soon_title' => 'Customer Support Helpdesk',
     'contact_soon_desc' => 'An integrated inquiry hub to track visitor claims, support requests, and user messages with built-in status management and instant alerts.',
-    
-    // Leads
-    'leads' => 'Leads',
-    'all_leads' => 'All Contact Messages',
-    'lead_details' => 'Lead Details',
-    'back_to_leads' => 'Back to Leads',
-    'first_name' => 'First Name',
-    'last_name' => 'Last Name',
-    'date' => 'Date',
-    'message' => 'Message',
-    'read' => 'Read',
-    'unread' => 'Unread',
-    'change_status' => 'Change Status',
-    'delete_lead_confirm_title' => 'Delete Lead',
-    'delete_lead_confirm_desc' => 'Are you sure you want to delete this lead? This action cannot be undone.',
-
-    'unread_leads' => 'Unread Leads',
-    'no_leads_yet' => 'No Leads Yet',
-    'no_leads_desc' => 'When users contact you, their messages will appear here.',
-
-    // Backups
-    'auto_backup_active' => 'Automated Backups Active',
-    'auto_backup_desc' => 'Rest easy! Your system automatically generates and securely stores a fresh, encrypted snapshot of all your database records every 12 hours.',
-    'system_protected' => 'System Protected',
-    'delete_snapshot_title' => 'Delete Snapshot?',
-    'delete_snapshot_desc' => 'Are you absolutely sure you want to permanently delete this snapshot? This action cannot be undone.',
-    'snapshot_deleted_desc' => 'Snapshot deleted successfully.',
-    'deleted' => 'Deleted!',
-
-    'local_status' => 'Local',
-    'cloud_status' => 'Cloud R2',
-    'in_progress' => 'In Progress',
-    'failed' => 'Failed',
+    'auto_backup_active' => 'Auto Backup Active',
+    'auto_backup_desc' => 'Auto Backup Desc',
+    'local_status' => 'Local Status',
+    'cloud_status' => 'Cloud Status',
     'saved' => 'Saved',
     'not_saved' => 'Not Saved',
     'uploaded' => 'Uploaded',
     'not_uploaded' => 'Not Uploaded',
-    'backup_completed' => 'Backup completed successfully!',
-    'delete_failed' => 'Failed to delete snapshot.',
+    'in_progress' => 'In Progress',
+    'failed' => 'Failed',
+    'download' => 'Download',
+    'delete_snapshot_title' => 'Delete Snapshot Title',
+    'delete_snapshot_desc' => 'Delete Snapshot Desc',
+    'backup_completed' => 'Backup Completed',
+    'deleted' => 'Deleted',
+    'snapshot_deleted_desc' => 'Snapshot Deleted Desc',
+    'delete_failed' => 'Delete Failed',
+    'unread_leads' => 'Unread Leads',
+    'platform_activity' => 'Platform Activity',
+    'week' => 'Week',
+    'month' => 'Month',
+    'soon' => 'Soon',
+    'leads' => 'Leads',
+    'support_chats' => 'Support Chats',
+    'command' => 'Command',
+    'all_leads' => 'All Leads',
+    'read' => 'Read',
+    'unread' => 'Unread',
+    'delete_lead_confirm_title' => 'Delete Lead Confirm Title',
+    'delete_lead_confirm_desc' => 'Delete Lead Confirm Desc',
+    'lead_details' => 'Lead Details',
+    'back_to_leads' => 'Back To Leads',
+    'first_name' => 'First Name',
+    'last_name' => 'Last Name',
+    'message' => 'Message',
+    'change_status' => 'Change Status',
+    'no_leads_yet' => 'No Leads Yet',
+    'no_leads_desc' => 'No Leads Desc',
+
+    'support_chats_desc' => 'Manage and respond to user support conversations.',
+    'chat_open' => 'Open',
+    'chat_closed' => 'Closed',
+    'chat_last_message' => 'Last Message',
+    'chat_with' => 'Chat with',
+    'view_chat' => 'View Chat',
+    'close_chat' => 'Close Chat',
+    'close_chat_confirm' => 'Are you sure you want to close this chat session?',
+    'chat_closed_message' => 'This conversation has been closed.',
+    'type_reply' => 'Type your reply...',
+    'send' => 'Send',
+    'send_failed' => 'Failed to send message.',
+    'you' => 'You',
+    'chatbot_label' => 'Bot',
+    'unknown_user' => 'Unknown User',
+    'no_messages_yet' => 'No messages yet',
+    'start_conversation' => 'Start the conversation by typing a message below.',
+    'no_chats_yet' => 'No Support Chats Yet',
+    'no_chats_desc' => 'When users start support conversations, they will appear here.',
+    'back_to_chats' => 'Back to Support Chats',
+
+    'close_chat_warning_title' => 'Close Support Chat',
+    'close_chat_warning_desc' => 'Are you sure you want to close this chat session? The user will no longer be able to send messages unless they open a new ticket.',
+    'close_chat_confirm_btn' => 'Yes, Close Chat',
+    'tooltip_close_chat' => 'End conversation and lock chat',
+    'tooltip_back_to_list' => 'Return to chats list',
 ];

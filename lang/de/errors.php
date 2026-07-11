@@ -1,64 +1,33 @@
 <?php
 return [
     '401' => [
-        'title' => 'Anmeldung erforderlich',
-        'desc' => 'Bitte melden Sie sich an, um auf diese Seite zuzugreifen. Wenn Sie kein Konto haben, können Sie eines erstellen.',
+        'title' => 'Nicht autorisierter Zugriff',
+        'desc' => 'Sie sind nicht berechtigt, diese Ressource anzuzeigen. Bitte melden Sie sich an, um fortzufahren.',
     ],
     '403' => [
-        'title' => 'Zugriff verweigert',
-        'desc' => 'Sie haben keine Berechtigung, diese Seite anzuzeigen. Wenn Sie glauben, dass dies ein Fehler ist, wenden Sie sich bitte an den Support.',
+        'title' => 'Zugriff Verboten',
+        'desc' => 'Ihre Anwesenheit hier ist eingeschränkt. Sie verfügen nicht über die für diesen Bereich erforderlichen Elite-Anmeldedaten.',
     ],
     '404' => [
-        'title' => 'Seite nicht gefunden',
-        'desc' => 'Hoppla! Wir konnten die von Ihnen gesuchte Seite nicht finden. Sie wurde möglicherweise verschoben oder existiert nicht.',
+        'title' => 'Die Leere',
+        'desc' => 'Der digitale Raum, den Sie suchen, existiert nicht oder wurde verlegt.',
     ],
     '419' => [
-        'title' => 'Sitzung abgelaufen',
-        'desc' => 'Ihre Sitzung ist wegen Inaktivität abgelaufen. Bitte aktualisieren Sie die Seite, um fortzufahren.',
+        'title' => 'Sitzung Abgelaufen',
+        'desc' => 'Ihre Sicherheitssitzung ist abgelaufen. Bitte aktualisieren Sie die Seite und versuchen Sie es erneut.',
     ],
     '429' => [
-        'title' => 'Zu viele Anfragen',
-        'desc' => 'Sie stellen zu viele Anfragen auf einmal. Bitte warten Sie einen Moment, bevor Sie es erneut versuchen.',
+        'title' => 'Zu Viele Anfragen',
+        'desc' => 'Sie bewegen sich schneller, als unser System verarbeiten kann. Bitte nehmen Sie sich einen Moment Zeit und versuchen Sie es erneut.',
     ],
     '500' => [
-        'title' => 'Etwas ist schiefgelaufen',
-<?php
-return [
-    '401' => [
-        'title' => 'Anmeldung erforderlich',
-        'desc' => 'Bitte melden Sie sich an, um auf diese Seite zuzugreifen. Wenn Sie kein Konto haben, können Sie eines erstellen.',
-    ],
-    '403' => [
-        'title' => 'Zugriff verweigert',
-        'desc' => 'Sie haben keine Berechtigung, diese Seite anzuzeigen. Wenn Sie glauben, dass dies ein Fehler ist, wenden Sie sich bitte an den Support.',
-    ],
-    '404' => [
-        'title' => 'Seite nicht gefunden',
-        'desc' => 'Hoppla! Wir konnten die von Ihnen gesuchte Seite nicht finden. Sie wurde möglicherweise verschoben oder existiert nicht.',
-    ],
-    '419' => [
-        'title' => 'Sitzung abgelaufen',
-        'desc' => 'Ihre Sitzung ist wegen Inaktivität abgelaufen. Bitte aktualisieren Sie die Seite, um fortzufahren.',
-    ],
-    '429' => [
-        'title' => 'Zu viele Anfragen',
-        'desc' => 'Sie stellen zu viele Anfragen auf einmal. Bitte warten Sie einen Moment, bevor Sie es erneut versuchen.',
-    ],
-    '500' => [
-        'title' => 'Etwas ist schiefgelaufen',
-        'desc' => 'Wir sind auf einen unerwarteten Fehler gestoßen. Unser Team wurde benachrichtigt und arbeitet an einer Lösung.',
+        'title' => 'Interne Störung',
+        'desc' => 'Unser System ist auf ein unerwartetes strukturelles Problem gestoßen. Wir verfeinern es gerade.',
     ],
     '503' => [
-        'title' => 'Wartungsarbeiten',
-        'desc' => 'Wir führen derzeit Wartungsarbeiten durch, um Ihr Erlebnis zu verbessern. Wir sind in Kürze wieder online!',
+        'title' => 'Kurze Wartung',
+        'desc' => 'Wir verbessern derzeit das alidebo-Erlebnis. Wir sind in Kürze mit mehr Eleganz zurück.',
     ],
-    'back_home' => 'Zurück zur Startseite',
-    'go_back' => 'Geh zurück',
-    '405' => [
-        'title' => 'Methode nicht erlaubt',
-        'desc' => 'Die Methode, mit der Sie auf diese Seite zugreifen möchten, wird nicht unterstützt. Bitte gehen Sie zurück und versuchen Sie es erneut.',
-    ],
-    'login' => 'Anmelden',
-    'refresh' => 'Seite aktualisieren',
-    'scroll_down' => 'Nach unten scrollen',
+    'back_home' => 'Zurück zu alidebo',
+    'go_back' => 'Vorheriger Schritt',
 ];

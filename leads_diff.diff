@@ -1,0 +1,179 @@
+﻿commit fbd79031aac590ce3ad7b2ef87ad4dbca7d063d0
+Author: Ahmed Helal <https://github.com/ahmedhelllalll/>
+Date:   Mon Jun 29 08:36:21 2026 +0300
+
+    feat(dashboard): add lead management feature
+
+diff --git a/lang/ar/admin.php b/lang/ar/admin.php
+index 3dda00a..f809546 100644
+--- a/lang/ar/admin.php
++++ b/lang/ar/admin.php
+@@ -294,6 +294,10 @@
+     'backup_already_running_desc' => '┘ç┘╪د┘â ┘╪│╪«╪ر ╪د╪ص╪ز┘è╪د╪╖┘è╪ر ┘é┘è╪» ╪د┘╪ح┘╪┤╪د╪ة. ┘è╪▒╪ش┘ë ╪د┘╪د┘╪ز╪╕╪د╪▒ ╪ص╪ز┘ë ╪د┘â╪ز┘à╪د┘┘ç╪د.',
+ 
+     // Dashboard & Analytics
++    'soon' => '┘é╪▒┘è╪ذ╪د┘ï',
++    'platform_activity' => '┘à╪ج╪┤╪▒ ┘╪┤╪د╪╖ ╪د┘┘à┘╪╡╪ر',
++    'week' => '╪ث╪│╪ذ┘ê╪╣',
++    'month' => '╪┤┘ç╪▒',
+     'active_businesses' => '╪د┘╪ث╪╣┘à╪د┘ ╪د┘┘╪┤╪╖╪ر',
+     'pending_approvals' => '╪ذ╪د┘╪ز╪╕╪د╪▒ ╪د┘┘à┘ê╪د┘┘é╪ر',
+     'platform_views' => '┘à╪┤╪د┘ç╪»╪د╪ز ╪د┘┘à┘╪╡╪ر',
+@@ -302,6 +306,9 @@
+     'manage_users' => '╪ح╪»╪د╪▒╪ر ╪د┘┘à╪│╪ز╪«╪»┘à┘è┘',
+     'view_business' => '╪╣╪▒╪╢ ╪د┘╪╣┘à┘',
+     'add_new_business' => '╪ح╪╢╪د┘╪ر ╪╣┘à┘ ╪ش╪»┘è╪»',
++    'new_registrations' => '╪د┘╪ز╪│╪ش┘è┘╪د╪ز ╪د┘╪ش╪»┘è╪»╪ر ╪ذ┘à╪▒┘ê╪▒ ╪د┘┘ê┘é╪ز',
++    'new_businesses_added' => '╪د┘╪ث╪╣┘à╪د┘ ╪د┘╪ش╪»┘è╪»╪ر ╪د┘┘à╪╢╪د┘╪ر',
++    'total_page_views' => '╪ح╪ش┘à╪د┘┘è ┘à╪┤╪د┘ç╪»╪د╪ز ╪د┘╪╡┘╪ص╪د╪ز',
+ 
+     // Bulk Operations
+     'approve_selected' => '┘à┘ê╪د┘┘é╪ر ╪╣┘┘ë ╪د┘┘à╪ص╪»╪»',
+@@ -345,4 +352,20 @@
+     'contact_soon_title' => '┘à┘â╪ز╪ذ ╪»╪╣┘à ┘ê╪ز┘ê╪د╪╡┘ ╪د┘╪╣┘à┘╪د╪ة',
+     'contact_soon_desc' => '┘à╪▒┘â╪▓ ┘à╪ز┘â╪د┘à┘ ┘╪ز╪ز╪ذ╪╣ ╪د╪│╪ز┘╪│╪د╪▒╪د╪ز ╪د┘╪▓┘ê╪د╪▒ ┘ê╪╖┘╪ذ╪د╪ز ╪د┘╪»╪╣┘à ┘ê╪▒╪│╪د╪خ┘ ╪د┘┘à╪│╪ز╪«╪»┘à┘è┘ ┘à╪╣ ╪ح╪»╪د╪▒╪ر ╪ص╪د┘╪ر ╪د┘╪╖┘╪ذ╪د╪ز ┘ê╪ز┘╪ذ┘è┘ç╪د╪ز ┘┘ê╪▒┘è╪ر.',
+ 
++    // Leads
++    'leads' => '╪د┘╪╣┘à┘╪د╪ة ╪د┘┘à╪ص╪ز┘à┘┘è┘',
++    'all_leads' => '┘â┘ ╪▒╪│╪د╪خ┘ ╪د┘╪ز┘ê╪د╪╡┘',
++    'lead_details' => '╪ز┘╪د╪╡┘è┘ ╪د┘╪╣┘à┘è┘ ╪د┘┘à╪ص╪ز┘à┘',
++    'back_to_leads' => '╪د┘╪╣┘ê╪»╪ر ┘┘╪╣┘à┘╪د╪ة ╪د┘┘à╪ص╪ز┘à┘┘è┘',
++    'first_name' => '╪د┘╪د╪│┘à ╪د┘╪ث┘ê┘',
++    'last_name' => '╪د┘╪د╪│┘à ╪د┘╪ث╪«┘è╪▒',
++    'date' => '╪د┘╪ز╪د╪▒┘è╪«',
++    'message' => '╪د┘╪▒╪│╪د┘╪ر',
++    'read' => '┘à┘é╪▒┘ê╪ة',
++    'unread' => '╪║┘è╪▒ ┘à┘é╪▒┘ê╪ة',
++    'change_status' => '╪ز╪║┘è┘è╪▒ ╪د┘╪ص╪د┘╪ر',
++    'delete_lead_confirm_title' => '╪ص╪░┘ ╪د┘╪╣┘à┘è┘',
++    'delete_lead_confirm_desc' => '┘ç┘ ╪ث┘╪ز ┘à╪ز╪ث┘â╪» ┘à┘ ╪ص╪░┘ ┘ç╪░╪د ╪د┘╪╣┘à┘è┘╪ا ┘╪د ┘è┘à┘â┘ ╪د┘╪ز╪▒╪د╪ش╪╣ ╪╣┘ ┘ç╪░╪د ╪د┘╪ح╪ش╪▒╪د╪ة.',
++
++    'unread_leads' => '╪د┘╪▒╪│╪د╪خ┘ ╪║┘è╪▒ ╪د┘┘à┘é╪▒┘ê╪ة╪ر',
+ ];
+diff --git a/lang/de/admin.php b/lang/de/admin.php
+index d01dff4..535bca0 100644
+--- a/lang/de/admin.php
++++ b/lang/de/admin.php
+@@ -161,6 +161,9 @@
+     'status_unchanged' => 'Der Status ist bereits auf diesen Wert eingestellt',
+     'try_adjusting_filters' => 'Versuchen Sie, Ihre Suche oder Filter anzupassen.',
+     'registrations_last_7_days' => 'Registrierungen (Letzte 7 Tage)',
++    'platform_activity' => 'Plattform-Aktivit├جtstrend',
++    'week' => 'Woche',
++    'month' => 'Monat',
+     'business_statuses' => 'Gesch├جftsstatus',
+     'live_custom_url' => 'Live-Custom-URL',
+     'basic_info_desc' => 'Geben Sie die grundlegenden Identit├جtsdetails f├╝r dieses Unternehmen ein.',
+@@ -318,4 +321,5 @@
+     'backups_soon_desc' => 'Automatische und On-Demand-Snapshots von Plattform-Datenbankeintr├جgen und Uploads. Halten Sie Daten mit sicheren Downloads und Wiederherstellung gesch├╝tzt.',
+     'contact_soon_title' => 'Kundensupport-Helpdesk',
+     'contact_soon_desc' => 'Ein integrierter Anfrage-Hub zur Verfolgung von Besucherfragen, Supportanfragen und Benutzernachrichten mit integrierten Status-Updates und Sofortbenachrichtigungen.',
++    'unread_leads' => 'Ungelesene Leads',
+ ];
+diff --git a/lang/en/admin.php b/lang/en/admin.php
+index de5a4c1..ad235ca 100644
+--- a/lang/en/admin.php
++++ b/lang/en/admin.php
+@@ -325,6 +325,10 @@
+     'backup_already_running_desc' => 'A backup is already in progress. Please wait for it to finish.',
+ 
+     // Dashboard & Analytics
++    'soon' => 'Soon',
++    'platform_activity' => 'Platform Activity Trend',
++    'week' => 'Week',
++    'month' => 'Month',
+     'active_businesses' => 'Active Businesses',
+     'pending_approvals' => 'Pending Approvals',
+     'platform_views' => 'Platform Views',
+@@ -333,6 +337,9 @@
+     'manage_users' => 'Manage Users',
+     'view_business' => 'View Business',
+     'add_new_business' => 'Add New Business',
++    'new_registrations' => 'New registrations over time',
++    'new_businesses_added' => 'New businesses added',
++    'total_page_views' => 'Total page views',
+ 
+     // Bulk Operations
+     'approve_selected' => 'Approve Selected',
+@@ -375,5 +382,21 @@
+     'backups_soon_desc' => 'Automated and on-demand snapshots of platform database records and uploads. Keep data completely secure with secure downloads and restoration features.',
+     'contact_soon_title' => 'Customer Support Helpdesk',
+     'contact_soon_desc' => 'An integrated inquiry hub to track visitor claims, support requests, and user messages with built-in status management and instant alerts.',
++    
++    // Leads
++    'leads' => 'Leads',
++    'all_leads' => 'All Contact Messages',
++    'lead_details' => 'Lead Details',
++    'back_to_leads' => 'Back to Leads',
++    'first_name' => 'First Name',
++    'last_name' => 'Last Name',
++    'date' => 'Date',
++    'message' => 'Message',
++    'read' => 'Read',
++    'unread' => 'Unread',
++    'change_status' => 'Change Status',
++    'delete_lead_confirm_title' => 'Delete Lead',
++    'delete_lead_confirm_desc' => 'Are you sure you want to delete this lead? This action cannot be undone.',
+ 
++    'unread_leads' => 'Unread Leads',
+ ];
+diff --git a/lang/es/admin.php b/lang/es/admin.php
+index 43c742f..e15344a 100644
+--- a/lang/es/admin.php
++++ b/lang/es/admin.php
+@@ -290,6 +290,9 @@
+     'backup_already_running_desc' => 'Ya hay una copia de seguridad en progreso. Por favor, espere a que finalice.',
+ 
+     // Dashboard & Analytics
++    'platform_activity' => 'Tendencia de Actividad de la Plataforma',
++    'week' => 'Semana',
++    'month' => 'Mes',
+     'active_businesses' => 'Negocios Activos',
+     'pending_approvals' => 'Aprobaciones Pendientes',
+     'platform_views' => 'Vistas de la Plataforma',
+@@ -342,4 +345,5 @@
+     'backups_soon_desc' => 'Instant├ةneas autom├ةticas y bajo demanda de registros de bases de datos y archivos subidos. Mantenga los datos seguros con descargas y restauraci├│n.',
+     'contact_soon_title' => 'Centro de Soporte y Mensajer├صa',
+     'contact_soon_desc' => 'Un panel integrado para rastrear consultas de visitantes, solicitudes de soporte y mensajes de usuarios con alertas instant├ةneas.',
++    'unread_leads' => 'Prospectos no le├صdos',
+ ];
+diff --git a/lang/tr/admin.php b/lang/tr/admin.php
+index c855d23..ece2176 100644
+--- a/lang/tr/admin.php
++++ b/lang/tr/admin.php
+@@ -161,6 +161,9 @@
+     'status_unchanged' => 'Durum zaten bu de─اere ayarlanm─▒┼ا',
+     'try_adjusting_filters' => 'Arad─▒─ا─▒n─▒z─▒ bulmak i├دin araman─▒z─▒ veya filtrelerinizi ayarlamay─▒ deneyin.',
+     'registrations_last_7_days' => 'Kay─▒tlar (Son 7 G├╝n)',
++    'platform_activity' => 'Platform Aktivite Trendi',
++    'week' => 'Hafta',
++    'month' => 'Ay',
+     'business_statuses' => '─░┼اletme Durumlar─▒',
+     'live_custom_url' => 'Canl─▒ ├ûzel URL',
+     'basic_info_desc' => 'Bu i┼اletme i├دin temel kimlik ayr─▒nt─▒lar─▒n─▒ girin.',
+@@ -316,4 +319,5 @@
+     'backups_soon_desc' => 'Veritaban─▒ kay─▒tlar─▒n─▒n ve y├╝klenen dosyalar─▒n otomatik ve iste─اe ba─اl─▒ anl─▒k g├╢r├╝nt├╝leri. G├╝venli indirme ve geri y├╝kleme ├╢zellikleri ile verileri koruyun.',
+     'contact_soon_title' => 'M├╝┼اteri Destek Masas─▒',
+     'contact_soon_desc' => 'Yerle┼اik durum y├╢netimi ve anl─▒k uyar─▒larla ziyaret├دi taleplerini, destek isteklerini ve kullan─▒c─▒ mesajlar─▒n─▒ takip etmek i├دin entegre bir sorgu merkezi.',
++    'unread_leads' => 'Okunmam─▒┼ا Mesajlar',
+ ];
+diff --git a/lang/zh/admin.php b/lang/zh/admin.php
+index ab0bff0..65c6430 100644
+--- a/lang/zh/admin.php
++++ b/lang/zh/admin.php
+@@ -161,6 +161,9 @@
+     'status_unchanged' => 'قè╢µف╖▓ك«╛غ╕║µصجف╝',
+     'try_adjusting_filters' => 'ف░إك»ـك░âµـ┤µ£ق┤تµêûك┐çµ╗جفآذغ╗حµë╛فê░µéذكخµاحµë╛قأفàف«╣عé',
+     'registrations_last_7_days' => 'µ│ذفîي╝êµ£ك┐ّ7فجري╝ë',
++    'platform_activity' => 'ف╣│ف░µ┤╗فèذك╢ïفè┐',
++    'week' => 'فّذ',
++    'month' => 'µ£ê',
+     'business_statuses' => 'غ╕أفèةقè╢µ',
+     'live_custom_url' => 'ف«ئµù╢كçزف«أغ╣ë URL',
+     'basic_info_desc' => 'ك╛ôفàحµصجفـف«╢قأµب╕ف┐âك║سغ╗╜غ┐ةµ»عé',
+@@ -316,4 +319,5 @@
+     'backups_soon_desc' => 'كçزفèذفèµîëل£ق¤اµêقأف╣│ف░µـ░µ«ف║ôك«░ف╜ـفْîغ╕èغ╝بµûçغ╗╢قأف┐سقàدعéلأك┐çف«ëفàذغ╕ïك╜╜فْîµتفجفèاكâ╜ي╝îف«îفàذغ┐إك»µـ░µ«قأف«ëفàذعé',
+     'contact_soon_title' => 'ف«تµê╖µ¤»µîµ£فèةف░',
+     'contact_soon_desc' => 'غ╕غ╕زلؤµêقأفْذك»تغ╕صف┐âي╝îق¤ذغ║ك┐╜ك╕زك«┐ف«تق¤│ك»ëعµ¤»µîك»╖µ▒éفْîق¤ذµê╖µ╢êµ»ي╝îف╣╢لàµ£ëفàق╜«قè╢µق«ةقغ╕ف│µù╢µلْعé',
++    'unread_leads' => 'µ£زك»╗قـآكذ',
+ ];

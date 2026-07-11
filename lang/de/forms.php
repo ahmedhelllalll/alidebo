@@ -143,7 +143,7 @@ return [
         'snapchat' => 'Snapchat',
         'facebook_placeholder' => 'Facebook Profil URL',
         'social_media' => 'Soziale Medien',
-        'add_social_account' => 'Soziales Konto hinzuf�gen',
+        'add_social_account' => 'Soziales Konto hinzufügen',
         'all_platforms_in_use' => 'Alle Plattformen werden verwendet',
         'remove' => 'Entfernen',
         'success_message' => 'Data saved successfully',
@@ -242,4 +242,3 @@ return [
     'verify_visual_2' => 'einer neuen Welt des Geschäfts.',
     'verify_visual_desc' => 'Aktivieren Sie jetzt Ihr Konto, um mit der Gestaltung Ihrer digitalen Identität zu beginnen.',
 ];
-

@@ -1,0 +1,7 @@
+diff a/lang/de/landing.php b/lang/de/landing.php	(rejected hunks)
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'Vertraut von �ber 500 Unternehmen weltweit',
+     'contact_success' => 'Vielen Dank f�r Ihre Kontaktaufnahme. Wir werden uns in K�rze bei Ihnen melden.',
+     'sending' => 'Wird gesendet...',
++    'send_another_msg' => 'Senden Sie eine weitere Nachricht',
+ ];

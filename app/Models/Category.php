@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
-    protected $fillable = ['name_en', 'name_ar', 'slug', 'image', 'icon', 'status', 'disk'];
+    protected $fillable = ['name_en', 'name_ar', 'name_de', 'name_es', 'name_tr', 'name_zh', 'slug', 'image', 'icon', 'status', 'disk'];
     protected $appends = ['name', 'image_url', 'icon_url'];
 
     public function getImageUrlAttribute()

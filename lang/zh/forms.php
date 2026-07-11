@@ -57,7 +57,7 @@ return [
         'edit_caption' => '编辑图片说明',
         'caption_placeholder' => '添加图片说明...',
         'add_new_images' => '添加新图片',
-        'max_images' => 'JPEG, PNG, WEBP (最大 5MB)',
+        'max_images' => 'JPEG, PNG, WEBP（最大 5MB）',
         'unsaved_changes' => '未保存的更改',
         'unsaved_changes_msg' => '您有未保存的更改。确定要离开吗？',
         'yes_leave' => '是的，离开',
@@ -76,7 +76,7 @@ return [
         'conn_error' => '发生连接错误',
         'save_error' => '保存时发生错误',
         'select_country_first' => '请先选择一个国家',
-        'alert' => '警报',
+        'alert' => '警告',
         'country' => '国家',
         'city' => '城市',
         'done' => '完成',
@@ -242,4 +242,3 @@ return [
     'verify_visual_2' => '全新的商业世界。',
     'verify_visual_desc' => '现在激活您的账户，开始自定义您的数字身份并接收客户请求。',
 ];
-

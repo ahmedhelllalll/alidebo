@@ -19,7 +19,6 @@
                 'media' => $business->media,
                 'business' => $business
             ])
-        </div>
     @endforeach
     <footer class="py-12 text-center bg-slate-50 border-t border-slate-100">
         <div class="max-w-xs mx-auto opacity-50 hover:opacity-100 transition-opacity">

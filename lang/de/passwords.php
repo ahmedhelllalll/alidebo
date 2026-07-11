@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'reset' => 'Ihr Passwort wurde zur�ckgesetzt',
-    'sent' => 'Wir haben Ihnen einen Link zum Zur�cksetzen Ihres Passworts per E-Mail gesendet.',
+    'reset' => 'Ihr Passwort wurde zurückgesetzt',
+    'sent' => 'Wir haben Ihnen einen Link zum Zurücksetzen Ihres Passworts per E-Mail gesendet.',
     'throttled' => 'Bitte warten Sie vor einem erneuten Versuch.',
-    'token' => 'Dieser Passwort-Wiederherstellungs-Token ist ung�ltig.',
+    'token' => 'Dieser Passwort-Wiederherstellungs-Token ist ungültig.',
     'user' => "Wir können keinen Benutzer mit dieser E-Mail-Adresse finden.",
 
 ];

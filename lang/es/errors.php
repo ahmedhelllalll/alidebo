@@ -1,64 +1,33 @@
 <?php
 return [
     '401' => [
-        'title' => 'Inicio de sesión requerido',
-        'desc' => 'Por favor, inicie sesión para acceder a esta página. Si no tiene una cuenta, puede crear una.',
+        'title' => 'Acceso No Autorizado',
+        'desc' => 'No tienes autorización para ver este recurso. Inicia sesión para continuar.',
     ],
     '403' => [
-        'title' => 'Acceso denegado',
-        'desc' => 'No tiene permiso para ver esta página. Si cree que se trata de un error, póngase en contacto con el soporte.',
+        'title' => 'Acceso Prohibido',
+        'desc' => 'Su presencia aquí está restringida. No tiene las credenciales de élite requeridas para esta sección.',
     ],
     '404' => [
-        'title' => 'Página no encontrada',
-        'desc' => '¡Vaya! No pudimos encontrar la página que busca. Es posible que se haya movido o no exista.',
+        'title' => 'El Vacío',
+        'desc' => 'El espacio digital que busca no existe o ha sido reubicado.',
     ],
     '419' => [
-        'title' => 'Sesión expirada',
-        'desc' => 'Su sesión ha expirado por inactividad. Por favor, actualice la página para continuar.',
+        'title' => 'Sesión Expirada',
+        'desc' => 'Tu sesión de seguridad ha expirado. Refresca y vuelve a intentarlo.',
     ],
     '429' => [
-        'title' => 'Demasiadas solicitudes',
-        'desc' => 'Está realizando demasiadas solicitudes a la vez. Por favor, espere un momento antes de volver a intentarlo.',
+        'title' => 'Demasiadas Solicitudes',
+        'desc' => 'Se mueve más rápido de lo que nuestro sistema puede procesar. Espere un momento e inténtelo de nuevo.',
     ],
     '500' => [
-        'title' => 'Algo salió mal',
-<?php
-return [
-    '401' => [
-        'title' => 'Inicio de sesión requerido',
-        'desc' => 'Por favor, inicie sesión para acceder a esta página. Si no tiene una cuenta, puede crear una.',
-    ],
-    '403' => [
-        'title' => 'Acceso denegado',
-        'desc' => 'No tiene permiso para ver esta página. Si cree que se trata de un error, póngase en contacto con el soporte.',
-    ],
-    '404' => [
-        'title' => 'Página no encontrada',
-        'desc' => '¡Vaya! No pudimos encontrar la página que busca. Es posible que se haya movido o no exista.',
-    ],
-    '419' => [
-        'title' => 'Sesión expirada',
-        'desc' => 'Su sesión ha expirado por inactividad. Por favor, actualice la página para continuar.',
-    ],
-    '429' => [
-        'title' => 'Demasiadas solicitudes',
-        'desc' => 'Está realizando demasiadas solicitudes a la vez. Por favor, espere un momento antes de volver a intentarlo.',
-    ],
-    '500' => [
-        'title' => 'Algo salió mal',
-        'desc' => 'Encontramos un error inesperado por nuestra parte. Nuestro equipo ha sido notificado y está trabajando en una solución.',
+        'title' => 'Disturbio Interno',
+        'desc' => 'Nuestro sistema encontró un problema estructural inesperado. Lo estamos refinando en este momento.',
     ],
     '503' => [
-        'title' => 'En mantenimiento',
-        'desc' => 'Actualmente estamos en mantenimiento para mejorar su experiencia. ¡Volveremos a estar en línea en breve!',
+        'title' => 'Mantenimiento Breve',
+        'desc' => 'Estamos mejorando la experiencia de alidebo. Volveremos pronto con más elegancia.',
     ],
-    'back_home' => 'Volver al inicio',
-    'go_back' => 'Regresar',
-    '405' => [
-        'title' => 'Método no permitido',
-        'desc' => 'El método que utilizó para acceder a esta página no es compatible. Por favor, regrese e inténtelo de nuevo.',
-    ],
-    'login' => 'Iniciar sesión',
-    'refresh' => 'Actualizar página',
-    'scroll_down' => 'Desplácese hacia abajo',
+    'back_home' => 'Volver a alidebo',
+    'go_back' => 'Paso Anterior',
 ];

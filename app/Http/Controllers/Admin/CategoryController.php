@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         $this->authorize('viewAny', Category::class);
 
-        $query = Category::select('id', 'name_en', 'name_ar', 'icon', 'image', 'status', 'slug', 'disk');
+        $query = Category::select('id', 'name_en', 'name_ar', 'name_de', 'name_es', 'name_tr', 'name_zh', 'icon', 'image', 'status', 'slug', 'disk');
 
         // Smart Search
         if ($request->filled('search')) {
@@ -26,6 +26,10 @@ class CategoryController extends Controller
             $query->where(function($q) use ($search) {
                 $q->where('name_en', 'like', "%{$search}%")
                   ->orWhere('name_ar', 'like', "%{$search}%")
+                  ->orWhere('name_de', 'like', "%{$search}%")
+                  ->orWhere('name_es', 'like', "%{$search}%")
+                  ->orWhere('name_tr', 'like', "%{$search}%")
+                  ->orWhere('name_zh', 'like', "%{$search}%")
                   ->orWhere('slug', 'like', "%{$search}%");
             });
         }

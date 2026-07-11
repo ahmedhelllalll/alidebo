@@ -1,0 +1,761 @@
+﻿diff --git a/lang/ar/dashboard.php b/lang/ar/dashboard.php
+index aca4830..13e09b4 100644
+--- a/lang/ar/dashboard.php
++++ b/lang/ar/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => '┘à┘╪د╪ص╪╕╪د╪ز ┘╪▒┘è┘é ╪د┘╪ز╪»┘é┘è┘é',
+             'cta' => '╪ز╪╣╪»┘è┘ ┘ê┘â┘à╪د┘ ╪د┘┘ç┘ê┘è╪ر',
+         ],
++        'views_this_week' => '┘à╪┤╪د┘ç╪»╪د╪ز ┘ç╪░╪د ╪د┘╪ث╪│╪ذ┘ê╪╣',
++        'data_locked' => '╪د┘╪ذ┘è╪د┘╪د╪ز ┘à┘é┘┘╪ر',
++        'data_available_after_approval' => '╪│╪ز┘â┘ê┘ ╪ذ┘è╪د┘╪د╪ز ╪د┘╪ز╪ص┘┘è┘╪د╪ز ╪د┘╪«╪د╪╡╪ر ╪ذ┘â ┘à╪ز╪د╪ص╪ر ┘ç┘╪د ╪ذ┘à╪ش╪▒╪» ╪د┘┘à┘ê╪د┘┘é╪ر ╪╣┘┘ë ┘à┘┘ ┘╪┤╪د╪╖┘â ╪د┘╪ز╪ش╪د╪▒┘è.',
++        'views' => '┘à╪┤╪د┘ç╪»╪د╪ز',
++        'profile_strength' => '┘é┘ê╪ر ╪د┘┘à┘┘ ╪د┘╪┤╪«╪╡┘è',
++        'boost_visibility_msg' => '┘é┘à ╪ذ╪▓┘è╪د╪»╪ر ╪╕┘ç┘ê╪▒┘â ┘à┘ ╪«┘╪د┘ ╪ح┘â┘à╪د┘ ╪ذ┘è╪د┘╪د╪ز ╪╣┘à┘┘â. ╪د┘┘à┘┘ ╪د┘╪┤╪«╪╡┘è ╪د┘┘à┘â╪ز┘à┘ ┘è╪ص╪╡┘ ╪╣┘┘ë :bold ╪ز┘╪د╪╣┘ ╪ث┘â╪س╪▒ ╪ذ┘ 3 ╪ث╪╢╪╣╪د┘ :endbold.',
++        'profile_optimized_msg' => '┘à┘┘┘â ╪د┘╪┤╪«╪╡┘è ┘à┘╪ص╪│┘ّ┘ ╪ذ╪┤┘â┘ ┘à╪س╪د┘┘è ┘┘┘ê╪╡┘ê┘ ┘┘┘╪«╪ذ╪ر! ╪ص╪د┘╪╕ ╪╣┘┘ë ╪ز╪ص╪»┘è╪س ╪د┘┘à╪ص╪ز┘ê┘ë ╪د┘╪«╪د╪╡ ╪ذ┘â.',
++        'complete_profile_now' => '╪ث┘â┘à┘ ╪د┘┘à┘┘ ╪د┘╪┤╪«╪╡┘è ╪د┘╪ت┘',
++        'update_profile' => '╪ز╪ص╪»┘è╪س ╪د┘┘à┘┘ ╪د┘╪┤╪«╪╡┘è',
++        'priority_support' => '╪»╪╣┘à ╪د┘┘╪«╪ذ╪ر ╪د┘╪ث┘ê┘┘ê┘è╪ر',
++        'auto_reply_msg' => '╪┤┘â╪▒╪د┘ï ┘╪ز┘ê╪د╪╡┘┘â ┘à╪╣┘╪د! ╪│┘è┘â┘ê┘ ┘ê┘â┘è┘ ╪د┘╪»╪╣┘à ╪د┘┘╪«╪ذ┘ê┘è ┘à╪╣┘â ┘é╪▒┘è╪ذ╪د┘ï.',
++        'chat_started' => '╪ز┘à ╪ذ╪»╪ة ╪د┘┘à╪ص╪د╪»╪س╪ر',
++        'type_message' => '╪د┘â╪ز╪ذ ╪▒╪│╪د┘╪ز┘â...',
++        'elite_team' => '┘╪▒┘è┘é ╪د┘┘╪«╪ذ╪ر',
++        
++        // Leads CRM
++        'leads' => '╪ح╪»╪د╪▒╪ر ╪د┘╪╣┘à┘╪د╪ة ╪د┘┘à╪ص╪ز┘à┘┘è┘',
++        'leads_desc' => '╪ح╪»╪د╪▒╪ر ╪╖┘╪ذ╪د╪ز ╪د┘╪╣┘à┘╪د╪ة ┘ê╪ز╪ز╪ذ╪╣ ╪د┘╪ز╪ص┘ê┘è┘╪د╪ز.',
++        'status_new' => '╪ش╪»┘è╪»',
++        'status_contacted' => '╪ز┘à ╪د┘╪ز┘ê╪د╪╡┘',
++        'status_converted' => '╪ز┘à ╪د┘╪ز╪ص┘ê┘è┘',
++        'status_lost' => '┘à┘┘é┘ê╪»',
++        'private_notes' => '┘à┘╪د╪ص╪╕╪د╪ز ╪«╪د╪╡╪ر',
++        'update_lead' => '╪ز╪ص╪»┘è╪س ╪د┘╪╣┘à┘è┘',
++        'lead_details' => '╪ز┘╪د╪╡┘è┘ ╪د┘╪╣┘à┘è┘',
++        'no_leads' => '┘┘è╪│ ┘╪»┘è┘â ╪ث┘è ╪╣┘à┘╪د╪ة ┘à╪ص╪ز┘à┘┘è┘ ╪ذ╪╣╪».',
++        'lead_updated' => '╪ز┘à ╪ز╪ص╪»┘è╪س ╪د┘╪╣┘à┘è┘ ╪ذ┘╪ش╪د╪ص',
++        
++        // Translations
++        'translations' => '╪ح╪»╪د╪▒╪ر ╪د┘╪ز╪▒╪ش┘à╪د╪ز',
++        'translations_desc' => '┘é┘à ╪ذ╪ز╪▒╪ش┘à╪ر ┘à┘┘ ╪╣┘à┘┘â ┘┘┘ê╪╡┘ê┘ ╪ح┘┘ë ╪ش┘à┘ç┘ê╪▒ ╪╣╪د┘┘à┘è.',
++        
++        // Reviews
++        'reviews' => '╪ز┘é┘è┘è┘à╪د╪ز ╪د┘╪╣┘à┘╪د╪ة',
++        'reviews_desc' => '╪ح╪»╪د╪▒╪ر ╪│┘à╪╣╪ز┘â ╪د┘┘à╪ز┘à┘è╪▓╪ر ┘ê╪د┘╪▒╪» ╪╣┘┘ë ╪د┘╪╣┘à┘╪د╪ة.',
++        'review_replied' => '╪ز┘à ┘╪┤╪▒ ╪د┘╪▒╪» ╪ذ┘╪ش╪د╪ص.',
++        'reply_to_review' => '╪د┘╪▒╪» ╪╣┘┘ë ╪د┘╪ز┘é┘è┘è┘à',
++        'your_reply' => '╪▒╪»┘â',
++        'submit_reply' => '╪ح╪▒╪│╪د┘ ╪د┘╪▒╪»',
++        'pending' => '┘é┘è╪» ╪د┘┘à╪▒╪د╪ش╪╣╪ر',
++        'approved' => '┘à╪╣╪ز┘à╪»',
++        'rejected' => '┘à╪▒┘┘ê╪╢',
++        'no_reviews' => '┘╪د ┘è┘ê╪ش╪» ┘╪»┘è┘â ╪ز┘é┘è┘è┘à╪د╪ز ╪ص╪ز┘ë ╪د┘╪ت┘.',
++        'rating' => '╪د┘╪ز┘é┘è┘è┘à',
++        'comment' => '╪ز╪╣┘┘è┘é ╪د┘╪╣┘à┘è┘',
++        'date' => '╪د┘╪ز╪د╪▒┘è╪«',
++        'status' => '╪د┘╪ص╪د┘╪ر',
++        'action' => '╪ح╪ش╪▒╪د╪ة',
++        'statistics' => '╪د┘╪ح╪ص╪╡╪د╪خ┘è╪د╪ز',
+     ],
+ ];
+diff --git a/lang/ar/directory.php b/lang/ar/directory.php
+index 1f82fef..3108e74 100644
+--- a/lang/ar/directory.php
++++ b/lang/ar/directory.php
+@@ -25,6 +25,18 @@
+     'searching' => '╪ش╪د╪▒┘è ╪د┘╪ذ╪ص╪س...',
+     'no_results_for' => '┘┘à ┘è╪ز┘à ╪د┘╪╣╪س┘ê╪▒ ╪╣┘┘ë ┘╪ز╪د╪خ╪ش ┘┘',
+     'company' => '╪د┘╪┤╪▒┘â╪ر',
++    'gallery' => '╪د┘┘à╪╣╪▒╪╢',
++    'map' => '╪«╪▒┘è╪╖╪ر ╪د┘┘à┘ê┘é╪╣',
++    'sections' => '╪ز┘╪د╪╡┘è┘ ╪د┘╪╣┘à┘',
++    
++    // Leads / Contact Form
++    'get_quote' => '╪ح╪▒╪│╪د┘ ╪▒╪│╪د┘╪ر / ╪╖┘╪ذ ╪ز╪│╪╣┘è╪▒╪ر',
++    'lead_name' => '╪د┘╪د╪│┘à',
++    'lead_email' => '╪د┘╪ذ╪▒┘è╪» ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è',
++    'lead_phone' => '╪▒┘é┘à ╪د┘┘ç╪د╪ز┘',
++    'lead_message' => '╪د┘╪▒╪│╪د┘╪ر',
++    'lead_send' => '╪ح╪▒╪│╪د┘',
++    'lead_success' => '╪ز┘à ╪ح╪▒╪│╪د┘ ╪▒╪│╪د┘╪ز┘â ╪ذ┘╪ش╪د╪ص!',
+     'category' => '╪د┘┘╪خ╪ر',
+     'country' => '╪د┘╪»┘ê┘╪ر',
+     'city' => '╪د┘┘à╪»┘è┘╪ر',
+@@ -56,6 +68,20 @@
+     'profile_verified' => '┘à┘ê╪س┘ّ┘é',
+     'profile_member_since' => '╪╣╪╢┘ê ┘à┘╪░',
+     'profile_get_directions' => '╪د┘╪د╪ز╪ش╪د┘ç╪د╪ز',
+-    'profile_connect' => '╪ز┘ê╪د╪╡┘ ┘à╪╣┘╪د',
++    'profile_connect' => '╪ز┘ê╪د╪╡┘',
+     'profile_of' => '┘à┘',
++
++    // Reviews
++    'profile_reviews' => '╪د┘╪ز┘é┘è┘è┘à╪د╪ز',
++    'write_review' => '╪د┘â╪ز╪ذ ╪ز┘é┘è┘è┘à╪د┘ï',
++    'rate_experience' => '┘é┘è┘à ╪ز╪ش╪▒╪ذ╪ز┘â',
++    'review_comment' => '╪ز╪╣┘┘è┘é┘â',
++    'submit_review' => '╪ح╪▒╪│╪د┘ ╪د┘╪ز┘é┘è┘è┘à',
++    'login_required_review' => '┘è╪ش╪ذ ╪ز╪│╪ش┘è┘ ╪د┘╪»╪«┘ê┘ ┘╪ز╪▒┘â ╪ز┘é┘è┘è┘à.',
++    'already_reviewed' => '┘┘é╪» ┘é┘à╪ز ╪ذ╪ز┘é┘è┘è┘à ┘ç╪░╪د ╪د┘╪╣┘à┘ ┘à╪│╪ذ┘é╪د┘ï.',
++    'review_submitted' => '╪ز┘à ╪ح╪▒╪│╪د┘ ╪ز┘é┘è┘è┘à┘â ┘ê┘ç┘ê ┘é┘è╪» ╪د┘┘à╪▒╪د╪ش╪╣╪ر.',
++    'no_reviews_yet' => '┘╪د ╪ز┘ê╪ش╪» ╪ز┘é┘è┘è┘à╪د╪ز ╪ص╪ز┘ë ╪د┘╪ت┘. ┘â┘ ╪ث┘ê┘ ┘à┘ ┘è┘é┘è┘ّ┘à!',
++    'business_reply' => '╪▒╪» ╪د┘╪╣┘à┘:',
++'review_name' => '╪د╪│┘à┘â',
++    'review_email' => '╪ذ╪▒┘è╪»┘â ╪د┘╪ح┘┘â╪ز╪▒┘ê┘┘è (╪د╪«╪ز┘è╪د╪▒┘è)',
+ ];
+diff --git a/lang/ar/landing.php b/lang/ar/landing.php
+index efec89a..22b0311 100644
+--- a/lang/ar/landing.php
++++ b/lang/ar/landing.php
+@@ -291,4 +291,5 @@
+     'success' => '┘╪ش╪د╪ص',
+     'contact_success' => '╪┤┘â╪▒┘ï╪د ┘╪ز┘ê╪د╪╡┘┘â ┘à╪╣┘╪د. ╪│┘╪▒╪» ╪╣┘┘è┘â ┘┘è ╪ث┘é╪▒╪ذ ┘ê┘é╪ز ┘à┘à┘â┘.',
+     'sending' => '╪ش╪د╪▒┘è ╪د┘╪ح╪▒╪│╪د┘...',
++    'send_another_msg' => '╪ح╪▒╪│╪د┘ ╪▒╪│╪د┘╪ر ╪ث╪«╪▒┘ë',
+ ];
+diff --git a/lang/de/dashboard.php b/lang/de/dashboard.php
+index 489312a..297bb32 100644
+--- a/lang/de/dashboard.php
++++ b/lang/de/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'Elite-Verifizierungs-Feedback',
+             'cta' => 'Modifizieren & Perfektionieren',
+         ],
++        'views_this_week' => 'Ansichten diese Woche',
++        'data_locked' => 'Daten gesperrt',
++        'data_available_after_approval' => 'Ihre Analysedaten werden hier verf├╝gbar sein, sobald Ihr Unternehmensprofil genehmigt wurde.',
++        'views' => 'Ansichten',
++        'profile_strength' => 'Profilst├جrke',
++        'boost_visibility_msg' => 'Erh├╢hen Sie Ihre Sichtbarkeit, indem Sie Ihre Gesch├جftsdaten vervollst├جndigen. Ein vollst├جndiges Profil erh├جlt bis zu :bold 3x mehr Engagement :endbold.',
++        'profile_optimized_msg' => 'Ihr Profil ist perfekt f├╝r die Elite-Reichweite optimiert! Halten Sie Ihre Inhalte frisch.',
++        'complete_profile_now' => 'Profil jetzt vervollst├جndigen',
++        'update_profile' => 'Profil aktualisieren',
++        'priority_support' => 'Priorit├جts-Support',
++        'auto_reply_msg' => 'Vielen Dank f├╝r Ihre Kontaktaufnahme! Ein Elite-Support-Mitarbeiter wird in K├╝rze bei Ihnen sein.',
++        'chat_started' => 'Chat gestartet',
++        'type_message' => 'Schreiben Sie Ihre Nachricht...',
++        'elite_team' => 'Elite-Team',
++        
++        // Leads CRM
++        'leads' => 'Leads CRM',
++        'leads_desc' => 'Verwalten Sie Ihre Business-Leads und verfolgen Sie Konvertierungen.',
++        'status_new' => 'Neu',
++        'status_contacted' => 'Kontaktiert',
++        'status_converted' => 'Konvertiert',
++        'status_lost' => 'Verloren',
++        'private_notes' => 'Private Notizen',
++        'update_lead' => 'Lead aktualisieren',
++        'lead_details' => 'Lead-Details',
++        'no_leads' => 'Sie haben noch keine Leads.',
++        'lead_updated' => 'Lead erfolgreich aktualisiert',
++
++        // Translations
++        'translations' => '├£bersetzungen verwalten',
++        'translations_desc' => '├£bersetzen Sie Ihr Unternehmensprofil, um ein globales Publikum zu erreichen.',
++
++        // Reviews
++        'reviews' => 'Kundenbewertungen',
++        'reviews_desc' => 'Verwalten Sie Ihre Elite-Reputation und antworten Sie Kunden.',
++        'review_replied' => 'Antwort erfolgreich gepostet.',
++        'reply_to_review' => 'Auf Bewertung antworten',
++        'your_reply' => 'Ihre Antwort',
++        'submit_reply' => 'Antwort senden',
++        'pending' => 'Ausstehende Moderation',
++        'approved' => 'Genehmigt',
++        'rejected' => 'Abgelehnt',
++        'no_reviews' => 'Sie haben noch keine Bewertungen.',
++        'rating' => 'Bewertung',
++        'comment' => 'Kundenkommentar',
++        'date' => 'Datum',
++        'status' => 'Status',
++        'action' => 'Aktion',
++        'statistics' => 'Statistiken',
+     ],
+ ];
+diff --git a/lang/de/directory.php b/lang/de/directory.php
+index 6fb9a92..8dac525 100644
+--- a/lang/de/directory.php
++++ b/lang/de/directory.php
+@@ -58,4 +58,18 @@
+     'profile_get_directions' => 'Route anzeigen',
+     'profile_connect' => 'Verbinden',
+     'profile_of' => 'von',
++
++    // Reviews
++    'profile_reviews' => 'Bewertungen',
++    'write_review' => 'Bewertung schreiben',
++    'rate_experience' => 'Bewerten Sie Ihre Erfahrung',
++    'review_comment' => 'Ihr Kommentar',
++    'submit_review' => 'Bewertung senden',
++    'login_required_review' => 'Sie m├╝ssen angemeldet sein, um eine Bewertung abzugeben.',
++    'already_reviewed' => 'Sie haben dieses Unternehmen bereits bewertet.',
++    'review_submitted' => 'Ihre Bewertung wurde gesendet und wartet auf Moderation.',
++    'no_reviews_yet' => 'Noch keine Bewertungen. Seien Sie der Erste!',
++    'business_reply' => 'Antwort des Unternehmens:',
++'review_name' => 'Dein Name',
++    'review_email' => 'Deine E-Mail-Adresse (optional)',
+ ];
+diff --git a/lang/de/errors.php b/lang/de/errors.php
+index ebac328..eeb0218 100644
+--- a/lang/de/errors.php
++++ b/lang/de/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Etwas ist schiefgelaufen',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Anmeldung erforderlich',
+-        'desc' => 'Bitte melden Sie sich an, um auf diese Seite zuzugreifen. Wenn Sie kein Konto haben, k├╢nnen Sie eines erstellen.',
+-    ],
+-    '403' => [
+-        'title' => 'Zugriff verweigert',
+-        'desc' => 'Sie haben keine Berechtigung, diese Seite anzuzeigen. Wenn Sie glauben, dass dies ein Fehler ist, wenden Sie sich bitte an den Support.',
+-    ],
+-    '404' => [
+-        'title' => 'Seite nicht gefunden',
+-        'desc' => 'Hoppla! Wir konnten die von Ihnen gesuchte Seite nicht finden. Sie wurde m├╢glicherweise verschoben oder existiert nicht.',
+-    ],
+-    '419' => [
+-        'title' => 'Sitzung abgelaufen',
+-        'desc' => 'Ihre Sitzung ist wegen Inaktivit├جt abgelaufen. Bitte aktualisieren Sie die Seite, um fortzufahren.',
+-    ],
+-    '429' => [
+-        'title' => 'Zu viele Anfragen',
+-        'desc' => 'Sie stellen zu viele Anfragen auf einmal. Bitte warten Sie einen Moment, bevor Sie es erneut versuchen.',
+-    ],
+-    '500' => [
+-        'title' => 'Etwas ist schiefgelaufen',
++
+         'desc' => 'Wir sind auf einen unerwarteten Fehler gesto├اen. Unser Team wurde benachrichtigt und arbeitet an einer L├╢sung.',
+     ],
+     '503' => [
+diff --git a/lang/de/landing.php b/lang/de/landing.php
+index 4dee219..b66285b 100644
+--- a/lang/de/landing.php
++++ b/lang/de/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'Vertraut von ي┐╜ber 500 Unternehmen weltweit',
+     'contact_success' => 'Vielen Dank fي┐╜r Ihre Kontaktaufnahme. Wir werden uns in Kي┐╜rze bei Ihnen melden.',
+     'sending' => 'Wird gesendet...',
++    'send_another_msg' => 'Senden Sie eine weitere Nachricht',
+ ];
+diff --git a/lang/en/dashboard.php b/lang/en/dashboard.php
+index b93c7ec..94af483 100644
+--- a/lang/en/dashboard.php
++++ b/lang/en/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'Elite Verification Feedback',
+             'cta' => 'Modify & Perfect',
+         ],
++        'views_this_week' => 'Views This Week',
++        'data_locked' => 'Data Locked',
++        'data_available_after_approval' => 'Your analytics data will be available here once your business profile is approved.',
++        'views' => 'Views',
++        'profile_strength' => 'Profile Strength',
++        'boost_visibility_msg' => 'Boost your visibility by completing your business data. A complete profile gets up to :bold 3x more engagement :endbold.',
++        'profile_optimized_msg' => 'Your profile is perfectly optimized for elite reach! Keep your content fresh.',
++        'complete_profile_now' => 'Complete Profile Now',
++        'update_profile' => 'Update Profile',
++        'priority_support' => 'Priority Support',
++        'auto_reply_msg' => 'Thank you for reaching out! An elite support agent will be with you shortly.',
++        'chat_started' => 'Chat Started',
++        'type_message' => 'Type your message...',
++        'elite_team' => 'Elite Team',
++        
++        // Leads CRM
++        'leads' => 'Leads CRM',
++        'leads_desc' => 'Manage your business leads and track conversions.',
++        'status_new' => 'New',
++        'status_contacted' => 'Contacted',
++        'status_converted' => 'Converted',
++        'status_lost' => 'Lost',
++        'private_notes' => 'Private Notes',
++        'update_lead' => 'Update Lead',
++        'lead_details' => 'Lead Details',
++        'no_leads' => 'You do not have any leads yet.',
++        'lead_updated' => 'Lead updated successfully',
++        
++        // Translations
++        'translations' => 'Manage Translations',
++        'translations_desc' => 'Translate your business profile to reach a global audience.',
++        
++        // Reviews
++        'reviews' => 'Client Reviews',
++        'reviews_desc' => 'Manage your Elite Reputation and respond to clients.',
++        'review_replied' => 'Reply posted successfully.',
++        'reply_to_review' => 'Respond to Review',
++        'your_reply' => 'Your Reply',
++        'submit_reply' => 'Submit Reply',
++        'pending' => 'Pending Moderation',
++        'approved' => 'Approved',
++        'rejected' => 'Rejected',
++        'no_reviews' => 'You do not have any reviews yet.',
++        'rating' => 'Rating',
++        'comment' => 'Client Comment',
++        'date' => 'Date',
++        'status' => 'Status',
++        'action' => 'Action',
++        'statistics' => 'Statistics',
+     ],
+-];
++];
+\ No newline at end of file
+diff --git a/lang/en/directory.php b/lang/en/directory.php
+index 9c7dfe4..4b76445 100644
+--- a/lang/en/directory.php
++++ b/lang/en/directory.php
+@@ -25,6 +25,18 @@
+     'searching' => 'Searching...',
+     'no_results_for' => 'No results found for',
+     'company' => 'Company',
++    'gallery' => 'Gallery',
++    'map' => 'Location Map',
++    'sections' => 'Business Details',
++    
++    // Leads / Contact Form
++    'get_quote' => 'Send Message / Get Quote',
++    'lead_name' => 'Your Name',
++    'lead_email' => 'Email',
++    'lead_phone' => 'Phone',
++    'lead_message' => 'Message',
++    'lead_send' => 'Send',
++    'lead_success' => 'Your message has been sent successfully!',
+     'category' => 'Category',
+     'country' => 'Country',
+     'city' => 'City',
+@@ -58,4 +70,18 @@
+     'profile_get_directions' => 'Get Directions',
+     'profile_connect' => 'Connect',
+     'profile_of' => 'of',
++
++    // Reviews
++    'profile_reviews' => 'Reviews',
++    'write_review' => 'Write a Review',
++    'rate_experience' => 'Rate your experience',
++    'review_comment' => 'Your Comment',
++    'submit_review' => 'Submit Review',
++    'login_required_review' => 'You must be logged in to leave a review.',
++    'already_reviewed' => 'You have already reviewed this business.',
++    'review_submitted' => 'Your review has been submitted and is pending moderation.',
++    'no_reviews_yet' => 'No reviews yet. Be the first to review!',
++    'business_reply' => 'Business Reply:',
++'review_name' => 'Your Name',
++    'review_email' => 'Your Email (Optional)',
+ ];
+diff --git a/lang/en/landing.php b/lang/en/landing.php
+index 37f277b..5828da7 100644
+--- a/lang/en/landing.php
++++ b/lang/en/landing.php
+@@ -291,4 +291,5 @@
+     'success' => 'Success',
+     'contact_success' => 'Thank you for reaching out. We will get back to you shortly.',
+     'sending' => 'Sending...',
++    'send_another_msg' => 'Send another message',
+ ];
+diff --git a/lang/es/dashboard.php b/lang/es/dashboard.php
+index afb7fc6..ea06f05 100644
+--- a/lang/es/dashboard.php
++++ b/lang/es/dashboard.php
+@@ -48,18 +48,67 @@
+         'no_results_title' => 'No se encontraron pa├صses',
+         'of_total' => 'del total',
+         'business_ready_notification' => 'Notificaci├│n de Estado',
+-        'business_ready_msg' => 'Recibir├ةs un correo electr├│nico cuando tu perfil de negocio estي┐╜ listo.',
++        'business_ready_msg' => 'Recibir├ةs un correo electr├│nico cuando tu perfil de negocio est listo.',
+         'review_overlay' => [
+             'title' => 'Perfil ├ëlite en Revisi├│n',
+             'subtitle' => 'Vista Privada Exclusiva',
+-            'message' => 'Nuestro equipo especializado est├ة verificando su identidad digital. Solo usted tiene el privilegio de ver este avance privado durante la fase de verificaci├│n de ي┐╜lite.',
++            'message' => 'Nuestro equipo especializado est├ة verificando su identidad digital. Solo usted tiene el privilegio de ver este avance privado durante la fase de verificaci├│n de lite.',
+             'cta' => 'Entendido',
+         ],
+         'rejected_overlay' => [
+             'title' => 'Refinamiento Requerido',
+-            'message' => 'Para mantener los est├ةndares de ي┐╜lite de AliDebo, su perfil requiere ajustes refinados. Revise los comentarios de verificaci├│n para finalizar su identidad.',
++            'message' => 'Para mantener los est├ةndares de ├رlite de AliDebo, tu perfil requiere ajustes refinados. Por favor, revisa los comentarios de verificaci├│n para finalizar tu identidad.',
+             'reason_label' => 'Comentarios de Verificaci├│n de ├ëlite',
+             'cta' => 'Modificar y Perfeccionar',
+         ],
++        'views_this_week' => 'Vistas Esta Semana',
++        'data_locked' => 'Datos Bloqueados',
++        'data_available_after_approval' => 'Tus datos de an├ةlisis estar├ةn disponibles aqu├ص una vez que tu perfil de negocio sea aprobado.',
++        'views' => 'Vistas',
++        'profile_strength' => 'Fuerza del Perfil',
++        'boost_visibility_msg' => 'Aumenta tu visibilidad completando los datos de tu negocio. Un perfil completo obtiene hasta :bold 3 veces m├ةs interacci├│n :endbold.',
++        'profile_optimized_msg' => '┬ةTu perfil est├ة perfectamente optimizado para un alcance de ├رlite! Mant├رn tu contenido actualizado.',
++        'complete_profile_now' => 'Completar Perfil Ahora',
++        'update_profile' => 'Actualizar Perfil',
++        'priority_support' => 'Soporte Prioritario',
++        'auto_reply_msg' => '┬ةGracias por contactarnos! Un agente de soporte de ├رlite estar├ة con usted en breve.',
++        'chat_started' => 'Chat Iniciado',
++        'type_message' => 'Escribe tu mensaje...',
++        'elite_team' => 'Equipo ├ëlite',
++        
++        // Leads CRM
++        'leads' => 'Gesti├│n de Clientes',
++        'leads_desc' => 'Gestiona los clientes potenciales de tu negocio y rastrea conversiones.',
++        'status_new' => 'Nuevo',
++        'status_contacted' => 'Contactado',
++        'status_converted' => 'Convertido',
++        'status_lost' => 'Perdido',
++        'private_notes' => 'Notas Privadas',
++        'update_lead' => 'Actualizar Cliente',
++        'lead_details' => 'Detalles del Cliente',
++        'no_leads' => 'A├║n no tienes clientes potenciales.',
++        'lead_updated' => 'Cliente actualizado con ├رxito',
++
++        // Translations
++        'translations' => 'Gestionar Traducciones',
++        'translations_desc' => 'Traduce tu perfil de negocio para llegar a una audiencia global.',
++
++        // Reviews
++        'reviews' => 'Rese├▒as de Clientes',
++        'reviews_desc' => 'Gestione su Reputaci├│n de ├ëlite y responda a los clientes.',
++        'review_replied' => 'Respuesta publicada con ├رxito.',
++        'reply_to_review' => 'Responder a la Rese├▒a',
++        'your_reply' => 'Tu Respuesta',
++        'submit_reply' => 'Enviar Respuesta',
++        'pending' => 'Pendiente de Moderaci├│n',
++        'approved' => 'Aprobado',
++        'rejected' => 'Rechazado',
++        'no_reviews' => 'A├║n no tienes rese├▒as.',
++        'rating' => 'Calificaci├│n',
++        'comment' => 'Comentario del Cliente',
++        'date' => 'Fecha',
++        'status' => 'Estado',
++        'action' => 'Acci├│n',
++        'statistics' => 'Estad├صsticas',
+     ],
+-];
++];
+\ No newline at end of file
+diff --git a/lang/es/directory.php b/lang/es/directory.php
+index 2875dcb..9eb71fa 100644
+--- a/lang/es/directory.php
++++ b/lang/es/directory.php
+@@ -58,4 +58,18 @@
+     'profile_get_directions' => 'C├│mo llegar',
+     'profile_connect' => 'Conectar',
+     'profile_of' => 'de',
++
++    // Reviews
++    'profile_reviews' => 'Rese├▒as',
++    'write_review' => 'Escribir una Rese├▒a',
++    'rate_experience' => 'Califica tu experiencia',
++    'review_comment' => 'Tu Comentario',
++    'submit_review' => 'Enviar Rese├▒a',
++    'login_required_review' => 'Debes iniciar sesi├│n para dejar una rese├▒a.',
++    'already_reviewed' => 'Ya has rese├▒ado este negocio.',
++    'review_submitted' => 'Tu rese├▒a ha sido enviada y est├ة pendiente de moderaci├│n.',
++    'no_reviews_yet' => 'A├║n no hay rese├▒as. ┬ةS├ر el primero en opinar!',
++    'business_reply' => 'Respuesta del Negocio:',
++'review_name' => 'Tu nombre',
++    'review_email' => 'Tu correo electr├│nico (opcional)',
+ ];
+diff --git a/lang/es/errors.php b/lang/es/errors.php
+index 667e589..f8da3fe 100644
+--- a/lang/es/errors.php
++++ b/lang/es/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Algo sali├│ mal',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Inicio de sesi├│n requerido',
+-        'desc' => 'Por favor, inicie sesi├│n para acceder a esta p├ةgina. Si no tiene una cuenta, puede crear una.',
+-    ],
+-    '403' => [
+-        'title' => 'Acceso denegado',
+-        'desc' => 'No tiene permiso para ver esta p├ةgina. Si cree que se trata de un error, p├│ngase en contacto con el soporte.',
+-    ],
+-    '404' => [
+-        'title' => 'P├ةgina no encontrada',
+-        'desc' => '┬ةVaya! No pudimos encontrar la p├ةgina que busca. Es posible que se haya movido o no exista.',
+-    ],
+-    '419' => [
+-        'title' => 'Sesi├│n expirada',
+-        'desc' => 'Su sesi├│n ha expirado por inactividad. Por favor, actualice la p├ةgina para continuar.',
+-    ],
+-    '429' => [
+-        'title' => 'Demasiadas solicitudes',
+-        'desc' => 'Est├ة realizando demasiadas solicitudes a la vez. Por favor, espere un momento antes de volver a intentarlo.',
+-    ],
+-    '500' => [
+-        'title' => 'Algo sali├│ mal',
++
+         'desc' => 'Encontramos un error inesperado por nuestra parte. Nuestro equipo ha sido notificado y est├ة trabajando en una soluci├│n.',
+     ],
+     '503' => [
+diff --git a/lang/es/landing.php b/lang/es/landing.php
+index e441645..f4a533c 100644
+--- a/lang/es/landing.php
++++ b/lang/es/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'M├ةs de 500 empresas conf├صan en nosotros en todo el mundo',
+     'contact_success' => 'Gracias por contactarnos. Nos pondremos en contacto con usted en breve.',
+     'sending' => 'Enviando...',
++    'send_another_msg' => 'Enviar otro mensaje',
+ ];
+diff --git a/lang/tr/dashboard.php b/lang/tr/dashboard.php
+index c9f0b16..82a0187 100644
+--- a/lang/tr/dashboard.php
++++ b/lang/tr/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'Elite Do─اrulama Geri Bildirimi',
+             'cta' => 'Dي┐╜zenle ve Kusursuzla┼اt─▒r',
+         ],
++        'views_this_week' => 'Bu Hafta G├╢r├╝nt├╝lenmeler',
++        'data_locked' => 'Veriler Kilitli',
++        'data_available_after_approval' => '─░┼اletme profiliniz onayland─▒ktan sonra analiz verileriniz burada g├╢r├╝necektir.',
++        'views' => 'G├╢r├╝nt├╝lenmeler',
++        'profile_strength' => 'Profil G├╝c├╝',
++        'boost_visibility_msg' => '─░┼اletme verilerinizi tamamlayarak g├╢r├╝n├╝rl├╝─ا├╝n├╝z├╝ art─▒r─▒n. Tam bir profil :bold 3 kata kadar daha fazla etkile┼اim :endbold al─▒r.',
++        'profile_optimized_msg' => 'Profiliniz elit eri┼اim i├دin m├╝kemmel ┼اekilde optimize edildi! ─░├دeri─اinizi g├╝ncel tutun.',
++        'complete_profile_now' => 'Profili ┼ئimdi Tamamla',
++        'update_profile' => 'Profili G├╝ncelle',
++        'priority_support' => '├ûncelikli Destek',
++        'auto_reply_msg' => 'Bize ula┼اt─▒─ا─▒n─▒z i├دin te┼اekk├╝rler! Elit bir destek temsilcisi k─▒sa s├╝re i├دinde sizinle ileti┼اime ge├دecektir.',
++        'chat_started' => 'Sohbet Ba┼اlad─▒',
++        'type_message' => 'Mesaj─▒n─▒z─▒ yaz─▒n...',
++        'elite_team' => 'Elit Tak─▒m',
++        
++        // Leads CRM
++        'leads' => 'M├╝┼اteri Y├╢netimi (CRM)',
++        'leads_desc' => '─░┼اletme m├╝┼اterilerinizi y├╢netin ve d├╢n├╝┼ا├╝mleri takip edin.',
++        'status_new' => 'Yeni',
++        'status_contacted' => '─░leti┼اime Ge├دildi',
++        'status_converted' => 'D├╢n├╝┼اt├╝r├╝ld├╝',
++        'status_lost' => 'Kaybedildi',
++        'private_notes' => '├ûzel Notlar',
++        'update_lead' => 'M├╝┼اteriyi G├╝ncelle',
++        'lead_details' => 'M├╝┼اteri Detaylar─▒',
++        'no_leads' => 'Hen├╝z m├╝┼اteriniz yok.',
++        'lead_updated' => 'M├╝┼اteri ba┼اar─▒yla g├╝ncellendi',
++
++        // Translations
++        'translations' => '├çevirileri Y├╢net',
++        'translations_desc' => 'K├╝resel bir kitleye ula┼اmak i├دin i┼اletme profilinizi ├دevirin.',
++
++        // Reviews
++        'reviews' => 'M├╝┼اteri De─اerlendirmeleri',
++        'reviews_desc' => 'Elit ─░tibar─▒n─▒z─▒ y├╢netin ve m├╝┼اterilere yan─▒t verin.',
++        'review_replied' => 'Yan─▒t ba┼اar─▒yla g├╢nderildi.',
++        'reply_to_review' => 'De─اerlendirmeye Yan─▒t Ver',
++        'your_reply' => 'Yan─▒t─▒n─▒z',
++        'submit_reply' => 'Yan─▒t─▒ G├╢nder',
++        'pending' => 'Onay Bekliyor',
++        'approved' => 'Onayland─▒',
++        'rejected' => 'Reddedildi',
++        'no_reviews' => 'Hen├╝z hi├د de─اerlendirmeniz yok.',
++        'rating' => 'Derecelendirme',
++        'comment' => 'M├╝┼اteri Yorumu',
++        'date' => 'Tarih',
++        'status' => 'Durum',
++        'action' => '─░┼اlem',
++        'statistics' => '─░statistikler',
+     ],
+ ];
+diff --git a/lang/tr/directory.php b/lang/tr/directory.php
+index d455781..0110999 100644
+--- a/lang/tr/directory.php
++++ b/lang/tr/directory.php
+@@ -58,4 +58,18 @@
+     'profile_get_directions' => 'Yol tarifi al',
+     'profile_connect' => 'Ba─اlan',
+     'profile_of' => '/',
++
++    // Reviews
++    'profile_reviews' => 'De─اerlendirmeler',
++    'write_review' => 'De─اerlendirme Yaz',
++    'rate_experience' => 'Deneyiminizi puanlay─▒n',
++    'review_comment' => 'Yorumunuz',
++    'submit_review' => 'De─اerlendirmeyi G├╢nder',
++    'login_required_review' => 'De─اerlendirme b─▒rakmak i├دin giri┼ا yapmal─▒s─▒n─▒z.',
++    'already_reviewed' => 'Bu i┼اletmeyi zaten de─اerlendirdiniz.',
++    'review_submitted' => 'De─اerlendirmeniz g├╢nderildi ve onay bekliyor.',
++    'no_reviews_yet' => 'Hen├╝z de─اerlendirme yok. ─░lk de─اerlendiren siz olun!',
++    'business_reply' => '─░┼اletme Yan─▒t─▒:',
++'review_name' => 'Ad─▒n─▒z',
++    'review_email' => 'E-postan─▒z (─░ste─اe ba─اl─▒)',
+ ];
+diff --git a/lang/tr/errors.php b/lang/tr/errors.php
+index 500c751..e9c2ebe 100644
+--- a/lang/tr/errors.php
++++ b/lang/tr/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Bir ┼ئeyler Ters Gitti',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Giri┼ا Yapman─▒z Gerekiyor',
+-        'desc' => 'Bu sayfaya eri┼اmek i├دin l├╝tfen giri┼ا yap─▒n. Hesab─▒n─▒z yoksa yeni bir hesap olu┼اturabilirsiniz.',
+-    ],
+-    '403' => [
+-        'title' => 'Eri┼اim Reddedildi',
+-        'desc' => 'Bu sayfay─▒ g├╢r├╝nt├╝leme izniniz yok. Bunun bir hata oldu─اunu d├╝┼ا├╝n├╝yorsan─▒z, l├╝tfen destek ekibiyle ileti┼اime ge├دin.',
+-    ],
+-    '404' => [
+-        'title' => 'Sayfa Bulunamad─▒',
+-        'desc' => 'Hoppala! Arad─▒─ا─▒n─▒z sayfay─▒ bulamad─▒k. Ta┼ا─▒nm─▒┼ا veya mevcut olmayabilir.',
+-    ],
+-    '419' => [
+-        'title' => 'Oturum S├╝resi Doldu',
+-        'desc' => 'Hareketsizlik nedeniyle oturumunuzun s├╝resi doldu. Devam etmek i├دin l├╝tfen sayfay─▒ yenileyin.',
+-    ],
+-    '429' => [
+-        'title' => '├çok Fazla ─░stek',
+-        'desc' => 'Ayn─▒ anda ├دok fazla istekte bulunuyorsunuz. L├╝tfen tekrar denemeden ├╢nce bir s├╝re bekleyin.',
+-    ],
+-    '500' => [
+-        'title' => 'Bir ┼ئeyler Ters Gitti',
++
+         'desc' => 'Taraf─▒m─▒zda beklenmedik bir hatayla kar┼ا─▒la┼اt─▒k. Ekibimiz bilgilendirildi ve bir d├╝zeltme ├╝zerinde ├دal─▒┼ا─▒yor.',
+     ],
+     '503' => [
+diff --git a/lang/tr/landing.php b/lang/tr/landing.php
+index b439884..631faad 100644
+--- a/lang/tr/landing.php
++++ b/lang/tr/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'D├╝nya genelinde 500+ i┼اletme taraf─▒ndan g├╝veniliyor',
+     'contact_success' => 'Bizimle ileti┼اime geي┐╜ti─اiniz i├دin te┼اekkي┐╜r ederiz. En k─▒sa sي┐╜rede size geri d├╢nece─اiz.',
+     'sending' => 'G├╢nderiliyor...',
++    'send_another_msg' => 'Ba┼اka bir mesaj g├╢nder',
+ ];
+diff --git a/lang/zh/dashboard.php b/lang/zh/dashboard.php
+index 9f6e554..0ddb23d 100644
+--- a/lang/zh/dashboard.php
++++ b/lang/zh/dashboard.php
+@@ -61,5 +61,54 @@
+             'reason_label' => 'ق▓╛كï▒µب╕ف«ئفلخê',
+             'cta' => 'غ┐«µ¤╣ف╣╢ف«îفû',
+         ],
++        'views_this_week' => 'µ£شفّذµ╡كدêلç',
++        'data_locked' => 'µـ░µ«ف╖▓ل¤ف«أ',
++        'data_available_after_approval' => 'µéذقأغ╕أفèةµةثµةêك╖ف╛ùµë╣فçفي╝îفêµئµـ░µ«ف░ف£ذµصجفجف»ق¤ذعé',
++        'views' => 'µ╡كدêلç',
++        'profile_strength' => 'µةثµةêف«îµـ┤ف║خ',
++        'boost_visibility_msg' => 'ف«îفûµéذقأغ╕أفèةµـ░µ«غ╗حµلسءف»كدف║خعéف«îµـ┤قأµةثµةêف»ك╖ف╛ùلسءك╛╛ :bold 3فقأغ║ْفèذ :endboldعé',
++        'profile_optimized_msg' => 'µéذقأµةثµةêف╖▓لْêف»╣ق▓╛كï▒فùغ╝ùك┐ؤكةîغ║ف«îق╛غ╝ءفîûي╝غ┐إµîفàف«╣µؤ┤µû░عé',
++        'complete_profile_now' => 'قسïف│ف«îفûµةثµةê',
++        'update_profile' => 'µؤ┤µû░µةثµةê',
++        'priority_support' => 'غ╝ءفàêµ¤»µî',
++        'auto_reply_msg' => 'µاك░تµéذقأك¤ق│╗ي╝ق▓╛كï▒µ¤»µîغ╗ثكةذف░ف╛êف┐سغ╕║µéذµ£فèةعé',
++        'chat_started' => 'كèفجرف╖▓ف╝فدï',
++        'type_message' => 'ك╛ôفàحµéذقأµ╢êµ»...',
++        'elite_team' => 'ق▓╛كï▒فؤتلءا',
++        
++        // Leads CRM
++        'leads' => 'µ╜£ف£ذف«تµê╖ق«ةق',
++        'leads_desc' => 'ق«ةقµéذقأغ╕أفèةق║┐ق┤تف╣╢ك╖اك╕زك╜شفîûعé',
++        'status_new' => 'µû░ف╗║',
++        'status_contacted' => 'ف╖▓ك¤ق│╗',
++        'status_converted' => 'ف╖▓ك╜شفîû',
++        'status_lost' => 'ف╖▓µ╡فج▒',
++        'private_notes' => 'قدغ║║قش¤ك«░',
++        'update_lead' => 'µؤ┤µû░ق║┐ق┤ت',
++        'lead_details' => 'ق║┐ق┤تك»خµâà',
++        'no_leads' => 'µéذك┐ءµ▓ةµ£ëغ╗╗غ╜ـµ╜£ف£ذف«تµê╖عé',
++        'lead_updated' => 'µ╜£ف£ذف«تµê╖ف╖▓µêفèاµؤ┤µû░',
++
++        // Translations
++        'translations' => 'ق«ةقق┐╗ك»ّ',
++        'translations_desc' => 'ق┐╗ك»ّµéذقأغ╕أفèةك╡µûآغ╗حف╕ف╝ـفàذقâفùغ╝ùعé',
++
++        // Reviews
++        'reviews' => 'ف«تµê╖ك»غ╗╖',
++        'reviews_desc' => 'ق«ةقµéذقأق▓╛كï▒فث░كزëف╣╢فؤئفجف«تµê╖عé',
++        'review_replied' => 'فؤئفجفّف╕âµêفèاعé',
++        'reply_to_review' => 'فؤئفجك»غ╗╖',
++        'your_reply' => 'µéذقأفؤئفج',
++        'submit_reply' => 'µغ║جفؤئفج',
++        'pending' => 'قصëف╛àف«ةµب╕',
++        'approved' => 'ف╖▓µë╣فç',
++        'rejected' => 'ف╖▓µïْق╗إ',
++        'no_reviews' => 'µéذك┐ءµ▓ةµ£ëغ╗╗غ╜ـك»غ╗╖عé',
++        'rating' => 'ك»فê',
++        'comment' => 'ف«تµê╖ك»ك«║',
++        'date' => 'µùحµ£ا',
++        'status' => 'قè╢µ',
++        'action' => 'µôغ╜£',
++        'statistics' => 'ق╗اك«ةµـ░µ«',
+     ],
+ ];
+diff --git a/lang/zh/directory.php b/lang/zh/directory.php
+index befe3f0..d9f8571 100644
+--- a/lang/zh/directory.php
++++ b/lang/zh/directory.php
+@@ -56,6 +56,20 @@
+     'profile_verified' => 'ف╖▓ك«جك»',
+     'profile_member_since' => 'فèبفàحµù╢لù┤',
+     'profile_get_directions' => 'ك╖فûك╖»ق║┐',
+-    'profile_connect' => 'ك¤ق│╗µêّغ╗ش',
+-    'profile_of' => '/',
++    'profile_connect' => 'ك¤ق│╗',
++    'profile_of' => 'فà▒',
++
++    // Reviews
++    'profile_reviews' => 'ك»غ╗╖',
++    'write_review' => 'فآك»غ╗╖',
++    'rate_experience' => 'ق╗آµéذقأغ╜ôلزîµëôفê',
++    'review_comment' => 'µéذقأك»ك«║',
++    'submit_review' => 'µغ║جك»غ╗╖',
++    'login_required_review' => 'µéذف┐àلة╗قآ╗ف╜ـµëكâ╜قـآغ╕ïك»غ╗╖عé',
++    'already_reviewed' => 'µéذف╖▓ق╗ك»غ╗╖ك┐çµصجفـف«╢عé',
++    'review_submitted' => 'µéذقأك»غ╗╖ف╖▓µغ║جي╝îµصثف£ذقصëف╛àف«ةµب╕عé',
++    'no_reviews_yet' => 'µأéµùبك»غ╗╖عéµêغ╕║قششغ╕غ╕زك»غ╗╖قأغ║║فدي╝',
++    'business_reply' => 'فـف«╢فؤئفجي╝أ',
++'review_name' => 'غ╜بقأففصù',
++    'review_email' => 'غ╜بقأق¤╡فصلé«غ╗╢ي╝êف»لëي╝ë',
+ ];
+diff --git a/lang/zh/errors.php b/lang/zh/errors.php
+index 8ef189c..6dcd3d6 100644
+--- a/lang/zh/errors.php
++++ b/lang/zh/errors.php
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'فç║غ║قé╣لù«لتء',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'ل£كخقآ╗ف╜ـ',
+-        'desc' => 'ك»╖قآ╗ف╜ـفك«┐لù«µصجلة╡لإتعéفخéµئ£µéذك┐ءµ▓ةµ£ëك┤خف╖ي╝îف»غ╗حفàêµ│ذفîغ╕غ╕زعé',
+-    ],
+-    '403' => [
+-        'title' => 'µïْق╗إك«┐لù«',
+-        'desc' => 'µéذµ▓ةµ£ëµإâلآµاحق£ïµصجلة╡لإتعéفخéµئ£µéذك«جغ╕║ك┐آµء»غ╕غ╕زل¤آك»»ي╝îك»╖ك¤ق│╗ف«تµ£عé',
+-    ],
+-    '404' => [
+-        'title' => 'لة╡لإتµ£زµë╛فê░',
+-        'desc' => 'فôفّي╝µêّغ╗شµë╛غ╕فê░µéذكخف»╗µë╛قألة╡لإتعéف«âف»كâ╜ف╖▓كتسقد╗فèذµêûغ╕فصءف£ذعé',
+-    ],
+-    '419' => [
+-        'title' => 'غ╝أك»إف╖▓ك┐çµ£ا',
+-        'desc' => 'ق¤▒غ║لـ┐µù╢لù┤µ£زµôغ╜£ي╝îµéذقأغ╝أك»إف╖▓ك┐çµ£اعéك»╖فê╖µû░لة╡لإتغ╗حق╗دق╗صعé',
+-    ],
+-    '429' => [
+-        'title' => 'ك»╖µ▒éك┐çفجأ',
+-        'desc' => 'µéذقأك»╖µ▒éك┐çغ║لتّق╣عéك»╖قذقصëقëçفê╗ففك»ـعé',
+-    ],
+-    '500' => [
+-        'title' => 'فç║غ║قé╣لù«لتء',
++
+         'desc' => 'µêّغ╗شلçفê░غ║غ╕غ║ؤµفجûقأل¤آك»»عéµêّغ╗شقأفؤتلءاف╖▓µ¤╢فê░لأقاحف╣╢µصثف£ذك┐ؤكةîغ┐«فجعé',
+     ],
+     '503' => [
+diff --git a/lang/zh/landing.php b/lang/zh/landing.php
+index e4c6643..ea57470 100644
+--- a/lang/zh/landing.php
++++ b/lang/zh/landing.php
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'فàذقâك╢àك┐ç 500 ف«╢غ╝غ╕أقأغ┐ةك╡ûغ╣ïلë',
+     'contact_success' => 'µاك░تµéذقأك¤ق│╗عéµêّغ╗شف╛êف┐سغ╝أفؤئفجµéذعé',
+     'sending' => 'µصثف£ذفّل...',
++    'send_another_msg' => 'فّلفخغ╕µإةµ╢êµ»',
+ ];

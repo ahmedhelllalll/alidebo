@@ -56,6 +56,20 @@ return [
     'profile_verified' => '已认证',
     'profile_member_since' => '加入时间',
     'profile_get_directions' => '获取路线',
-    'profile_connect' => '联系我们',
-    'profile_of' => '/',
+    'profile_connect' => '联系',
+    'profile_of' => '共',
+
+    // Reviews
+    'profile_reviews' => '评价',
+    'write_review' => '写评价',
+    'rate_experience' => '给您的体验打分',
+    'review_comment' => '您的评论',
+    'submit_review' => '提交评价',
+    'login_required_review' => '您必须登录才能留下评价。',
+    'already_reviewed' => '您已经评价过此商家。',
+    'review_submitted' => '您的评价已提交，正在等待审核。',
+    'no_reviews_yet' => '暂无评价。成为第一个评价的人吧！',
+    'business_reply' => '商家回复：',
+'review_name' => '你的名字',
+    'review_email' => '你的电子邮件（可选）',
 ];

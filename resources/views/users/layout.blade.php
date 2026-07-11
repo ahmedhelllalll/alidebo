@@ -38,6 +38,15 @@
     @stack('styles')
     {{-- Alpine.js (required for x-data, x-show, x-for, etc.) --}}
 
+    {{-- Instant theme application (prevents FOUC) --}}
+    <script>
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.classList.remove('dark');
+        } else {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
 </head>
 <body class="text-start text-zinc-800 dark:text-zinc-200 bg-zinc-50 dark:bg-[#09090b] selection:bg-primary/20 flex h-screen overflow-hidden">
 
@@ -66,6 +75,11 @@
                     $navItems = [
                         ['route' => 'dashboard', 'label' => __('nav.home'), 'icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'], 
                         ['route' => 'business.edit', 'label' => __('dashboard.sidebar.business') ?? 'Business', 'icon' => 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'], 
+                        ['route' => 'business.translations.index', 'label' => __('dashboard.index.translations') ?? 'Translations', 'icon' => 'M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129'],
+                        ['route' => 'dashboard.reviews.index', 'label' => __('dashboard.index.reviews') ?? 'Reviews', 'icon' => 'M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z'],
+                        ['route' => 'dashboard.leads.index', 'label' => __('dashboard.index.leads') ?? 'Leads', 'icon' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z'], 
+                        ['route' => 'support.chat.index', 'label' => __('dashboard.index.help_center') ?? 'Support', 'icon' => 'M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z'],
+                        ['route' => 'profile.edit', 'label' => __('dashboard.account_label') ?? 'Account Settings', 'icon' => 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z'],
                     ]; 
                     @endphp
                     @foreach($navItems as $item)
@@ -117,6 +131,35 @@
             </div>
 
             <div class="flex items-center gap-3 sm:gap-4 relative">
+
+                {{-- Notifications Bell --}}
+                <div class="relative" x-data="notificationsMenu()" @click.away="open = false">
+                    <button @click="toggle()" class="relative p-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-transparent">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                        <span x-show="count > 0" x-cloak class="absolute top-1 right-1.5 flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                        </span>
+                    </button>
+
+                    <div x-show="open" x-transition.opacity.scale.95 x-cloak class="absolute top-full right-0 mt-2 w-80 bg-white dark:bg-[#0e0e11] rounded-2xl shadow-xl border border-zinc-200 dark:border-white/5 overflow-hidden z-50 origin-top-right">
+                        <div class="p-4 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
+                            <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Notifications</h3>
+                            <button x-show="count > 0" @click="markAllAsRead()" class="text-xs font-semibold text-primary hover:text-primary-dark transition-colors">Mark all read</button>
+                        </div>
+                        <div class="max-h-80 overflow-y-auto custom-scrollbar">
+                            <template x-if="count === 0">
+                                <div class="p-6 text-center text-zinc-500 dark:text-zinc-400 text-sm">No new notifications</div>
+                            </template>
+                            <template x-for="notif in notifications" :key="notif.id">
+                                <div class="p-4 border-b border-zinc-50 dark:border-zinc-800/50 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 transition-colors cursor-pointer" @click="markAsRead(notif.id)">
+                                    <p class="text-[13px] font-semibold text-zinc-800 dark:text-zinc-200" x-text="notif.data.name + ' sent a new lead.'"></p>
+                                    <p class="text-[11px] text-zinc-500 mt-1" x-text="new Date(notif.created_at).toLocaleString()"></p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
 
                 {{-- Theme Switcher --}}
                 <button onclick="toggleTheme()" class="p-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-transparent">
@@ -289,8 +332,6 @@
         }
 
         window.onload = () => {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') document.documentElement.classList.remove('dark');
             updateThemeIcons();
         };
     </script>
@@ -360,6 +401,69 @@
 
             // Store for potential cleanup
             window.__gsapDashCtx = dashCtx;
+        });
+
+        // Notifications Menu Alpine Component
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('notificationsMenu', () => ({
+                open: false,
+                count: 0,
+                notifications: [],
+                init() {
+                    this.fetchUnread();
+                    setInterval(() => {
+                        this.fetchUnread();
+                    }, 10000); // Check every 10 seconds
+                },
+                toggle() {
+                    this.open = !this.open;
+                },
+                fetchUnread() {
+                    fetch('{{ route("notifications.unread") }}', {
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.count > this.count) {
+                            // Optional: play a subtle sound or notification pop
+                        }
+                        this.count = data.count;
+                        this.notifications = data.notifications;
+                    })
+                    .catch(err => console.error(err));
+                },
+                markAsRead(id) {
+                    fetch(`/notifications/${id}/read`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(() => {
+                        this.fetchUnread();
+                        this.open = false;
+                    });
+                },
+                markAllAsRead() {
+                    fetch('{{ route("notifications.readAll") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(() => {
+                        this.fetchUnread();
+                        this.open = false;
+                    });
+                }
+            }));
         });
     </script>
     @stack('scripts')

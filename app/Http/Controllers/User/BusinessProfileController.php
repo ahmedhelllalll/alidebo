@@ -17,6 +17,8 @@ use App\Services\BusinessAnalyticsService;
 use App\Services\BusinessProfileService;
 use App\Models\City;
 use Illuminate\Support\Str;
+use App\Jobs\RecordBusinessView;
+
 class BusinessProfileController extends Controller
 {
     private BusinessAnalyticsService $analyticsService;
@@ -50,7 +52,7 @@ class BusinessProfileController extends Controller
         }
 
         $categories = Cache::remember('categories_all', 86400, fn() => Category::all());
-        $countries = Country::with('cities')->get();
+        $countries = Country::all();
 
         return view('users.create', compact('categories', 'countries'));
     }
@@ -240,14 +242,14 @@ class BusinessProfileController extends Controller
             }
         }
 
-        $sessionKey = 'viewed_business_' . $business->id;
+        $sessionKey = 'viewed_business_' . $business->id . '_' . now()->toDateString();
         if (!session()->has($sessionKey)) {
-            BusinessView::create([
-                'business_profile_id' => $business->id,
-                'ip_address' => request()->ip(),
-                'user_agent' => request()->userAgent(),
-                'country_code' => request()->header('CF-IPCountry') ?? null,
-            ]);
+            $ip = request()->ip();
+            $userAgent = request()->userAgent();
+            $countryCode = request()->header('CF-IPCountry');
+            
+            RecordBusinessView::dispatch($business->id, $ip, $userAgent, $countryCode);
+            
             session()->put($sessionKey, true);
         }
 

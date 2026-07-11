@@ -1,0 +1,7 @@
+diff a/lang/tr/landing.php b/lang/tr/landing.php	(rejected hunks)
+@@ -211,4 +211,5 @@
+     'contact_trust_line' => 'Dünya genelinde 500+ işletme tarafından güveniliyor',
+     'contact_success' => 'Bizimle iletişime ge�tiğiniz için teşekk�r ederiz. En kısa s�rede size geri döneceğiz.',
+     'sending' => 'Gönderiliyor...',
++    'send_another_msg' => 'Başka bir mesaj gönder',
+ ];

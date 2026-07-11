@@ -1,29 +1,29 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('users.layout')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+@section('title', __('dashboard.account_label') ?? 'Account Settings')
+@section('page_title', __('dashboard.account_label') ?? 'Account Settings')
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
+@section('content')
+<div class="max-w-4xl mx-auto space-y-6">
+    {{-- Update Profile Info --}}
+    <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-black/5 dark:border-white/[0.04] shadow-sm relative overflow-hidden group">
+        <div class="max-w-xl relative z-10">
+            @include('profile.partials.update-profile-information-form')
         </div>
     </div>
-</x-app-layout>
+
+    {{-- Update Password --}}
+    <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-black/5 dark:border-white/[0.04] shadow-sm relative overflow-hidden group">
+        <div class="max-w-xl relative z-10">
+            @include('profile.partials.update-password-form')
+        </div>
+    </div>
+
+    {{-- Delete Account --}}
+    <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-rose-500/10 dark:border-rose-500/20 shadow-sm relative overflow-hidden group bg-rose-50/50 dark:bg-rose-500/5">
+        <div class="max-w-xl relative z-10">
+            @include('profile.partials.delete-user-form')
+        </div>
+    </div>
+</div>
+@endsection

@@ -257,38 +257,65 @@ return [
     'cta_badge' => 'انمو معنا',
     'cta_graph_views' => 'مشاهدات الملف',
     'cta_graph_today' => 'اليوم',
+
     // Contact Page
-    'contact_hero_subtitle' => 'سواء كان لديك سؤال حول منصتنا، أو تحتاج إلى دعم فني، أو ترغب ببساطة في مشاركة أفكارك — فريقنا الودود مستعد دائمًا للاستماع.',
+    'contact_hero_title_1' => 'كيف يمكننا ',
+    'contact_hero_title_highlight' => 'مساعدتك؟',
+    'contact_hero_subtitle' => 'سواء كان لديك سؤال حول منصتنا، أو تحتاج إلى دعم فني، أو ترغب ببساطة في مشاركة أفكارك—فريقنا الودود مستعد دائماً للاستماع.',
     'send_message' => 'أرسل لنا رسالة سريعة',
+    'contact_hero_subtitle_form' => 'نرد عادةً خلال ساعات قليلة.',
     'first_name' => 'الاسم الأول',
     'last_name' => 'اسم العائلة',
+    'contact_placeholder_fname' => 'مثال: أحمد',
+    'contact_placeholder_lname' => 'مثال: محمد',
     'email_address' => 'البريد الإلكتروني',
+    'contact_placeholder_email' => 'ahmed@example.com',
     'message' => 'كيف يمكننا مساعدتك اليوم؟',
-    'send_message_btn' => 'إرسال رسالة',
-    'reach_out' => 'هل تفضل التواصل مباشرة؟',
-    'reach_out_subtitle' => 'إذا كنت بحاجة إلى مساعدة فورية أو تفضل محادثة مباشرة، فلا تتردد في التواصل باستخدام التفاصيل أدناه.',
+    'contact_placeholder_msg' => 'أخبرنا قليلاً عما تحتاجه...',
+    'send_message_btn' => 'إرسال الرسالة',
+    'sending' => 'جارٍ الإرسال...',
+    'success' => 'تم بنجاح!',
+    'send_another_msg' => 'إرسال رسالة أخرى',
+    'reach_out' => 'تفضل التواصل مباشرة؟',
+    'reach_out_subtitle' => 'إذا كنت بحاجة إلى مساعدة فورية أو تفضل محادثة مباشرة، لا تتردد في التواصل معنا عبر التفاصيل أدناه.',
     'call_us' => 'اتصل بنا',
     'email_us' => 'أرسل بريداً إلكترونياً',
     'follow_us' => 'تواصل معنا',
-    'contact_hero_title_1' => 'كيف يمكننا ',
-    'contact_hero_title_highlight' => 'مساعدتك؟',
-    'contact_placeholder_fname' => 'مثال: أحمد',
-    'contact_placeholder_lname' => 'مثال: محمد',
-    'contact_placeholder_email' => 'ahmed@example.com',
-    'contact_placeholder_msg' => 'أخبرنا قليلاً عما تحتاجه...',
-    'contact_hero_subtitle_form' => 'نرد عادةً خلال ساعات قليلة.',
-    'contact_trust_line' => 'موثوق من أكثر من 500 شركة حول العالم',
-    
-    // Validation & Alerts
+    'error' => 'خطأ',
     'contact_error_name_min' => 'يجب أن يكون حرفين على الأقل.',
     'contact_error_email_invalid' => 'يرجى إدخال عنوان بريد إلكتروني صالح.',
     'contact_error_msg_min' => 'يجب أن تكون الرسالة 10 أحرف على الأقل.',
     'contact_error_msg_max' => 'الرسالة طويلة جداً.',
-    'contact_rate_limit' => 'تم تجاوز الحد المسموح. يرجى المحاولة لاحقاً.',
     'contact_error_general' => 'حدث خطأ ما.',
+    'contact_rate_limit' => 'طلبات كثيرة جداً. يرجى المحاولة لاحقاً.',
     'contact_network_error' => 'خطأ في الشبكة. يرجى المحاولة مرة أخرى.',
-    'error' => 'خطأ',
-    'success' => 'نجاح',
-    'contact_success' => 'شكرًا لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.',
-    'sending' => 'جاري الإرسال...',
+
+    // Alidebo Market Features
+    'market_feature_1_title' => 'شبكة تجارة عالمية',
+    'market_feature_1_desc' => 'تواصل مع مشترين وبائعين موثوقين من جميع أنحاء العالم في سوق موحد وسلس.',
+    'market_feature_2_title' => 'منصة B2B آمنة',
+    'market_feature_2_desc' => 'تداول بثقة مطلقة من خلال دليل شركاتنا المعتمد وقنوات الاتصال المشفرة.',
+    'market_feature_3_title' => 'تسريع النمو',
+    'market_feature_3_desc' => 'قم بتوسيع نطاق سوقك واكتشف فرص عمل متميزة بسهولة مع علي ديبو.',
+
+    // Contact Success Message
+    'contact_success' => 'شكراً لتواصلك معنا. سنقوم بالرد عليك في أقرب وقت ممكن.',
+
+    // Contact Social & Info Section
+    'contact_phone_label' => 'الهاتف',
+    'contact_email_label' => 'البريد الإلكتروني',
+    'contact_follow_title' => 'تابعنا للحصول على وصول مبكر',
+    'contact_follow_desc' => 'كن أول من يعرف عن الميزات الجديدة والتحديثات والعروض الحصرية.',
+
+    // Contact Channels Title & Desc
+    'contact_channels_title' => 'قنوات الاتصال المباشر',
+    'contact_channels_desc' => 'تواصل معنا مباشرة عبر فريق الدعم والمبيعات لدينا.',
+
+    // Contact Reach Card
+    'contact_reach_title' => 'تواصل معنا مباشرة',
+    'contact_reach_desc' => 'تواصل معنا من خلال أي من هذه القنوات.',
+
+    // Contact Hints
+    'contact_phone_hint' => 'متاح خلال ساعات العمل',
+    'contact_email_hint' => 'نرد خلال ساعات قليلة',
 ];

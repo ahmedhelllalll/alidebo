@@ -75,6 +75,22 @@
                 <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">{{ __('admin.name_ar') }}</label>
                 <input type="text" name="name_ar" required dir="rtl" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all font-cairo text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="{{ __('admin.eg_technology_ar') }}">
             </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (DE)</label>
+                <input type="text" name="name_de" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
+            </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (ES)</label>
+                <input type="text" name="name_es" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
+            </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (TR)</label>
+                <input type="text" name="name_tr" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
+            </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (ZH)</label>
+                <input type="text" name="name_zh" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
+            </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
              <div>
@@ -149,6 +165,22 @@
             <div>
                 <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">{{ __('admin.name_ar') }}</label>
                 <input type="text" name="name_ar" id="edit_name_ar" required dir="rtl" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all font-cairo text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600">
+            </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (DE)</label>
+                <input type="text" name="name_de" id="edit_name_de" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
+            </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (ES)</label>
+                <input type="text" name="name_es" id="edit_name_es" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
+            </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (TR)</label>
+                <input type="text" name="name_tr" id="edit_name_tr" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
+            </div>
+            <div>
+                <label class="block text-[13px] font-[900] text-slate-700 dark:text-zinc-300 mb-1.5 uppercase tracking-wider">Name (ZH)</label>
+                <input type="text" name="name_zh" id="edit_name_zh" class="w-full bg-slate-50 dark:bg-[#121214]/50 border border-slate-200 dark:border-white/10 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-xl text-[14px] font-bold py-3 px-4 transition-all text-slate-900 dark:text-white shadow-sm placeholder:text-slate-400 dark:placeholder:text-zinc-600" placeholder="Optional">
             </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -337,8 +369,12 @@
     }
     // Populate Modals
     function editCategory(category) {
-        document.getElementById('edit_name_en').value = category.name_en;
-        document.getElementById('edit_name_ar').value = category.name_ar;
+        document.getElementById('edit_name_en').value = category.name_en || '';
+        document.getElementById('edit_name_ar').value = category.name_ar || '';
+        document.getElementById('edit_name_de').value = category.name_de || '';
+        document.getElementById('edit_name_es').value = category.name_es || '';
+        document.getElementById('edit_name_tr').value = category.name_tr || '';
+        document.getElementById('edit_name_zh').value = category.name_zh || '';
         document.getElementById('edit_slug').value = category.slug || '';
         document.getElementById('edit_icon').value = category.icon || '';
         // Handle Image

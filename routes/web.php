@@ -10,18 +10,22 @@ use App\Http\Controllers\Admin;
 use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ContactMessageController;
+use App\Http\Controllers\PublicReviewController;
 
 use App\Models\BusinessProfile;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 
 Route::get('/', function () {
-    // Fetch featured companies with category and city relationships eager loaded
-    $featuredCompanies = BusinessProfile::with(['category', 'city'])
-        ->where('status', 'approved')
-        ->inRandomOrder()
-        ->limit(6)
-        ->get();
+    // Fetch featured companies with category and city relationships eager loaded (cached to avoid full table scans)
+    $featuredCompanies = Cache::remember('featured_companies', now()->addMinutes(5), function () {
+        return BusinessProfile::with(['category', 'city'])
+            ->where('status', 'approved')
+            ->inRandomOrder()
+            ->limit(6)
+            ->get();
+    });
 
     return view('welcome', compact('featuredCompanies'));
 })->name('home');
@@ -40,6 +44,10 @@ Route::get('auth/facebook', [FacebookController::class, 'redirectToFacebook'])->
 Route::get('auth/facebook/callback', [FacebookController::class, 'handleFacebookCallback']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/api/countries/{country}/cities', function (\App\Models\Country $country) {
+        return response()->json($country->cities);
+    })->name('api.countries.cities');
+
 
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
@@ -82,6 +90,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::get('/settings', [Admin\SettingsController::class, 'index'])->name('settings');
         Route::patch('/settings', [Admin\SettingsController::class, 'update'])->name('settings.update');
+
+        Route::resource('support-chats', Admin\SupportChatController::class)->only(['index', 'show']);
+        Route::post('/support-chats/{support_chat}/send', [Admin\SupportChatController::class, 'sendMessage'])->name('support-chats.send');
+        Route::post('/support-chats/{support_chat}/typing', [Admin\SupportChatController::class, 'typing'])->name('support-chats.typing');
+        Route::post('/support-chats/{support_chat}/close', [Admin\SupportChatController::class, 'close'])->name('support-chats.close');
     });
 
     Route::middleware(['user'])->prefix('dashboard')->group(function () {
@@ -99,14 +112,43 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/sections/sync', [BusinessProfileController::class, 'syncSections'])->name('business.sections.sync');
 
             Route::post('/media', [BusinessProfileController::class, 'uploadMedia'])->name('business.media.upload');
-            Route::post('/media/order', [BusinessProfileController::class, 'updateMediaOrder'])->name('business.media.order');
-            Route::post('/media/{id}/caption', [BusinessProfileController::class, 'updateMediaCaption'])->name('business.media.caption');
-            Route::delete('/media/{id}', [BusinessProfileController::class, 'destroyMedia'])->name('business.media.destroy');
+            Route::post('/media/order', [App\Http\Controllers\User\BusinessProfileController::class, 'updateMediaOrder'])->name('business.media.order');
+            Route::put('/media/{id}/caption', [App\Http\Controllers\User\BusinessProfileController::class, 'updateMediaCaption'])->name('business.media.caption');
+            Route::delete('/media/{id}', [App\Http\Controllers\User\BusinessProfileController::class, 'destroyMedia'])->name('business.media.destroy');
+
+            // Leads CRM
+            Route::get('/leads', [App\Http\Controllers\User\LeadController::class, 'index'])->name('dashboard.leads.index');
+            Route::put('/leads/{id}/status', [App\Http\Controllers\User\LeadController::class, 'updateStatus'])->name('dashboard.leads.update');
+
+            // Translations
+            Route::get('/translations', [App\Http\Controllers\User\BusinessTranslationController::class, 'index'])->name('business.translations.index');
+            Route::post('/translations', [App\Http\Controllers\User\BusinessTranslationController::class, 'update'])->name('business.translations.update');
+
+            // Reviews
+            Route::get('/reviews', [App\Http\Controllers\User\ReviewController::class, 'index'])->name('dashboard.reviews.index');
+            Route::post('/reviews/{review}/reply', [App\Http\Controllers\User\ReviewController::class, 'reply'])->name('dashboard.reviews.reply');
+
+            // Support Chat
+            Route::get('/support/chat/fetch', [App\Http\Controllers\User\SupportChatController::class, 'fetchMessages'])->name('support.chat.fetch');
         });
 
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+        // Notifications
+        Route::prefix('notifications')->group(function () {
+            Route::get('/unread', [App\Http\Controllers\User\NotificationController::class, 'fetchUnread'])->name('notifications.unread');
+            Route::post('/{id}/read', [App\Http\Controllers\User\NotificationController::class, 'markAsRead'])->name('notifications.read');
+            Route::post('/read-all', [App\Http\Controllers\User\NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+        });
+
+        Route::prefix('support-chat')->group(function () {
+            Route::get('/', [\App\Http\Controllers\User\SupportChatController::class, 'index'])->name('support.chat.index');
+            Route::get('/messages', [\App\Http\Controllers\User\SupportChatController::class, 'fetchMessages'])->name('support.chat.fetch');
+            Route::post('/send', [\App\Http\Controllers\User\SupportChatController::class, 'sendMessage'])->name('support.chat.send');
+            Route::post('/typing', [\App\Http\Controllers\User\SupportChatController::class, 'typing'])->name('support.chat.typing');
+        });
     });
 });
 
@@ -130,8 +172,14 @@ Route::view('/terms', 'pages.terms')->name('terms');
 Route::view('/cookies', 'pages.cookies')->name('cookies');
 
 // Chatbot Route
-Route::post('/chatbot/ask', [ChatbotController::class, 'ask'])
+Route::post('/chatbot/ask', [\App\Http\Controllers\ChatbotController::class, 'ask'])
     ->middleware('throttle:30,1')
     ->name('chatbot.ask');
 
-Route::get('/{slug}', [BusinessProfileController::class, 'show'])->name('business.view');
+Route::post('/{slug}/contact', [\App\Http\Controllers\PublicLeadController::class, 'store'])->name('directory.business.contact');
+Route::post('/{slug}/reviews', [PublicReviewController::class, 'store'])->name('directory.business.reviews.store');
+Route::get('/{slug}', [App\Http\Controllers\User\BusinessProfileController::class, 'show'])->name('business.view');
+
+Route::fallback(function () {
+    abort(404);
+});

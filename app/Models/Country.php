@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Country extends Model
 {
-    protected $fillable = ['name_en', 'name_ar', 'code', 'status'];
+    protected $fillable = ['name_en', 'name_ar', 'name_de', 'name_es', 'name_tr', 'name_zh', 'code', 'status'];
     protected $appends = ['name'];
 
     public function getNameAttribute()

@@ -1,0 +1,7 @@
+diff a/lang/ar/landing.php b/lang/ar/landing.php	(rejected hunks)
+@@ -291,4 +291,5 @@
+     'success' => 'نجاح',
+     'contact_success' => 'شكرًا لتواصلك معنا. سنرد عليك في أقرب وقت ممكن.',
+     'sending' => 'جاري الإرسال...',
++    'send_another_msg' => 'إرسال رسالة أخرى',
+ ];

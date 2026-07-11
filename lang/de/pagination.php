@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'previous' => '&laquo; Zur�ck',
+    'previous' => '&laquo; Zurück',
     'next' => 'Weiter &raquo;',
     'showing' => 'Zeigt',
     'to' => 'bis',

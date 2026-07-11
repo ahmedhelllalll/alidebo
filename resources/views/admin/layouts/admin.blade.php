@@ -501,6 +501,18 @@
                 <span class="sidebar-tooltip">{{ __('admin.leads') ?? 'Leads' }} @if($unreadLeadsCount > 0) ({{ $unreadLeadsCount }}) @endif</span>
             </a>
 
+            {{-- Support Chats --}}
+            <a href="{{ route('admin.support-chats.index') }}"
+                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
+                {{ request()->routeIs('admin.support-chats.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                <span class="nav-active-bar {{ request()->routeIs('admin.support-chats.*') ? '' : 'hidden' }}"></span>
+                <i class="fa-solid fa-comments w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                <div class="flex-1 flex items-center justify-between sidebar-text">
+                    <span>{{ __('admin.support_chats') ?? 'Support Chats' }}</span>
+                </div>
+                <span class="sidebar-tooltip">{{ __('admin.support_chats') ?? 'Support Chats' }}</span>
+            </a>
+
             {{-- Backups --}}
             <a href="{{ route('admin.backups.index') }}"
                 class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group

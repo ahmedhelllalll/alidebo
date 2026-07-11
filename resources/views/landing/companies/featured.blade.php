@@ -52,10 +52,14 @@
                                     <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </div>
                             </div>
-                            <p class="text-sm text-slate-500 dark:text-zinc-400 line-clamp-2 mb-6 font-medium leading-relaxed flex-1">
-                                {{ $company->description ?? __('landing.featured_desc') }}
-                            </p>
+                            <div class="relative overflow-hidden h-[3rem] mb-4 flex-1">
+                                <p class="text-sm text-slate-500 dark:text-zinc-400 font-medium leading-relaxed">
+                                    {{ $company->description ?? __('landing.featured_desc') }}
+                                </p>
+                                <div class="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-white dark:from-[#09090b] to-transparent pointer-events-none"></div>
+                            </div>
                             
+
                             {{-- SaaS Tags --}}
                             <div class="flex items-center gap-2 flex-wrap pt-5 border-t border-slate-100 dark:border-zinc-800/80 mt-auto">
                                 @if($company->category)

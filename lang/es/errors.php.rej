@@ -1,0 +1,33 @@
+diff a/lang/es/errors.php b/lang/es/errors.php	(rejected hunks)
+@@ -22,30 +22,7 @@
+     ],
+     '500' => [
+         'title' => 'Algo salió mal',
+-<?php
+-return [
+-    '401' => [
+-        'title' => 'Inicio de sesión requerido',
+-        'desc' => 'Por favor, inicie sesión para acceder a esta página. Si no tiene una cuenta, puede crear una.',
+-    ],
+-    '403' => [
+-        'title' => 'Acceso denegado',
+-        'desc' => 'No tiene permiso para ver esta página. Si cree que se trata de un error, póngase en contacto con el soporte.',
+-    ],
+-    '404' => [
+-        'title' => 'Página no encontrada',
+-        'desc' => '¡Vaya! No pudimos encontrar la página que busca. Es posible que se haya movido o no exista.',
+-    ],
+-    '419' => [
+-        'title' => 'Sesión expirada',
+-        'desc' => 'Su sesión ha expirado por inactividad. Por favor, actualice la página para continuar.',
+-    ],
+-    '429' => [
+-        'title' => 'Demasiadas solicitudes',
+-        'desc' => 'Está realizando demasiadas solicitudes a la vez. Por favor, espere un momento antes de volver a intentarlo.',
+-    ],
+-    '500' => [
+-        'title' => 'Algo salió mal',
++
+         'desc' => 'Encontramos un error inesperado por nuestra parte. Nuestro equipo ha sido notificado y está trabajando en una solución.',
+     ],
+     '503' => [

@@ -593,7 +593,7 @@
                             <button type="button" 
                                     role="switch"
                                     :aria-checked="selectedCountry == {{ $country->id }} ? 'true' : 'false'"
-                                    @click="selectCountry({{ $country->id }}, '{{ addslashes($country->name) }}', {{ json_encode($country->cities->unique('id')->values()) }}, $event)" 
+                                    @click="selectCountry({{ $country->id }}, '{{ addslashes($country->name) }}', $event)" 
                                     x-show="searchCountry === '' || '{{ mb_strtolower($country->name) }}'.includes(searchCountry.toLowerCase())"
                                     x-transition:enter="transition ease-out duration-300"
                                     x-transition:enter-start="opacity-0 scale-90 translate-y-2"
@@ -1446,10 +1446,9 @@
                 gsap.fromTo('.input-premium', { scale: 1 }, { scale: 1.01, duration: 0.1, yoyo: true, repeat: 1 });
             },
 
-            selectCountry(id, name, citiesList, event) {
+            async selectCountry(id, name, event) {
                 this.selectedCountry = id;
                 this.selectedCountryName = name;
-                this.cities = citiesList;
                 this.fields.city.value = null;
                 this.cityName = '';
                 this.fields.country.value = id;
@@ -1461,6 +1460,13 @@
                         { scale: 0.96 }, 
                         { scale: 1.02, duration: 0.2, yoyo: true, repeat: 1, ease: "power2.out" }
                     );
+                }
+                
+                try {
+                    const res = await fetch(`/api/countries/${id}/cities`);
+                    this.cities = await res.json();
+                } catch(e) {
+                    this.cities = [];
                 }
                 
                 setTimeout(() => {

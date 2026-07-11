@@ -108,7 +108,7 @@
                 </div>
 
                 {{-- Stats Grid Clean (Linear Style) --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {{-- Views Stat --}}
                     <div class="gsap-stagger bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/[0.04] p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] flex items-center justify-between group transition-all hover:-translate-y-0.5 duration-300">
                         <div>
@@ -123,6 +123,23 @@
                         </div>
                         <div class="w-12 h-12 bg-zinc-50 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-500 border border-zinc-100 dark:border-zinc-700/50 group-hover:bg-zinc-100 dark:group-hover:bg-zinc-700 transition-colors">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </div>
+                    </div>
+
+                    {{-- Weekly Views Stat --}}
+                    <div class="gsap-stagger bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/[0.04] p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] flex items-center justify-between group transition-all hover:-translate-y-0.5 duration-300">
+                        <div>
+                            <p class="text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-1.5">{{ __('dashboard.index.views_this_week') ?? 'Views This Week' }}</p>
+                            <h3 class="text-3xl font-bold text-zinc-900 dark:text-white tracking-tight tabular-nums">{{ number_format($currentWeekViews ?? 0) }}</h3>
+                            @if(isset($weekViewsChange) && $weekViewsChange != 0)
+                                <div class="inline-flex items-center gap-1 mt-2 {{ $weekViewsChange > 0 ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20' : 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20' }} text-[10px] font-bold px-1.5 py-0.5 rounded border">
+                                    {!! $weekViewsChange > 0 ? '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 7.414V15a1 1 0 11-2 0V7.414L6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>' : '<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 12.586V5a1 1 0 112 0v7.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>' !!}
+                                    {{ abs($weekViewsChange) }}%
+                                </div>
+                            @endif
+                        </div>
+                        <div class="w-12 h-12 bg-zinc-50 dark:bg-zinc-800 rounded-full flex items-center justify-center text-zinc-400 dark:text-zinc-500 border border-zinc-100 dark:border-zinc-700/50 group-hover:bg-zinc-100 dark:group-hover:bg-zinc-700 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
                         </div>
                     </div>
 
@@ -193,28 +210,30 @@
                     </div>
                 @endif
 
-                {{-- Support Links --}}
+
+                {{-- Statistics Card --}}
                 <div class="gsap-stagger bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/[0.04] p-5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
-                    <p class="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest mb-3">{{ __('dashboard.index.support_growth') }}</p>
-                    <div class="space-y-1">
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-6 h-6 rounded flex items-center justify-center text-zinc-400 dark:text-zinc-500 group-hover:text-primary transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                </div>
-                                <span class="text-xs font-semibold dark:text-zinc-200 text-zinc-700">{{ __('dashboard.index.help_center') }}</span>
-                            </div>
-                            <svg class="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-500 dark:group-hover:text-zinc-400 transition-colors rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </a>
-                        <a href="#" class="flex items-center justify-between p-2.5 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group">
-                            <div class="flex items-center gap-2.5">
-                                <div class="w-6 h-6 rounded flex items-center justify-center text-zinc-400 dark:text-zinc-500 group-hover:text-primary transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                                </div>
-                                <span class="text-xs font-semibold dark:text-zinc-200 text-zinc-700">{{ __('dashboard.index.visibility_tips') }}</span>
-                            </div>
-                            <svg class="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600 group-hover:text-zinc-500 dark:group-hover:text-zinc-400 transition-colors rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                        </a>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="p-1.5 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/50 rounded-lg text-zinc-700 dark:text-zinc-300">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                        </div>
+                        <h4 class="text-sm font-bold text-zinc-900 dark:text-white">{{ __('dashboard.index.statistics') ?? 'Statistics' }}</h4>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        {{-- Leads Stat --}}
+                        <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-100 dark:border-zinc-800">
+                            <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium mb-1">{{ __('dashboard.index.leads') }}</div>
+                            <div class="text-2xl font-black text-zinc-900 dark:text-white">{{ $totalLeads }}</div>
+                            <a href="{{ route('dashboard.leads.index') }}" class="text-[10px] text-primary hover:underline mt-2 inline-block font-semibold">View Leads &rarr;</a>
+                        </div>
+                        
+                        {{-- Reviews Stat --}}
+                        <div class="p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-xl border border-zinc-100 dark:border-zinc-800">
+                            <div class="text-xs text-zinc-500 dark:text-zinc-400 font-medium mb-1">{{ __('dashboard.index.reviews') }}</div>
+                            <div class="text-2xl font-black text-zinc-900 dark:text-white">{{ $totalReviews }}</div>
+                            <a href="{{ route('dashboard.reviews.index') }}" class="text-[10px] text-primary hover:underline mt-2 inline-block font-semibold">View Reviews &rarr;</a>
+                        </div>
                     </div>
                 </div>
 
@@ -222,8 +241,20 @@
         </div>
 
         {{-- Analytics Section --}}
-        @if($business->status == 'approved')
-            <div class="gsap-stagger bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/[0.04] rounded-2xl p-6 md:p-8 mt-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+        <div class="relative mt-6">
+            @if($business->status != 'approved')
+            <div class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-white/70 dark:bg-zinc-900/70 backdrop-blur-[4px] rounded-2xl">
+                <div class="bg-white dark:bg-zinc-900 border border-black/10 dark:border-white/10 shadow-2xl rounded-2xl p-6 text-center max-w-sm mx-4 transform transition-all duration-500">
+                    <div class="w-14 h-14 bg-amber-50 dark:bg-amber-500/10 text-amber-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-amber-200 dark:border-amber-500/20">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-zinc-900 dark:text-white mb-2">{{ __('dashboard.index.data_locked') ?? 'Data Locked' }}</h3>
+                    <p class="text-sm text-zinc-500 dark:text-zinc-400 font-medium">{{ __('dashboard.index.data_available_after_approval') ?? 'Your analytics data will be available here once your business profile is approved.' }}</p>
+                </div>
+            </div>
+            @endif
+
+            <div class="gsap-stagger bg-white dark:bg-zinc-900 border border-black/5 dark:border-white/[0.04] rounded-2xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/50 rounded-lg text-zinc-800 dark:text-zinc-200 shadow-sm">
@@ -241,60 +272,18 @@
                     <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-white/50 dark:bg-zinc-900/50 backdrop-blur-sm z-20 hidden rounded-xl">
                         <div class="w-6 h-6 border-2 border-zinc-200 border-t-primary dark:border-zinc-700 dark:border-t-primary rounded-full animate-spin"></div>
                     </div>
-                    <canvas id="viewsChart" class="w-full" style="filter: drop-shadow(0 8px 16px rgba(244,80,24,0.15));"></canvas>
+                    <div id="viewsChart" class="w-full h-full"></div>
                 </div>
             </div>
 
-            {{-- Geo Stats Clean Grid --}}
-            @if(count($countryStats ?? []) > 0)
-                <div class="gsap-stagger mt-6 border border-black/5 dark:border-white/[0.04] bg-white dark:bg-zinc-900 rounded-2xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
-                        <h3 class="text-base font-bold text-zinc-900 dark:text-white">{{ __('dashboard.index.visitors_by_country') }}</h3>
-                        <div class="relative w-full sm:w-64">
-                            <input type="text" id="countrySearch" placeholder="{{ __('dashboard.index.search_country') }}" class="w-full ps-9 pe-3 py-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs font-semibold text-zinc-900 dark:text-white placeholder:text-zinc-400 outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all shadow-sm">
-                            <svg class="absolute start-3 top-2.5 w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="countryList">
-                        @foreach($countryStats as $stat)
-                            <div class="country-item p-4 bg-zinc-50 dark:bg-[#0e0e11] border border-black/5 dark:border-white/[0.04] rounded-xl hover:border-black/10 dark:hover:border-white/10 transition-colors">
-                                <div class="flex items-center justify-between mb-3">
-                                    <div class="flex items-center gap-2.5">
-                                        <div class="w-6 h-4 shrink-0 rounded-[2px] overflow-hidden shadow-[0_1px_2px_rgba(0,0,0,0.1)] border border-black/5 dark:border-white/5 bg-zinc-100 dark:bg-zinc-800">
-                                            <img src="https://flagcdn.com/w40/{{ strtolower($stat['code']) }}.png" alt="{{ $stat['code'] }}" class="w-full h-full object-cover">
-                                        </div>
-                                        <span class="font-bold text-xs text-zinc-900 dark:text-zinc-100">{{ $stat['country'] }}</span>
-                                    </div>
-                                    <span class="text-xs font-bold text-zinc-900 dark:text-white tabular-nums">
-                                        {{ number_format($stat['count']) }}
-                                    </span>
-                                </div>
-                                <div class="h-1 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
-                                    @php
-                                        $perc = ($totalViews > 0) ? ($stat['count'] / $totalViews) * 100 : 0;
-                                    @endphp
-                                    <div class="h-full bg-primary rounded-full GeoBar" data-width="{{ $perc }}%" style="width: 0%"></div>
-                                </div>
-                                <div class="text-[9px] text-zinc-400 mt-2 font-bold flex justify-end tabular-nums uppercase">{{ number_format($perc, 1) }}%</div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <div id="noCountryResult" class="hidden text-center py-10 bg-zinc-50 dark:bg-[#0e0e11] border border-black/5 dark:border-white/[0.04] rounded-xl transform transition-all duration-300">
-                        <div class="w-12 h-12 bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center mx-auto mb-3 shadow-[0_2px_8px_rgba(0,0,0,0.04)] dark:shadow-none border border-black/5 dark:border-white/5">
-                            <svg class="w-5 h-5 text-zinc-400 dark:text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        </div>
-                        <h4 class="text-sm font-bold text-zinc-900 dark:text-white mb-1">{{ __('dashboard.index.no_results_title') ?? 'No countries found' }}</h4>
-                        <p class="text-xs font-medium text-zinc-500 max-w-[200px] mx-auto leading-relaxed">We couldn't find any visitors from "<span id="searchQueryDisplay" class="text-zinc-900 dark:text-zinc-200 font-bold"></span>". Try another search term.</p>
-                    </div>
-                </div>
-            @endif
-        @endif
+        </div>
+        </div>
     @endif
 </div>
 
 @push('scripts')
 
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
     let viewsChart = null;
 
@@ -321,142 +310,251 @@
             btn.classList.add('text-zinc-500', 'dark:text-zinc-400');
         });
         const activeBtn = document.querySelector(`[data-period="${period}"]`);
-        activeBtn.classList.add('bg-white', 'dark:bg-zinc-700', 'text-zinc-900', 'dark:text-white', 'shadow-[0_1px_3px_rgba(0,0,0,0.1)]');
-        activeBtn.classList.remove('text-zinc-500', 'dark:text-zinc-400');
+        if (activeBtn) {
+            activeBtn.classList.add('bg-white', 'dark:bg-zinc-700', 'text-zinc-900', 'dark:text-white', 'shadow-[0_1px_3px_rgba(0,0,0,0.1)]');
+            activeBtn.classList.remove('text-zinc-500', 'dark:text-zinc-400');
+        }
 
-        document.getElementById('chart-loading').classList.remove('hidden');
+        const loader = document.getElementById('chart-loading');
+        if (loader) loader.classList.remove('hidden');
 
         fetch(`/dashboard/views-chart?period=${period}`)
             .then(res => res.json())
             .then(data => {
-                if (viewsChart) viewsChart.destroy();
-                const ctx = document.getElementById('viewsChart').getContext('2d');
-
-                // Determine theme (dark/light) for chart colors
                 const isDark = document.documentElement.classList.contains('dark');
-                const primaryColor = '#f45018'; // Primary Brand Color
+                const primaryColor = '#f45018';
+                const textColor = isDark ? '#a1a1aa' : '#52525b';
                 const gridColor = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)';
-                const fillGradient = ctx.createLinearGradient(0, 0, 0, 300);
-                fillGradient.addColorStop(0, isDark ? 'rgba(244,80,24,0.15)' : 'rgba(244,80,24,0.1)');
-                fillGradient.addColorStop(1, isDark ? 'rgba(244,80,24,0)' : 'rgba(244,80,24,0)');
 
-                viewsChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            data: data.values,
-                            borderColor: primaryColor,
-                            borderWidth: 3,
-                            pointBackgroundColor: primaryColor,
-                            pointBorderColor: isDark ? '#09090b' : '#ffffff',
-                            pointBorderWidth: 2,
-                            pointRadius: 3,
-                            pointHoverRadius: 6,
-                            tension: 0.4, // Buttery smooth luxury curve
-                            fill: true,
-                            backgroundColor: fillGradient
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: {
-                            mode: 'index',
+                if (viewsChart) {
+                    viewsChart.updateOptions({ xaxis: { categories: data.labels } });
+                    viewsChart.updateSeries([{ name: '{{ __("dashboard.index.views") ?? "Views" }}', data: data.values }]);
+                } else {
+                    const options = {
+                        series: [{
+                            name: '{{ __("dashboard.index.views") ?? "Views" }}',
+                            data: data.values
+                        }],
+                        chart: {
+                            type: 'area',
+                            height: 300,
+                            toolbar: { show: false },
+                            zoom: { enabled: false },
+                            fontFamily: 'inherit',
+                            background: 'transparent',
+                            parentHeightOffset: 0,
+                            animations: {
+                                enabled: true,
+                                easing: 'easeinout',
+                                speed: 400,
+                            }
+                        },
+                        colors: [primaryColor],
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.4,
+                                opacityTo: 0.05,
+                                stops: [0, 100]
+                            }
+                        },
+                        dataLabels: { enabled: false },
+                        stroke: { curve: 'smooth', width: 2.5 },
+                        xaxis: {
+                            categories: data.labels,
+                            axisBorder: { show: false },
+                            axisTicks: { show: false },
+                            labels: { style: { colors: textColor, fontWeight: 600 } }
+                        },
+                        yaxis: {
+                            labels: { 
+                                style: { colors: textColor, fontWeight: 600 },
+                                formatter: function(val) {
+                                    if (val >= 1000000) return (val / 1000000).toFixed(1) + 'M';
+                                    if (val >= 1000) return (val / 1000).toFixed(1) + 'k';
+                                    return val;
+                                }
+                            }
+                        },
+                        grid: {
+                            borderColor: gridColor,
+                            strokeDashArray: 4,
+                        },
+                        theme: { mode: isDark ? 'dark' : 'light' },
+                        legend: { show: false },
+                        tooltip: {
+                            theme: isDark ? 'dark' : 'light',
+                            shared: true,
                             intersect: false,
-                        },
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: isDark ? '#18181b' : '#ffffff',
-                                titleColor: isDark ? '#ffffff' : '#09090b',
-                                bodyColor: isDark ? '#a1a1aa' : '#52525b',
-                                borderColor: isDark ? '#27272a' : '#e4e4e7',
-                                borderWidth: 1,
-                                padding: 10,
-                                titleFont: { size: 12, weight: 'bold', family: 'Plus Jakarta Sans, Cairo' },
-                                bodyFont: { size: 11, weight: 'medium', family: 'Plus Jakarta Sans, Cairo' },
-                                cornerRadius: 8,
-                                displayColors: false,
-                                boxPadding: 6,
-                                shadowColor: 'rgba(0,0,0,0.1)',
-                            }
-                        },
-                        scales: {
-                            y: { 
-                                grid: { display: false }, 
-                                border: { display: false }, 
-                                ticks: { 
-                                    font: { size: 10, weight: '600' }, 
-                                    color: isDark ? '#52525b' : '#a1a1aa',
-                                    callback: function(value) {
-                                        if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
-                                        if (value >= 1000) return (value / 1000).toFixed(1) + 'k';
-                                        return value;
-                                    }
-                                } 
+                            y: {
+                                formatter: function(val) {
+                                    return val !== undefined ? val.toLocaleString('{{ app()->getLocale() }}') : '0';
+                                }
                             },
-                            x: { 
-                                grid: { display: false }, 
-                                border: { display: false }, 
-                                ticks: { font: { size: 10, weight: '600' }, color: isDark ? '#52525b' : '#a1a1aa' } 
-                            }
+                            style: { fontSize: '12px', fontFamily: 'inherit' },
+                            marker: { show: true }
                         }
-                    }
-                });
-                document.getElementById('chart-loading').classList.add('hidden');
+                    };
+                    viewsChart = new ApexCharts(document.querySelector("#viewsChart"), options);
+                    viewsChart.render();
+                }
+
+                if (loader) loader.classList.add('hidden');
             })
             // Fallback for demo environments
             .catch(() => {
-                document.getElementById('chart-loading').classList.add('hidden');
+                if (loader) loader.classList.add('hidden');
             });
     }
 
-    // Country Filter with GSAP Animations
-    document.getElementById('countrySearch')?.addEventListener('input', function(e) {
-        const query = e.target.value.toLowerCase();
-        let anyVisible = false;
-
-        document.querySelectorAll('.country-item').forEach(item => {
-            const country = item.getAttribute('data-country') || item.querySelector('.text-xs').innerText.toLowerCase();
-            if (country.includes(query)) {
-                if(item.classList.contains('hidden')) {
-                    item.classList.remove('hidden');
-                    gsap.fromTo(item, {opacity: 0, scale: 0.95}, {opacity: 1, scale: 1, duration: 0.3, ease: 'power2.out', clearProps: 'all'});
-                }
-                anyVisible = true;
-            } else {
-                item.classList.add('hidden');
-            }
-        });
-
-        const noResultEl = document.getElementById('noCountryResult');
-        if(!anyVisible) {
-            if(noResultEl.classList.contains('hidden')) {
-                noResultEl.classList.remove('hidden');
-                document.getElementById('searchQueryDisplay').innerText = e.target.value;
-                gsap.fromTo(noResultEl, {opacity: 0, y: 10}, {opacity: 1, y: 0, duration: 0.3, ease: 'power2.out'});
-            } else {
-                document.getElementById('searchQueryDisplay').innerText = e.target.value;
-            }
-        } else {
-            noResultEl.classList.add('hidden');
-        }
-    });
-
     @if($business && $business->status == 'approved')
         document.addEventListener('DOMContentLoaded', () => {
-            setChartPeriod('month');
-
-            // Execute GeoBar load animations safely after cascade
-            setTimeout(() => {
-                document.querySelectorAll('.GeoBar').forEach(bar => {
-                    bar.style.transition = 'width 1.5s cubic-bezier(0.22, 1, 0.36, 1)';
-                    bar.style.width = bar.getAttribute('data-width');
-                });
-            }, 600);
+            setTimeout(() => setChartPeriod('month'), 300); // Delay slightly to prevent lag during GSAP stagger
         });
     @endif
+
+    // Execute GrowthBar load animation safely
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            document.querySelectorAll('.GrowthBar').forEach(bar => {
+                bar.style.transition = 'width 1.5s cubic-bezier(0.22, 1, 0.36, 1)';
+                bar.style.width = bar.getAttribute('data-width');
+            });
+        }, 600);
+    });
+
+    // --- Support Chat Logic (Polling) ---
+    const botAvatarUrl = '{{ asset("images/logo.webp") }}';
+    let chatPolling = null;
+    let chatOpen = false;
+
+    function toggleSupportChat() {
+        const modal = document.getElementById('supportChatModal');
+        chatOpen = !chatOpen;
+        if(chatOpen) {
+            modal.classList.remove('hidden');
+            // small animation delay
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'translate-y-4');
+            }, 10);
+            fetchChatMessages();
+            chatPolling = setInterval(fetchChatMessages, 3000);
+        } else {
+            modal.classList.add('opacity-0', 'translate-y-4');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+            clearInterval(chatPolling);
+        }
+    }
+
+    function fetchChatMessages() {
+        fetch('{{ route("support.chat.fetch") }}')
+            .then(res => res.json())
+            .then(data => {
+                const chatBody = document.getElementById('chatMessagesBody');
+                chatBody.innerHTML = '';
+                
+                // Add the chat started indicator
+                chatBody.innerHTML = `
+                    <div class="flex justify-center my-6">
+                        <span class="text-[10px] font-bold text-slate-400 bg-white dark:bg-zinc-800/50 border border-slate-100 dark:border-white/5 px-4 py-1.5 rounded-full shadow-sm uppercase tracking-widest">{{ __('dashboard.index.chat_started') }}</span>
+                    </div>
+                `;
+
+                data.messages.forEach(msg => {
+                    const isUser = msg.sender_type === 'user';
+                    const avatar = isUser ? '' : `<div class="relative shrink-0"><div class="w-7 h-7 rounded-full bg-gradient-to-tr from-primary to-orange-400 p-[1px]"><div class="w-full h-full bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center overflow-hidden"><img src="${botAvatarUrl}" class="w-4 h-4 object-contain" alt="Bot"></div></div></div>`;
+                    
+                    const html = `
+                        <div class="flex ${isUser ? 'justify-end' : 'justify-start'} mb-5 gap-2.5">
+                            ${!isUser ? avatar : ''}
+                            <div class="flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-[80%]">
+                                <div class="px-4 py-2.5 text-[13px] leading-relaxed shadow-sm ${isUser ? 'bg-primary text-white rounded-[20px] rounded-br-[4px]' : 'bg-white dark:bg-[#121214] text-slate-900 dark:text-zinc-100 rounded-[20px] rounded-bl-[4px] border border-slate-100 dark:border-white/5'}">
+                                    ${msg.message}
+                                </div>
+                                <span class="text-[9px] text-slate-400 mt-1.5 px-1 font-bold tracking-wide uppercase">${msg.time_ago}</span>
+                            </div>
+                        </div>
+                    `;
+                    chatBody.insertAdjacentHTML('beforeend', html);
+                });
+                chatBody.scrollTop = chatBody.scrollHeight;
+            });
+    }
+
+    function sendChatMessage(e) {
+        e.preventDefault();
+        const input = document.getElementById('chatInput');
+        const msg = input.value.trim();
+        if(!msg) return;
+
+        input.value = '';
+        input.disabled = true;
+
+        fetch('{{ route("support.chat.send") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ message: msg })
+        })
+        .then(res => res.json())
+        .then(data => {
+            input.disabled = false;
+            input.focus();
+            fetchChatMessages();
+        })
+        .catch(err => {
+            input.disabled = false;
+        });
+    }
 </script>
 @endpush
+
+{{-- Support Chat Modal --}}
+<div id="supportChatModal" class="hidden opacity-0 translate-y-4 fixed bottom-6 end-6 lg:bottom-8 lg:end-8 z-[100] w-[calc(100vw-3rem)] sm:w-[400px] bg-slate-50 dark:bg-[#09090b] border border-slate-200/60 dark:border-white/5 rounded-[24px] shadow-[0_30px_70px_rgba(0,0,0,0.18)] dark:shadow-[0_30px_70px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden transition-all duration-300 transform">
+    {{-- Header --}}
+    <div class="bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-b border-slate-100 dark:border-white/5 px-5 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary to-orange-400 p-[1.5px] shadow-sm">
+                    <div class="w-full h-full bg-white dark:bg-zinc-900 rounded-full flex items-center justify-center overflow-hidden">
+                        <img src="{{ asset('images/logo.webp') }}" class="w-6 h-6 object-contain" alt="AliDebo">
+                    </div>
+                </div>
+                <div class="absolute bottom-0 end-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white dark:border-[#121214]"></div>
+            </div>
+            <div>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">{{ __('dashboard.index.priority_support') }}</h3>
+                <p class="text-[10px] font-bold text-primary tracking-widest uppercase">{{ __('dashboard.index.elite_team') }}</p>
+            </div>
+        </div>
+        <button onclick="toggleSupportChat()" class="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 dark:hover:bg-zinc-800 dark:hover:text-zinc-300 transition-colors active:scale-95">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+    </div>
+    
+    {{-- Body --}}
+    <div id="chatMessagesBody" class="flex-1 h-[400px] overflow-y-auto p-5 custom-scrollbar bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjAwLDIwMCwyMDAsMC4xNSkiLz48L3N2Zz4=')] dark:bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wMykiLz48L3N2Zz4=')]">
+        <!-- Messages loaded here -->
+    </div>
+
+    {{-- Footer --}}
+    <div class="p-4 bg-white/90 dark:bg-[#121214]/90 backdrop-blur-md border-t border-slate-100 dark:border-white/5">
+        <form onsubmit="sendChatMessage(event)" class="relative flex items-end gap-2 group">
+            <textarea id="chatInput" rows="1" placeholder="{{ __('dashboard.index.type_message') }}" onkeydown="if(event.key === 'Enter' && !event.shiftKey) { event.preventDefault(); sendChatMessage(event); }" class="w-full bg-slate-100/50 dark:bg-zinc-900/50 border border-slate-200/60 dark:border-zinc-800 rounded-2xl px-4 py-3 text-[13px] text-slate-900 dark:text-white placeholder:text-slate-400 focus:bg-white dark:focus:bg-[#09090b] focus:border-primary/30 focus:ring-4 focus:ring-primary/5 transition-all resize-none outline-none overflow-hidden pe-12" oninput="this.style.height = ''; this.style.height = Math.min(this.scrollHeight, 100) + 'px'"></textarea>
+            
+            <button type="submit" class="absolute bottom-1.5 end-1.5 w-9 h-9 flex items-center justify-center bg-primary text-white rounded-[14px] hover:bg-primary-dark transition-all transform hover:scale-105 active:scale-95 shadow-sm shadow-primary/20">
+                <svg class="w-4 h-4 rtl:-scale-x-100 translate-x-[1px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            </button>
+        </form>
+        <div class="text-center mt-2.5">
+            <span class="text-[9px] text-slate-400/70 font-bold uppercase tracking-wider">Powered by AliDebo AI Routing</span>
+        </div>
+    </div>
+</div>
+
 @endsection

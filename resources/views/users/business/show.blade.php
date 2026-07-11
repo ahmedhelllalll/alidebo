@@ -273,8 +273,9 @@
     @endphp
 
     @if($hasContacts)
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 mt-8 profile-fade profile-fade-delay-1">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 mt-8 profile-fade profile-fade-delay-1" x-data="{ leadStatus: '', isSubmitting: false }">
         <div class="flex flex-wrap items-center gap-2">
+
 
             @if(!empty($contacts['whatsapp']))
             <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contacts['whatsapp']) }}" target="_blank" rel="noopener"
@@ -579,7 +580,169 @@
     @if($mediaCount === 0 && !$business->description && !$business->address)
     <div class="h-32"></div>
     @endif
+    </div>
 
+
+    {{-- ═══════════════════════════════════════════════ --}}
+    {{-- CONTACT FORM --}}
+    {{-- ═══════════════════════════════════════════════ --}}
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 mt-16 profile-fade profile-fade-delay-3" id="contact-form-section" x-data="{ leadStatus: '', isSubmitting: false }">
+        <div class="section-line mb-8"></div>
+        <div class="bg-white dark:bg-[#0e0e11] shadow-xl rounded-3xl border border-slate-100 dark:border-white/5 p-6 sm:p-10">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">{{ __('directory.get_quote') }}</h3>
+            <p class="text-sm text-slate-500 dark:text-zinc-400 mb-8">{{ __('directory.lead_message') }}</p>
+
+            <div x-show="leadStatus === 'success'" x-cloak class="mb-8 p-4 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/30 rounded-2xl flex items-center gap-3">
+                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="text-sm font-semibold">{{ __('directory.lead_success') }}</span>
+            </div>
+
+            <form x-show="leadStatus !== 'success'" @submit.prevent="
+                isSubmitting = true;
+                const formElement = $event.target;
+                fetch('{{ route('directory.business.contact', $business->slug) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        name: formElement.name.value,
+                        email: formElement.email.value,
+                        phone: formElement.phone.value,
+                        message: formElement.message.value
+                    })
+                }).then(res => res.json()).then(data => {
+                    if(data.success) {
+                        leadStatus = 'success';
+                        setTimeout(() => { leadStatus = ''; formElement.reset(); }, 5000);
+                    }
+                }).finally(() => isSubmitting = false);
+            " class="space-y-5">
+                <div>
+                    <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.lead_name') }} *</label>
+                    <input type="text" name="name" required class="w-full bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none transition-all">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.lead_email') }}</label>
+                        <input type="email" name="email" class="w-full bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.lead_phone') }}</label>
+                        <input type="text" name="phone" dir="ltr" class="w-full bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none transition-all">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.lead_message') }} *</label>
+                    <textarea name="message" required rows="5" class="w-full bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none resize-none transition-all"></textarea>
+                </div>
+                <button type="submit" :disabled="isSubmitting" class="w-full sm:w-auto px-8 flex items-center justify-center gap-2 bg-primary text-white font-bold text-sm py-3.5 rounded-xl hover:bg-primary-dark transition-colors active:scale-[0.98] disabled:opacity-70">
+                    <span x-show="!isSubmitting">{{ __('directory.lead_send') }}</span>
+                    <span x-show="isSubmitting" x-cloak>
+                        <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    </span>
+                </button>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    {{-- ═══════════════════════════════════════════════ --}}
+    {{-- REVIEWS SECTION --}}
+    {{-- ═══════════════════════════════════════════════ --}}
+    <div id="reviews-section" class="max-w-4xl mx-auto px-4 sm:px-6 mt-16 pb-20 profile-fade profile-fade-delay-3 scroll-mt-24">
+        <div class="section-line mb-8"></div>
+        <div class="mb-10 flex items-center justify-between">
+            <h2 class="text-2xl font-black text-slate-900 dark:text-white">{{ __('directory.profile_reviews') }}</h2>
+            <div class="flex items-center gap-2">
+                <span class="text-2xl font-bold text-slate-900 dark:text-white">{{ $business->averageRating() }}</span>
+                <div class="flex text-amber-400">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <span class="text-slate-500 dark:text-zinc-400 font-medium">({{ $business->reviews()->where('status', 'approved')->count() }})</span>
+            </div>
+        </div>
+
+        @if(session('success'))
+            <div class="p-4 mb-6 text-sm text-emerald-800 dark:text-emerald-300 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/30">
+                {{ session('success') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="p-4 mb-6 text-sm text-red-800 dark:text-red-300 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        {{-- Write Review Form --}}
+        <div class="bg-white dark:bg-[#0e0e11] shadow-sm rounded-3xl border border-slate-100 dark:border-white/5 p-6 sm:p-8 mb-10">
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">{{ __('directory.write_review') }}</h3>
+            @if(!$business->reviews()->where('ip_address', request()->ip())->exists())
+                <form action="{{ route('directory.business.reviews.store', $business->slug) }}" method="POST">
+                    @csrf
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                        <div>
+                            <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.review_name') }} *</label>
+                            <input type="text" name="reviewer_name" required class="w-full bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.review_email') }}</label>
+                            <input type="email" name="reviewer_email" class="w-full bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none transition-all">
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.rate_experience') }} *</label>
+                        <select name="rating" required class="w-full sm:w-auto bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none transition-all">
+                            <option value="5">5 - Excellent</option>
+                            <option value="4">4 - Good</option>
+                            <option value="3">3 - Average</option>
+                            <option value="2">2 - Poor</option>
+                            <option value="1">1 - Terrible</option>
+                        </select>
+                    </div>
+                    <div class="mb-5">
+                        <label class="block text-[13px] font-semibold text-slate-700 dark:text-zinc-300 mb-2">{{ __('directory.review_comment') }} *</label>
+                        <textarea name="comment" required rows="3" class="w-full bg-slate-50 dark:bg-zinc-900/50 border border-slate-200 dark:border-zinc-800 rounded-xl px-4 py-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary dark:text-white outline-none resize-none transition-all"></textarea>
+                    </div>
+                    <button type="submit" class="w-full sm:w-auto px-8 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm py-3.5 rounded-xl hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors active:scale-[0.98]">
+                        {{ __('directory.submit_review') }}
+                    </button>
+                </form>
+            @else
+                <p class="text-sm text-slate-600 dark:text-zinc-400 font-medium">{{ __('directory.already_reviewed') }}</p>
+            @endif
+        </div>
+
+        {{-- Reviews List --}}
+        <div class="space-y-6">
+            @forelse($business->reviews()->where('status', 'approved')->latest()->get() as $review)
+                <div class="bg-white dark:bg-zinc-900/50 rounded-3xl p-6 sm:p-8 border border-slate-100 dark:border-white/5">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="font-bold text-slate-900 dark:text-white">{{ $review->reviewer_name }}</div>
+                        <div class="text-xs font-medium text-slate-400 dark:text-zinc-500">{{ $review->created_at->diffForHumans() }}</div>
+                    </div>
+                    <div class="flex text-amber-400 mb-4">
+                        @for($i=1; $i<=5; $i++)
+                            <svg class="w-4 h-4 {{ $i <= $review->rating ? 'fill-current' : 'text-slate-200 dark:text-zinc-700' }}" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        @endfor
+                    </div>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-zinc-300 leading-relaxed">{{ $review->comment }}</p>
+                    
+                    @if($review->reply)
+                        <div class="mt-5 p-5 bg-slate-50 dark:bg-black/30 rounded-2xl border-s-2 border-primary">
+                            <div class="font-bold text-xs uppercase tracking-wider text-primary mb-2">{{ __('directory.business_reply') }}</div>
+                            <p class="text-sm text-slate-700 dark:text-zinc-400 leading-relaxed">{{ $review->reply }}</p>
+                        </div>
+                    @endif
+                </div>
+            @empty
+                <div class="text-center py-12 px-4 rounded-3xl bg-slate-50/50 dark:bg-zinc-900/30 border border-slate-100 dark:border-white/5 border-dashed">
+                    <p class="text-sm font-medium text-slate-500 dark:text-zinc-400">{{ __('directory.no_reviews_yet') }}</p>
+                </div>
+            @endforelse
+        </div>
+    </div>
 </div>
 @endsection
 

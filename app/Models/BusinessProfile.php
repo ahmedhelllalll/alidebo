@@ -83,7 +83,12 @@ class BusinessProfile extends Model
 
     public function media(): HasMany
     {
-        return $this->hasMany(BusinessMedia::class);
+        return $this->hasMany(BusinessMedia::class)->orderBy('order');
+    }
+
+    public function leads(): HasMany
+    {
+        return $this->hasMany(BusinessLead::class);
     }
 
     public function views(): HasMany
@@ -94,6 +99,16 @@ class BusinessProfile extends Model
     public function translations(): HasMany
     {
         return $this->hasMany(BusinessProfileTranslation::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function averageRating()
+    {
+        return round($this->reviews()->where('status', 'approved')->avg('rating') ?: 0, 1);
     }
 
     public function getNameAttribute($value)
