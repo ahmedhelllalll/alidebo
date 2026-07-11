@@ -979,7 +979,7 @@
             <button id="pwa-dismiss-btn" class="flex-1 px-4 py-2 text-xs font-semibold text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-colors">
                 {{ __('pwa.dismiss_button') }}
             </button>
-            <button id="pwa-install-btn" class="flex-1 px-4 py-2 text-xs font-bold text-slate-900 bg-[#f45018] hover:bg-[#d43d0f] rounded-xl transition-colors shadow-lg shadow-[#f45018]/25">
+            <button id="pwa-install-btn" class="flex-1 px-4 py-2 text-xs font-bold text-slate-900 dark:text-white bg-[#f45018] hover:bg-[#d43d0f] rounded-xl transition-colors shadow-lg shadow-[#f45018]/25">
                 {{ __('pwa.install_button') }}
             </button>
         </div>
