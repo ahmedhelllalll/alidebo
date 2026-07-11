@@ -72,4 +72,11 @@ return [
     'business_reply' => '商家回复：',
 'review_name' => '你的名字',
     'review_email' => '你的电子邮件（可选）',
+    'get_quote' => 'Get a Quote',
+    'lead_message' => 'Message',
+    'lead_name' => 'Name',
+    'lead_email' => 'Email',
+    'lead_phone' => 'Phone',
+    'lead_send' => 'Send Message',
+    'lead_success' => 'Your message has been sent successfully.',
 ];

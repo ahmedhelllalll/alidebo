@@ -72,4 +72,11 @@ return [
     'business_reply' => 'Respuesta del Negocio:',
 'review_name' => 'Tu nombre',
     'review_email' => 'Tu correo electrónico (opcional)',
+    'get_quote' => 'Get a Quote',
+    'lead_message' => 'Message',
+    'lead_name' => 'Name',
+    'lead_email' => 'Email',
+    'lead_phone' => 'Phone',
+    'lead_send' => 'Send Message',
+    'lead_success' => 'Your message has been sent successfully.',
 ];
