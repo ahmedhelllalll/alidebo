@@ -51,58 +51,220 @@
         box-shadow: 0 8px 24px -8px rgba(0,0,0,0.4);
     }
 
-    /* Gallery image loading */
-    .gallery-img {
-        background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-        transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .dark .gallery-img {
-        background: linear-gradient(135deg, #18181b, #27272a);
+        /* ── Lenis ── */
+    html.lenis { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto; }
+
+    /* ─────────────────────────────────────────────────
+       GRID  (1–6 images)
+    ───────────────────────────────────────────────── */
+    .gallery-grid { display: grid; gap: 2px; }
+
+    .gallery-grid.count-1 { grid-template-columns: 1fr; }
+    .gallery-grid.count-1 .gallery-item { aspect-ratio: 16/7; }
+    @media (max-width: 640px) { .gallery-grid.count-1 .gallery-item { aspect-ratio: 4/3; } }
+
+    .gallery-grid.count-2 { grid-template-columns: repeat(2, 1fr); }
+    .gallery-grid.count-2 .gallery-item { aspect-ratio: 3/4; }
+    @media (max-width: 480px) {
+      .gallery-grid.count-2 { grid-template-columns: 1fr; }
+      .gallery-grid.count-2 .gallery-item { aspect-ratio: 4/3; }
     }
 
-    /* Lightbox */
-    .lightbox-overlay {
-        backdrop-filter: blur(8px) saturate(0.8);
-        -webkit-backdrop-filter: blur(8px) saturate(0.8);
+    .gallery-grid.count-3 { grid-template-columns: repeat(3, 1fr); }
+    .gallery-grid.count-3 .gallery-item { aspect-ratio: 3/4; }
+    @media (max-width: 640px) {
+      .gallery-grid.count-3 { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid.count-3 .gallery-item:last-child { grid-column: 1 / -1; aspect-ratio: 16/7; }
     }
-    .lightbox-nav-btn {
-        transition: all 0.2s ease;
-    }
-    .lightbox-nav-btn:hover {
-        background: rgba(255,255,255,0.2);
-        transform: scale(1.1);
-    }
-
-    /* Fade in animation */
-    .profile-fade {
-        animation: profileFadeIn 0.6s ease-out forwards;
-    }
-    .profile-fade-delay-1 { animation-delay: 0.1s; opacity: 0; }
-    .profile-fade-delay-2 { animation-delay: 0.2s; opacity: 0; }
-    .profile-fade-delay-3 { animation-delay: 0.3s; opacity: 0; }
-
-    @keyframes profileFadeIn {
-        from { opacity: 0; transform: translateY(12px); }
-        to { opacity: 1; transform: translateY(0); }
+    @media (max-width: 380px) {
+      .gallery-grid.count-3 { grid-template-columns: 1fr; }
+      .gallery-grid.count-3 .gallery-item { aspect-ratio: 4/3; }
+      .gallery-grid.count-3 .gallery-item:last-child { grid-column: auto; aspect-ratio: 4/3; }
     }
 
-    /* Section divider */
-    .section-line {
-        height: 1px;
-        background: linear-gradient(to right, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent);
+    .gallery-grid.count-4 { grid-template-columns: repeat(2, 1fr); }
+    .gallery-grid.count-4 .gallery-item { aspect-ratio: 4/3; }
+    @media (max-width: 480px) { .gallery-grid.count-4 { grid-template-columns: 1fr; } }
+
+    .gallery-grid.count-5 {
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: auto auto;
     }
-    .dark .section-line {
-        background: linear-gradient(to right, transparent, rgba(63,63,70,0.4) 20%, rgba(63,63,70,0.4) 80%, transparent);
+    .gallery-grid.count-5 .gallery-item:nth-child(1),
+    .gallery-grid.count-5 .gallery-item:nth-child(2),
+    .gallery-grid.count-5 .gallery-item:nth-child(3) { grid-column: span 2; aspect-ratio: 4/3; }
+    .gallery-grid.count-5 .gallery-item:nth-child(4),
+    .gallery-grid.count-5 .gallery-item:nth-child(5) { grid-column: span 3; aspect-ratio: 16/9; }
+    @media (max-width: 640px) {
+      .gallery-grid.count-5 { grid-template-columns: repeat(2, 1fr); }
+      .gallery-grid.count-5 .gallery-item { grid-column: auto !important; aspect-ratio: 4/3 !important; }
+    }
+    @media (max-width: 380px) { .gallery-grid.count-5 { grid-template-columns: 1fr; } }
+
+    .gallery-grid.count-6 { grid-template-columns: repeat(3, 1fr); }
+    .gallery-grid.count-6 .gallery-item { aspect-ratio: 4/3; }
+    @media (max-width: 640px) { .gallery-grid.count-6 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 380px) { .gallery-grid.count-6 { grid-template-columns: 1fr; } }
+
+    /* ─────────────────────────────────────────────────
+       GALLERY ITEM
+    ───────────────────────────────────────────────── */
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #111;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transform-origin: center;
+      will-change: transform;
+    }
+    .gallery-item-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 45%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: flex; align-items: flex-end;
+      padding: clamp(0.75rem, 2vw, 1.5rem);
+    }
+    @media (hover: hover) {
+      .gallery-item:hover .gallery-item-overlay { opacity: 1; }
+      .gallery-item:hover .gallery-item-label { transform: translateY(0); }
+    }
+    @media (hover: none) {
+      .gallery-item-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 40%); }
+      .gallery-item-label { transform: translateY(0) !important; }
+    }
+    .gallery-item-label {
+      font-size: clamp(0.6rem, 1.2vw, 0.72rem);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      transform: translateY(8px);
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    /* Share tooltip */
-    .share-tooltip {
-        animation: tooltipFade 2s ease forwards;
+    /* ─────────────────────────────────────────────────
+       LIGHTBOX
+    ───────────────────────────────────────────────── */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 100000;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0;
     }
-    @keyframes tooltipFade {
-        0%, 80% { opacity: 1; transform: translateY(0); }
-        100% { opacity: 0; transform: translateY(-4px); }
+    #lightbox.active { pointer-events: all; }
+    #lightbox-bg-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      filter: blur(40px) brightness(0.35);
+      transform: scale(1.1);
+      z-index: 0;
+      transition: opacity 0.3s ease;
     }
+    #lightbox-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 1;
+    }
+    #lightbox-img-wrap {
+      position: relative; z-index: 1;
+      width: 90vw; max-width: 1100px;
+      max-height: 80vh;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #lightbox-img {
+      max-width: 100%; max-height: 80vh;
+      object-fit: contain; display: block;
+      border: 1px solid rgba(255,255,255,0.05);
+      user-select: none; -webkit-user-drag: none;
+    }
+    #lightbox-close {
+      position: absolute; top: clamp(0.75rem, 3vw, 1.5rem); right: clamp(0.75rem, 3vw, 1.5rem); z-index: 2;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; transition: background 0.2s;
+      touch-action: manipulation;
+    }
+    #lightbox-close:hover { background: rgba(255,255,255,0.14); }
+    #lightbox-counter {
+      position: absolute; bottom: clamp(0.75rem, 3vw, 1.5rem); left: 50%; transform: translateX(-50%); z-index: 2;
+      font-size: 0.65rem; letter-spacing: 0.22em; color: rgba(255,255,255,0.3); text-transform: uppercase;
+      white-space: nowrap;
+    }
+    #lightbox-prev, #lightbox-next {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      color: #fff; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: background 0.2s;
+      touch-action: manipulation;
+    }
+    #lightbox-prev { left: clamp(0.5rem, 2vw, 1.25rem); }
+    #lightbox-next { right: clamp(0.5rem, 2vw, 1.25rem); }
+    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(255,255,255,0.14); }
+    #lightbox-prev:disabled, #lightbox-next:disabled { opacity: 0.2; pointer-events: none; }
+
+    @media (max-width: 480px) {
+      #lightbox-prev, #lightbox-next { top: auto; bottom: 3rem; transform: none; }
+      #lightbox-prev { left: 25%; transform: translateX(-50%); }
+      #lightbox-next { right: 25%; transform: translateX(50%); }
+    }
+
+    /* ─────────────────────────────────────────────────
+       CAROUSEL  (7-10 images)
+    ───────────────────────────────────────────────── */
+    .carousel-wrap { position: relative; overflow: hidden; }
+    .carousel-track { display: flex; gap: 2px; will-change: transform; }
+    .carousel-slide {
+      flex: 0 0 var(--slide-w, 33.333%);
+      position: relative; aspect-ratio: 4/3;
+      overflow: hidden; cursor: pointer; background: #111;
+    }
+    .carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform; }
+    .carousel-slide .gallery-item-overlay { opacity: 0; }
+    @media (hover: hover) {
+      .carousel-slide:hover .gallery-item-overlay { opacity: 1; }
+      .carousel-slide:hover .gallery-item-label { transform: translateY(0); }
+    }
+    @media (hover: none) {
+      .carousel-slide .gallery-item-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 40%); }
+      .carousel-slide .gallery-item-label { transform: translateY(0) !important; }
+    }
+    .carousel-nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0 0;
+    }
+    .carousel-btn {
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 1px solid rgba(100,100,100,0.2); background: transparent;
+      color: rgba(100,100,100,0.65); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: border-color 0.2s, color 0.2s, background 0.2s;
+      touch-action: manipulation;
+    }
+    .dark .carousel-btn {
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.65);
+    }
+    .carousel-btn:hover { border-color: rgba(255,255,255,0.3); color: #fff; background: rgba(255,255,255,0.06); }
+    .carousel-btn:disabled { opacity: 0.2; pointer-events: none; }
+    .carousel-dots { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(100,100,100,0.18);
+      transition: background 0.3s, transform 0.3s; cursor: pointer;
+    }
+    .dark .dot { background: rgba(255,255,255,0.18); }
+    .dot.active { background: rgba(100,100,100,0.72); transform: scale(1.45); }
+    .dark .dot.active { background: rgba(255,255,255,0.72); }
+
 </style>
 @endpush
 
@@ -402,8 +564,7 @@
     @if($mediaCount > 0)
     <div id="gallery-section" class="max-w-4xl mx-auto px-4 sm:px-6 mt-10 pb-16 profile-fade profile-fade-delay-3 scroll-mt-24">
         <div class="section-line mb-10"></div>
-
-        <div class="flex items-center justify-between mb-6">
+        <div class="mb-6 flex items-center justify-between">
             <div>
                 <h2 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-zinc-500 mb-1">
                     {{ __('directory.profile_gallery') }}
@@ -414,163 +575,53 @@
             </div>
         </div>
 
-        <div class="grid gap-2 sm:gap-3">
-            @if($mediaCount === 1)
-                {{-- Single: full width --}}
-                <div class="group relative aspect-[16/9] rounded-2xl overflow-hidden cursor-pointer"
-                     @click="openLightbox(0)">
-                    <img src="{{ $mediaItems[0]->file_url }}" alt="{{ $mediaItems[0]->caption ?? $business->name }}"
-                         class="gallery-img w-full h-full object-cover group-hover:scale-105" loading="lazy">
-                    @if($mediaItems[0]->caption)
-                    <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <p class="text-white text-sm font-medium">{{ $mediaItems[0]->caption }}</p>
-                    </div>
-                    @endif
-                </div>
-
-            @elseif($mediaCount === 2)
-                {{-- Two: side by side --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                    @foreach($mediaItems as $idx => $item)
-                    <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer"
-                         @click="openLightbox({{ $idx }})">
-                        <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}"
-                             class="gallery-img w-full h-full object-cover group-hover:scale-105" loading="lazy">
-                        @if($item->caption)
-                        <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p class="text-white text-sm font-medium">{{ $item->caption }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    @endforeach
-                </div>
-
-            @elseif($mediaCount === 3)
-                {{-- Three: featured + two stacked --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                    <div class="group relative aspect-[4/3] sm:aspect-auto sm:row-span-2 rounded-2xl overflow-hidden cursor-pointer"
-                         @click="openLightbox(0)">
-                        <img src="{{ $mediaItems[0]->file_url }}" alt="{{ $mediaItems[0]->caption ?? $business->name }}"
-                             class="gallery-img w-full h-full object-cover group-hover:scale-105" loading="lazy">
-                        @if($mediaItems[0]->caption)
-                        <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p class="text-white text-sm font-medium">{{ $mediaItems[0]->caption }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    @foreach($mediaItems->slice(1, 2) as $idx => $item)
-                    <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer"
-                         @click="openLightbox({{ $loop->index + 1 }})">
-                        <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}"
-                             class="gallery-img w-full h-full object-cover group-hover:scale-105" loading="lazy">
-                        @if($item->caption)
-                        <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p class="text-white text-sm font-medium">{{ $item->caption }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    @endforeach
-                </div>
-
-            @elseif($mediaCount === 4)
-                {{-- Four: 2x2 grid --}}
-                <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                    @foreach($mediaItems as $idx => $item)
-                    <div class="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer"
-                         @click="openLightbox({{ $idx }})">
-                        <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}"
-                             class="gallery-img w-full h-full object-cover group-hover:scale-105" loading="lazy">
-                        @if($item->caption)
-                        <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p class="text-white text-sm font-medium">{{ $item->caption }}</p>
-                        </div>
-                        @endif
-                    </div>
-                    @endforeach
-                </div>
-
-            @else
-                {{-- 5+: masonry-style with "more" overlay --}}
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+        <div id="gallery-container">
+            @if($mediaCount <= 6)
+                <div class="gallery-grid count-{{ $mediaCount }}">
                     @foreach($mediaItems->take(6) as $idx => $item)
-                    <div class="group relative {{ $idx === 0 ? 'col-span-2 sm:col-span-2 sm:row-span-2 aspect-[16/9] sm:aspect-auto' : 'aspect-square' }} rounded-2xl overflow-hidden cursor-pointer"
-                         @click="openLightbox({{ $idx }})">
-                        <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}"
-                             class="gallery-img w-full h-full object-cover group-hover:scale-105" loading="lazy">
-
-                        @if($idx === 5 && $mediaCount > 6)
-                        <div class="absolute inset-0 bg-slate-900/60 dark:bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center text-white">
-                            <span class="text-2xl font-black">+{{ $mediaCount - 6 }}</span>
-                            <span class="text-xs font-semibold opacity-60 mt-0.5">{{ __('directory.profile_more') }}</span>
+                    <div class="gallery-item" data-index="{{ $idx }}" tabindex="0" role="button" aria-label="{{ $item->caption ?? $business->name }}">
+                        <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}" loading="lazy" />
+                        <div class="gallery-item-overlay">
+                            <span class="gallery-item-label">{{ $item->caption ?? $business->name }}</span>
                         </div>
-                        @elseif($item->caption && !($idx === 5 && $mediaCount > 6))
-                        <div class="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <p class="text-white text-sm font-medium">{{ $item->caption }}</p>
-                        </div>
-                        @endif
                     </div>
                     @endforeach
                 </div>
+            @else
+                <div class="carousel-wrap">
+                    <div class="carousel-track" id="carousel-track">
+                        @foreach($mediaItems as $idx => $item)
+                        <div class="carousel-slide gallery-item" data-index="{{ $idx }}" tabindex="0" role="button" aria-label="{{ $item->caption ?? $business->name }}">
+                            <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}" loading="lazy"/>
+                            <div class="gallery-item-overlay">
+                                <span class="gallery-item-label">{{ $item->caption ?? $business->name }}</span>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                <nav class="carousel-nav" aria-label="Carousel navigation">
+                    <button class="carousel-btn" id="carousel-prev" disabled>&#8592;</button>
+                    <div class="carousel-dots" id="carousel-dots">
+                        {{-- Dots generated by JS --}}
+                    </div>
+                    <button class="carousel-btn" id="carousel-next">&#8594;</button>
+                </nav>
             @endif
         </div>
     </div>
-    @endif
 
-    {{-- ═══════════════════════════════════════════════ --}}
-    {{-- LIGHTBOX WITH NAVIGATION --}}
-    {{-- ═══════════════════════════════════════════════ --}}
-    @if($mediaCount > 0)
-    <div x-show="lightboxOpen" x-cloak
-         x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
-         x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
-         @click.self="closeLightbox()"
-         @keydown.escape.window="closeLightbox()"
-         @keydown.right.window="nextImage()"
-         @keydown.left.window="prevImage()"
-         class="lightbox-overlay fixed inset-0 z-[99999] bg-slate-950/90 dark:bg-black/95 flex items-center justify-center p-4">
-
-        {{-- Close --}}
-        <button @click="closeLightbox()" class="lightbox-nav-btn absolute top-4 end-4 sm:top-6 sm:end-6 z-10 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-        </button>
-
-        {{-- Counter --}}
-        <div class="absolute top-4 start-4 sm:top-6 sm:start-6 z-10 px-3 py-1.5 rounded-full bg-white/10 text-white/70 text-xs font-semibold">
-            <span x-text="currentIndex + 1"></span> {{ __('directory.profile_of') }} {{ $mediaCount }}
-        </div>
-
-        {{-- Previous --}}
-        <button x-show="mediaItems.length > 1" @click.stop="prevImage()"
-                class="lightbox-nav-btn absolute start-2 sm:start-4 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white">
-            <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-        </button>
-
-        {{-- Image --}}
-        <div class="max-w-5xl w-full max-h-[85vh] flex flex-col items-center">
-            <img :src="currentImage.url" :alt="currentImage.caption || ''"
-                 class="max-w-full max-h-[75vh] object-contain rounded-xl"
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 scale-95"
-                 x-transition:enter-end="opacity-100 scale-100">
-            <p x-show="currentImage.caption" x-text="currentImage.caption"
-               class="mt-4 text-white/70 text-sm font-medium text-center max-w-lg"></p>
-        </div>
-
-        {{-- Next --}}
-        <button x-show="mediaItems.length > 1" @click.stop="nextImage()"
-                class="lightbox-nav-btn absolute end-2 sm:end-4 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/10 flex items-center justify-center text-white/70 hover:text-white">
-            <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-        </button>
+    <!-- ── Lightbox ── -->
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <img id="lightbox-bg-img" src="" alt="" />
+      <div id="lightbox-backdrop"></div>
+      <button id="lightbox-prev" aria-label="Previous">&#8592;</button>
+      <div id="lightbox-img-wrap">
+        <img id="lightbox-img" src="" alt="" />
+      </div>
+      <button id="lightbox-next" aria-label="Next">&#8594;</button>
+      <button id="lightbox-close" aria-label="Close">&#x2715;</button>
+      <div id="lightbox-counter"></div>
     </div>
     @endif
 
@@ -747,6 +798,250 @@
 @endsection
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    /* ══════════════════ LENIS ══════════════════ */
+    const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+    window.lenis = lenis; // Expose for lightbox
+    function raf(t) { lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+
+    /* ══════════════════ GSAP ══════════════════ */
+    gsap.registerPlugin(ScrollTrigger);
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(t => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+
+    /* ══════════════════ GALLERY DATA ══════════════════ */
+    const IMAGES = @json($business->media->map(fn($m) => ['src' => $m->file_url, 'label' => $m->caption ?? $business->name])->values());
+    if (IMAGES.length === 0) return;
+    
+    let lightboxIndex = 0;
+    let isLightboxOpen = false;
+    let carouselIndex = 0;
+    let carouselSlidesVisible = 3;
+
+    /* ══════════════════ HELPERS ══════════════════ */
+    function slidesVisible() {
+      const w = window.innerWidth;
+      return w <= 480 ? 1 : w <= 768 ? 2 : 3;
+    }
+
+    function addHoverZoom(el) {
+      if (window.matchMedia('(hover: none)').matches) return;
+      const img = el.querySelector('img');
+      el.addEventListener('mouseenter', () => gsap.to(img, { scale:1.07, duration:0.65, ease:'power2.out' }));
+      el.addEventListener('mouseleave', () => gsap.to(img, { scale:1,    duration:0.55, ease:'power2.out' }));
+    }
+
+    /* ══════════════════ INIT GALLERY ══════════════════ */
+    if (IMAGES.length <= 6) {
+      const items = document.querySelectorAll('.gallery-grid .gallery-item');
+      gsap.set(items, { opacity:0, y:36, scale:0.97 });
+      items.forEach((item, i) => {
+        ScrollTrigger.create({
+          trigger: item, start:'top 92%', once:true,
+          onEnter: () => gsap.to(item,{ opacity:1, y:0, scale:1, duration:0.8, delay:(i%3)*0.07, ease:'expo.out' })
+        });
+        addHoverZoom(item);
+      });
+    } else {
+      initCarousel();
+    }
+    bindClicks();
+
+    /* ── Carousel ── */
+    function initCarousel() {
+      const track   = document.getElementById('carousel-track');
+      const prevBtn = document.getElementById('carousel-prev');
+      const nextBtn = document.getElementById('carousel-next');
+      const dotsWrap= document.getElementById('carousel-dots');
+      if (!track) return;
+
+      carouselSlidesVisible = slidesVisible();
+      const slides = track.querySelectorAll('.carousel-slide');
+      
+      function buildDots() {
+         const maxI = Math.max(0, IMAGES.length - carouselSlidesVisible);
+         let dotsHTML = '';
+         for(let i=0; i<=maxI; i++) {
+             dotsHTML += `<div class="dot${i===0?' active':''}" data-dot="${i}"></div>`;
+         }
+         dotsWrap.innerHTML = dotsHTML;
+      }
+      buildDots();
+
+      gsap.set(slides, { opacity:0, y:28, scale:0.97 });
+      ScrollTrigger.create({
+        trigger: track, start:'top 92%', once:true,
+        onEnter: () => gsap.to(slides,{ opacity:1, y:0, scale:1, stagger:0.06, duration:0.75, ease:'expo.out' })
+      });
+      slides.forEach(s => addHoverZoom(s));
+
+      function maxIdx() { return Math.max(0, IMAGES.length - carouselSlidesVisible); }
+
+      function updateDots() {
+        dotsWrap.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===carouselIndex));
+      }
+      function updateBtns() {
+        prevBtn.disabled = carouselIndex === 0;
+        nextBtn.disabled = carouselIndex >= maxIdx();
+      }
+
+      function slideWidth() {
+        const s = track.querySelector('.carousel-slide');
+        return s ? s.offsetWidth + 2 : 0;
+      }
+
+      function goTo(idx) {
+        carouselIndex = Math.max(0, Math.min(idx, maxIdx()));
+        gsap.to(track, { x: -carouselIndex * slideWidth(), duration:0.75, ease:'expo.inOut' });
+        updateDots(); updateBtns();
+      }
+
+      prevBtn.addEventListener('click', () => goTo(carouselIndex - 1));
+      nextBtn.addEventListener('click', () => goTo(carouselIndex + 1));
+      dotsWrap.addEventListener('click', e => {
+        const d = e.target.closest('.dot');
+        if (d) goTo(+d.dataset.dot);
+      });
+
+      let startX = 0;
+      track.addEventListener('pointerdown', e => { startX = e.clientX; track.setPointerCapture(e.pointerId); });
+      track.addEventListener('pointerup',   e => {
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 44) goTo(dx < 0 ? carouselIndex + 1 : carouselIndex - 1);
+      });
+
+      let resizeTO;
+      const resizeObs = new ResizeObserver(() => {
+        clearTimeout(resizeTO);
+        resizeTO = setTimeout(() => {
+          const nv = slidesVisible();
+          if (nv !== carouselSlidesVisible) {
+            carouselSlidesVisible = nv;
+            const pct = 100 / nv;
+            slides.forEach(s => { s.style.flexBasis = `calc(${pct}% - 2px)`; });
+            buildDots();
+            carouselIndex = Math.min(carouselIndex, maxIdx());
+          }
+          gsap.set(track, { x: -carouselIndex * slideWidth() });
+          updateDots(); updateBtns();
+        }, 80);
+      });
+      resizeObs.observe(track.parentElement);
+
+      // Initial basis setup
+      const pct = 100 / carouselSlidesVisible;
+      slides.forEach(s => { s.style.flexBasis = `calc(${pct}% - 2px)`; });
+
+      updateBtns();
+    }
+
+    /* ══════════════════ CLICK → LIGHTBOX ══════════════════ */
+    function bindClicks() {
+      const container = document.getElementById('gallery-section');
+      if(!container) return;
+      
+      let downX = 0, downY = 0;
+      container.addEventListener('pointerdown', e => {
+        downX = e.clientX; downY = e.clientY;
+      });
+
+      container.addEventListener('click', e => {
+        const item = e.target.closest('[data-index]');
+        if (item) {
+          const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
+          if (dist < 8) openLightbox(+item.dataset.index);
+        }
+      });
+      container.addEventListener('keydown', e => {
+        if (e.key==='Enter'||e.key===' ') {
+          const item = e.target.closest('[data-index]');
+          if (item) openLightbox(+item.dataset.index);
+        }
+      });
+    }
+
+    /* ══════════════════ LIGHTBOX ══════════════════ */
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lightbox-img');
+    const lbBgImg = document.getElementById('lightbox-bg-img');
+    const lbCount = document.getElementById('lightbox-counter');
+    const lbClose = document.getElementById('lightbox-close');
+    const lbPrev  = document.getElementById('lightbox-prev');
+    const lbNext  = document.getElementById('lightbox-next');
+
+    function openLightbox(index) {
+      lightboxIndex = index;
+      isLightboxOpen = true;
+      if (typeof window.lenis !== "undefined") window.lenis.stop();
+      document.body.style.overflow = 'hidden';
+      lb.classList.add('active');
+      setLbImage(false);
+      gsap.fromTo(lb, { opacity:0 }, { opacity:1, duration:0.4, ease:'power2.out' });
+      gsap.fromTo(lbImg, { scale:0.88, opacity:0, y:18 }, { scale:1, opacity:1, y:0, duration:0.55, ease:'expo.out', delay:0.04 });
+    }
+
+    function closeLightbox() {
+      isLightboxOpen = false;
+      if (typeof window.lenis !== "undefined") window.lenis.start();
+      document.body.style.overflow = '';
+      gsap.to(lbImg, { scale:0.9, opacity:0, y:14, duration:0.3, ease:'power2.in' });
+      gsap.to(lb, { opacity:0, duration:0.35, ease:'power2.in', delay:0.04,
+        onComplete: () => lb.classList.remove('active') });
+    }
+
+    function setLbImage(animate) {
+      const img = IMAGES[lightboxIndex];
+      lbCount.textContent = `${lightboxIndex+1} \u2014 ${IMAGES.length}`;
+      lbPrev.disabled = lightboxIndex === 0;
+      lbNext.disabled = lightboxIndex === IMAGES.length - 1;
+      
+      // Update the blurred background image too
+      lbBgImg.src = img.src;
+
+      if (!animate) { 
+        lbImg.src = img.src; 
+        lbImg.alt = img.label; 
+        return; 
+      }
+      
+      const dir = animate; 
+      gsap.to(lbImg, { opacity:0, x: dir*-24, duration:0.18, ease:'power2.in', onComplete: () => {
+        lbImg.src = img.src; lbImg.alt = img.label;
+        gsap.fromTo(lbImg, { opacity:0, x: dir*24 }, { opacity:1, x:0, duration:0.32, ease:'power2.out' });
+      }});
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    document.getElementById('lightbox-backdrop').addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', () => { if(lightboxIndex>0){ lightboxIndex--; setLbImage(-1); } });
+    lbNext.addEventListener('click', () => { if(lightboxIndex<IMAGES.length-1){ lightboxIndex++; setLbImage(1); } });
+
+    document.addEventListener('keydown', e => {
+      if (!isLightboxOpen) return;
+      if (e.key==='Escape') closeLightbox();
+      if (e.key==='ArrowLeft'  && lightboxIndex>0) { lightboxIndex--; setLbImage(-1); }
+      if (e.key==='ArrowRight' && lightboxIndex<IMAGES.length-1) { lightboxIndex++; setLbImage(1); }
+    });
+
+    let lbTx = 0;
+    lb.addEventListener('touchstart', e => { lbTx = e.touches[0].clientX; }, { passive:true });
+    lb.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - lbTx;
+      if (Math.abs(dx) > 48) {
+        if (dx < 0 && lightboxIndex < IMAGES.length-1) { lightboxIndex++; setLbImage(1); }
+        if (dx > 0 && lightboxIndex > 0) { lightboxIndex--; setLbImage(-1); }
+      }
+    });
+
+});
+</script>
 <script>
     function profilePage() {
         return {
