@@ -24,14 +24,19 @@ DB::table('cities')->delete();
 DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
 echo "Loading countries...\n";
-$countries = Country::all()->keyBy('code'); // Key by 2-letter iso code
+// تحويل كود الدولة لـ lowercase دايماً لضمان التطابق
+$countries = Country::all()->map(function($country) {
+    $country->code = strtolower($country->code);
+    return $country;
+})->keyBy('code');
 
 echo "Inserting ~4,000 global Governorates...\n";
 $cityInsertData = [];
 $now = now();
 
 foreach ($statesJson as $state) {
-    $countryCode = $state['country_code'];
+    // تحويل كود الـ JSON لـ lowercase قبل الفحص
+    $countryCode = strtolower($state['country_code']);
     if (!isset($countries[$countryCode])) {
         continue;
     }
@@ -60,8 +65,8 @@ echo "Successfully inserted " . City::count() . " Governorates!\n";
 
 echo "Restoring Business Profiles...\n";
 
-// Load new Egyptian governorates for easy access
-$egypt = Country::where('code', 'EG')->first();
+// جلب مصر باستخدام الحروف الصغيرة لضمان اللقط
+$egypt = Country::where(DB::raw('LOWER(code)'), 'eg')->first();
 $egyptGovs = $egypt ? City::where('country_id', $egypt->id)->get() : collect([]);
 
 $fixed = 0;
@@ -69,39 +74,33 @@ foreach ($profiles as $profile) {
     $address = strtolower($profile->address);
     $matchedGov = null;
     
-    // Hardcoded known mapping for the user's specific dataset to ensure 0 data loss
     if (str_contains($address, 'alexandria') || str_contains($address, 'alex') || str_contains($address, 'sidi gaber') || str_contains($address, 'عمارة سرايا رشدي')) {
-        $matchedGov = $egyptGovs->where('name_en', 'Alexandria')->first();
-    } elseif (str_contains($address, 'cairo') || str_contains($address, 'nasr city') || str_contains($address, 'التجمع')) {
-        $matchedGov = $egyptGovs->where('name_en', 'Cairo')->first();
-    } elseif (str_contains($address, 'giza') || str_contains($address, 'zayed') || str_contains($address, 'october') || str_contains($address, 'الاهرام') || str_contains($address, 'الجيزة')) {
-        $matchedGov = $egyptGovs->where('name_en', 'Giza')->first();
-    } elseif (str_contains($address, 'الزقازيق')) {
-        // Zagazig belongs to Ash Sharqia
-        $matchedGov = $egyptGovs->where('name_en', 'Al Sharqia Governorate')->first();
-        if (!$matchedGov) $matchedGov = $egyptGovs->firstWhere('name_en', 'Ash Sharqia');
-        if (!$matchedGov) $matchedGov = $egyptGovs->filter(fn($g) => str_contains(strtolower($g->name_en), 'sharqi'))->first();
-    } elseif (str_contains($address, 'matrouh')) {
-        $matchedGov = $egyptGovs->where('name_en', 'Matrouh')->first();
-    } elseif (str_contains($address, 'riyadh') || str_contains($address, 'king abdulaziz')) {
-        $sa = Country::where('code', 'SA')->first();
+        $matchedGov = $egyptGovs->filter(fn($g) => str_contains(strtolower($g->name_en), 'alexandria'))->first();
+    } elseif (str_contains($address, 'cairo') || str_contains($address, 'nasr city') || str_contains($address, 'التجمع') || str_contains($address, 'مصر الجديدة') || str_contains($address, 'المقطم') || str_contains($address, 'الرحاب') || str_contains($address, 'مدينتي')) {
+        $matchedGov = $egyptGovs->filter(fn($g) => str_contains(strtolower($g->name_en), 'cairo'))->first();
+    } elseif (str_contains($address, 'giza') || str_contains($address, 'zayed') || str_contains($address, 'october') || str_contains($address, 'الاهرام') || str_contains($address, 'الجيزة') || str_contains($address, 'فيصل') || str_contains($address, 'الهرم') || str_contains($address, 'الدقي')) {
+        $matchedGov = $egyptGovs->filter(fn($g) => str_contains(strtolower($g->name_en), 'giza'))->first();
+    } elseif (str_contains($address, 'الزقازيق') || str_contains($address, 'sharqia') || str_contains($address, 'الشرقية')) {
+        $matchedGov = $egyptGovs->filter(fn($g) => str_contains(strtolower($g->name_en), 'sharqia') || str_contains(strtolower($g->name_en), 'ash sharqiyah'))->first();
+    } elseif (str_contains($address, 'matrouh') || str_contains($address, 'مطروح') || str_contains($address, 'el `alamein') || str_contains($address, 'العلمين')) {
+        $matchedGov = $egyptGovs->filter(fn($g) => str_contains(strtolower($g->name_en), 'matrouh'))->first();
+    } elseif (str_contains($address, 'riyadh') || str_contains($address, 'king abdulaziz') || str_contains($address, 'الرياض')) {
+        $sa = Country::where(DB::raw('LOWER(code)'), 'sa')->first();
         if ($sa) {
-            $matchedGov = City::where('country_id', $sa->id)->where('name_en', 'like', '%Riyadh%')->first();
+            $matchedGov = City::where('country_id', $sa->id)->where(DB::raw('LOWER(name_en)'), 'like', '%riyadh%')->first();
         }
-    } elseif (str_contains($address, 'dandong')) {
-        $cn = Country::where('code', 'CN')->first();
+    } elseif (str_contains($address, 'dandong') || str_contains($address, 'china')) {
+        $cn = Country::where(DB::raw('LOWER(code)'), 'cn')->first();
         if ($cn) {
-            $matchedGov = City::where('country_id', $cn->id)->where('name_en', 'like', '%Liaoning%')->first();
+            $matchedGov = City::where('country_id', $cn->id)->where(DB::raw('LOWER(name_en)'), 'like', '%liaoning%')->first();
         }
     }
     
     if (!$matchedGov && $egyptGovs->count() > 0) {
-        // Generic fuzzy matching
         foreach ($egyptGovs as $gov) {
             $nameEn = strtolower($gov->name_en);
-            // remove 'governorate' from name_en
             $nameEn = trim(str_replace('governorate', '', $nameEn));
-            $nameAr = strtolower($gov->name_ar);
+            $nameAr = trim($gov->name_ar);
             if (($nameEn && str_contains($address, $nameEn)) || ($nameAr && str_contains($address, $nameAr))) {
                 $matchedGov = $gov;
                 break;
