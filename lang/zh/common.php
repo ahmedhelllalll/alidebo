@@ -9,4 +9,6 @@ return [
     'learn_more' => '了解更多',
     'app_preview' => '仪表板应用程序预览',
     'alidebo' => 'alidebo'
+  'support' => 'Support',
+  'terms' => 'Terms',
 ];

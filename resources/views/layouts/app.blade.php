@@ -312,7 +312,7 @@
     {{-- ═══════════════════════════════════════ --}}
     {{-- NAVIGATION --}}
     {{-- ═══════════════════════════════════════ --}}
-    @if(!request()->routeIs('business.view'))
+    @if(!request()->routeIs('business.view') || isset($page))
     <nav id="main-nav" class="fixed top-3 sm:top-5 inset-x-3 sm:inset-x-6 lg:inset-x-8 z-[99999] glass-nav border border-transparent rounded-2xl lg:rounded-[1.5rem] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
         <div class="nav-mobile-shell relative w-full px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 lg:h-[72px]">
@@ -650,6 +650,11 @@
                             <li><a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('home') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_home') ?? 'Home' }}</a></li>
                             <li><a href="{{ route('directory.index') }}" class="text-sm font-medium {{ request()->routeIs('directory.*') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('directory.*') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_companies') ?? 'Companies' }}</a></li>
                             <li><a href="{{ route('about') }}" class="text-sm font-medium {{ request()->routeIs('about') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('about') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.footer_about') ?? 'About Us' }}</a></li>
+                            @if(isset($footerPages) && $footerPages->count() > 0)
+                                @foreach($footerPages as $footerPage)
+                                <li><a href="{{ url($footerPage->slug) }}" class="text-sm font-medium text-zinc-400 hover:text-zinc-100 transition-colors flex items-center gap-2 group"><span class="w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300 h-px transition-all duration-300"></span>{{ $footerPage->title[app()->getLocale()] ?? $footerPage->title['en'] }}</a></li>
+                                @endforeach
+                            @endif
                             <li><a href="{{ route('contact') }}" class="text-sm font-medium {{ request()->routeIs('contact') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('contact') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_contact') ?? 'Contact' }}</a></li>
                         </ul>
                     </div>

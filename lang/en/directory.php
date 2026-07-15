@@ -87,4 +87,5 @@ return [
     'rating_good' => 'Good',
     'rating_excellent' => 'Excellent',
     'back' => 'Back',
+  'profile_connect' => 'Profile Connect',
 ];

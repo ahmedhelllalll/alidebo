@@ -30,6 +30,13 @@ Route::get('/', function () {
     return view('welcome', compact('featuredCompanies'));
 })->name('home');
 
+Route::get('/sitemap.xml', function (\App\Services\SitemapService $sitemapService) {
+    if (ob_get_length()) ob_clean();
+    return response($sitemapService->getCachedSitemap(), 200, [
+        'Content-Type' => 'application/xml'
+    ]);
+})->name('sitemap.xml');
+
 Route::get('lang/{locale}', function ($locale) {
     if (in_array($locale, ['en', 'ar', 'es', 'de', 'zh', 'tr'])) {
         session()->put('locale', $locale);
@@ -56,6 +63,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/search', [Admin\GlobalSearchController::class, 'index'])->name('search');
         Route::resource('categories', Admin\CategoryController::class);
         Route::patch('/categories/{category}/status', [Admin\CategoryController::class, 'updateStatus'])->name('categories.update-status');
+        
+        Route::get('/pages/check-slug', [Admin\PageController::class, 'checkSlug'])->name('pages.check-slug');
+        Route::resource('pages', Admin\PageController::class);
+        
+        Route::get('/dashboard/seo', [Admin\SeoController::class, 'dashboard'])->name('dashboard.seo');
+        Route::post('/dashboard/seo/sitemap/regenerate', [Admin\SeoController::class, 'regenerateSitemap'])->name('dashboard.seo.sitemap.regenerate');
         
         Route::get('/locations', [Admin\LocationController::class, 'index'])->name('locations.index');
         
@@ -177,8 +190,19 @@ Route::post('/chatbot/ask', [\App\Http\Controllers\ChatbotController::class, 'as
     ->name('chatbot.ask');
 
 Route::post('/{slug}/contact', [\App\Http\Controllers\PublicLeadController::class, 'store'])->name('directory.business.contact');
-Route::post('/{slug}/reviews', [PublicReviewController::class, 'store'])->name('directory.business.reviews.store');
-Route::get('/{slug}', [App\Http\Controllers\User\BusinessProfileController::class, 'show'])->name('business.view');
+Route::post('/{slug}/reviews', [\App\Http\Controllers\PublicReviewController::class, 'store'])->name('directory.business.reviews.store');
+
+// Dynamic Pages and Business Profiles fallbacks
+Route::get('/{slug}', function ($slug) {
+    // 1. Check if it's a dynamic page
+    $page = \App\Models\Page::where('slug', $slug)->where('status', 'published')->first();
+    if ($page) {
+        return view('pages.show', compact('page'));
+    }
+
+    // 2. If not a page, pass to BusinessProfileController
+    return app(\App\Http\Controllers\User\BusinessProfileController::class)->show($slug);
+})->name('business.view');
 
 Route::fallback(function () {
     abort(404);

@@ -63,6 +63,11 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        View::composer(['layouts.app', 'layouts.navigation'], function ($view) {
+            $view->with('navbarPages', \App\Models\Page::where('status', 'published')->whereIn('location', ['navbar', 'both'])->get());
+            $view->with('footerPages', \App\Models\Page::where('status', 'published')->whereIn('location', ['footer', 'both'])->get());
+        });
+
         // Invalidate dashboard caches on database changes for real-time consistency
         User::saved(function () {
             Cache::forget('dashboard.stats');

@@ -9,4 +9,6 @@ return [
     'learn_more' => 'Learn More',
     'app_preview' => 'Dashboard Application Preview',
     'alidebo' => 'alidebo'
+  'support' => 'Support',
+  'terms' => 'Terms',
 ];

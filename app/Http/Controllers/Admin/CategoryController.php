@@ -64,6 +64,9 @@ class CategoryController extends Controller
         }
 
         $category = Category::create($data);
+        
+        $this->handleSeoMetadata($category, $request);
+        
         $this->logAdminAction('category_created', $category);
 
         return back()->with('success', __('admin.saved_successfully'));
@@ -88,6 +91,9 @@ class CategoryController extends Controller
         }
 
         $category->update($data);
+        
+        $this->handleSeoMetadata($category, $request);
+        
         $this->logAdminAction('category_updated', $category);
 
         return back()->with('success', __('admin.saved_successfully'));
@@ -125,5 +131,28 @@ class CategoryController extends Controller
             'success' => true,
             'message' => __('admin.saved_successfully')
         ]);
+    }
+
+    protected function handleSeoMetadata($model, \Illuminate\Http\Request $request)
+    {
+        if ($request->has('seo_metadata')) {
+            $seoData = $request->seo_metadata;
+            $seo = $model->seoMetadata()->firstOrCreate([]);
+            
+            $metaTitle = is_array($seo->meta_title) ? $seo->meta_title : [];
+            $metaTitle[app()->getLocale()] = $seoData['meta_title'] ?? null;
+            
+            $metaDesc = is_array($seo->meta_description) ? $seo->meta_description : [];
+            $metaDesc[app()->getLocale()] = $seoData['meta_description'] ?? null;
+            
+            $seo->meta_title = $metaTitle;
+            $seo->meta_description = $metaDesc;
+            
+            if ($request->hasFile('seo_metadata.og_image')) {
+                $seo->og_image = $request->file('seo_metadata.og_image')->store('seo', 'public');
+            }
+            
+            $seo->save();
+        }
     }
 }

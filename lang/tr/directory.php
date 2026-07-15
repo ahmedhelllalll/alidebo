@@ -90,4 +90,13 @@ return [
     'rating_good' => 'Good',
     'rating_excellent' => 'Excellent',
     'back' => 'Back',
+  'lead_message_label' => 'Lead Message Label',
+  'lead_message_placeholder' => 'Lead Message Placeholder',
+  'lead_submit' => 'Lead Submit',
+  'lead_submitting' => 'Lead Submitting',
+  'business_reviews' => 'Business Reviews',
+  'reviews_count' => 'Reviews Count',
+  'review_success' => 'Review Success',
+  'please_select_rating' => 'Please Select Rating',
+  'submitting' => 'Submitting',
 ];

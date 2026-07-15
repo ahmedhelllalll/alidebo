@@ -121,7 +121,7 @@
                         <span class="dropdown-label text-slate-900 dark:text-white">{{ __('admin.active') }}</span>
                         <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
                     </button>
-                    <div class="dropdown-menu hidden absolute z-50 mt-2 w-full bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden opacity-0 translate-y-2 transition-all duration-300">
+                    <div class="dropdown-menu hidden absolute z-50 mt-2 w-full bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden opacity-0 translate-y-2">
                         <div class="dropdown-list p-2 space-y-1">
                             <div class="dropdown-item p-3 rounded-lg hover:bg-primary/[0.04] text-slate-700 dark:text-zinc-300 font-bold text-xs cursor-pointer transition-colors" data-id="active" data-label="{{ __('admin.active') }}">{{ __('admin.active') }}</div>
                             <div class="dropdown-item p-3 rounded-lg hover:bg-primary/[0.04] text-slate-700 dark:text-zinc-300 font-bold text-xs cursor-pointer transition-colors" data-id="pending" data-label="{{ __('admin.pending') }}">{{ __('admin.pending') }}</div>
@@ -150,7 +150,7 @@
                     <span class="dropdown-label text-slate-400 dark:text-zinc-500">{{ __('admin.select_country') }}</span>
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
                 </button>
-                <div class="dropdown-menu hidden absolute z-50 mt-2 w-full bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden opacity-0 translate-y-2 transition-all duration-300">
+                <div class="dropdown-menu hidden absolute z-50 mt-2 w-full bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden opacity-0 translate-y-2">
                     <div class="p-3 border-b border-slate-100 dark:border-white/5">
                         <input type="text" class="dropdown-search w-full bg-slate-50 dark:bg-zinc-900 border-none rounded-lg py-2 px-3 text-xs font-bold outline-none focus:ring-2 focus:ring-primary/20" placeholder="{{ __('admin.search') }}">
                     </div>
@@ -182,7 +182,7 @@
                     <span class="dropdown-label text-slate-900 dark:text-white">{{ __('admin.active') }}</span>
                     <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform duration-300"></i>
                 </button>
-                <div class="dropdown-menu hidden absolute z-50 mt-2 w-full bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden opacity-0 translate-y-2 transition-all duration-300">
+                <div class="dropdown-menu hidden absolute z-50 mt-2 w-full bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-hidden opacity-0 translate-y-2">
                     <div class="dropdown-list p-2 space-y-1">
                         <div class="dropdown-item p-3 rounded-lg hover:bg-primary/[0.04] text-slate-700 dark:text-zinc-300 font-bold text-xs cursor-pointer transition-colors" data-id="active" data-label="{{ __('admin.active') }}">{{ __('admin.active') }}</div>
                         <div class="dropdown-item p-3 rounded-lg hover:bg-primary/[0.04] text-slate-700 dark:text-zinc-300 font-bold text-xs cursor-pointer transition-colors" data-id="pending" data-label="{{ __('admin.pending') }}">{{ __('admin.pending') }}</div>

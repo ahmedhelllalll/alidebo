@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BusinessProfile extends Model
 {
-    use HasFactory;
+    use HasFactory, \App\Traits\HasSeoMetadata;
 
     protected $fillable = [
         'user_id',
@@ -125,7 +125,7 @@ class BusinessProfile extends Model
         return $translation ? $translation->description : $value;
     }
 
-    public function getMetaTitleAttribute($value)
+    public function getFallbackMetaTitle($value)
     {
         $locale = app()->getLocale();
         $translation = $this->translations->where('locale', $locale)->first();
@@ -138,7 +138,7 @@ class BusinessProfile extends Model
         return $decodedValue[$locale] ?? ($decodedValue['en'] ?? $this->name);
     }
 
-    public function getMetaDescriptionAttribute($value)
+    public function getFallbackMetaDescription($value)
     {
         $locale = app()->getLocale();
         $translation = $this->translations->where('locale', $locale)->first();

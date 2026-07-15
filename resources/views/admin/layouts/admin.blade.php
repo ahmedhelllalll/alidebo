@@ -130,6 +130,18 @@
                 justify-content: center;
                 gap: 0;
             }
+            #admin-sidebar[data-collapsed="true"] .sidebar-dropdown-body {
+                padding-left: 0;
+                padding-right: 0;
+            }
+            #admin-sidebar[data-collapsed="true"] [x-collapse] {
+                height: auto !important;
+                overflow: visible !important;
+                display: block !important;
+            }
+            #admin-sidebar[data-collapsed="true"] .sidebar-dropdown-icon {
+                display: none !important;
+            }
             #admin-sidebar[data-collapsed="true"] .sidebar-logo-area {
                 padding-inline: 0;
                 justify-content: center;
@@ -374,11 +386,7 @@
             </button>
         </div>
         {{-- ── Navigation ── --}}
-        <nav class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-5 space-y-1">
-            {{-- Section Label --}}
-            <p class="sidebar-section-label px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400/80 dark:text-zinc-500/80 mb-3">
-                {{ __('admin.modules') }}
-            </p>
+                        <nav class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-5 space-y-2">
             {{-- Dashboard --}}
             <a href="{{ route('admin.dashboard') }}"
                 class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
@@ -392,139 +400,151 @@
                 <span class="sidebar-text">{{ __('admin.dashboard') }}</span>
                 <span class="sidebar-tooltip">{{ __('admin.dashboard') }}</span>
             </a>
-            
-            {{-- Businesses Group --}}
-            <div class="space-y-1">
-                <p class="px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400/80 dark:text-zinc-500/80 mt-4 mb-2">
-                    {{ __('admin.businesses') }}
-                </p>
-                <a href="{{ route('admin.businesses.index') }}"
-                    class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                    {{ request()->routeIs('admin.businesses.index') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                    <span class="nav-active-bar"></span>
-                    <svg class="w-[20px] h-[20px] shrink-0 transition-transform duration-200 group-hover:scale-110"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                    <span class="sidebar-text">{{ __('admin.all_businesses') }}</span>
-                    <span class="sidebar-tooltip">{{ __('admin.all_businesses') }}</span>
-                </a>
-                <a href="{{ route('admin.businesses.create') }}"
-                    class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                    {{ request()->routeIs('admin.businesses.create') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                    <span class="nav-active-bar"></span>
-                    <div class="w-[20px] h-[20px] shrink-0 flex items-center justify-center">
-                        <i class="fa-solid fa-plus text-[14px] transition-transform duration-200 group-hover:scale-110"></i>
-                    </div>
-                    <span class="sidebar-text">{{ __('admin.add_new') }}</span>
-                    <span class="sidebar-tooltip">{{ __('admin.add_new') }}</span>
-                </a>
+
+            @php
+                $isDirectoryActive = request()->routeIs('admin.businesses.*') || request()->routeIs('admin.categories.*') || request()->routeIs('admin.locations.*');
+                $isContentActive = request()->routeIs('admin.pages.*') || request()->routeIs('admin.seo.*') || (request()->routeIs('admin.coming-soon') && request()->query('feature') === 'blogs');
+                $isCrmActive = request()->routeIs('admin.leads.*') || request()->routeIs('admin.support-chats.*');
+                $isSystemActive = request()->routeIs('admin.users.*') || request()->routeIs('admin.backups.*');
+            @endphp
+
+            {{-- Modules Section --}}
+            <div class="mt-6 mb-2 px-4 sidebar-text">
+                <span class="text-[11px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider">{{ __('admin.modules') }}</span>
             </div>
-
-            {{-- Categories --}}
-            <a href="{{ route('admin.categories.index') }}"
-                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group mt-2
-                {{ request()->routeIs('admin.categories.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar"></span>
-                <svg class="w-[20px] h-[20px] shrink-0 transition-transform duration-200 group-hover:scale-110"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
-                <span class="sidebar-text">{{ __('admin.categories') }}</span>
-                <span class="sidebar-tooltip">{{ __('admin.categories') }}</span>
-            </a>
-
-            {{-- Locations --}}
-            <a href="{{ route('admin.locations.index') }}"
-                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.locations.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar"></span>
-                <i class="fa-solid fa-earth-americas w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
-                <span class="sidebar-text">{{ __('admin.locations') }}</span>
-                <span class="sidebar-tooltip">{{ __('admin.locations') }}</span>
-            </a>
-
-            {{-- Blogs --}}
-            <a href="{{ route('admin.coming-soon', ['feature' => 'blogs']) }}"
-                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'blogs' ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'blogs' ? '' : 'hidden' }}"></span>
-                <i class="fa-solid fa-blog w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
-                <div class="flex-1 flex items-center justify-between sidebar-text">
-                    <span>{{ __('admin.blogs') }}</span>
-                    <span class="font-bold uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm" style="font-size: 9px;">{{ __('admin.soon') }}</span>
+            
+            <div class="space-y-1 mt-1">
+                    <a href="{{ route('admin.businesses.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.businesses.index') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <svg class="w-[20px] h-[20px] shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        <span class="sidebar-text">{{ __('admin.all_businesses') }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.all_businesses') }}</span>
+                    </a>
+                    <a href="{{ route('admin.businesses.create') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.businesses.create') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <div class="w-[20px] h-[20px] shrink-0 flex items-center justify-center">
+                            <i class="fa-solid fa-plus text-[14px] transition-transform duration-200 group-hover:scale-110"></i>
+                        </div>
+                        <span class="sidebar-text">{{ __('admin.add_new') }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.add_new') }}</span>
+                    </a>
+                    <a href="{{ route('admin.categories.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.categories.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <svg class="w-[20px] h-[20px] shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                        </svg>
+                        <span class="sidebar-text">{{ __('admin.categories') }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.categories') }}</span>
+                    </a>
+                    <a href="{{ route('admin.locations.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.locations.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <i class="fa-solid fa-earth-americas w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                        <span class="sidebar-text">{{ __('admin.locations') }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.locations') }}</span>
+                    </a>
                 </div>
-                <span class="sidebar-tooltip">{{ __('admin.blogs') }}</span>
-            </a>
 
-            {{-- Section Label --}}
-            <p class="sidebar-section-label px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-slate-400/80 dark:text-zinc-500/80 mt-6 mb-3">
-                {{ __('admin.system') ?? 'System' }}
-            </p>
+            {{-- Content & SEO Section --}}
+            <div class="mt-6 mb-2 px-4 sidebar-text">
+                <span class="text-[11px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider">{{ __('admin.content_seo') }}</span>
+            </div>
+            
+            <div class="space-y-1 mt-1">
+                    <a href="{{ route('admin.pages.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.pages.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <i class="fa-solid fa-file-lines w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                        <span class="sidebar-text">{{ __('admin.pages') }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.pages') }}</span>
+                    </a>
+                    <a href="{{ route('admin.dashboard.seo') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.dashboard.seo*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <i class="fa-solid fa-magnifying-glass-chart w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                        <span class="sidebar-text">{{ __('admin.seo_settings') }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.seo_settings') }}</span>
+                    </a>
+                    <a href="{{ route('admin.coming-soon', ['feature' => 'blogs']) }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'blogs' ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'blogs' ? '' : 'hidden' }}"></span>
+                        <i class="fa-solid fa-blog w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                        <div class="flex-1 flex items-center justify-between sidebar-text">
+                            <span>{{ __('admin.blogs') }}</span>
+                            <span class="font-bold uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm" style="font-size: 9px;">{{ __('admin.soon') }}</span>
+                        </div>
+                        <span class="sidebar-tooltip">{{ __('admin.blogs') }}</span>
+                    </a>
+                </div>
 
-            {{-- Users --}}
-            <a href="{{ route('admin.users.index') }}"
-                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.users.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar"></span>
-                <svg class="w-[20px] h-[20px] shrink-0 transition-transform duration-200 group-hover:scale-110"
-                    fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span class="sidebar-text">{{ __('admin.users') }}</span>
-                <span class="sidebar-tooltip">{{ __('admin.users') }}</span>
-            </a>
-
-            {{-- Leads --}}
+            {{-- CRM & Support Section --}}
             @php
                 $unreadLeadsCount = \App\Models\ContactMessage::where('status', '!=', 'read')->orWhereNull('status')->count();
             @endphp
-            <a href="{{ route('admin.leads.index') }}"
-                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.leads.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar {{ request()->routeIs('admin.leads.*') ? '' : 'hidden' }}"></span>
-                <div class="relative">
-                    <i class="fa-solid fa-headset w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
-                    @if($unreadLeadsCount > 0)
-                        <span class="absolute -top-1 -end-1 w-2.5 h-2.5 bg-orange-500 rounded-full border-[1.5px] border-white dark:border-[#09090b] lg:hidden lg:group-has-[[data-collapsed="true"]]:block" style="display: var(--collapsed-dot-display, none);"></span>
-                    @endif
+            <div class="mt-6 mb-2 px-4 sidebar-text flex items-center justify-between">
+                <span class="text-[11px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider">{{ __('admin.crm_support') }}</span>
+            </div>
+            
+            <div class="space-y-1 mt-1">
+                    <a href="{{ route('admin.leads.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.leads.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar {{ request()->routeIs('admin.leads.*') ? '' : 'hidden' }}"></span>
+                        <div class="relative shrink-0 w-[20px]">
+                            <i class="fa-solid fa-envelope-open-text text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                            @if($unreadLeadsCount > 0)
+                                <span class="absolute -top-1 -end-1 w-2.5 h-2.5 bg-orange-500 rounded-full border-[1.5px] border-white dark:border-[#09090b] lg:hidden lg:group-has-[[data-collapsed="true"]]:block" style="display: var(--collapsed-dot-display, none);"></span>
+                            @endif
+                        </div>
+                        <div class="flex-1 flex items-center justify-between sidebar-text">
+                            <span>{{ __('admin.leads') }}</span>
+                            @if($unreadLeadsCount > 0)
+                                <span class="flex items-center justify-center min-w-[20px] h-[20px] px-1 text-[10px] font-black bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-lg shadow-sm border border-orange-500/20">{{ $unreadLeadsCount > 99 ? '99+' : $unreadLeadsCount }}</span>
+                            @endif
+                        </div>
+                        <span class="sidebar-tooltip">{{ __('admin.leads') }} @if($unreadLeadsCount > 0) ({{ $unreadLeadsCount }}) @endif</span>
+                    </a>
+                    <a href="{{ route('admin.support-chats.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.support-chats.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar {{ request()->routeIs('admin.support-chats.*') ? '' : 'hidden' }}"></span>
+                        <i class="fa-solid fa-comments w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                        <div class="flex-1 flex items-center justify-between sidebar-text">
+                            <span>{{ __('admin.support_chats') }}</span>
+                        </div>
+                        <span class="sidebar-tooltip">{{ __('admin.support_chats') }}</span>
+                    </a>
                 </div>
-                <div class="flex-1 flex items-center justify-between sidebar-text">
-                    <span>{{ __('admin.leads') ?? 'Leads' }}</span>
-                    @if($unreadLeadsCount > 0)
-                        <span class="flex items-center justify-center min-w-[20px] h-[20px] px-1 text-[10px] font-black bg-orange-500/10 text-orange-600 dark:text-orange-400 rounded-lg shadow-sm border border-orange-500/20">{{ $unreadLeadsCount > 99 ? '99+' : $unreadLeadsCount }}</span>
-                    @endif
-                </div>
-                <span class="sidebar-tooltip">{{ __('admin.leads') ?? 'Leads' }} @if($unreadLeadsCount > 0) ({{ $unreadLeadsCount }}) @endif</span>
-            </a>
 
-            {{-- Support Chats --}}
-            <a href="{{ route('admin.support-chats.index') }}"
-                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.support-chats.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar {{ request()->routeIs('admin.support-chats.*') ? '' : 'hidden' }}"></span>
-                <i class="fa-solid fa-comments w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
-                <div class="flex-1 flex items-center justify-between sidebar-text">
-                    <span>{{ __('admin.support_chats') ?? 'Support Chats' }}</span>
-                </div>
-                <span class="sidebar-tooltip">{{ __('admin.support_chats') ?? 'Support Chats' }}</span>
-            </a>
+            {{-- System Section --}}
+            <div class="mt-6 mb-2 px-4 sidebar-text">
+                <span class="text-[11px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider">{{ __('admin.system') }}</span>
+            </div>
+            
+            <div class="space-y-1 mt-1">
+                    <a href="{{ route('admin.users.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.users.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <svg class="w-[20px] h-[20px] shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span class="sidebar-text">{{ __('admin.users') }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.users') }}</span>
+                    </a>
+                    <a href="{{ route('admin.backups.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.backups.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <i class="fa-solid fa-cloud-arrow-up w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
+                        <div class="flex-1 flex items-center justify-between sidebar-text">
+                            <span>{{ __('admin.backups') }}</span>
+                        </div>
+                        <span class="sidebar-tooltip">{{ __('admin.backups') }}</span>
+                    </a>
+                </div>        </nav>
 
-            {{-- Backups --}}
-            <a href="{{ route('admin.backups.index') }}"
-                class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('admin.backups.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                <span class="nav-active-bar"></span>
-                <i class="fa-solid fa-cloud-arrow-up w-[20px] text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
-                <div class="flex-1 flex items-center justify-between sidebar-text">
-                    <span>{{ __('admin.backups') ?? 'Backups' }}</span>
-                </div>
-                <span class="sidebar-tooltip">{{ __('admin.backups') ?? 'Backups' }}</span>
-            </a>
-        </nav>
         {{-- ── User Section (Bottom) ── --}}
         <div class="border-t border-slate-100 dark:border-zinc-800/60 p-4">
             <div class="sidebar-user-section flex items-center gap-3 px-2 py-2 rounded-2xl hover:bg-slate-50 dark:hover:bg-zinc-800/30 transition-all duration-300 relative group cursor-pointer border border-transparent hover:border-slate-200/50 dark:hover:border-white/5 shadow-sm hover:shadow-md">
@@ -1250,7 +1270,7 @@
                                 <span>{{ __('admin.suggestions') }}</span>
                             </div>
                             <div class="text-[9px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest bg-slate-100 dark:bg-zinc-800 px-2 py-0.5 rounded-md">
-                                {{ __('admin.recent_activity') ?? 'Recent' }}
+                                {{ __('admin.recent_activity') }}
                             </div>
                         </div>
                         <div class="space-y-1">

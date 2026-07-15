@@ -5,46 +5,55 @@
 
 @push('styles')
 <style>
-/* Elite Graph Tooltip Overrides */
+/* Clean Chart Tooltip */
 .apexcharts-tooltip {
-    background: rgba(255, 255, 255, 0.9) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
-    border-radius: 14px !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.04) !important;
+    border-radius: 12px !important;
     font-family: inherit !important;
-    transition: all 0.2s ease;
+    padding: 0 !important;
+    overflow: hidden !important;
 }
 .dark .apexcharts-tooltip {
-    background: rgba(24, 24, 27, 0.85) !important;
+    background: rgba(24, 24, 27, 0.92) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35) !important;
 }
 .apexcharts-tooltip-title {
-    background: transparent !important;
-    border-bottom: 1px dashed rgba(0,0,0,0.08) !important;
-    font-weight: 800 !important;
+    background: rgba(0,0,0,0.02) !important;
+    border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+    font-weight: 700 !important;
     font-size: 11px !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
-    padding: 12px 14px 6px !important;
+    letter-spacing: 0.3px !important;
+    padding: 8px 14px !important;
     color: #64748b !important;
 }
 .dark .apexcharts-tooltip-title {
-    border-bottom: 1px dashed rgba(255,255,255,0.08) !important;
+    background: rgba(255,255,255,0.03) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.06) !important;
     color: #a1a1aa !important;
 }
 .apexcharts-tooltip-series-group {
-    padding: 8px 14px 12px !important;
+    padding: 8px 14px 10px !important;
 }
 .apexcharts-tooltip-text-y-value {
-    font-weight: 900 !important;
-    font-size: 15px !important;
+    font-weight: 800 !important;
+    font-size: 14px !important;
     color: #f45018 !important;
 }
 .apexcharts-tooltip-text-y-label {
     color: inherit !important;
+    font-weight: 500 !important;
+}
+/* Chart stat pills animation */
+.chart-stat-pill {
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.chart-stat-pill:hover {
+    transform: translateY(-1px);
 }
 </style>
 @endpush
@@ -273,29 +282,64 @@
                         <div class="w-14 h-14 bg-amber-50 dark:bg-amber-500/10 text-amber-500 rounded-2xl flex items-center justify-center mx-auto mb-5 border border-amber-200 dark:border-amber-500/20">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
                         </div>
-                        <h3 class="text-lg sm:text-xl font-[900] text-slate-900 dark:text-white mb-2 tracking-tight">{{ __('dashboard.index.data_locked') ?? 'Data Locked' }}</h3>
-                        <p class="text-[13px] text-slate-500 dark:text-zinc-400 font-medium leading-relaxed">{{ __('dashboard.index.data_available_after_approval') ?? 'Your analytics data will be available here once your business profile is approved.' }}</p>
+                        <h3 class="text-lg sm:text-xl font-[900] text-slate-900 dark:text-white mb-2 tracking-tight">{{ __('dashboard.index.data_locked') }}</h3>
+                        <p class="text-[13px] text-slate-500 dark:text-zinc-400 font-medium leading-relaxed">{{ __('dashboard.index.data_available_after_approval') }}</p>
                     </div>
                 </div>
                 @endif
 
-                <div class="chart-card bg-white dark:bg-[#18181b] backdrop-blur-md p-4 sm:p-6 rounded-[22px] border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col flex-1 min-h-[350px] overflow-hidden relative">
-                    <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-white/60 dark:bg-zinc-900/60 backdrop-blur-[2px] z-20 hidden rounded-[22px]">
-                        <div class="w-8 h-8 border-4 border-slate-200 border-t-primary dark:border-zinc-700 dark:border-t-primary rounded-full animate-spin"></div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2 shrink-0">
-                        <h2 class="text-[15px] sm:text-[16px] font-[900] text-slate-900 dark:text-white tracking-tight">
-                            {{ __('dashboard.index.visits_analytics') }}
-                        </h2>
-                        <div class="flex p-0.5 bg-slate-100 dark:bg-zinc-800 rounded-xl border border-slate-200/50 dark:border-zinc-700/50 shadow-inner">
-                            <button onclick="setChartPeriod('week')" class="period-btn px-4 py-1.5 rounded-lg text-[11px] font-bold transition-all" data-period="week">{{ __('dashboard.index.week') }}</button>
-                            <button onclick="setChartPeriod('month')" class="period-btn px-4 py-1.5 rounded-lg text-[11px] font-bold transition-all bg-white dark:bg-zinc-700 text-slate-900 dark:text-white shadow-sm" data-period="month">{{ __('dashboard.index.month') }}</button>
+                <div class="chart-card bg-white dark:bg-[#18181b] backdrop-blur-md p-5 sm:p-6 rounded-[22px] border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_1px_3px_rgba(0,0,0,0.04)] flex flex-col flex-1 min-h-[380px] overflow-hidden relative">
+                    {{-- Loading overlay --}}
+                    <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-white/70 dark:bg-zinc-900/70 backdrop-blur-[3px] z-20 hidden rounded-[22px]">
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="w-8 h-8 border-[3px] border-slate-200 border-t-primary dark:border-zinc-700 dark:border-t-primary rounded-full animate-spin"></div>
+                            <span class="text-[11px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wider">{{ __('dashboard.index.loading_data') }}</span>
                         </div>
                     </div>
-                    
-                    <div class="w-full h-full flex-1 min-h-[280px]">
-                        <div id="viewsChart" class="w-full h-full"></div>
+
+                    {{-- Chart header --}}
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 shrink-0">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/10 to-orange-400/5 border border-primary/10 flex items-center justify-center text-primary shrink-0">
+                                <svg class="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+                            </div>
+                            <div>
+                                <h2 class="text-[15px] font-[800] text-slate-900 dark:text-white tracking-tight leading-tight">
+                                    {{ __('dashboard.index.visits_analytics') }}
+                                </h2>
+                                <p class="text-[11px] font-medium text-slate-400 dark:text-zinc-500 mt-0.5">{{ __('dashboard.index.chart_subtitle') }}</p>
+                            </div>
+                        </div>
+                        <div class="flex p-0.5 bg-slate-100 dark:bg-zinc-800/80 rounded-xl border border-slate-200/50 dark:border-zinc-700/50">
+                            <button onclick="setChartPeriod('week')" class="period-btn px-4 py-1.5 rounded-[10px] text-[11px] font-bold transition-all duration-200" data-period="week">{{ __('dashboard.index.week') }}</button>
+                            <button onclick="setChartPeriod('month')" class="period-btn px-4 py-1.5 rounded-[10px] text-[11px] font-bold transition-all duration-200 bg-white dark:bg-zinc-700 text-slate-900 dark:text-white shadow-sm" data-period="month">{{ __('dashboard.index.month') }}</button>
+                        </div>
+                    </div>
+
+                    {{-- Summary stat pills --}}
+                    <div class="flex flex-wrap items-center gap-2 mb-4 shrink-0">
+                        <div class="chart-stat-pill flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-zinc-800/60 border border-slate-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wide">{{ __('dashboard.index.chart_total') }}</span>
+                            <span id="chartStatTotal" class="text-[12px] font-[800] text-slate-700 dark:text-zinc-200">0</span>
+                        </div>
+                        <div class="chart-stat-pill flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 dark:bg-zinc-800/60 border border-slate-100 dark:border-zinc-700/50">
+                            <span class="text-[10px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-wide">{{ __('dashboard.index.chart_daily_avg') }}</span>
+                            <span id="chartStatAvg" class="text-[12px] font-[800] text-slate-700 dark:text-zinc-200">0</span>
+                        </div>
+                        <div class="chart-stat-pill flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/5 dark:bg-primary/10 border border-primary/10">
+                            <span class="text-[10px] font-bold text-primary/70 uppercase tracking-wide">{{ __('dashboard.index.chart_peak') }}</span>
+                            <span id="chartStatPeak" class="text-[12px] font-[800] text-primary">0</span>
+                        </div>
+                    </div>
+
+                    {{-- Chart container --}}
+                    <div class="w-full flex-1 min-h-[260px] relative">
+                        <div id="viewsChart" class="absolute inset-0"></div>
+                        {{-- No data state --}}
+                        <div id="chart-no-data" class="absolute inset-0 flex flex-col items-center justify-center hidden">
+                            <svg class="w-12 h-12 text-slate-200 dark:text-zinc-700 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            <p class="text-sm font-bold text-slate-400 dark:text-zinc-500">{{ __('dashboard.index.chart_no_data') }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -386,7 +430,17 @@
                     duration: 0.8,
                     ease: "power3.out",
                     delay: 0.5,
-                    clearProps: 'all'
+                    clearProps: 'all',
+                    onComplete: () => {
+                        // Fix Chart Resize Lag: Ensure the layout is stable then force recalculation
+                        setTimeout(() => {
+                            if (typeof viewsChart !== 'undefined' && viewsChart) {
+                                // Sometimes updateOptions alone isn't enough; triggering resize helps
+                                window.dispatchEvent(new Event('resize'));
+                                viewsChart.updateOptions({ chart: { width: '100%', height: '100%' } });
+                            }
+                        }, 100);
+                    }
                 });
 
                 // Set transitions on gsap-stagger after layout GSAP finishes (layout GSAP runs independently)
@@ -471,8 +525,129 @@
 
     // Chart rendering
     let viewsChart = null;
+    const chartLocale = '{{ app()->getLocale() }}';
+    const chartViewsLabel = '{{ __("dashboard.index.views") }}';
+
+    function updateChartStats(data) {
+        const totalEl = document.getElementById('chartStatTotal');
+        const avgEl = document.getElementById('chartStatAvg');
+        const peakEl = document.getElementById('chartStatPeak');
+        if (totalEl) totalEl.textContent = (data.total || 0).toLocaleString(chartLocale);
+        if (avgEl) avgEl.textContent = (data.average || 0).toLocaleString(chartLocale);
+        if (peakEl) {
+            const peakText = (data.peak_value || 0).toLocaleString(chartLocale);
+            peakEl.textContent = data.peak_label ? `${peakText} (${data.peak_label})` : peakText;
+        }
+    }
+
+    function getChartOptions(data) {
+        const isDark = document.documentElement.classList.contains('dark');
+        const primaryColor = '#f45018';
+        const textColor = isDark ? '#71717a' : '#94a3b8';
+        const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)';
+
+        return {
+            series: [{ name: chartViewsLabel, data: data.values }],
+            chart: {
+                type: 'area',
+                height: '100%',
+                toolbar: { show: false },
+                zoom: { enabled: false },
+                fontFamily: 'inherit',
+                background: 'transparent',
+                parentHeightOffset: 0,
+                dropShadow: {
+                    enabled: true,
+                    color: primaryColor,
+                    top: 10,
+                    left: 0,
+                    blur: 8,
+                    opacity: 0.15
+                },
+                animations: {
+                    enabled: true,
+                    easing: 'easeinout',
+                    speed: 700,
+                    animateGradually: { enabled: true, delay: 100 },
+                    dynamicAnimation: { enabled: true, speed: 300 }
+                }
+            },
+            colors: [primaryColor],
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.3,
+                    opacityTo: 0.0,
+                    stops: [0, 85, 100]
+                }
+            },
+            dataLabels: { enabled: false },
+            stroke: { curve: 'smooth', width: 2.5, lineCap: 'round' },
+            markers: {
+                size: 0,
+                colors: [isDark ? '#18181b' : '#fff'],
+                strokeColors: primaryColor,
+                strokeWidth: 2.5,
+                hover: { size: 5, sizeOffset: 2 }
+            },
+            xaxis: {
+                type: 'category',
+                categories: data.labels,
+                tickAmount: data.labels.length > 15 ? 10 : data.labels.length,
+                tickPlacement: 'between',
+                crosshairs: {
+                    show: true,
+                    stroke: { color: gridColor, width: 1, dashArray: 4 }
+                },
+                axisBorder: { show: false },
+                axisTicks: { show: false },
+                labels: {
+                    rotate: 0,
+                    trim: true,
+                    hideOverlappingLabels: true,
+                    style: { colors: textColor, fontSize: '11px', fontWeight: 600, fontFamily: 'inherit' },
+                    offsetY: 4
+                },
+                tooltip: { enabled: false }
+            },
+            yaxis: {
+                labels: {
+                    style: { colors: textColor, fontSize: '12px', fontWeight: 600, fontFamily: 'inherit' },
+                    offsetX: -8,
+                    formatter: function(val) {
+                        if (val >= 1000000) return (val / 1000000).toFixed(1) + 'M';
+                        if (val >= 1000) return (val / 1000).toFixed(1) + 'k';
+                        return Math.round(val);
+                    }
+                },
+                min: 0
+            },
+            grid: {
+                borderColor: gridColor,
+                strokeDashArray: 4,
+                padding: { top: 10, right: 16, bottom: 0, left: 16 },
+                xaxis: { lines: { show: false } },
+                yaxis: { lines: { show: true } }
+            },
+            theme: { mode: isDark ? 'dark' : 'light' },
+            legend: { show: false },
+            tooltip: {
+                theme: isDark ? 'dark' : 'light',
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function(val) {
+                        return val !== undefined ? val.toLocaleString(chartLocale) + ' ' + chartViewsLabel : '0';
+                    }
+                },
+                marker: { show: true }
+            }
+        };
+    }
 
     window.setChartPeriod = function(period) {
+        // Toggle active period button
         document.querySelectorAll('.period-btn').forEach(btn => {
             btn.classList.remove('bg-white', 'dark:bg-zinc-700', 'text-slate-900', 'dark:text-white', 'shadow-sm');
             btn.classList.add('text-slate-500', 'dark:text-zinc-400');
@@ -484,139 +659,52 @@
         }
 
         const loader = document.getElementById('chart-loading');
+        const noData = document.getElementById('chart-no-data');
         if (loader) loader.classList.remove('hidden');
+        if (noData) noData.classList.add('hidden');
 
         fetch(`/dashboard/views-chart?period=${period}`)
             .then(res => res.json())
             .then(data => {
-                const isDark = document.documentElement.classList.contains('dark');
-                const primaryColor = '#f45018';
-                const textColor = isDark ? '#71717a' : '#94a3b8';
-                const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)';
+                // Update summary stat pills
+                updateChartStats(data);
+
+                // Check if all values are zero
+                const hasData = data.values && data.values.some(v => v > 0);
+                const chartEl = document.getElementById('viewsChart');
+                if (noData) noData.classList.toggle('hidden', hasData);
+                if (noData) noData.style.display = hasData ? 'none' : 'flex';
+                if (chartEl) chartEl.style.opacity = hasData ? '1' : '0.2';
 
                 if (viewsChart) {
-                    viewsChart.updateOptions({ 
-                        xaxis: { 
-                            categories: data.labels,
-                            tickAmount: data.labels.length
-                        } 
-                    });
-                    viewsChart.updateSeries([{ name: '{{ __("dashboard.index.views") ?? "Views" }}', data: data.values }]);
+                    // Fix: Delay the chart update slightly to ensure the container layout 
+                    // is completely stable after tab switching, preventing zero-width calculations.
+                    setTimeout(() => {
+                        viewsChart.updateOptions({
+                            xaxis: {
+                                categories: data.labels,
+                                tickAmount: data.labels.length > 15 ? 10 : data.labels.length
+                            }
+                        });
+                        viewsChart.updateSeries([{ name: chartViewsLabel, data: data.values }]);
+                    }, 100);
                 } else {
-                    const options = {
-                        series: [{
-                            name: '{{ __("dashboard.index.views") ?? "Views" }}',
-                            data: data.values
-                        }],
-                        chart: {
-                            type: 'area',
-                            height: 300,
-                            toolbar: { show: false },
-                            zoom: { enabled: false },
-                            fontFamily: 'inherit',
-                            background: 'transparent',
-                            parentHeightOffset: 0,
-                            dropShadow: {
-                                enabled: true,
-                                color: primaryColor,
-                                top: 12,
-                                left: 0,
-                                blur: 10,
-                                opacity: 0.2
-                            },
-                            animations: {
-                                enabled: true,
-                                easing: 'easeinout',
-                                speed: 800,
-                                animateGradually: { enabled: true, delay: 150 },
-                                dynamicAnimation: { enabled: true, speed: 350 }
-                            }
-                        },
-                        colors: [primaryColor],
-                        fill: {
-                            type: 'gradient',
-                            gradient: {
-                                shadeIntensity: 1,
-                                opacityFrom: 0.35,
-                                opacityTo: 0.0,
-                                stops: [0, 90, 100]
-                            }
-                        },
-                        dataLabels: { enabled: false },
-                        stroke: { 
-                            curve: 'smooth', 
-                            width: 3.5,
-                            lineCap: 'round'
-                        },
-                        markers: {
-                            size: 0,
-                            colors: ['#fff'],
-                            strokeColors: primaryColor,
-                            strokeWidth: 3,
-                            hover: { size: 6 }
-                        },
-                        xaxis: {
-                            type: 'category',
-                            categories: data.labels,
-                            tickAmount: data.labels.length,
-                            tickPlacement: 'between',
-                            crosshairs: {
-                                show: true,
-                                stroke: { color: gridColor, width: 1, dashArray: 4 }
-                            },
-                            axisBorder: { show: false },
-                            axisTicks: { show: false },
-                            labels: { 
-                                rotate: 0,
-                                trim: false,
-                                hideOverlappingLabels: false,
-                                style: { colors: textColor, fontSize: '12px', fontWeight: 600, fontFamily: 'inherit' },
-                                offsetY: 5
-                            },
-                            tooltip: { enabled: false }
-                        },
-                        yaxis: {
-                            labels: { 
-                                style: { colors: textColor, fontSize: '13px', fontWeight: 700, fontFamily: 'inherit' },
-                                offsetX: -10,
-                                formatter: function(val) {
-                                    if (val >= 1000000) return (val / 1000000).toFixed(1) + 'M';
-                                    if (val >= 1000) return (val / 1000).toFixed(1) + 'k';
-                                    return val;
-                                }
-                            }
-                        },
-                        grid: {
-                            borderColor: gridColor,
-                            strokeDashArray: 4,
-                            padding: { top: 15, right: 30, bottom: 0, left: 30 },
-                            xaxis: { lines: { show: false } },
-                            yaxis: { lines: { show: true } }
-                        },
-                        theme: { mode: isDark ? 'dark' : 'light' },
-                        legend: { show: false },
-                        tooltip: {
-                            theme: isDark ? 'dark' : 'light',
-                            shared: true,
-                            intersect: false,
-                            y: {
-                                formatter: function(val) {
-                                    return val !== undefined ? val.toLocaleString('{{ app()->getLocale() }}') + ' {{ __("dashboard.index.views") ?? "Views" }}' : '0';
-                                }
-                            },
-                            marker: { show: false }
-                        }
-                    };
-                    viewsChart = new ApexCharts(document.querySelector("#viewsChart"), options);
-                    viewsChart.render();
+                    viewsChart = new ApexCharts(document.querySelector('#viewsChart'), getChartOptions(data));
+                    viewsChart.render().then(() => {
+                        // Fix Chart Resize Lag: Force layout recalculation after initial render
+                        viewsChart.updateOptions({});
+                        setTimeout(() => { if (viewsChart) viewsChart.updateOptions({}); }, 500);
+                    });
 
-
-                    // Watch for theme changes
+                    // Watch for dark/light theme changes
                     const observer = new MutationObserver((mutations) => {
                         mutations.forEach((mutation) => {
                             if (mutation.attributeName === 'class') {
                                 const newTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-                                viewsChart.updateOptions({ theme: { mode: newTheme } });
+                                viewsChart.updateOptions({
+                                    theme: { mode: newTheme },
+                                    markers: { colors: [newTheme === 'dark' ? '#18181b' : '#fff'] }
+                                });
                             }
                         });
                     });

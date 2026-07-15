@@ -103,6 +103,14 @@
                         <span class="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity mt-1"></span>
                     </a>
                     @endforeach
+                    @if(isset($navbarPages) && $navbarPages->count() > 0)
+                        @foreach($navbarPages as $navPage)
+                        <a href="{{ url($navPage->slug) }}" class="text-[13px] font-black text-zinc-500 dark:text-zinc-400 hover:text-primary hover:-translate-y-1 transition-all duration-300 ease-out flex flex-col items-center group">
+                            {{ $navPage->title[app()->getLocale()] ?? $navPage->title['en'] }}
+                            <span class="w-1 h-1 bg-primary rounded-full opacity-0 group-hover:opacity-100 transition-opacity mt-1"></span>
+                        </a>
+                        @endforeach
+                    @endif
                 </nav>
 
                 <div class="hidden lg:flex items-center justify-end gap-5 w-1/4">

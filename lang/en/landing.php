@@ -318,4 +318,14 @@ return [
     // Contact Hints
     'contact_phone_hint' => 'Available during business hours',
     'contact_email_hint' => 'We reply within a few hours',
+  'min_read' => 'min read',
+  'trusted_by' => 'Trusted By',
+  'scroll_explore' => 'Scroll Explore',
+  'featured' => 'Featured',
+  'home' => 'Home',
+  'page_split_desc' => 'Page Split Desc',
+  'contact_error_fname_required' => 'Contact Error Fname Required',
+  'contact_error_lname_required' => 'Contact Error Lname Required',
+  'contact_error_email_required' => 'Contact Error Email Required',
+  'contact_error_msg_required' => 'Contact Error Msg Required',
 ];

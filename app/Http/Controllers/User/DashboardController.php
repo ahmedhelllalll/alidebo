@@ -108,14 +108,14 @@ class DashboardController extends Controller
             $business = Auth::user()->businessProfile;
             
             if (!$business) {
-                return response()->json(['labels' => [], 'values' => []]);
+                return response()->json(['labels' => [], 'values' => [], 'total' => 0, 'average' => 0, 'peak_value' => 0, 'peak_label' => '']);
             }
             
             $period = $request->get('period', 'month');
             $labels = [];
             $values = [];
             
-            $daysToLookup = ($period === 'week') ? 7 : 30; // Trailing 30 days logic standard
+            $daysToLookup = ($period === 'week') ? 7 : 30;
             $startDate = now()->subDays($daysToLookup - 1)->startOfDay();
             $endDate = now()->endOfDay();
             
@@ -126,14 +126,33 @@ class DashboardController extends Controller
                 ->groupBy('date')
                 ->get()
                 ->keyBy('date');
+
+            // Use locale-aware date formatting via Carbon's translatedFormat
+            $locale = app()->getLocale();
+            \Carbon\Carbon::setLocale($locale);
                 
             for ($i = $daysToLookup - 1; $i >= 0; $i--) {
-                $dateKey = now()->subDays($i)->format('Y-m-d');
-                $labels[] = ($period === 'week') ? now()->subDays($i)->format('D') : now()->subDays($i)->format('d M');
+                $date = now()->subDays($i);
+                $dateKey = $date->format('Y-m-d');
+                $labels[] = ($period === 'week') ? $date->translatedFormat('D') : $date->translatedFormat('d M');
                 $values[] = isset($viewsData[$dateKey]) ? $viewsData[$dateKey]->count : 0;
             }
+
+            // Compute summary stats for chart header
+            $total = array_sum($values);
+            $average = count($values) > 0 ? round($total / count($values)) : 0;
+            $peakValue = count($values) > 0 ? max($values) : 0;
+            $peakIndex = $peakValue > 0 ? array_search($peakValue, $values) : 0;
+            $peakLabel = $labels[$peakIndex] ?? '';
             
-            return response()->json(['labels' => $labels, 'values' => $values]);
+            return response()->json([
+                'labels' => $labels,
+                'values' => $values,
+                'total' => $total,
+                'average' => $average,
+                'peak_value' => $peakValue,
+                'peak_label' => $peakLabel,
+            ]);
             
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

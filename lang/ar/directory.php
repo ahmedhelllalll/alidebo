@@ -87,4 +87,5 @@ return [
     'rating_good' => 'جيد',
     'rating_excellent' => 'ممتاز',
     'back' => 'رجوع',
+  'profile_connect' => 'Profile Connect',
 ];

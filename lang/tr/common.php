@@ -9,4 +9,6 @@ return [
     'learn_more' => 'Daha Fazla Bilgi',
     'app_preview' => 'Panel Uygulaması Önizlemesi',
     'alidebo' => 'alidebo'
+  'support' => 'Support',
+  'terms' => 'Terms',
 ];

@@ -83,6 +83,77 @@
                                 <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="w-10 h-10 object-contain">
                                 <span class="text-3xl font-[900] tracking-tighter text-slate-900 dark:text-white">alidebo</span>
                             </div>
+                            
+                            {{-- Language Switcher --}}
+                            <div class="relative" id="langDropdownContainer">
+                                <button type="button" onclick="toggleLangDropdown()" id="lang-toggle-btn" aria-label="Toggle language" class="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1.5 rounded-[0.85rem] text-sm font-bold text-slate-600 dark:text-zinc-400 hover:bg-slate-100 dark:hover:bg-zinc-800/60 border border-transparent hover:border-slate-200 dark:hover:border-zinc-700 transition-all duration-200">
+                                    @if(app()->getLocale() == 'en')
+                                        <img src="https://flagcdn.com/w40/us.png" alt="EN" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="hidden sm:inline">EN</span>
+                                    @elseif(app()->getLocale() == 'ar')
+                                        <img src="https://flagcdn.com/w40/eg.png" alt="AR" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="hidden sm:inline">عربي</span>
+                                    @elseif(app()->getLocale() == 'es')
+                                        <img src="https://flagcdn.com/w40/es.png" alt="ES" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="hidden sm:inline">ES</span>
+                                    @elseif(app()->getLocale() == 'de')
+                                        <img src="https://flagcdn.com/w40/de.png" alt="DE" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="hidden sm:inline">DE</span>
+                                    @elseif(app()->getLocale() == 'zh')
+                                        <img src="https://flagcdn.com/w40/cn.png" alt="CN" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="hidden sm:inline">ZH</span>
+                                    @elseif(app()->getLocale() == 'tr')
+                                        <img src="https://flagcdn.com/w40/tr.png" alt="TR" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="hidden sm:inline">TR</span>
+                                    @endif
+                                    <svg class="w-3 h-3 opacity-50 transition-transform duration-200" id="langChevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                {{-- Dropdown --}}
+                                <div id="langDropdownMenu" class="absolute top-full mt-2 end-0 w-44 bg-white dark:bg-[#121214] border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-xl shadow-black/5 dark:shadow-black/30 opacity-0 pointer-events-none scale-95 transition-all duration-200 origin-top z-50 p-1.5 text-start">
+                                    <a href="{{ route('lang.switch', 'en') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 {{ app()->getLocale() == 'en' ? 'bg-primary/8 dark:bg-primary/10 text-primary font-bold' : 'text-slate-700 dark:text-zinc-300 font-medium hover:bg-slate-50 dark:hover:bg-zinc-800/50' }}">
+                                        <img src="https://flagcdn.com/w40/us.png" alt="US" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="flex-1">English</span>
+                                        @if(app()->getLocale() == 'en')
+                                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('lang.switch', 'ar') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 {{ app()->getLocale() == 'ar' ? 'bg-primary/8 dark:bg-primary/10 text-primary font-bold' : 'text-slate-700 dark:text-zinc-300 font-medium hover:bg-slate-50 dark:hover:bg-zinc-800/50' }}">
+                                        <img src="https://flagcdn.com/w40/eg.png" alt="EG" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="flex-1 font-cairo">العربية</span>
+                                        @if(app()->getLocale() == 'ar')
+                                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('lang.switch', 'es') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 {{ app()->getLocale() == 'es' ? 'bg-primary/8 dark:bg-primary/10 text-primary font-bold' : 'text-slate-700 dark:text-zinc-300 font-medium hover:bg-slate-50 dark:hover:bg-zinc-800/50' }}">
+                                        <img src="https://flagcdn.com/w40/es.png" alt="ES" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="flex-1">Español</span>
+                                        @if(app()->getLocale() == 'es')
+                                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('lang.switch', 'de') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 {{ app()->getLocale() == 'de' ? 'bg-primary/8 dark:bg-primary/10 text-primary font-bold' : 'text-slate-700 dark:text-zinc-300 font-medium hover:bg-slate-50 dark:hover:bg-zinc-800/50' }}">
+                                        <img src="https://flagcdn.com/w40/de.png" alt="DE" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="flex-1">Deutsch</span>
+                                        @if(app()->getLocale() == 'de')
+                                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('lang.switch', 'zh') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 {{ app()->getLocale() == 'zh' ? 'bg-primary/8 dark:bg-primary/10 text-primary font-bold' : 'text-slate-700 dark:text-zinc-300 font-medium hover:bg-slate-50 dark:hover:bg-zinc-800/50' }}">
+                                        <img src="https://flagcdn.com/w40/cn.png" alt="CN" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="flex-1">中文 (Chinese)</span>
+                                        @if(app()->getLocale() == 'zh')
+                                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        @endif
+                                    </a>
+                                    <a href="{{ route('lang.switch', 'tr') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 {{ app()->getLocale() == 'tr' ? 'bg-primary/8 dark:bg-primary/10 text-primary font-bold' : 'text-slate-700 dark:text-zinc-300 font-medium hover:bg-slate-50 dark:hover:bg-zinc-800/50' }}">
+                                        <img src="https://flagcdn.com/w40/tr.png" alt="TR" class="w-5 h-3.5 rounded-[3px] object-cover shadow-sm">
+                                        <span class="flex-1">Türkçe (Turkish)</span>
+                                        @if(app()->getLocale() == 'tr')
+                                        <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                        @endif
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                         @yield('form_header')
                     </header>
@@ -122,6 +193,28 @@
                 }
             }
             updateIcons();
+
+            // Language Dropdown Logic
+            let isLangOpen = false;
+            function toggleLangDropdown() {
+                isLangOpen = !isLangOpen;
+                const menu = document.getElementById('langDropdownMenu');
+                const chevron = document.getElementById('langChevron');
+                if (!menu) return;
+                if (isLangOpen) {
+                    menu.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+                    menu.classList.add('opacity-100', 'pointer-events-auto', 'scale-100');
+                    if (chevron) chevron.style.transform = 'rotate(180deg)';
+                } else {
+                    menu.classList.add('opacity-0', 'pointer-events-none', 'scale-95');
+                    menu.classList.remove('opacity-100', 'pointer-events-auto', 'scale-100');
+                    if (chevron) chevron.style.transform = 'rotate(0deg)';
+                }
+            }
+            document.addEventListener('click', (e) => {
+                const container = document.getElementById('langDropdownContainer');
+                if (container && !container.contains(e.target) && isLangOpen) toggleLangDropdown();
+            });
         </script>
         @stack('scripts')
     </body>

@@ -65,119 +65,77 @@
         </div>
 
         {{-- Navigation --}}
-        <nav class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-5 space-y-1 custom-scrollbar">
+        <nav class="flex-1 overflow-y-auto overflow-x-hidden px-3 py-5 custom-scrollbar">
 
-            {{-- Section: Overview --}}
-            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-400/80 dark:text-zinc-500/80 mb-3">
-                {{ __('dashboard.sidebar.main') ?? 'Main Menu' }}
+            {{-- Label: General --}}
+            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-400/80 dark:text-zinc-500/80 mb-2">
+                {{ __('dashboard.sidebar.main') ?? 'General' }}
             </p>
+            <div class="space-y-0.5 mb-5">
+                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    <span>{{ __('nav.home') }}</span>
+                </a>
+                <a href="{{ route('business.edit') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('business.edit') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <span>{{ __('dashboard.sidebar.business') ?? 'Business Profile' }}</span>
+                </a>
+            </div>
 
-            <a href="{{ route('dashboard') }}"
-                class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('dashboard') ? 'bg-primary/[0.07] text-primary dark:text-primary' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 hover:text-zinc-700 dark:hover:text-zinc-200' }}">
-                <span class="absolute top-1/2 -translate-y-1/2 start-0 w-[3px] h-5 rounded-full bg-primary transition-opacity {{ request()->routeIs('dashboard') ? 'opacity-100' : 'opacity-0' }}"></span>
-                <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                </svg>
-                <span>{{ __('nav.home') }}</span>
-            </a>
-
-            {{-- Section: Business --}}
-            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-400/80 dark:text-zinc-500/80 mt-6 mb-3">
-                {{ __('dashboard.sidebar.management') ?? 'Management' }}
+            {{-- Label: SEO --}}
+            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-400/80 dark:text-zinc-500/80 mb-2">
+                {{ __('dashboard.sidebar.seo') ?? 'SEO' }}
             </p>
+            <div class="space-y-0.5 mb-5">
+                <a href="{{ route('business.translations.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('business.translations.*') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+                    <span>{{ __('dashboard.index.translations') ?? 'Translations' }}</span>
+                </a>
+                <a href="{{ route('dashboard.reviews.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('dashboard.reviews.*') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+                    <span>{{ __('dashboard.index.reviews') ?? 'Reviews' }}</span>
+                </a>
+                <a href="{{ route('dashboard.leads.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('dashboard.leads.*') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span>{{ __('dashboard.index.leads') ?? 'Leads' }}</span>
+                </a>
+            </div>
 
-            <a href="{{ route('business.edit') }}"
-                class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('business.edit') ? 'bg-primary/[0.07] text-primary dark:text-primary' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 hover:text-zinc-700 dark:hover:text-zinc-200' }}">
-                <span class="absolute top-1/2 -translate-y-1/2 start-0 w-[3px] h-5 rounded-full bg-primary transition-opacity {{ request()->routeIs('business.edit') ? 'opacity-100' : 'opacity-0' }}"></span>
-                <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-                <span>{{ __('dashboard.sidebar.business') ?? 'Business Profile' }}</span>
-            </a>
-
-            <a href="{{ route('business.translations.index') }}"
-                class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('business.translations.*') ? 'bg-primary/[0.07] text-primary dark:text-primary' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 hover:text-zinc-700 dark:hover:text-zinc-200' }}">
-                <span class="absolute top-1/2 -translate-y-1/2 start-0 w-[3px] h-5 rounded-full bg-primary transition-opacity {{ request()->routeIs('business.translations.*') ? 'opacity-100' : 'opacity-0' }}"></span>
-                <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
-                </svg>
-                <span>{{ __('dashboard.index.translations') ?? 'Translations' }}</span>
-            </a>
-
-            <a href="{{ route('dashboard.reviews.index') }}"
-                class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('dashboard.reviews.*') ? 'bg-primary/[0.07] text-primary dark:text-primary' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 hover:text-zinc-700 dark:hover:text-zinc-200' }}">
-                <span class="absolute top-1/2 -translate-y-1/2 start-0 w-[3px] h-5 rounded-full bg-primary transition-opacity {{ request()->routeIs('dashboard.reviews.*') ? 'opacity-100' : 'opacity-0' }}"></span>
-                <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
-                </svg>
-                <span>{{ __('dashboard.index.reviews') ?? 'Reviews' }}</span>
-            </a>
-
-            <a href="{{ route('dashboard.leads.index') }}"
-                class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                {{ request()->routeIs('dashboard.leads.*') ? 'bg-primary/[0.07] text-primary dark:text-primary' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 hover:text-zinc-700 dark:hover:text-zinc-200' }}">
-                <span class="absolute top-1/2 -translate-y-1/2 start-0 w-[3px] h-5 rounded-full bg-primary transition-opacity {{ request()->routeIs('dashboard.leads.*') ? 'opacity-100' : 'opacity-0' }}"></span>
-                <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                <span>{{ __('dashboard.index.leads') ?? 'Leads' }}</span>
-            </a>
-
-        </nav>
-
-        {{-- Bottom Section --}}
-        <div class="shrink-0 border-t border-black/5 dark:border-white/[0.04]">
-
-            {{-- Settings Links --}}
-            <div class="px-3 pt-4 pb-2 space-y-1">
-                <a href="{{ route('profile.edit') }}"
-                    class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                    {{ request()->routeIs('profile.edit') ? 'bg-primary/[0.07] text-primary dark:text-primary' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 hover:text-zinc-700 dark:hover:text-zinc-200' }}">
-                    <span class="absolute top-1/2 -translate-y-1/2 start-0 w-[3px] h-5 rounded-full bg-primary transition-opacity {{ request()->routeIs('profile.edit') ? 'opacity-100' : 'opacity-0' }}"></span>
-                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
+            {{-- Label: Settings --}}
+            <p class="px-3 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-400/80 dark:text-zinc-500/80 mb-2">
+                {{ __('dashboard.sidebar.settings') ?? 'Settings' }}
+            </p>
+            <div class="space-y-0.5">
+                <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('profile.edit') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     <span>{{ __('dashboard.account_label') ?? 'Account' }}</span>
                 </a>
-
-                <a href="{{ route('support.chat.index') }}"
-                    class="relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group
-                    {{ request()->routeIs('support.chat.*') ? 'bg-primary/[0.07] text-primary dark:text-primary' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 hover:text-zinc-700 dark:hover:text-zinc-200' }}">
-                    <span class="absolute top-1/2 -translate-y-1/2 start-0 w-[3px] h-5 rounded-full bg-primary transition-opacity {{ request()->routeIs('support.chat.*') ? 'opacity-100' : 'opacity-0' }}"></span>
-                    <svg class="w-5 h-5 shrink-0 transition-transform duration-200 group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                    </svg>
+                <a href="{{ route('support.chat.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('support.chat.*') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
                     <span>{{ __('dashboard.index.help_center') ?? 'Support' }}</span>
                 </a>
             </div>
 
-            {{-- User Card --}}
-            <div class="px-4 pb-3 pt-2">
-                <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0e0e11] border border-black/5 dark:border-white/[0.04]">
-                    <div class="w-8 h-8 text-xs rounded-full bg-gradient-to-br from-primary/20 to-orange-400/20 flex items-center justify-center font-bold text-primary">
-                        {{ Auth::check() ? mb_substr(Auth::user()->name, 0, 1) : 'U' }}
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-semibold truncate text-zinc-900 dark:text-zinc-100">{{ Auth::user()->name ?? 'User' }}</p>
-                        <p class="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">{{ Auth::user()->email ?? '' }}</p>
-                    </div>
+        </nav>
+
+        {{-- User Card + Logout --}}
+        <div class="shrink-0 border-t border-black/5 dark:border-white/[0.04] px-4 py-3 space-y-2">
+            <div class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0e0e11] border border-black/5 dark:border-white/[0.04]">
+                <div class="w-8 h-8 text-xs rounded-full bg-gradient-to-br from-primary/20 to-orange-400/20 flex items-center justify-center font-bold text-primary">
+                    {{ Auth::check() ? mb_substr(Auth::user()->name, 0, 1) : 'U' }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-semibold truncate text-zinc-900 dark:text-zinc-100">{{ Auth::user()->name ?? 'User' }}</p>
+                    <p class="text-[10px] text-zinc-500 dark:text-zinc-400 truncate">{{ Auth::user()->email ?? '' }}</p>
                 </div>
             </div>
-
-            {{-- Logout --}}
-            <div class="px-4 pb-4">
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="w-full flex justify-center items-center gap-2 py-2 rounded-xl text-xs font-semibold text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 dark:hover:text-rose-400 transition-colors">
-                        <svg class="w-4 h-4 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                        {{ __('nav.logout') ?? 'Sign out' }}
-                    </button>
-                </form>
-            </div>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="w-full flex justify-center items-center gap-2 py-2 rounded-xl text-xs font-semibold text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 dark:hover:text-rose-400 transition-colors">
+                    <svg class="w-4 h-4 rtl:-scale-x-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    {{ __('nav.logout') ?? 'Sign out' }}
+                </button>
+            </form>
         </div>
     </aside>
 
