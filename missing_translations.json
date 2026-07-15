@@ -1,0 +1,218 @@
+{
+    "en": {
+        "admin": [
+            "media_alt",
+            "save_blog",
+            "blog_created",
+            "blog_updated",
+            "blog_deleted"
+        ],
+        "Once your account is deleted, all of its resources and data will be permanently deleted": [
+            " Before deleting your account, please download any data or information that you wish to retain.",
+            " Please enter your password to confirm you would like to permanently delete your account."
+        ],
+        "Ensure your account is using a long, random password to stay secure": [
+            ""
+        ],
+        "Your email address is unverified": [
+            ""
+        ],
+        "Click here to re-send the verification email": [
+            ""
+        ],
+        "A new verification link has been sent to your email address": [
+            ""
+        ],
+        "forms": [
+            "business.validation_error",
+            "business.sections",
+            "business.profile_health",
+            "business.completeness",
+            "business.biz_name_hint",
+            "business.biz_desc_hint",
+            "business.cover_image",
+            "business.social_desc",
+            "business.no_images_uploaded"
+        ]
+    },
+    "ar": {
+        "admin": [
+            "media_alt",
+            "save_blog",
+            "blog_created",
+            "blog_updated",
+            "blog_deleted"
+        ],
+        "Once your account is deleted, all of its resources and data will be permanently deleted": [
+            " Before deleting your account, please download any data or information that you wish to retain.",
+            " Please enter your password to confirm you would like to permanently delete your account."
+        ],
+        "Ensure your account is using a long, random password to stay secure": [
+            ""
+        ],
+        "Your email address is unverified": [
+            ""
+        ],
+        "Click here to re-send the verification email": [
+            ""
+        ],
+        "A new verification link has been sent to your email address": [
+            ""
+        ],
+        "forms": [
+            "business.validation_error",
+            "business.sections",
+            "business.profile_health",
+            "business.completeness",
+            "business.biz_name_hint",
+            "business.biz_desc_hint",
+            "business.cover_image",
+            "business.social_desc",
+            "business.no_images_uploaded"
+        ]
+    },
+    "es": {
+        "admin": [
+            "media_alt",
+            "save_blog",
+            "blog_created",
+            "blog_updated",
+            "blog_deleted"
+        ],
+        "Once your account is deleted, all of its resources and data will be permanently deleted": [
+            " Before deleting your account, please download any data or information that you wish to retain.",
+            " Please enter your password to confirm you would like to permanently delete your account."
+        ],
+        "Ensure your account is using a long, random password to stay secure": [
+            ""
+        ],
+        "Your email address is unverified": [
+            ""
+        ],
+        "Click here to re-send the verification email": [
+            ""
+        ],
+        "A new verification link has been sent to your email address": [
+            ""
+        ],
+        "forms": [
+            "business.validation_error",
+            "business.sections",
+            "business.profile_health",
+            "business.completeness",
+            "business.biz_name_hint",
+            "business.biz_desc_hint",
+            "business.cover_image",
+            "business.social_desc",
+            "business.no_images_uploaded"
+        ]
+    },
+    "de": {
+        "admin": [
+            "media_alt",
+            "save_blog",
+            "blog_created",
+            "blog_updated",
+            "blog_deleted"
+        ],
+        "Once your account is deleted, all of its resources and data will be permanently deleted": [
+            " Before deleting your account, please download any data or information that you wish to retain.",
+            " Please enter your password to confirm you would like to permanently delete your account."
+        ],
+        "Ensure your account is using a long, random password to stay secure": [
+            ""
+        ],
+        "Your email address is unverified": [
+            ""
+        ],
+        "Click here to re-send the verification email": [
+            ""
+        ],
+        "A new verification link has been sent to your email address": [
+            ""
+        ],
+        "forms": [
+            "business.validation_error",
+            "business.sections",
+            "business.profile_health",
+            "business.completeness",
+            "business.biz_name_hint",
+            "business.biz_desc_hint",
+            "business.cover_image",
+            "business.social_desc",
+            "business.no_images_uploaded"
+        ]
+    },
+    "zh": {
+        "admin": [
+            "media_alt",
+            "save_blog",
+            "blog_created",
+            "blog_updated",
+            "blog_deleted"
+        ],
+        "Once your account is deleted, all of its resources and data will be permanently deleted": [
+            " Before deleting your account, please download any data or information that you wish to retain.",
+            " Please enter your password to confirm you would like to permanently delete your account."
+        ],
+        "Ensure your account is using a long, random password to stay secure": [
+            ""
+        ],
+        "Your email address is unverified": [
+            ""
+        ],
+        "Click here to re-send the verification email": [
+            ""
+        ],
+        "A new verification link has been sent to your email address": [
+            ""
+        ],
+        "forms": [
+            "business.validation_error",
+            "business.sections",
+            "business.profile_health",
+            "business.completeness",
+            "business.biz_name_hint",
+            "business.biz_desc_hint",
+            "business.cover_image",
+            "business.social_desc",
+            "business.no_images_uploaded"
+        ]
+    },
+    "tr": {
+        "admin": [
+            "media_alt",
+            "save_blog",
+            "blog_created",
+            "blog_updated",
+            "blog_deleted"
+        ],
+        "Once your account is deleted, all of its resources and data will be permanently deleted": [
+            " Before deleting your account, please download any data or information that you wish to retain.",
+            " Please enter your password to confirm you would like to permanently delete your account."
+        ],
+        "Ensure your account is using a long, random password to stay secure": [
+            ""
+        ],
+        "Your email address is unverified": [
+            ""
+        ],
+        "Click here to re-send the verification email": [
+            ""
+        ],
+        "A new verification link has been sent to your email address": [
+            ""
+        ],
+        "forms": [
+            "business.validation_error",
+            "business.sections",
+            "business.profile_health",
+            "business.completeness",
+            "business.biz_name_hint",
+            "business.biz_desc_hint",
+            "business.cover_image",
+            "business.social_desc",
+            "business.no_images_uploaded"
+        ]
+    }
+}

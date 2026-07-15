@@ -2,6 +2,17 @@
 
 return [
     'business' => [
+        // newly added
+        'validation_error' => '请检查表单是否有错误。',
+        'sections' => '部分',
+        'profile_health' => '个人资料健康度',
+        'completeness' => '完整性',
+        'biz_name_hint' => '输入您的公司名称。',
+        'biz_desc_hint' => '写一个简短的描述。',
+        'cover_image' => '封面图片',
+        'social_desc' => '社交媒体链接',
+        'no_images_uploaded' => '尚未上传任何图片。',
+
         'step_identity' => '身份',
         'step_category' => '类别',
         'step_media' => '媒体',

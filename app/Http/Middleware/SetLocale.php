@@ -17,20 +17,33 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Session::has('locale')) {
-            App::setLocale(Session::get('locale'));
-        } else {
-            // Detect preferred language from the browser's Accept-Language header
-            $supportedLocales = ['en', 'ar', 'es', 'de', 'zh', 'tr'];
-            $browserLanguage = $request->getPreferredLanguage($supportedLocales);
+        $supportedLocales = ['en', 'ar', 'es', 'de', 'zh', 'tr'];
 
-            if ($browserLanguage) {
-                App::setLocale($browserLanguage);
-                Session::put('locale', $browserLanguage); // Save it so we don't have to parse the header every time
+        // 1. Check if locale is provided in the route (e.g., /en/about)
+        $routeLocale = $request->route('locale');
+
+        if ($routeLocale && in_array($routeLocale, $supportedLocales)) {
+            App::setLocale($routeLocale);
+            Session::put('locale', $routeLocale);
+            // Forget it so it doesn't get injected into controllers
+            $request->route()->forgetParameter('locale');
+        } else {
+            // 2. Fallback to session or browser language if no route locale
+            if (Session::has('locale')) {
+                App::setLocale(Session::get('locale'));
             } else {
-                App::setLocale(config('app.locale', 'en'));
+                $browserLanguage = $request->getPreferredLanguage($supportedLocales);
+                if ($browserLanguage) {
+                    App::setLocale($browserLanguage);
+                    Session::put('locale', $browserLanguage);
+                } else {
+                    App::setLocale(config('app.locale', 'en'));
+                }
             }
         }
+
+        // Set the default locale for all route() generations globally
+        \Illuminate\Support\Facades\URL::defaults(['locale' => App::getLocale()]);
 
         return $next($request);
     }

@@ -2,6 +2,17 @@
 
 return [
     'business' => [
+        // newly added
+        'validation_error' => 'Lütfen formdaki hataları kontrol edin.',
+        'sections' => 'Bölümler',
+        'profile_health' => 'Profil Sağlığı',
+        'completeness' => 'Tamamlanma',
+        'biz_name_hint' => 'İşletme adınızı girin.',
+        'biz_desc_hint' => 'Kısa bir açıklama yazın.',
+        'cover_image' => 'Kapak Resmi',
+        'social_desc' => 'Sosyal Medya Bağlantıları',
+        'no_images_uploaded' => 'Henüz resim yüklenmedi.',
+
         'step_identity' => 'Kimlik',
         'step_category' => 'Kategori',
         'step_media' => 'Medya',

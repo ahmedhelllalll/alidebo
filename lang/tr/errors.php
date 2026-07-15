@@ -1,52 +1,49 @@
 <?php
+
 return [
-    '401' => [
-        'title' => 'Yetkisiz Erişim',
-        'desc' => 'Bu kaynağı görüntüleme yetkiniz yok. Devam etmek için lütfen giriş yapın.',
-    ],
-    '403' => [
-        'title' => 'Erişim Yasak',
-        'desc' => 'Buradaki varlığınız kısıtlıdır. Bu bölüm için gereken seçkin kimlik bilgilerine sahip değilsiniz.',
-    ],
-    '404' => [
-        'title' => 'Boşluk',
-        'desc' => 'Aradığınız dijital alan mevcut değil veya taşınmış.',
-    ],
-    '419' => [
-        'title' => 'Oturum Süresi Doldu',
-        'desc' => 'Güvenlik oturumunuz zaman aşımına uğradı. Lütfen yenileyip tekrar deneyin.',
-    ],
-    '429' => [
-        'title' => 'Çok Fazla İstek',
-        'desc' => 'Sistemimizin işleyebileceğinden daha hızlı hareket ediyorsunuz. Lütfen bir an bekleyip tekrar deneyin.',
-    ],
-    '500' => [
-        'title' => 'Dahili Arıza',
-        'desc' => 'Sistemimiz beklenmedik bir yapısal sorunla karşılaştı. Şu anda üzerinde çalışıyoruz.',
-    ],
-    '503' => [
-        'title' => 'Kısa Bakım',
-        'desc' => 'Şu anda alidebo deneyimini geliştiriyoruz. Yakında daha fazla zarafetle geri döneceğiz.',
-    ],
-    'back_home' => 'alidebo\'ya Geri Dön',
-    'go_back' => 'Önceki Adım',
-  '401.title' => '401.title',
-  '401.desc' => '401.desc',
+  401 => 
+  array (
+    'title' => 'Yetkisiz',
+    'desc' => 'Bu kaynağa erişim yetkiniz yok.',
+  ),
+  403 => 
+  array (
+    'title' => 'Yasak',
+    'desc' => 'Bu sayfaya erişim izniniz yok.',
+  ),
+  404 => 
+  array (
+    'title' => 'Sayfa Bulunamadı',
+    'desc' => 'Aradığınız sayfa bulunamadı.',
+  ),
+  419 => 
+  array (
+    'title' => 'Sayfa Süresi Doldu',
+    'desc' => 'Oturumunuzun süresi doldu. Lütfen sayfayı yenileyin.',
+  ),
+  429 => 
+  array (
+    'title' => 'Çok Fazla İstek',
+    'desc' => 'Çok fazla istekte bulundunuz. Lütfen bir an bekleyin.',
+  ),
+  500 => 
+  array (
+    'title' => 'Dahili Sunucu Hatası',
+    'desc' => 'Tarafımızda bir şeyler ters gitti. Lütfen daha sonra tekrar deneyin.',
+  ),
+  503 => 
+  array (
+    'title' => 'Hizmet Kullanılamıyor',
+    'desc' => 'Şu anda bakım yapıyoruz. Lütfen daha sonra tekrar deneyin.',
+  ),
+  'back_home' => 'Ana Sayfaya Dön',
+  'go_back' => 'Geri Dön',
   'login' => 'Login',
-  '403.title' => '403.title',
-  'scroll_down' => 'Scroll Down',
-  '403.desc' => '403.desc',
-  '404.title' => '404.title',
-  '404.desc' => '404.desc',
-  '405.title' => '405.title',
-  '405.desc' => '405.desc',
-  '419.title' => '419.title',
-  '419.desc' => '419.desc',
-  '429.title' => '429.title',
-  '429.desc' => '429.desc',
-  '500.title' => '500.title',
-  '500.desc' => '500.desc',
-  '503.title' => '503.title',
-  '503.desc' => '503.desc',
-  'refresh' => 'Refresh',
+  'scroll_down' => 'Aşağı Kaydır',
+  'refresh' => 'Yenile',
+  405 => 
+  array (
+    'title' => 'Yönteme İzin Verilmiyor',
+    'desc' => 'İstenen rota için yönteme izin verilmiyor.',
+  ),
 ];

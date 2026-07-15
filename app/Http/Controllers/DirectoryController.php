@@ -71,6 +71,14 @@ class DirectoryController extends Controller
 
         extract($data);
 
+        $hreflangs = [];
+        $locales = ['en', 'ar', 'es', 'de', 'zh', 'tr'];
+        $queryParameters = $request->query();
+        foreach ($locales as $loc) {
+            $hreflangs[$loc] = url('/' . $loc . '/directory' . ($queryParameters ? '?' . http_build_query($queryParameters) : ''));
+        }
+        view()->share('hreflangs', $hreflangs);
+
         if ($request->ajax() || $request->header('X-Alpine-Request')) {
             if ($request->boolean('append')) {
                 return view('directory.index', compact('businesses', 'categories', 'countries'))->fragment('business-items');

@@ -2,6 +2,17 @@
 
 return [
     'business' => [
+        // newly added
+        'validation_error' => 'Please check the form for errors.',
+        'sections' => 'Sections',
+        'profile_health' => 'Profile Health',
+        'completeness' => 'Completeness',
+        'biz_name_hint' => 'Enter your business name.',
+        'biz_desc_hint' => 'Write a short description.',
+        'cover_image' => 'Cover Image',
+        'social_desc' => 'Social Media Links',
+        'no_images_uploaded' => 'No images uploaded yet.',
+
         'setup_title' => 'Business Setup',
         'basic_info' => 'Basic Information',
         'basic_info_desc' => 'Your business name is the first thing clients see. Make it stand out.',

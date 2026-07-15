@@ -8,7 +8,7 @@ return [
     'join_now' => 'Şimdi Katılın',
     'learn_more' => 'Daha Fazla Bilgi',
     'app_preview' => 'Panel Uygulaması Önizlemesi',
-    'alidebo' => 'alidebo'
+    'alidebo' => 'alidebo',
   'support' => 'Support',
   'terms' => 'Terms',
 ];

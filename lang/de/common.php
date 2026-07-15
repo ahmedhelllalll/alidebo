@@ -8,7 +8,7 @@ return [
     'join_now' => 'Jetzt beitreten',
     'learn_more' => 'Mehr erfahren',
     'app_preview' => 'Dashboard App-Vorschau',
-    'alidebo' => 'alidebo'
+    'alidebo' => 'alidebo',
   'support' => 'Support',
   'terms' => 'Terms',
 ];

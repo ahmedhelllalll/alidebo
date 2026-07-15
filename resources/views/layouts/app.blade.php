@@ -15,6 +15,30 @@
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{{ url()->current() }}">
 
+    @if(isset($hreflangs) && is_array($hreflangs) && count($hreflangs) > 1)
+        @foreach($hreflangs as $locale => $url)
+            <link rel="alternate" hreflang="{{ $locale }}" href="{{ $url }}" />
+        @endforeach
+        <link rel="alternate" hreflang="x-default" href="{{ $hreflangs['en'] ?? reset($hreflangs) }}" />
+    @elseif(!isset($hreflangs))
+        @php
+            $locales = ['en', 'ar', 'es', 'de', 'zh', 'tr'];
+            $currentPath = request()->path();
+            $segments = explode('/', ltrim($currentPath, '/'));
+            $basePath = '';
+            if (!empty($segments) && in_array($segments[0], $locales)) {
+                $basePath = implode('/', array_slice($segments, 1));
+            } else {
+                $basePath = $currentPath == '/' ? '' : ltrim($currentPath, '/');
+            }
+            $query = request()->getQueryString();
+        @endphp
+        @foreach($locales as $locale)
+            <link rel="alternate" hreflang="{{ $locale }}" href="{{ url('/' . $locale . ($basePath ? '/' . $basePath : '') . ($query ? '?' . $query : '')) }}" />
+        @endforeach
+        <link rel="alternate" hreflang="x-default" href="{{ url('/en' . ($basePath ? '/' . $basePath : '') . ($query ? '?' . $query : '')) }}" />
+    @endif
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">

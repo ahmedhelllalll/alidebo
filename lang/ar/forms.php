@@ -2,6 +2,17 @@
 
 return [
     'business' => [
+        // newly added
+        'validation_error' => 'يرجى التحقق من النموذج بحثًا عن أخطاء.',
+        'sections' => 'الأقسام',
+        'profile_health' => 'صحة الملف الشخصي',
+        'completeness' => 'الاكتمال',
+        'biz_name_hint' => 'أدخل اسم عملك.',
+        'biz_desc_hint' => 'اكتب وصفاً قصيراً.',
+        'cover_image' => 'صورة الغلاف',
+        'social_desc' => 'روابط وسائل التواصل الاجتماعي',
+        'no_images_uploaded' => 'لم يتم رفع أي صور بعد.',
+
         'step_identity' => 'الهوية',
         'step_category' => 'الفئة',
         'step_media' => 'الوسائط',

@@ -470,14 +470,11 @@
                         <span class="sidebar-text">{{ __('admin.seo_settings') }}</span>
                         <span class="sidebar-tooltip">{{ __('admin.seo_settings') }}</span>
                     </a>
-                    <a href="{{ route('admin.coming-soon', ['feature' => 'blogs']) }}"
-                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'blogs' ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
-                        <span class="nav-active-bar {{ request()->routeIs('admin.coming-soon') && request()->query('feature') === 'blogs' ? '' : 'hidden' }}"></span>
+                    <a href="{{ route('admin.blogs.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.blogs.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
                         <i class="fa-solid fa-blog w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
-                        <div class="flex-1 flex items-center justify-between sidebar-text">
-                            <span>{{ __('admin.blogs') }}</span>
-                            <span class="font-bold uppercase tracking-widest bg-orange-500/10 text-orange-500 px-1.5 py-0.5 rounded shadow-sm" style="font-size: 9px;">{{ __('admin.soon') }}</span>
-                        </div>
+                        <span class="sidebar-text">{{ __('admin.blogs') }}</span>
                         <span class="sidebar-tooltip">{{ __('admin.blogs') }}</span>
                     </a>
                 </div>

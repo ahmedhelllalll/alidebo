@@ -2,6 +2,17 @@
 
 return [
     'business' => [
+        // newly added
+        'validation_error' => 'Por favor, revise el formulario en busca de errores.',
+        'sections' => 'Secciones',
+        'profile_health' => 'Salud del perfil',
+        'completeness' => 'Integridad',
+        'biz_name_hint' => 'Ingrese el nombre de su negocio.',
+        'biz_desc_hint' => 'Escriba una breve descripción.',
+        'cover_image' => 'Imagen de portada',
+        'social_desc' => 'Enlaces de redes sociales',
+        'no_images_uploaded' => 'No se han subido imágenes todavía.',
+
         'setup_title' => 'Configuración del Negocio',
         'basic_info' => 'Información Básica',
         'basic_info_desc' => 'El nombre de tu negocio es lo primero que ven los clientes. Haz que destaque.',

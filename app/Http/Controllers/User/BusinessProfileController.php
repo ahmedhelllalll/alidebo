@@ -253,6 +253,27 @@ class BusinessProfileController extends Controller
             session()->put($sessionKey, true);
         }
 
+        // Generate hreflangs
+        $hreflangs = [];
+        $locales = ['en', 'ar', 'es', 'de', 'zh', 'tr'];
+        $business->loadMissing('translations');
+        
+        foreach ($locales as $loc) {
+            $hasTranslation = false;
+            if ($loc === 'en') {
+                $hasTranslation = true;
+            } elseif ($business->translations->where('locale', $loc)->count() > 0) {
+                $hasTranslation = true;
+            } elseif (isset($business->language) && $business->language === $loc) {
+                $hasTranslation = true;
+            }
+
+            if ($hasTranslation) {
+                $hreflangs[$loc] = url('/' . $loc . '/' . $business->slug);
+            }
+        }
+        view()->share('hreflangs', $hreflangs);
+
         return view('users.business.show', compact('business'));
     }
 }

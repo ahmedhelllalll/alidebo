@@ -1,52 +1,49 @@
 <?php
+
 return [
-    '401' => [
-        'title' => 'Unauthorized Access',
-        'desc' => 'You are not authorized to view this resource. Please log in to continue.',
-    ],
-    '403' => [
-        'title' => 'Access Forbidden',
-        'desc' => 'Your presence here is restricted. You do not have the elite credentials required for this section.',
-    ],
-    '404' => [
-        'title' => 'The Void',
-        'desc' => 'The digital space you are looking for does not exist or has been relocated.',
-    ],
-    '419' => [
-        'title' => 'Session Expired',
-        'desc' => 'Your security session has timed out. Please refresh and try again.',
-    ],
-    '429' => [
-        'title' => 'Too Many Requests',
-        'desc' => 'You are moving faster than our system can process. Please take a moment and try again.',
-    ],
-    '500' => [
-        'title' => 'Internal Disturbance',
-        'desc' => 'Our system encountered an unexpected structural issue. We are refining it as we speak.',
-    ],
-    '503' => [
-        'title' => 'Brief Maintenance',
-        'desc' => 'We are currently enhancing the alidebo experience. We will be back shortly with more elegance.',
-    ],
-    'back_home' => 'Back to alidebo',
-    'go_back' => 'Previous Step',
-  '401.title' => '401.title',
-  '401.desc' => '401.desc',
+  401 => 
+  array (
+    'title' => 'Unauthorized',
+    'desc' => 'You are not authorized to access this resource.',
+  ),
+  403 => 
+  array (
+    'title' => 'Forbidden',
+    'desc' => 'You do not have permission to access this page.',
+  ),
+  404 => 
+  array (
+    'title' => 'Page Not Found',
+    'desc' => 'The page you are looking for could not be found.',
+  ),
+  419 => 
+  array (
+    'title' => 'Page Expired',
+    'desc' => 'Your session has expired. Please refresh the page.',
+  ),
+  429 => 
+  array (
+    'title' => 'Too Many Requests',
+    'desc' => 'You have made too many requests. Please wait a moment.',
+  ),
+  500 => 
+  array (
+    'title' => 'Internal Server Error',
+    'desc' => 'Something went wrong on our end. Please try again later.',
+  ),
+  503 => 
+  array (
+    'title' => 'Service Unavailable',
+    'desc' => 'We are currently performing maintenance. Please try again later.',
+  ),
+  'back_home' => 'Back to Home',
+  'go_back' => 'Go Back',
   'login' => 'Login',
-  '403.title' => '403.title',
   'scroll_down' => 'Scroll Down',
-  '403.desc' => '403.desc',
-  '404.title' => '404.title',
-  '404.desc' => '404.desc',
-  '405.title' => '405.title',
-  '405.desc' => '405.desc',
-  '419.title' => '419.title',
-  '419.desc' => '419.desc',
-  '429.title' => '429.title',
-  '429.desc' => '429.desc',
-  '500.title' => '500.title',
-  '500.desc' => '500.desc',
-  '503.title' => '503.title',
-  '503.desc' => '503.desc',
   'refresh' => 'Refresh',
+  405 => 
+  array (
+    'title' => 'Method Not Allowed',
+    'desc' => 'The method is not allowed for the requested route.',
+  ),
 ];

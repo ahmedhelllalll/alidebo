@@ -11,6 +11,7 @@ use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\ContactMessageController;
 use App\Http\Controllers\PublicReviewController;
+use App\Http\Controllers\BlogController;
 
 use App\Models\BusinessProfile;
 use App\Models\Category;
@@ -21,29 +22,44 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
     if ($request->has('company')) {
         session(['onboarding_company' => $request->query('company')]);
     }
+    $locale = session('locale', $request->getPreferredLanguage(['en', 'ar', 'es', 'de', 'zh', 'tr']) ?: 'en');
+    $query = $request->getQueryString();
+    return redirect('/' . $locale . ($query ? '?' . $query : ''));
+});
 
-    // Fetch featured companies with category and city relationships eager loaded (cached to avoid full table scans)
-    $featuredCompanies = Cache::remember('featured_companies', now()->addMinutes(5), function () {
-        return BusinessProfile::with(['category', 'city'])
-            ->where('status', 'approved')
-            ->inRandomOrder()
-            ->limit(6)
-            ->get();
-    });
-
-    return view('welcome', compact('featuredCompanies'));
-})->name('home');
-
-Route::get('/sitemap.xml', function (\App\Services\SitemapService $sitemapService) {
+Route::get('/sitemap.xml', function () {
+    $sitemapService = app(\App\Services\SitemapService::class);
     if (ob_get_length()) ob_clean();
-    return response($sitemapService->getCachedSitemap(), 200, [
+    return response($sitemapService->getIndex(), 200, [
         'Content-Type' => 'application/xml'
     ]);
 })->name('sitemap.xml');
 
-Route::get('lang/{locale}', function ($locale) {
-    if (in_array($locale, ['en', 'ar', 'es', 'de', 'zh', 'tr'])) {
-        session()->put('locale', $locale);
+Route::get('/sitemap_{locale}.xml', function () {
+    $locale = \Illuminate\Support\Facades\App::getLocale();
+    $sitemapService = app(\App\Services\SitemapService::class);
+    if (ob_get_length()) ob_clean();
+    return response($sitemapService->getCachedSitemap($locale), 200, [
+        'Content-Type' => 'application/xml'
+    ]);
+})->name('sitemap.locale');
+
+Route::get('lang/{switch_locale}', function ($switch_locale) {
+    if (in_array($switch_locale, ['en', 'ar', 'es', 'de', 'zh', 'tr'])) {
+        session()->put('locale', $switch_locale);
+        
+        $previousUrl = url()->previous();
+        $parsedUrl = parse_url($previousUrl);
+        if (isset($parsedUrl['path'])) {
+            $path = $parsedUrl['path'];
+            $pathSegments = explode('/', ltrim($path, '/'));
+            if (!empty($pathSegments) && in_array($pathSegments[0], ['en', 'ar', 'es', 'de', 'zh', 'tr'])) {
+                $pathSegments[0] = $switch_locale;
+                $newPath = implode('/', $pathSegments);
+                $query = isset($parsedUrl['query']) ? '?' . $parsedUrl['query'] : '';
+                return redirect(url('/' . $newPath . $query));
+            }
+        }
     }
     return redirect()->back();
 })->name('lang.switch');
@@ -70,6 +86,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::get('/pages/check-slug', [Admin\PageController::class, 'checkSlug'])->name('pages.check-slug');
         Route::resource('pages', Admin\PageController::class);
+        
+        Route::get('/blogs/check-slug', [Admin\BlogPostController::class, 'checkSlug'])->name('blogs.check-slug');
+        Route::resource('blogs', Admin\BlogPostController::class);
         
         Route::get('/dashboard/seo', [Admin\SeoController::class, 'dashboard'])->name('dashboard.seo');
         Route::post('/dashboard/seo/sitemap/regenerate', [Admin\SeoController::class, 'regenerateSitemap'])->name('dashboard.seo.sitemap.regenerate');
@@ -171,43 +190,77 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::get('/directory', [DirectoryController::class, 'index'])->name('directory.index');
-Route::get('/directory/search', [DirectoryController::class, 'liveSearch'])->name('directory.search');
-Route::get('/directory/{slug}', [BusinessProfileController::class, 'show'])->name('directory.business.view');
+// Localized Public Routes
+Route::prefix('{locale}')->where(['locale' => 'en|ar|es|de|zh|tr'])->group(function () {
 
-Route::view('/about', 'about')->name('about');
-Route::get('/contact', function () {
-    return view('contact');
-})->name('contact');
-Route::post('/contact', [ContactMessageController::class, 'store'])
-    ->middleware('throttle:5,1')
-    ->name('contact.store');
+    Route::get('/', function (\Illuminate\Http\Request $request) {
+        $featuredCompanies = Cache::remember('featured_companies', now()->addMinutes(5), function () {
+            return BusinessProfile::with(['category', 'city'])
+                ->where('status', 'approved')
+                ->inRandomOrder()
+                ->limit(6)
+                ->get();
+        });
+        return view('welcome', compact('featuredCompanies'));
+    })->name('home');
 
-// Legal Pages
-Route::view('/privacy', 'pages.privacy')->name('privacy');
-Route::view('/terms', 'pages.terms')->name('terms');
-Route::view('/cookies', 'pages.cookies')->name('cookies');
+    Route::get('/directory', [DirectoryController::class, 'index'])->name('directory.index');
+    Route::get('/directory/search', [DirectoryController::class, 'liveSearch'])->name('directory.search');
+    Route::get('/directory/{slug}', [BusinessProfileController::class, 'show'])->name('directory.business.view');
 
-// Chatbot Route
+    Route::view('/about', 'about')->name('about');
+    Route::get('/contact', function () {
+        return view('contact');
+    })->name('contact');
+    Route::post('/contact', [ContactMessageController::class, 'store'])
+        ->middleware('throttle:5,1')
+        ->name('contact.store');
+
+    // Legal Pages
+    Route::view('/privacy', 'pages.privacy')->name('privacy');
+    Route::view('/terms', 'pages.terms')->name('terms');
+    Route::view('/cookies', 'pages.cookies')->name('cookies');
+
+    // Blog
+    Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+
+    Route::post('/{slug}/contact', [\App\Http\Controllers\PublicLeadController::class, 'store'])->name('directory.business.contact');
+    Route::post('/{slug}/reviews', [\App\Http\Controllers\PublicReviewController::class, 'store'])->name('directory.business.reviews.store');
+
+    // Dynamic Pages and Business Profiles fallbacks
+    Route::get('/{slug}', function ($slug) {
+        // 1. Check if it's a dynamic page
+        $page = \App\Models\Page::where('slug', $slug)->where('status', 'published')->first();
+        if ($page) {
+            $hreflangs = [];
+            foreach (['en', 'ar', 'es', 'de', 'zh', 'tr'] as $loc) {
+                if (isset($page->title[$loc]) && !empty($page->title[$loc])) {
+                    $hreflangs[$loc] = url('/' . $loc . '/' . $page->slug);
+                }
+            }
+            view()->share('hreflangs', $hreflangs);
+            return view('pages.show', compact('page'));
+        }
+
+        // 2. If not a page, pass to BusinessProfileController
+        return app(\App\Http\Controllers\User\BusinessProfileController::class)->show($slug);
+    })->name('business.view');
+});
+
+// Chatbot Route (API-like, keep outside locale prefix)
 Route::post('/chatbot/ask', [\App\Http\Controllers\ChatbotController::class, 'ask'])
     ->middleware('throttle:30,1')
     ->name('chatbot.ask');
 
-Route::post('/{slug}/contact', [\App\Http\Controllers\PublicLeadController::class, 'store'])->name('directory.business.contact');
-Route::post('/{slug}/reviews', [\App\Http\Controllers\PublicReviewController::class, 'store'])->name('directory.business.reviews.store');
-
-// Dynamic Pages and Business Profiles fallbacks
-Route::get('/{slug}', function ($slug) {
-    // 1. Check if it's a dynamic page
-    $page = \App\Models\Page::where('slug', $slug)->where('status', 'published')->first();
-    if ($page) {
-        return view('pages.show', compact('page'));
-    }
-
-    // 2. If not a page, pass to BusinessProfileController
-    return app(\App\Http\Controllers\User\BusinessProfileController::class)->show($slug);
-})->name('business.view');
-
+// Fallback for non-localized URLs (redirects to localized)
 Route::fallback(function () {
-    abort(404);
+    $path = request()->path();
+    $segments = explode('/', ltrim($path, '/'));
+    if (!empty($segments) && in_array($segments[0], ['en', 'ar', 'es', 'de', 'zh', 'tr'])) {
+        abort(404);
+    }
+    
+    $locale = session('locale', request()->getPreferredLanguage(['en', 'ar', 'es', 'de', 'zh', 'tr']) ?: 'en');
+    return redirect(url('/' . $locale . '/' . ltrim($path, '/')));
 });

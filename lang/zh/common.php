@@ -8,7 +8,7 @@ return [
     'join_now' => '立即加入',
     'learn_more' => '了解更多',
     'app_preview' => '仪表板应用程序预览',
-    'alidebo' => 'alidebo'
+    'alidebo' => 'alidebo',
   'support' => 'Support',
   'terms' => 'Terms',
 ];

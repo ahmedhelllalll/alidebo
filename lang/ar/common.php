@@ -8,7 +8,7 @@ return [
     'join_now' => 'انضم الآن',
     'learn_more' => 'اعرف المزيد',
     'app_preview' => 'صورة لمعاينة لوحة التحكم الخاصة بالتطبيق',
-    'alidebo' => 'علي ديبو'
+    'alidebo' => 'علي ديبو',
   'support' => 'Support',
   'terms' => 'Terms',
 ];

@@ -2,6 +2,17 @@
 
 return [
     'business' => [
+        // newly added
+        'validation_error' => 'Bitte überprüfen Sie das Formular auf Fehler.',
+        'sections' => 'Abschnitte',
+        'profile_health' => 'Profilgesundheit',
+        'completeness' => 'Vollständigkeit',
+        'biz_name_hint' => 'Geben Sie Ihren Firmennamen ein.',
+        'biz_desc_hint' => 'Schreiben Sie eine kurze Beschreibung.',
+        'cover_image' => 'Titelbild',
+        'social_desc' => 'Social Media Links',
+        'no_images_uploaded' => 'Noch keine Bilder hochgeladen.',
+
         'step_identity' => 'Identität',
         'step_category' => 'Kategorie',
         'step_media' => 'Medien',

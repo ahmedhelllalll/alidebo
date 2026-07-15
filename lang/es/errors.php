@@ -1,52 +1,49 @@
 <?php
+
 return [
-    '401' => [
-        'title' => 'Acceso No Autorizado',
-        'desc' => 'No tienes autorización para ver este recurso. Inicia sesión para continuar.',
-    ],
-    '403' => [
-        'title' => 'Acceso Prohibido',
-        'desc' => 'Su presencia aquí está restringida. No tiene las credenciales de élite requeridas para esta sección.',
-    ],
-    '404' => [
-        'title' => 'El Vacío',
-        'desc' => 'El espacio digital que busca no existe o ha sido reubicado.',
-    ],
-    '419' => [
-        'title' => 'Sesión Expirada',
-        'desc' => 'Tu sesión de seguridad ha expirado. Refresca y vuelve a intentarlo.',
-    ],
-    '429' => [
-        'title' => 'Demasiadas Solicitudes',
-        'desc' => 'Se mueve más rápido de lo que nuestro sistema puede procesar. Espere un momento e inténtelo de nuevo.',
-    ],
-    '500' => [
-        'title' => 'Disturbio Interno',
-        'desc' => 'Nuestro sistema encontró un problema estructural inesperado. Lo estamos refinando en este momento.',
-    ],
-    '503' => [
-        'title' => 'Mantenimiento Breve',
-        'desc' => 'Estamos mejorando la experiencia de alidebo. Volveremos pronto con más elegancia.',
-    ],
-    'back_home' => 'Volver a alidebo',
-    'go_back' => 'Paso Anterior',
-  '401.title' => '401.title',
-  '401.desc' => '401.desc',
+  401 => 
+  array (
+    'title' => 'No autorizado',
+    'desc' => 'No está autorizado para acceder a este recurso.',
+  ),
+  403 => 
+  array (
+    'title' => 'Prohibido',
+    'desc' => 'No tienes permiso para acceder a esta página.',
+  ),
+  404 => 
+  array (
+    'title' => 'Página no encontrada',
+    'desc' => 'No se pudo encontrar la página que busca.',
+  ),
+  419 => 
+  array (
+    'title' => 'Página caducada',
+    'desc' => 'Su sesión ha caducado. Por favor, actualice la página.',
+  ),
+  429 => 
+  array (
+    'title' => 'Demasiadas solicitudes',
+    'desc' => 'Has realizado demasiadas solicitudes. Por favor, espere un momento.',
+  ),
+  500 => 
+  array (
+    'title' => 'Error interno del servidor',
+    'desc' => 'Algo salió mal por nuestra parte. Por favor, inténtelo de nuevo más tarde.',
+  ),
+  503 => 
+  array (
+    'title' => 'Servicio no disponible',
+    'desc' => 'Actualmente estamos realizando mantenimiento. Por favor, inténtelo de nuevo más tarde.',
+  ),
+  'back_home' => 'Volver al inicio',
+  'go_back' => 'Volver',
   'login' => 'Login',
-  '403.title' => '403.title',
-  'scroll_down' => 'Scroll Down',
-  '403.desc' => '403.desc',
-  '404.title' => '404.title',
-  '404.desc' => '404.desc',
-  '405.title' => '405.title',
-  '405.desc' => '405.desc',
-  '419.title' => '419.title',
-  '419.desc' => '419.desc',
-  '429.title' => '429.title',
-  '429.desc' => '429.desc',
-  '500.title' => '500.title',
-  '500.desc' => '500.desc',
-  '503.title' => '503.title',
-  '503.desc' => '503.desc',
-  'refresh' => 'Refresh',
+  'scroll_down' => 'Desplazarse hacia abajo',
+  'refresh' => 'Actualizar',
+  405 => 
+  array (
+    'title' => 'Método no permitido',
+    'desc' => 'El método no está permitido para la ruta solicitada.',
+  ),
 ];
