@@ -2,10 +2,10 @@
 
 <div id="{{ $id }}" class="fixed inset-0 z-[1000] hidden items-center justify-center p-4 sm:p-6" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     {{-- Backdrop --}}
-    <div class="fixed inset-0 bg-slate-900/40 dark:bg-[#09090b]/40 backdrop-blur-sm transition-opacity modal-backdrop" onclick="closeModal('{{ $id }}')"></div>
+    <div class="fixed inset-0 bg-slate-900/40 dark:bg-[#09090b]/40 backdrop-blur-sm modal-backdrop" onclick="closeModal('{{ $id }}')"></div>
 
     {{-- Panel --}}
-    <div class="modal-panel relative bg-white dark:bg-[#121214] border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-2xl w-full max-w-lg mx-auto flex flex-col max-h-full overflow-hidden transition-all duration-300">
+    <div class="modal-panel relative bg-white dark:bg-[#121214] border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-2xl w-full max-w-lg mx-auto flex flex-col max-h-full overflow-hidden">
         {{-- Header --}}
         <div class="px-6 py-4 border-b border-slate-100 dark:border-zinc-800 flex items-center justify-between shrink-0">
             <h3 class="text-lg font-bold text-slate-900 dark:text-white" id="modal-title-{{ $id }}">{{ $title }}</h3>

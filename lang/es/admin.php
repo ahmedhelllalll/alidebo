@@ -474,4 +474,12 @@ return [
     'blog_created' => 'Blog creado con éxito.',
     'blog_updated' => 'Blog actualizado con éxito.',
     'blog_deleted' => 'Blog eliminado con éxito.',
+  'claim_link_generated' => 'Enlace de reclamo generado',
+  'claim_link_instructions' => 'Comparta este enlace con el propietario del negocio. Una vez que lo visiten, podrán reclamar este perfil y tomar el control total de su contenido.',
+  'claim_link' => 'Enlace de reclamo',
+  'close' => 'Cerrar',
+  'copy' => 'Copiar',
+  'generate_claim_link' => 'Generar enlace de reclamo',
+  'claim_link_copied' => '¡Enlace de reclamo copiado al portapapeles!',
+  'notice' => 'Aviso',
 ];

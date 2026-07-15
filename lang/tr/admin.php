@@ -474,4 +474,12 @@ return [
     'blog_created' => 'Blog başarıyla oluşturuldu.',
     'blog_updated' => 'Blog başarıyla güncellendi.',
     'blog_deleted' => 'Blog başarıyla silindi.',
+  'claim_link_generated' => 'Hak Talebi Bağlantısı Oluşturuldu',
+  'claim_link_instructions' => 'Bu bağlantıyı işletme sahibiyle paylaşın. Ziyaret ettiklerinde bu profili sahiplenebilir ve içeriği üzerinde tam kontrol sahibi olabilirler.',
+  'claim_link' => 'Hak Talebi Bağlantısı',
+  'close' => 'Kapat',
+  'copy' => 'Kopyala',
+  'generate_claim_link' => 'Hak Talebi Bağlantısı Oluştur',
+  'claim_link_copied' => 'Hak talebi bağlantısı panoya kopyalandı!',
+  'notice' => 'Bildirim',
 ];

@@ -474,4 +474,12 @@ return [
     'blog_created' => 'Blog erfolgreich erstellt.',
     'blog_updated' => 'Blog erfolgreich aktualisiert.',
     'blog_deleted' => 'Blog erfolgreich gelöscht.',
+  'claim_link_generated' => 'Anspruchslink generiert',
+  'claim_link_instructions' => 'Teilen Sie diesen Link mit dem Geschäftsinhaber. Sobald er ihn besucht, kann er dieses Profil beanspruchen und die volle Kontrolle über den Inhalt übernehmen.',
+  'claim_link' => 'Anspruchslink',
+  'close' => 'Schließen',
+  'copy' => 'Kopieren',
+  'generate_claim_link' => 'Anspruchslink generieren',
+  'claim_link_copied' => 'Anspruchslink in die Zwischenablage kopiert!',
+  'notice' => 'Hinweis',
 ];

@@ -474,4 +474,12 @@ return [
     'blog_created' => '博客创建成功。',
     'blog_updated' => '博客更新成功。',
     'blog_deleted' => '博客删除成功。',
+  'claim_link_generated' => '已生成认领链接',
+  'claim_link_instructions' => '与企业主分享此链接。一旦他们访问该链接，就可以认领此个人资料并完全控制其内容。',
+  'claim_link' => '认领链接',
+  'close' => '关闭',
+  'copy' => '复制',
+  'generate_claim_link' => '生成认领链接',
+  'claim_link_copied' => '认领链接已复制到剪贴板！',
+  'notice' => '注意',
 ];

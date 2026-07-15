@@ -107,6 +107,43 @@
         </div>
     </x-slot>
 </x-admin.modal>
+<x-admin.modal id="claimLinkModal" :title="__('admin.claim_link') ?? 'Claim Link'" class="max-w-md">
+    <div class="px-4 py-6">
+        <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mx-auto mb-6 shadow-inner ring-4 ring-primary/5">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+            </svg>
+        </div>
+        
+        <h3 class="text-xl font-[900] text-slate-900 dark:text-white mb-2 text-center tracking-tight">{{ __('admin.claim_link_generated') ?? 'Claim Link Generated' }}</h3>
+        
+        <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 text-center mb-6 leading-relaxed">
+            {{ __('admin.claim_link_instructions') ?? 'Share this link with the business owner. Once they visit it, they can claim this profile and take full control over its contents.' }}
+        </p>
+
+        <div class="relative group">
+            <input type="text" id="generatedClaimLinkInput" readonly class="w-full bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-medium text-[13px] py-3 pl-4 pr-12 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all">
+            <button type="button" id="copyClaimLinkBtn" onclick="copyClaimLinkToClipboard()" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-primary bg-white dark:bg-zinc-700 rounded-lg shadow-sm border border-slate-200 dark:border-white/10 transition-colors hidden" title="{{ __('admin.copy') ?? 'Copy' }}">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+            </button>
+            <div id="claimLinkSpinner" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary flex items-center justify-center">
+                <svg class="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+    <x-slot name="footer">
+        <div class="flex justify-end gap-3 w-full pb-2">
+            <button type="button" onclick="closeModal('claimLinkModal')" class="px-5 py-2.5 bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-300 rounded-xl font-[900] text-[13px] hover:bg-slate-200 dark:hover:bg-zinc-700 transition-colors">
+                {{ __('admin.close') ?? 'Close' }}
+            </button>
+        </div>
+    </x-slot>
+</x-admin.modal>
 <x-admin.modal id="rejectBusinessModal" title="{{ __('admin.reject_business') }}" width="max-w-md">
     <div class="p-6 space-y-4">
         <div class="p-4 bg-red-50 dark:bg-red-500/10 rounded-2xl border border-red-100 dark:border-red-500/20">
@@ -180,6 +217,21 @@
     }
 
     async function copyClaimLink(id) {
+        const input = document.getElementById('generatedClaimLinkInput');
+        const btn = document.getElementById('copyClaimLinkBtn');
+        const spinner = document.getElementById('claimLinkSpinner');
+        
+        input.value = '{{ __("admin.loading") ?? "Loading..." }}';
+        btn.classList.add('hidden');
+        spinner.classList.remove('hidden');
+        
+        if (window.modals && window.modals['claimLinkModal']) {
+            window.modals['claimLinkModal'].show();
+        } else {
+            document.getElementById('claimLinkModal').classList.remove('hidden');
+            document.getElementById('claimLinkModal').classList.add('flex');
+        }
+
         try {
             const res = await (await fetch(`${window.AppConfig.adminUrl}/businesses/${id}/generate-claim-link`, {
                 method: 'POST',
@@ -191,13 +243,29 @@
             })).json();
 
             if (res.success) {
-                await navigator.clipboard.writeText(res.link);
-                showToast('success', '{{ __("admin.claim_link_copied") }}' || 'Claim link copied to clipboard!');
+                input.value = res.link;
+                spinner.classList.add('hidden');
+                btn.classList.remove('hidden');
             } else {
+                input.value = res.message || 'Error generating link';
+                spinner.classList.add('hidden');
                 showToast('error', res.message || 'Error generating claim link');
             }
         } catch (e) {
+            input.value = 'Network error';
+            spinner.classList.add('hidden');
             showToast('error', 'Network error while generating claim link');
+        }
+    }
+
+    async function copyClaimLinkToClipboard() {
+        const input = document.getElementById('generatedClaimLinkInput');
+        try {
+            await navigator.clipboard.writeText(input.value);
+            showToast('success', '{{ __("admin.claim_link_copied") }}' || 'Claim link copied to clipboard!');
+            input.select();
+        } catch(e) {
+            showToast('error', 'Error copying to clipboard');
         }
     }
 

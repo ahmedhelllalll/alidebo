@@ -474,4 +474,12 @@ return [
     'blog_created' => 'Blog created successfully.',
     'blog_updated' => 'Blog updated successfully.',
     'blog_deleted' => 'Blog deleted successfully.',
+  'claim_link_generated' => 'Claim Link Generated',
+  'claim_link_instructions' => 'Share this link with the business owner. Once they visit it, they can claim this profile and take full control over its contents.',
+  'claim_link' => 'Claim Link',
+  'close' => 'Close',
+  'copy' => 'Copy',
+  'generate_claim_link' => 'Generate Claim Link',
+  'claim_link_copied' => 'Claim link copied to clipboard!',
+  'notice' => 'Notice',
 ];
