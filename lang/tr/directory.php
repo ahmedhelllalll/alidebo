@@ -99,4 +99,7 @@ return [
   'review_success' => 'Review Success',
   'please_select_rating' => 'Please Select Rating',
   'submitting' => 'Submitting',
+  'claim_invited_title' => 'Bu işletmeyi sahiplenmeye davet edildiniz!',
+  'claim_invited_desc' => 'Sahiplenerek bilgi, inceleme ve potansiyel müşteriler üzerinde tam kontrole sahip olacaksınız.',
+  'claim_now' => 'Şimdi Sahiplen',
 ];

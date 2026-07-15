@@ -52,14 +52,25 @@ Route::get('lang/{switch_locale}', function ($switch_locale) {
         $parsedUrl = parse_url($previousUrl);
         if (isset($parsedUrl['path'])) {
             $path = $parsedUrl['path'];
+            
+            // Remove 'public' segment if present to avoid /public/en issues
+            $path = preg_replace('#^/?public/?#', '/', $path);
+            
             $pathSegments = explode('/', ltrim($path, '/'));
             if (!empty($pathSegments) && in_array($pathSegments[0], ['en', 'ar', 'es', 'de', 'zh', 'tr'])) {
                 $pathSegments[0] = $switch_locale;
                 $newPath = implode('/', $pathSegments);
                 $query = isset($parsedUrl['query']) ? '?' . $parsedUrl['query'] : '';
-                return redirect(url('/' . $newPath . $query));
+                
+                // Use getSchemeAndHttpHost() to enforce a clean domain like https://alidebo.com/en
+                $host = isset($parsedUrl['scheme']) && isset($parsedUrl['host']) 
+                    ? $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . (isset($parsedUrl['port']) ? ':' . $parsedUrl['port'] : '') 
+                    : request()->getSchemeAndHttpHost();
+                    
+                return redirect($host . '/' . ltrim($newPath, '/') . $query);
             }
         }
+        return redirect(request()->getSchemeAndHttpHost() . '/' . $switch_locale);
     }
     return redirect()->back();
 })->name('lang.switch');
@@ -120,6 +131,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/countries/{country}/cities', [Admin\BusinessController::class, 'getCitiesByCountry'])->name('countries.cities');
         Route::patch('/businesses/{business}/status', [Admin\BusinessController::class, 'updateStatus'])->name('businesses.update-status');
         Route::post('/businesses/{business}/claim', [Admin\BusinessController::class, 'claim'])->name('businesses.claim');
+        Route::post('/businesses/{business}/generate-claim-link', [Admin\BusinessController::class, 'generateClaimLink'])->name('businesses.generate-claim-link');
         Route::get('/profile', [Admin\ProfileController::class, 'index'])->name('profile');
         Route::patch('/profile', [Admin\ProfileController::class, 'update'])->name('profile.update');
         Route::patch('/profile/password', [Admin\ProfileController::class, 'updatePassword'])->name('profile.password');
@@ -206,7 +218,7 @@ Route::prefix('{locale}')->where(['locale' => 'en|ar|es|de|zh|tr'])->group(funct
 
     Route::get('/directory', [DirectoryController::class, 'index'])->name('directory.index');
     Route::get('/directory/search', [DirectoryController::class, 'liveSearch'])->name('directory.search');
-    Route::get('/directory/{slug}', [BusinessProfileController::class, 'show'])->name('directory.business.view');
+    Route::get('/directory/{slug}', [BusinessProfileController::class, 'show'])->name('business.view');
 
     Route::view('/about', 'about')->name('about');
     Route::get('/contact', function () {
@@ -228,6 +240,10 @@ Route::prefix('{locale}')->where(['locale' => 'en|ar|es|de|zh|tr'])->group(funct
     Route::post('/{slug}/contact', [\App\Http\Controllers\PublicLeadController::class, 'store'])->name('directory.business.contact');
     Route::post('/{slug}/reviews', [\App\Http\Controllers\PublicReviewController::class, 'store'])->name('directory.business.reviews.store');
 
+    // Claim Routes
+    Route::get('/claim/{token}', [\App\Http\Controllers\ClaimController::class, 'show'])->name('business.claim.show');
+    Route::post('/claim/{token}', [\App\Http\Controllers\ClaimController::class, 'process'])->name('business.claim.process');
+
     // Dynamic Pages and Business Profiles fallbacks
     Route::get('/{slug}', function ($slug) {
         // 1. Check if it's a dynamic page
@@ -243,9 +259,14 @@ Route::prefix('{locale}')->where(['locale' => 'en|ar|es|de|zh|tr'])->group(funct
             return view('pages.show', compact('page'));
         }
 
-        // 2. If not a page, pass to BusinessProfileController
-        return app(\App\Http\Controllers\User\BusinessProfileController::class)->show($slug);
-    })->name('business.view');
+        // 2. If not a page, check if it's a business and redirect to directory view (SEO 301)
+        $business = \App\Models\BusinessProfile::where('slug', $slug)->first();
+        if ($business) {
+            return redirect()->route('business.view', ['locale' => app()->getLocale(), 'slug' => $slug], 301);
+        }
+        
+        abort(404);
+    })->name('dynamic.page');
 });
 
 // Chatbot Route (API-like, keep outside locale prefix)

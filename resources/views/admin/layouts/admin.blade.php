@@ -1184,17 +1184,23 @@
             // Initial Timeline
             const tl = gsap.timeline();
             // Animate Topbar & Content entry nicely
-            tl.from('header', { y: -20, opacity: 0, duration: 0.5, ease: "back.out(1.2)" }, "-=0.2");
+            if (document.querySelector('header')) {
+                tl.from('header', { y: -20, opacity: 0, duration: 0.5, ease: "back.out(1.2)" }, "-=0.2");
+            }
             // Stagger sidebar items
-            tl.from('.sidebar-nav-item', {
-                x: -20,
-                opacity: 0,
-                duration: 0.4,
-                stagger: 0.05,
-                ease: "power3.out"
-            }, "-=0.3");
+            if (document.querySelectorAll('.sidebar-nav-item').length > 0) {
+                tl.from('.sidebar-nav-item', {
+                    x: -20,
+                    opacity: 0,
+                    duration: 0.4,
+                    stagger: 0.05,
+                    ease: "power3.out"
+                }, "-=0.3");
+            }
             // Animate any existing reveal items in the main content
-            tl.from('.reveal-item', { opacity: 0, y: 15, duration: 0.5, ease: "power2.out", stagger: 0.05 }, "-=0.2");
+            if (document.querySelectorAll('.reveal-item').length > 0) {
+                tl.from('.reveal-item', { opacity: 0, y: 15, duration: 0.5, ease: "power2.out", stagger: 0.05 }, "-=0.2");
+            }
         });
         // =============================================
         // GLOBAL DYNAMIC TOOLTIP

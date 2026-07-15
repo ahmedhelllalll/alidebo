@@ -388,4 +388,30 @@ class BusinessController extends Controller
             'message' => __('admin.claimed_successfully')
         ]);
     }
+
+    public function generateClaimLink(BusinessProfile $business)
+    {
+        $this->authorize('update', $business);
+
+        if ($business->owner_id) {
+            return response()->json([
+                'success' => false,
+                'message' => __('admin.business_already_claimed')
+            ], 422);
+        }
+
+        if (!$business->claim_token) {
+            $business->update([
+                'claim_token' => \Illuminate\Support\Str::random(60)
+            ]);
+        }
+
+        $locale = app()->getLocale() ?: 'en';
+        $link = url("/{$locale}/claim/{$business->claim_token}");
+
+        return response()->json([
+            'success' => true,
+            'link' => $link
+        ]);
+    }
 }

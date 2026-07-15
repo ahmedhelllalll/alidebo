@@ -85,148 +85,68 @@
             </div>
         </div>
 
-        {{-- ─── Pages Table ─── --}}
-        <div class="bg-white dark:bg-[#121214] shadow-[0_10px_40px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-slate-200 dark:border-white/10 rounded-2xl overflow-hidden dashboard-card-reveal relative flex flex-col">
-
-            {{-- Desktop Table --}}
-            <div class="overflow-x-auto hidden sm:block">
-                <table class="w-full border-collapse whitespace-nowrap">
-                    <thead>
-                        <tr class="bg-slate-50/80 dark:bg-zinc-800/40 border-b border-slate-200 dark:border-white/10 text-[11px] uppercase tracking-wider text-slate-500 dark:text-zinc-400 font-black">
-                            <th class="px-6 py-4 text-start">{{ __('admin.title') }}</th>
-                            <th class="px-6 py-4 text-start">{{ __('admin.slug') }}</th>
-                            <th class="px-6 py-4 text-start">{{ __('admin.status') }}</th>
-                            <th class="px-6 py-4 text-start">{{ __('admin.created_at') }}</th>
-                            <th class="px-6 py-4 text-end">{{ __('admin.actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-white/5 text-[14px] font-medium text-slate-700 dark:text-zinc-300">
-                        @foreach($posts as $post)
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-white/[0.02] transition-colors group" data-page-id="{{ $post->id }}">
-                            {{-- Title --}}
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 flex items-center justify-center shrink-0">
-                                        @if($post->media_url && $post->media_type === 'image')
-                                            <img src="{{ asset('storage/' . $post->media_url) }}" class="w-full h-full object-cover rounded-lg" alt="">
-                                        @else
-                                            <i class="fa-regular fa-file-lines text-slate-400 dark:text-zinc-500"></i>
-                                        @endif
-                                    </div>
-                                    <a href="{{ route('admin.blogs.edit', $post) }}" class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors hover:underline underline-offset-2">
-                                        {{ $post->title[app()->getLocale()] ?? $post->title['en'] ?? $post->title['ar'] ?? __('admin.untitled_blog') }}
-                                    </a>
-                                </div>
-                            </td>
-
-                            {{-- Slug (clickable) --}}
-                            <td class="px-6 py-4">
-                                <a href="{{ url('/blog/' . $post->slug) }}" target="_blank"
-                                   class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-zinc-400 text-xs font-mono font-medium border border-slate-200/50 dark:border-white/5 hover:bg-primary/5 hover:text-primary hover:border-primary/20 dark:hover:border-primary/20 transition-all group/slug">
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-40 group-hover/slug:opacity-100 transition-opacity"></i>
-                                    /blog/{{ $post->slug }}
-                                </a>
-                            </td>
-
-                            {{-- Status --}}
-                            <td class="px-6 py-4">
-                                @if($post->status === 'published')
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                        {{ __('admin.published') }}
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wider bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 border border-amber-200/50 dark:border-amber-500/20">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                        {{ __('admin.draft') }}
-                                    </span>
-                                @endif
-                            </td>
-
-                            {{-- Created At --}}
-                            <td class="px-6 py-4 text-slate-400 dark:text-zinc-500 text-[13px]">
-                                {{ $post->created_at?->diffForHumans() }}
-                            </td>
-
-                            {{-- Actions --}}
-                            <td class="px-6 py-4">
-                                <div class="flex items-center justify-end gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
-                                    {{-- View live --}}
-                                    <a href="{{ url('/blog/' . $post->slug) }}" target="_blank"
-                                       class="w-8 h-8 rounded-lg bg-white dark:bg-[#18181b] border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-center text-slate-400 dark:text-zinc-500 hover:text-sky-500 hover:border-sky-500/30 hover:bg-sky-50 dark:hover:bg-sky-500/10 transition-all"
-                                       title="{{ __('admin.view_details') }}">
-                                        <i class="fa-regular fa-eye text-[13px]"></i>
-                                    </a>
-                                    {{-- Edit --}}
-                                    <a href="{{ route('admin.blogs.edit', $post) }}"
-                                       class="w-8 h-8 rounded-lg bg-white dark:bg-[#18181b] border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-center text-slate-400 dark:text-zinc-500 hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-all"
-                                       title="{{ __('admin.edit') }}">
-                                        <i class="fa-regular fa-pen-to-square text-[13px]"></i>
-                                    </a>
-                                    {{-- Delete --}}
-                                    <button type="button"
-                                            onclick="openDeleteModal('{{ route('admin.blogs.destroy', $post) }}', '{{ addslashes($post->title[app()->getLocale()] ?? $post->title['en'] ?? $post->title['ar'] ?? '') }}')"
-                                            class="w-8 h-8 rounded-lg bg-white dark:bg-[#18181b] border border-slate-200 dark:border-white/10 shadow-sm flex items-center justify-center text-slate-400 dark:text-zinc-500 hover:text-red-500 hover:border-red-500/30 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all"
-                                            title="{{ __('admin.delete') }}">
-                                        <i class="fa-regular fa-trash-can text-[13px]"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            {{-- Mobile Cards --}}
-            <div class="sm:hidden divide-y divide-slate-100 dark:divide-white/5">
-                @foreach($posts as $post)
-                <div class="p-4 space-y-3" data-page-id="{{ $post->id }}">
-                    <div class="flex items-start justify-between gap-3">
-                        <div class="flex items-center gap-3 min-w-0">
-                            <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 flex items-center justify-center shrink-0">
-                                @if($post->media_url && $post->media_type === 'image')
-                                    <img src="{{ asset('storage/' . $post->media_url) }}" class="w-full h-full object-cover rounded-lg" alt="">
-                                @else
-                                    <i class="fa-regular fa-file-lines text-slate-400 dark:text-zinc-500"></i>
-                                @endif
-                            </div>
-                            <div class="min-w-0">
-                                <a href="{{ route('admin.blogs.edit', $post) }}" class="font-bold text-slate-900 dark:text-white text-[15px] truncate block hover:text-primary transition-colors">
-                                    {{ $post->title[app()->getLocale()] ?? $post->title['en'] ?? $post->title['ar'] ?? __('admin.untitled_blog') }}
-                                </a>
-                                <a href="{{ url('/blog/' . $post->slug) }}" target="_blank" class="text-xs font-mono text-slate-400 dark:text-zinc-500 mt-0.5 flex items-center gap-1 hover:text-primary transition-colors">
-                                    <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
-                                    /blog/{{ $post->slug }}
-                                </a>
-                            </div>
+        {{-- ─── Posts Grid ─── --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            @foreach($posts as $post)
+            <div class="group bg-white dark:bg-[#121214] border border-slate-200/60 dark:border-white/5 shadow-sm hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.3)] rounded-3xl overflow-hidden dashboard-card-reveal flex flex-col transition-all duration-300 hover:-translate-y-1">
+                
+                {{-- Media Header --}}
+                <div class="relative w-full aspect-[16/10] bg-slate-100 dark:bg-[#1a1a1c] overflow-hidden border-b border-slate-200/60 dark:border-white/5">
+                    @if($post->media_url && $post->media_type === 'image')
+                        <img src="{{ asset('storage/' . $post->media_url) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="">
+                    @else
+                        <div class="w-full h-full flex items-center justify-center">
+                            <i class="fa-regular fa-image text-4xl text-slate-300 dark:text-zinc-700 opacity-50"></i>
                         </div>
+                    @endif
+
+                    {{-- Status Badge (Absolute Top Right) --}}
+                    <div class="absolute top-3 right-3 rtl:right-auto rtl:left-3 z-10">
                         @if($post->status === 'published')
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400 shrink-0">
-                                <span class="w-1 h-1 rounded-full bg-emerald-500"></span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-white/90 dark:bg-zinc-900/90 text-emerald-600 dark:text-emerald-400 backdrop-blur-md shadow-sm border border-black/5 dark:border-white/10">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                 {{ __('admin.published') }}
                             </span>
                         @else
-                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400 shrink-0">
-                                <span class="w-1 h-1 rounded-full bg-amber-500"></span>
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-white/90 dark:bg-zinc-900/90 text-amber-600 dark:text-amber-400 backdrop-blur-md shadow-sm border border-black/5 dark:border-white/10">
+                                <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                                 {{ __('admin.draft') }}
                             </span>
                         @endif
                     </div>
-                    <div class="flex items-center gap-2 pt-1">
-                        <a href="{{ url('/blog/' . $post->slug) }}" target="_blank"
-                           class="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[12px] font-[900] bg-sky-50 dark:bg-sky-500/5 text-sky-600 dark:text-sky-400 rounded-xl hover:bg-sky-100 dark:hover:bg-sky-500/10 transition-all">
-                            <i class="fa-regular fa-eye"></i> {{ __('admin.view_details') }}
-                        </a>
-                        <a href="{{ route('admin.blogs.edit', $post) }}"
-                           class="flex-1 flex items-center justify-center gap-2 px-3 py-2 text-[12px] font-[900] bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-zinc-300 rounded-xl hover:bg-slate-200/70 dark:hover:bg-white/10 transition-all">
-                            <i class="fa-regular fa-pen-to-square"></i> {{ __('admin.edit') }}
-                        </a>
-                        <button type="button"
-                                onclick="openDeleteModal('{{ route('admin.blogs.destroy', $post) }}', '{{ addslashes($post->title[app()->getLocale()] ?? $post->title['en'] ?? $post->title['ar'] ?? '') }}')"
-                                class="flex items-center justify-center w-10 h-10 bg-red-50 dark:bg-red-500/5 text-red-500 rounded-xl hover:bg-red-100 dark:hover:bg-red-500/10 transition-all">
-                            <i class="fa-regular fa-trash-can"></i>
-                        </button>
+                </div>
+
+                {{-- Content Body --}}
+                <div class="p-6 flex flex-col flex-1">
+                    {{-- Title --}}
+                    <a href="{{ route('admin.blogs.edit', $post) }}" class="text-lg font-[900] text-slate-900 dark:text-white leading-tight mb-2 group-hover:text-primary transition-colors line-clamp-2">
+                        {{ $post->title[app()->getLocale()] ?? $post->title['en'] ?? $post->title['ar'] ?? __('admin.untitled_blog') }}
+                    </a>
+
+                    {{-- Slug Link --}}
+                    <a href="{{ url('/blog/' . $post->slug) }}" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] font-mono text-slate-400 dark:text-zinc-500 hover:text-primary transition-colors line-clamp-1 mb-6">
+                        <i class="fa-solid fa-link text-[10px]"></i>
+                        /blog/{{ $post->slug }}
+                    </a>
+
+                    {{-- Footer: Date & Actions --}}
+                    <div class="mt-auto pt-4 border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
+                        <div class="text-[11px] font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-regular fa-calendar text-[12px]"></i>
+                            {{ $post->created_at?->format('M d, Y') }}
+                        </div>
+                        
+                        <div class="flex items-center gap-1">
+                            <a href="{{ url('/blog/' . $post->slug) }}" target="_blank" class="w-8 h-8 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 hover:text-sky-500 hover:bg-sky-50 dark:hover:bg-sky-500/10 transition-colors tooltip" title="{{ __('admin.view_details') }}">
+                                <i class="fa-regular fa-eye text-[13px]"></i>
+                            </a>
+                            <a href="{{ route('admin.blogs.edit', $post) }}" class="w-8 h-8 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 hover:text-primary hover:bg-primary/10 transition-colors tooltip" title="{{ __('admin.edit') }}">
+                                <i class="fa-regular fa-pen-to-square text-[13px]"></i>
+                            </a>
+                            <button type="button" onclick="openDeleteModal('{{ route('admin.blogs.destroy', $post) }}', '{{ addslashes($post->title[app()->getLocale()] ?? $post->title['en'] ?? $post->title['ar'] ?? '') }}')" class="w-8 h-8 rounded-xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors tooltip" title="{{ __('admin.delete') }}">
+                                <i class="fa-regular fa-trash-can text-[13px]"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 @endforeach

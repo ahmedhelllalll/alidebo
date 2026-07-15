@@ -25,7 +25,7 @@
         }
     @endphp
 
-    <form action="{{ route('admin.blogs.update', $blog) }}" method="POST" enctype="multipart/form-data" class="dashboard-card-reveal" 
+    <form action="{{ route('admin.blogs.update', $blog) }}" method="POST" enctype="multipart/form-data" class="dashboard-card-reveal" novalidate
           x-data="{ 
               activeTab: 'en', 
               mediaType: '{{ $initialMediaType }}', 
@@ -97,6 +97,15 @@
                     <input type="text" name="slug" id="slug" value="{{ old('slug', $blog->slug) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white" data-ignore-id="{{ $blog->id }}">
                     <p id="slug_error" class="mt-1 text-xs text-red-500 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> This slug is already taken. Please choose another.</p>
                 </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('admin.description') ?? 'Description' }} ({{ __('admin.optional') ?? 'Optional' }})</label>
+                @foreach(['en', 'ar', 'es', 'de', 'zh', 'tr'] as $loc)
+                    <div x-show="activeTab === '{{ $loc }}'" x-cloak class="mt-1">
+                        <textarea name="description[{{ $loc }}]" rows="3" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white" placeholder="{{ strtoupper($loc) }} Description">{{ old('description.'.$loc, $blog->description[$loc] ?? '') }}</textarea>
+                    </div>
+                @endforeach
             </div>
 
             <div>

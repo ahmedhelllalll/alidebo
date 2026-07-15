@@ -336,62 +336,36 @@
     {{-- ═══════════════════════════════════════ --}}
     {{-- NAVIGATION --}}
     {{-- ═══════════════════════════════════════ --}}
-    @if(!request()->routeIs('business.view') || isset($page))
+
     <nav id="main-nav" class="fixed top-3 sm:top-5 inset-x-3 sm:inset-x-6 lg:inset-x-8 z-[99999] glass-nav border border-transparent rounded-2xl lg:rounded-[1.5rem] transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]">
         <div class="nav-mobile-shell relative w-full px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 lg:h-[72px]">
 
                 {{-- Logo --}}
                 <div class="flex flex-1 justify-start">
-                    @if(request()->routeIs('business.view') && isset($business))
-                        <a href="#discover" class="flex items-center gap-2.5 group shrink-0">
-                            @if($business->logo)
-                                <img src="{{ $business->logo_url }}" alt="{{ $business->name }}" class="w-8 h-8 rounded-lg object-cover border border-slate-200/50 dark:border-zinc-800/50">
-                            @else
-                                <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
-                                    {{ mb_substr($business->name, 0, 1) }}
-                                </div>
-                            @endif
-                            <span class="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white truncate max-w-[120px] sm:max-w-[200px]">{{ $business->name }}</span>
-                        </a>
-                    @else
-                        <a href="/" class="flex items-center gap-2.5 group shrink-0" id="nav-logo">
-                            <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="w-8 h-8 transition-transform duration-300 group-hover:scale-110">
-                            <span class="text-xl font-[900] tracking-tighter">alidebo</span>
-                        </a>
-                    @endif
+                    <a href="/" class="flex items-center gap-2.5 group shrink-0" id="nav-logo">
+                        <img src="{{ asset('images/logo.webp') }}" alt="alidebo" class="w-8 h-8 transition-transform duration-300 group-hover:scale-110">
+                        <span class="text-xl font-[900] tracking-tighter">alidebo</span>
+                    </a>
                 </div>
 
                 {{-- Desktop Navigation --}}
                 <div class="hidden lg:flex items-center justify-center gap-1 shrink-0">
-                    @if(request()->routeIs('business.view') && isset($business))
-                        <a href="#discover" class="nav-link-effect px-4 py-2 text-sm font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
-                            {{ __('landing.nav_home') ?? 'Home' }}
-                        </a>
-                        @if($business->description)
-                        <a href="#about-section" class="nav-link-effect px-4 py-2 text-sm font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
-                            {{ __('directory.profile_about') ?? 'About' }}
-                        </a>
-                        @endif
-                        @if($business->media->count() > 0)
-                        <a href="#gallery-section" class="nav-link-effect px-4 py-2 text-sm font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white">
-                            {{ __('directory.profile_gallery') ?? 'Gallery' }}
-                        </a>
-                        @endif
-                    @else
-                        <a href="{{ route('home') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('home') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                            {{ __('landing.nav_home') ?? 'Home' }}
-                        </a>
-                        <a href="{{ route('directory.index') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('directory.*') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                            {{ __('landing.nav_companies') ?? 'Companies' }}
-                        </a>
-                        <a href="{{ route('about') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('about') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                            {{ __('landing.nav_about') ?? 'About Us' }}
-                        </a>
-                        <a href="{{ route('contact') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('contact') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
-                            {{ __('landing.nav_contact') ?? 'Contact' }}
-                        </a>
-                    @endif
+                    <a href="{{ route('home') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('home') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                        {{ __('landing.nav_home') ?? 'Home' }}
+                    </a>
+                    <a href="{{ route('directory.index') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('directory.*') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                        {{ __('landing.nav_companies') ?? 'Companies' }}
+                    </a>
+                    <a href="{{ route('blog.index') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('blog.*') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                        {{ __('landing.nav_blog') ?? 'Blog' }}
+                    </a>
+                    <a href="{{ route('about') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('about') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                        {{ __('landing.nav_about') ?? 'About Us' }}
+                    </a>
+                    <a href="{{ route('contact') }}" class="nav-link-effect px-4 py-2 text-sm transition-colors rounded-lg {{ request()->routeIs('contact') ? 'font-bold text-primary bg-primary/5 dark:bg-primary/10' : 'font-semibold text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-white' }}">
+                        {{ __('landing.nav_contact') ?? 'Contact' }}
+                    </a>
                 </div>
 
                 {{-- Right Actions --}}
@@ -556,33 +530,10 @@
         <div class="mobile-menu-panel absolute top-[5rem] sm:top-[6.5rem] bottom-3 sm:bottom-5 inset-x-3 sm:inset-x-6 overflow-y-auto bg-white/85 dark:bg-[#0a0a0c]/85 backdrop-blur-2xl border border-white/50 dark:border-zinc-800/50 rounded-[1.5rem] shadow-[0_24px_48px_-12px_rgba(0,0,0,0.15)] dark:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)] flex flex-col p-2.5">
             
             <nav class="space-y-1" aria-label="Mobile navigation">
-                @if(request()->routeIs('business.view') && isset($business))
-                    <a href="#discover"
-                       onclick="closeMobileMenu()"
-                       class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary">
-                        <span>{{ __('landing.nav_home') ?? 'Home' }}</span>
-                        <svg class="w-4 h-4 text-slate-300 dark:text-zinc-600 group-hover:text-primary rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                    </a>
-                    @if($business->description)
-                    <a href="#about-section"
-                       onclick="closeMobileMenu()"
-                       class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary">
-                        <span>{{ __('directory.profile_about') ?? 'About' }}</span>
-                        <svg class="w-4 h-4 text-slate-300 dark:text-zinc-600 group-hover:text-primary rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                    </a>
-                    @endif
-                    @if($business->media->count() > 0)
-                    <a href="#gallery-section"
-                       onclick="closeMobileMenu()"
-                       class="mobile-nav-link group flex items-center justify-between gap-3 px-4 py-3.5 rounded-2xl text-[15px] transition-all duration-200 font-bold text-slate-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-zinc-800/50 hover:shadow-sm hover:text-primary">
-                        <span>{{ __('directory.profile_gallery') ?? 'Gallery' }}</span>
-                        <svg class="w-4 h-4 text-slate-300 dark:text-zinc-600 group-hover:text-primary rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-                    </a>
-                    @endif
-                @else
                     @foreach([
                         ['href' => route('home'), 'route' => 'home', 'label' => __('landing.nav_home') ?? 'Home'],
                         ['href' => route('directory.index'), 'route' => 'directory.*', 'label' => __('landing.nav_companies') ?? 'Companies'],
+                        ['href' => route('blog.index'), 'route' => 'blog.*', 'label' => __('landing.nav_blog') ?? 'Blog'],
                         ['href' => route('about'), 'route' => 'about', 'label' => __('landing.nav_about') ?? 'About Us'],
                         ['href' => route('contact'), 'route' => 'contact', 'label' => __('landing.nav_contact') ?? 'Contact'],
                     ] as $link)
@@ -593,26 +544,9 @@
                         <svg class="w-4 h-4 transition-colors shrink-0 {{ request()->routeIs($link['route']) ? 'text-primary' : 'text-slate-300 dark:text-zinc-600 group-hover:text-primary' }} rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                     </a>
                     @endforeach
-                @endif
             </nav>
 
             <div class="mt-auto pt-4 border-t border-slate-200/50 dark:border-zinc-800/50 space-y-2">
-                @if(request()->routeIs('business.view') && isset($business))
-                    @if($ctaUrl)
-                        <a href="{{ $ctaUrl }}"
-                           target="_blank"
-                           rel="noopener"
-                           onclick="closeMobileMenu()"
-                           class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
-                            {{ $ctaLabel }}
-                        </a>
-                    @else
-                        <button @click="shareProfile(); closeMobileMenu();"
-                           class="mobile-nav-link block w-full px-4 py-3.5 rounded-2xl bg-primary text-white font-bold text-sm text-center shadow-lg shadow-primary/25 hover:bg-primary-light transition-colors">
-                            {{ __('directory.profile_share') ?? 'Share' }}
-                        </button>
-                    @endif
-                @else
                     @guest
                         <a href="{{ route('login') }}"
                            onclick="closeMobileMenu()"
@@ -631,11 +565,10 @@
                             {{ __('nav.dashboard') ?? 'Dashboard' }}
                         </a>
                     @endguest
-                @endif
             </div>
         </div>
     </div>
-    @endif
+
 
     {{-- ═══════════════════════════════════════ --}}
     {{-- MAIN CONTENT --}}
@@ -673,6 +606,7 @@
                         <ul class="space-y-4">
                             <li><a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('home') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_home') ?? 'Home' }}</a></li>
                             <li><a href="{{ route('directory.index') }}" class="text-sm font-medium {{ request()->routeIs('directory.*') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('directory.*') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_companies') ?? 'Companies' }}</a></li>
+                            <li><a href="{{ route('blog.index') }}" class="text-sm font-medium {{ request()->routeIs('blog.*') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('blog.*') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.nav_blog') ?? 'Blog' }}</a></li>
                             <li><a href="{{ route('about') }}" class="text-sm font-medium {{ request()->routeIs('about') ? 'text-primary' : 'text-zinc-400 hover:text-zinc-100' }} transition-colors flex items-center gap-2 group"><span class="{{ request()->routeIs('about') ? 'w-2 bg-primary' : 'w-0 group-hover:w-2 bg-zinc-600 group-hover:bg-zinc-300' }} h-px transition-all duration-300"></span>{{ __('landing.footer_about') ?? 'About Us' }}</a></li>
                             @if(isset($footerPages) && $footerPages->count() > 0)
                                 @foreach($footerPages as $footerPage)

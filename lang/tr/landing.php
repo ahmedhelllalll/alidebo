@@ -270,4 +270,7 @@ return [
   'welcome_toast_desc' => 'alidebo platformunu tamamen güncelledik! Yeni özellikleri keşfetmek için şirket profilinizi saniyeler içinde yeniden etkinleştirin.',
   'welcome_toast_btn' => 'Gmail ile giriş yap',
   'welcome_toast_dismiss' => 'Kapat',
+
+    // blog nav
+    'nav_blog' => 'Blog',
 ];

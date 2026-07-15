@@ -179,6 +179,28 @@
         window.location.href = `${window.AppConfig.adminUrl}/businesses/${id}/edit`;
     }
 
+    async function copyClaimLink(id) {
+        try {
+            const res = await (await fetch(`${window.AppConfig.adminUrl}/businesses/${id}/generate-claim-link`, {
+                method: 'POST',
+                headers: { 
+                    'X-CSRF-TOKEN': window.AppConfig.csrfToken || '{{ csrf_token() }}', 
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })).json();
+
+            if (res.success) {
+                await navigator.clipboard.writeText(res.link);
+                showToast('success', '{{ __("admin.claim_link_copied") }}' || 'Claim link copied to clipboard!');
+            } else {
+                showToast('error', res.message || 'Error generating claim link');
+            }
+        } catch (e) {
+            showToast('error', 'Network error while generating claim link');
+        }
+    }
+
     function promptDeleteBusiness(id) {
         businessToDeleteId = id;
         window.modals?.deleteConfirmModal?.show() || document.getElementById('deleteConfirmModal').classList.remove('hidden');

@@ -235,10 +235,15 @@ class BusinessProfileController extends Controller
             ->with(['category', 'city', 'media'])
             ->firstOrFail();
 
+        $claimToken = request()->query('claim_token');
+        $hasValidClaimToken = $claimToken && $business->claim_token === $claimToken;
+
         // Status-based visibility guard
         if (in_array($business->status, ['pending', 'rejected'])) {
             if (!Auth::check() || Auth::id() !== $business->owner_id) {
-                abort(404);
+                if (!$hasValidClaimToken) {
+                    abort(404);
+                }
             }
         }
 
@@ -274,6 +279,6 @@ class BusinessProfileController extends Controller
         }
         view()->share('hreflangs', $hreflangs);
 
-        return view('users.business.show', compact('business'));
+        return view('users.business.show', compact('business', 'hasValidClaimToken', 'claimToken'));
     }
 }

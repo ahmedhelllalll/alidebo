@@ -31,6 +31,7 @@ class BusinessProfile extends Model
         'meta_description',
         'approved_at',
         'disk',
+        'claim_token',
     ];
 
     protected $casts = [

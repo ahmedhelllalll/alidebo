@@ -332,4 +332,7 @@ return [
   'welcome_toast_desc' => 'We\'ve completely upgraded the alidebo platform! Reactivate your company profile in seconds to explore the new features.',
   'welcome_toast_btn' => 'Sign in with Gmail',
   'welcome_toast_dismiss' => 'Dismiss',
+
+    // blog nav
+    'nav_blog' => 'Blog',
 ];

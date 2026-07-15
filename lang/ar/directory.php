@@ -88,4 +88,7 @@ return [
     'rating_excellent' => 'ممتاز',
     'back' => 'رجوع',
   'profile_connect' => 'Profile Connect',
+  'claim_invited_title' => 'تمت دعوتك للمطالبة بملكية هذا النشاط التجاري!',
+  'claim_invited_desc' => 'بالمطالبة به، سيكون لديك تحكم كامل في المعلومات والتقييمات والعملاء المحتملين.',
+  'claim_now' => 'طالب به الآن',
 ];

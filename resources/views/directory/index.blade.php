@@ -788,7 +788,7 @@
                                                     </div>
                                                 </div>
 
-                                                <a href="{{ route('directory.business.view', $business->slug) }}"
+                                                <a href="{{ route('business.view', $business->slug) }}"
                                                     class="absolute inset-0 z-30 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-inset rounded-2xl sm:rounded-[1.5rem]"
                                                     aria-label="{{ __('directory.view_profile') }} {{ $business->name }}"></a>
                                             </div>

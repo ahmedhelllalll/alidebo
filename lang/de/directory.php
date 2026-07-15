@@ -99,4 +99,7 @@ return [
   'review_success' => 'Review Success',
   'please_select_rating' => 'Please Select Rating',
   'submitting' => 'Submitting',
+  'claim_invited_title' => 'Sie wurden eingeladen, dieses Unternehmen zu beanspruchen!',
+  'claim_invited_desc' => 'Wenn Sie es beanspruchen, haben Sie die volle Kontrolle über Informationen, Bewertungen und Leads.',
+  'claim_now' => 'Jetzt beanspruchen',
 ];

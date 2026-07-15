@@ -11,6 +11,7 @@ class BlogPost extends Model
     protected $fillable = [
         'title',
         'slug',
+        'description',
         'content',
         'media_type',
         'media_url',
@@ -21,6 +22,7 @@ class BlogPost extends Model
 
     protected $casts = [
         'title' => 'array',
+        'description' => 'array',
         'content' => 'array',
         'media_alt' => 'array',
         'published_at' => 'datetime',

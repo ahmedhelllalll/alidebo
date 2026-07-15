@@ -287,46 +287,63 @@
     <div class="profile-glow w-[600px] h-[600px] bg-primary/20 -top-60 -start-40 absolute z-0"></div>
     <div class="profile-glow w-[500px] h-[500px] bg-primary/10 top-[40%] -end-40 absolute z-0"></div>
 
-    {{-- STATUS BANNERS --}}
-    @if($business->status === 'pending')
-    <div class="relative bg-amber-50/80 dark:bg-amber-950/20 border-b border-amber-200/60 dark:border-amber-900/30 z-20">
-        <div class="max-w-[85rem] mx-auto px-4 sm:px-6 py-3 flex items-center gap-3">
-            <div class="shrink-0 w-7 h-7 rounded-full bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center">
-                <svg class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+
+    <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-8 sm:pb-12 relative z-10">
+        {{-- STATUS BANNERS --}}
+        @if($business->status === 'pending')
+        <div class="mb-4 bg-amber-50/80 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/30 rounded-2xl p-4 flex items-center gap-3 shadow-sm">
+            <div class="shrink-0 w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/40 flex items-center justify-center">
+                <svg class="w-4 h-4 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-amber-800 dark:text-amber-300">{{ __('dashboard.index.review_overlay.title') }}</p>
-                <p class="text-xs text-amber-600/70 dark:text-amber-400/60">{{ __('dashboard.index.review_overlay.message') }}</p>
+                <p class="text-sm font-bold text-amber-800 dark:text-amber-300">{{ __('dashboard.index.review_overlay.title') }}</p>
+                <p class="text-xs font-medium text-amber-600/80 dark:text-amber-400/80 mt-0.5">{{ __('dashboard.index.review_overlay.message') }}</p>
             </div>
         </div>
-    </div>
-    @endif
+        @endif
 
-    @if($business->status === 'rejected')
-    <div class="relative bg-red-50/80 dark:bg-red-950/15 border-b border-red-200/60 dark:border-red-900/20 z-20">
-        <div class="max-w-[85rem] mx-auto px-4 sm:px-6 py-3 flex items-start gap-3">
-            <div class="shrink-0 w-7 h-7 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mt-0.5">
-                <svg class="w-3.5 h-3.5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        @if($business->status === 'rejected')
+        <div class="mb-4 bg-red-50/80 dark:bg-red-950/15 border border-red-200/60 dark:border-red-900/20 rounded-2xl p-4 flex items-start gap-3 shadow-sm">
+            <div class="shrink-0 w-8 h-8 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center mt-0.5">
+                <svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
                 </svg>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold text-red-800 dark:text-red-300">{{ __('dashboard.index.rejected_overlay.title') }}</p>
+                <p class="text-sm font-bold text-red-800 dark:text-red-300">{{ __('dashboard.index.rejected_overlay.title') }}</p>
                 @if($business->rejection_reason)
-                <p class="text-xs text-red-600/70 dark:text-red-400/60 mt-0.5">{{ $business->rejection_reason }}</p>
+                <p class="text-xs font-medium text-red-600/80 dark:text-red-400/80 mt-0.5">{{ $business->rejection_reason }}</p>
                 @endif
-                <a href="{{ route('business.edit') }}" class="inline-flex items-center gap-1 mt-1.5 text-xs font-semibold text-red-700 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">
+                <a href="{{ route('business.edit') }}" class="inline-flex items-center gap-1 mt-2 text-xs font-bold text-red-700 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors bg-red-100/50 dark:bg-red-900/20 px-3 py-1.5 rounded-lg">
                     {{ __('dashboard.index.rejected_overlay.cta') }}
-                    <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    <svg class="w-3 h-3 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
             </div>
         </div>
-    </div>
-    @endif
-
-    <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-8 sm:pb-12 relative z-10">
+        @endif
+        @if(isset($hasValidClaimToken) && $hasValidClaimToken)
+        <div class="mb-8 p-6 bg-gradient-to-r from-emerald-500/10 to-emerald-500/5 border border-emerald-500/20 rounded-2xl shadow-lg shadow-emerald-500/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-start sm:items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0">
+                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black text-slate-900 dark:text-white tracking-tight">{{ __('directory.claim_invited_title') }}</h3>
+                    <p class="text-sm font-medium text-slate-500 dark:text-zinc-400 mt-1">{{ __('directory.claim_invited_desc') }}</p>
+                </div>
+            </div>
+            <form action="{{ route('business.claim.process', ['locale' => app()->getLocale(), 'token' => $claimToken]) }}" method="POST" class="shrink-0 w-full sm:w-auto">
+                @csrf
+                <button type="submit" class="w-full sm:w-auto px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-xl active:scale-[0.98]">
+                    {{ __('directory.claim_now') }}
+                </button>
+            </form>
+        </div>
+        @endif
+        
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
             
             {{-- LEFT COLUMN: Identity & Quick Contacts --}}

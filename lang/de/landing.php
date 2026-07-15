@@ -270,4 +270,7 @@ return [
   'welcome_toast_desc' => 'Wir haben die alidebo-Plattform komplett aktualisiert! Reaktivieren Sie Ihr Unternehmensprofil in Sekundenschnelle, um die neuen Funktionen zu entdecken.',
   'welcome_toast_btn' => 'Mit Gmail anmelden',
   'welcome_toast_dismiss' => 'Verwerfen',
+
+    // blog nav
+    'nav_blog' => 'Blog',
 ];

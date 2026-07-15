@@ -56,7 +56,10 @@ return [
     'profile_verified' => 'Verificado',
     'profile_member_since' => 'Miembro desde',
     'profile_get_directions' => 'Cómo llegar',
-    'profile_connect' => 'Conectar',
+    'profile_connect' => 'Profile Connect',
+    'claim_invited_title' => '¡Has sido invitado a reclamar este negocio!',
+    'claim_invited_desc' => 'Al reclamarlo, tendrás control total sobre la información, reseñas y clientes potenciales.',
+    'claim_now' => 'Reclamar ahora',
     'profile_of' => 'de',
 
     // Reviews
@@ -99,4 +102,7 @@ return [
   'review_success' => 'Review Success',
   'please_select_rating' => 'Please Select Rating',
   'submitting' => 'Submitting',
+  'claim_invited_title' => '¡Has sido invitado a reclamar este negocio!',
+  'claim_invited_desc' => 'Al reclamarlo, tendrás control total sobre la información, reseñas y clientes potenciales.',
+  'claim_now' => 'Reclamar ahora',
 ];

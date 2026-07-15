@@ -39,6 +39,7 @@ class BlogPostController extends Controller
         $data = $request->validate([
             'title' => 'required|array',
             'slug' => 'nullable|string|unique:blog_posts,slug',
+            'description' => 'nullable|array',
             'content' => 'nullable|array',
             'media_type' => 'nullable|in:image,video_embed,video_upload,none',
             'video_url' => 'nullable|string|url',
@@ -89,6 +90,7 @@ class BlogPostController extends Controller
         $data = $request->validate([
             'title' => 'required|array',
             'slug' => 'nullable|string|unique:blog_posts,slug,' . $blog->id,
+            'description' => 'nullable|array',
             'content' => 'nullable|array',
             'media_type' => 'nullable|in:image,video_embed,video_upload,none',
             'video_url' => 'nullable|string|url',

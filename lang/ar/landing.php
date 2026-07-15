@@ -332,4 +332,7 @@ return [
   'welcome_toast_desc' => 'لقد قمنا بتحديث منصة alidebo بالكامل! قم بتسجيل الدخول لتنشيط ملف شركتك واكتشاف الميزات الجديدة في ثوانٍ.',
   'welcome_toast_btn' => 'تسجيل الدخول باستخدام Gmail',
   'welcome_toast_dismiss' => 'تجاهل',
+
+    // blog nav
+    'nav_blog' => 'المدونة',
 ];

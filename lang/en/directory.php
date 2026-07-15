@@ -88,4 +88,7 @@ return [
     'rating_excellent' => 'Excellent',
     'back' => 'Back',
   'profile_connect' => 'Profile Connect',
+  'claim_invited_title' => 'You have been invited to claim this business!',
+  'claim_invited_desc' => 'By claiming it, you will have full control over the information, reviews, and leads.',
+  'claim_now' => 'Claim Now',
 ];
