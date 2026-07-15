@@ -38,7 +38,7 @@ return [
   ),
   'back_home' => '返回首页',
   'go_back' => '返回',
-  'login' => 'Login',
+  'login' => '登录',
   'scroll_down' => '向下滚动',
   'refresh' => '刷新',
   405 => 

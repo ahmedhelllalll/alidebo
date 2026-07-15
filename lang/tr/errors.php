@@ -38,7 +38,7 @@ return [
   ),
   'back_home' => 'Ana Sayfaya Dön',
   'go_back' => 'Geri Dön',
-  'login' => 'Login',
+  'login' => 'Giriş Yap',
   'scroll_down' => 'Aşağı Kaydır',
   'refresh' => 'Yenile',
   405 => 

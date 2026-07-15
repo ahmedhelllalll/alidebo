@@ -38,7 +38,7 @@ return [
   ),
   'back_home' => 'العودة للرئيسية',
   'go_back' => 'العودة',
-  'login' => 'Login',
+  'login' => 'تسجيل الدخول',
   'scroll_down' => 'التمرير لأسفل',
   'refresh' => 'تحديث',
   405 => 

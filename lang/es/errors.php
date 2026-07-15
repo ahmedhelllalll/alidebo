@@ -38,7 +38,7 @@ return [
   ),
   'back_home' => 'Volver al inicio',
   'go_back' => 'Volver',
-  'login' => 'Login',
+  'login' => 'Iniciar sesión',
   'scroll_down' => 'Desplazarse hacia abajo',
   'refresh' => 'Actualizar',
   405 => 

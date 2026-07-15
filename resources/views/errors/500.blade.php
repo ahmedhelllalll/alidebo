@@ -27,7 +27,7 @@
                 <div class="w-[20px] h-[32px] border-2 border-slate-300 dark:border-zinc-700 rounded-full relative">
                     <div class="w-1 h-2 bg-red-500 rounded-full absolute top-1.5 left-1/2 -translate-x-1/2 animate-scroll-ar"></div>
                 </div>
-                <span class="text-[9px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-[0.2em]">{{ __('forms.scroll_down') }}</span>
+                <span class="text-[9px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-[0.2em]">{{ __('errors.scroll_down') }}</span>
             </div>
         </div>
     </section>

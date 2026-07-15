@@ -56,6 +56,10 @@ Route::get('lang/{switch_locale}', function ($switch_locale) {
             // Remove 'public' segment if present to avoid /public/en issues
             $path = preg_replace('#^/?public/?#', '/', $path);
             
+            if ($path === '' || $path === '/') {
+                return redirect(request()->getSchemeAndHttpHost() . '/' . $switch_locale);
+            }
+            
             $pathSegments = explode('/', ltrim($path, '/'));
             if (!empty($pathSegments) && in_array($pathSegments[0], ['en', 'ar', 'es', 'de', 'zh', 'tr'])) {
                 $pathSegments[0] = $switch_locale;
@@ -68,6 +72,10 @@ Route::get('lang/{switch_locale}', function ($switch_locale) {
                     : request()->getSchemeAndHttpHost();
                     
                 return redirect($host . '/' . ltrim($newPath, '/') . $query);
+            } else {
+                // If it's a route without a locale prefix (like /dashboard, /login), 
+                // just redirect back. The session locale has already been updated.
+                return redirect($previousUrl);
             }
         }
         return redirect(request()->getSchemeAndHttpHost() . '/' . $switch_locale);
