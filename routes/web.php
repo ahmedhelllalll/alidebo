@@ -17,7 +17,11 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 
-Route::get('/', function () {
+Route::get('/', function (\Illuminate\Http\Request $request) {
+    if ($request->has('company')) {
+        session(['onboarding_company' => $request->query('company')]);
+    }
+
     // Fetch featured companies with category and city relationships eager loaded (cached to avoid full table scans)
     $featuredCompanies = Cache::remember('featured_companies', now()->addMinutes(5), function () {
         return BusinessProfile::with(['category', 'city'])

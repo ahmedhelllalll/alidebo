@@ -60,6 +60,19 @@ class GoogleController extends Controller
                 session()->forget('claim_profile_id');
             }
 
+            if (session()->has('onboarding_company')) {
+                $companyName = session('onboarding_company');
+                $profile = BusinessProfile::where('name', $companyName)->first();
+                if ($profile && !$profile->is_claimed) {
+                    $profile->update([
+                        'user_id' => $user->id, 
+                        'is_claimed' => true,
+                        'status' => 'pending'
+                    ]);
+                }
+                session()->forget('onboarding_company');
+            }
+
             Auth::login($user);
             session()->regenerate();
 

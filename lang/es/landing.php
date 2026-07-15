@@ -266,4 +266,8 @@ return [
   'contact_error_lname_required' => 'Contact Error Lname Required',
   'contact_error_email_required' => 'Contact Error Email Required',
   'contact_error_msg_required' => 'Contact Error Msg Required',
+  'welcome_toast_title' => '¡Bienvenido, equipo de :company!',
+  'welcome_toast_desc' => '¡Hemos actualizado por completo la plataforma alidebo! Reactiva el perfil de tu empresa en segundos para explorar las nuevas funciones.',
+  'welcome_toast_btn' => 'Iniciar sesión con Gmail',
+  'welcome_toast_dismiss' => 'Descartar',
 ];

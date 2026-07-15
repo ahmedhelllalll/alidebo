@@ -266,4 +266,8 @@ return [
   'contact_error_lname_required' => 'Contact Error Lname Required',
   'contact_error_email_required' => 'Contact Error Email Required',
   'contact_error_msg_required' => 'Contact Error Msg Required',
+  'welcome_toast_title' => 'Hoş geldiniz, :company Ekibi!',
+  'welcome_toast_desc' => 'alidebo platformunu tamamen güncelledik! Yeni özellikleri keşfetmek için şirket profilinizi saniyeler içinde yeniden etkinleştirin.',
+  'welcome_toast_btn' => 'Gmail ile giriş yap',
+  'welcome_toast_dismiss' => 'Kapat',
 ];

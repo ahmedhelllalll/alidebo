@@ -328,4 +328,8 @@ return [
   'contact_error_lname_required' => 'Contact Error Lname Required',
   'contact_error_email_required' => 'Contact Error Email Required',
   'contact_error_msg_required' => 'Contact Error Msg Required',
+  'welcome_toast_title' => 'مرحباً بفريق :company!',
+  'welcome_toast_desc' => 'لقد قمنا بتحديث منصة alidebo بالكامل! قم بتسجيل الدخول لتنشيط ملف شركتك واكتشاف الميزات الجديدة في ثوانٍ.',
+  'welcome_toast_btn' => 'تسجيل الدخول باستخدام Gmail',
+  'welcome_toast_dismiss' => 'تجاهل',
 ];

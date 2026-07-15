@@ -266,4 +266,8 @@ return [
   'contact_error_lname_required' => 'Contact Error Lname Required',
   'contact_error_email_required' => 'Contact Error Email Required',
   'contact_error_msg_required' => 'Contact Error Msg Required',
+  'welcome_toast_title' => '欢迎，:company 团队！',
+  'welcome_toast_desc' => '我们已全面升级了 alidebo 平台！几秒钟内重新激活您的企业档案，探索全新功能。',
+  'welcome_toast_btn' => '使用 Gmail 登录',
+  'welcome_toast_dismiss' => '忽略',
 ];
