@@ -482,4 +482,7 @@ return [
   'generate_claim_link' => '生成认领链接',
   'claim_link_copied' => '认领链接已复制到剪贴板！',
   'notice' => '注意',
+  'claimed' => '已认领',
+  'unclaimed' => '未认领',
+  'welcome_claimed_successfully' => '欢迎来到您的仪表板！您已成功认领您的业务资料。',
 ];

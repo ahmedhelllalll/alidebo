@@ -482,4 +482,7 @@ return [
   'generate_claim_link' => 'إنشاء رابط المطالبة',
   'claim_link_copied' => 'تم نسخ رابط المطالبة إلى الحافظة!',
   'notice' => 'ملاحظة',
+  'claimed' => 'مملوك',
+  'unclaimed' => 'غير مملوك',
+  'welcome_claimed_successfully' => 'مرحباً بك في لوحة التحكم الخاصة بك! لقد نجحت في المطالبة بملف تعريف عملك.',
 ];

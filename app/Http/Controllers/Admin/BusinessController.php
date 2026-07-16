@@ -64,8 +64,14 @@ class BusinessController extends Controller
         }
 
         // Status Filter
-        if ($request->filled('status') && in_array($request->status, ['pending', 'approved', 'rejected'])) {
-            $query->where('business_profiles.status', $request->status);
+        if ($request->filled('status')) {
+            if (in_array($request->status, ['pending', 'approved', 'rejected'])) {
+                $query->where('business_profiles.status', $request->status);
+            } elseif ($request->status === 'claimed') {
+                $query->whereNotNull('business_profiles.owner_id');
+            } elseif ($request->status === 'unclaimed') {
+                $query->whereNull('business_profiles.owner_id');
+            }
         }
 
         if ($request->ajax() && $request->has('suggest')) {

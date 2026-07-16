@@ -55,6 +55,6 @@ class ClaimController extends Controller
             'claim_token' => null // invalidate token
         ]);
 
-        return redirect()->route('dashboard')->with('success', __('admin.claimed_successfully') ?? 'Business claimed successfully!');
+        return redirect()->route('dashboard')->with('success', __('admin.welcome_claimed_successfully') ?? 'Welcome to your dashboard! You have successfully claimed your business profile.');
     }
 }

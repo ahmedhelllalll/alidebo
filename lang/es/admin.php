@@ -482,4 +482,7 @@ return [
   'generate_claim_link' => 'Generar enlace de reclamo',
   'claim_link_copied' => '¡Enlace de reclamo copiado al portapapeles!',
   'notice' => 'Aviso',
+  'claimed' => 'Reclamado',
+  'unclaimed' => 'No reclamado',
+  'welcome_claimed_successfully' => '¡Bienvenido a su panel de control! Ha reclamado exitosamente el perfil de su negocio.',
 ];

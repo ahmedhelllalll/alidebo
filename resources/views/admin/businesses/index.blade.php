@@ -18,15 +18,21 @@
     {{-- Filter & Search Bar --}}
     <div class="flex flex-col md:flex-row items-center justify-between gap-4 bg-white/50 dark:bg-zinc-900/30 backdrop-blur-xl p-4 rounded-2xl border border-white/60 dark:border-white/[0.05] shadow-sm relative z-20">
         {{-- Status Tabs --}}
-        <div class="flex items-center p-1 bg-slate-100/50 dark:bg-zinc-800/50 rounded-xl w-full md:w-auto overflow-x-auto custom-scrollbar-hide">
-            <button onclick="setStatusFilter('', this)" id="tab-all" class="flex-1 md:flex-none px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ !request('status') ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+        <div class="flex items-center p-1 bg-slate-100/50 dark:bg-zinc-800/50 rounded-xl w-full md:w-auto overflow-x-auto custom-scrollbar-hide whitespace-nowrap">
+            <button onclick="setStatusFilter('', this)" id="tab-all" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ !request('status') ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
                 {{ __('admin.all') }}
             </button>
-            <button onclick="setStatusFilter('pending', this)" id="tab-pending" class="flex-1 md:flex-none px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'pending' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+            <button onclick="setStatusFilter('pending', this)" id="tab-pending" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'pending' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
                 {{ __('admin.pending') }}
             </button>
-            <button onclick="setStatusFilter('approved', this)" id="tab-approved" class="flex-1 md:flex-none px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'approved' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+            <button onclick="setStatusFilter('approved', this)" id="tab-approved" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'approved' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
                 {{ __('admin.approved') }}
+            </button>
+            <button onclick="setStatusFilter('claimed', this)" id="tab-claimed" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'claimed' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+                {{ __('admin.claimed') }}
+            </button>
+            <button onclick="setStatusFilter('unclaimed', this)" id="tab-unclaimed" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'unclaimed' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+                {{ __('admin.unclaimed') }}
             </button>
         </div>
         {{-- Smart Search --}}
@@ -122,13 +128,13 @@
         </p>
 
         <div class="relative group">
-            <input type="text" id="generatedClaimLinkInput" readonly class="w-full bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-medium text-[13px] py-3 pl-4 pr-12 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all">
-            <button type="button" id="copyClaimLinkBtn" onclick="copyClaimLinkToClipboard()" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-primary bg-white dark:bg-zinc-700 rounded-lg shadow-sm border border-slate-200 dark:border-white/10 transition-colors hidden" title="{{ __('admin.copy') ?? 'Copy' }}">
+            <input type="text" id="generatedClaimLinkInput" readonly class="w-full bg-slate-100 dark:bg-zinc-800/80 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-medium text-[13px] py-3 ps-4 pe-12 focus:outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all">
+            <button type="button" id="copyClaimLinkBtn" onclick="copyClaimLinkToClipboard()" class="absolute end-2 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-primary bg-white dark:bg-zinc-700 rounded-lg shadow-sm border border-slate-200 dark:border-white/10 transition-colors hidden" title="{{ __('admin.copy') ?? 'Copy' }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                 </svg>
             </button>
-            <div id="claimLinkSpinner" class="absolute right-3 top-1/2 -translate-y-1/2 text-primary flex items-center justify-center">
+            <div id="claimLinkSpinner" class="absolute end-3 top-1/2 -translate-y-1/2 text-primary flex items-center justify-center">
                 <svg class="animate-spin w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -344,7 +350,7 @@
     // --- Search & Filters ---
     function setStatusFilter(status, btn) {
         currentStatus = status;
-        ['all', 'pending', 'approved'].forEach(s => {
+        ['all', 'pending', 'approved', 'claimed', 'unclaimed'].forEach(s => {
             const tabId = s === 'all' ? 'tab-all' : `tab-${s}`;
             const el = document.getElementById(tabId);
             if (!el) return;

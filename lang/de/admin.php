@@ -482,4 +482,7 @@ return [
   'generate_claim_link' => 'Anspruchslink generieren',
   'claim_link_copied' => 'Anspruchslink in die Zwischenablage kopiert!',
   'notice' => 'Hinweis',
+  'claimed' => 'Beansprucht',
+  'unclaimed' => 'Nicht beansprucht',
+  'welcome_claimed_successfully' => 'Willkommen in Ihrem Dashboard! Sie haben Ihr Unternehmensprofil erfolgreich beansprucht.',
 ];

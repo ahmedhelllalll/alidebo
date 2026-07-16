@@ -482,4 +482,7 @@ return [
   'generate_claim_link' => 'Hak Talebi Bağlantısı Oluştur',
   'claim_link_copied' => 'Hak talebi bağlantısı panoya kopyalandı!',
   'notice' => 'Bildirim',
+  'claimed' => 'Sahiplenildi',
+  'unclaimed' => 'Sahiplenilmedi',
+  'welcome_claimed_successfully' => 'Kontrol panelinize hoş geldiniz! İşletme profilinizi başarıyla sahiplendiniz.',
 ];

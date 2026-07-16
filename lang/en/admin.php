@@ -482,4 +482,7 @@ return [
   'generate_claim_link' => 'Generate Claim Link',
   'claim_link_copied' => 'Claim link copied to clipboard!',
   'notice' => 'Notice',
+  'claimed' => 'Claimed',
+  'unclaimed' => 'Unclaimed',
+  'welcome_claimed_successfully' => 'Welcome to your dashboard! You have successfully claimed your business profile.',
 ];
