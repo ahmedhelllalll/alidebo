@@ -464,7 +464,7 @@
                         <span class="sidebar-tooltip">{{ __('admin.pages') }}</span>
                     </a>
                     <a href="{{ route('admin.dashboard.seo') }}"
-                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.dashboard.seo*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.dashboard.seo*', 'admin.seo.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
                         <span class="nav-active-bar"></span>
                         <i class="fa-solid fa-magnifying-glass-chart w-[20px] shrink-0 text-center text-lg transition-transform duration-200 group-hover:scale-110"></i>
                         <span class="sidebar-text">{{ __('admin.seo_settings') }}</span>

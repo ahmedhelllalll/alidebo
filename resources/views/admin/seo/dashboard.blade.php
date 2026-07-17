@@ -57,8 +57,53 @@
                 <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mb-6">{{ __('admin.static_pages_seo_desc') }}</p>
             </div>
             <a href="{{ route('admin.pages.index') }}" class="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-[#121214] hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-[900] text-[13px] transition-all shadow-sm">
-                <i class="fa-solid fa-arrow-right text-[14px]"></i>
+                <i class="fa-solid fa-arrow-right rtl:fa-arrow-left text-[14px]"></i>
                 {{ __('admin.manage_pages') }}
+            </a>
+        </div>
+
+        <!-- Redirects Manager Card -->
+        <div class="bg-white dark:bg-[#121214] shadow-[0_10px_40px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-slate-200 dark:border-white/10 rounded-2xl p-6 flex flex-col justify-between dashboard-card-reveal" style="animation-delay: 200ms;">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-orange-500/10 dark:bg-orange-500/20 flex items-center justify-center text-orange-500 mb-4">
+                    <i class="fa-solid fa-route text-xl"></i>
+                </div>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{{ __('admin.redirects_manager') }}</h2>
+                <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mb-6">{{ __('admin.redirects_desc') }}</p>
+            </div>
+            <a href="{{ route('admin.seo.redirects.index') }}" class="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-[#121214] hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-[900] text-[13px] transition-all shadow-sm">
+                <i class="fa-solid fa-arrow-right rtl:fa-arrow-left text-[14px]"></i>
+                {{ __('admin.manage_redirects') }}
+            </a>
+        </div>
+
+        <!-- 404 Error Logger Card -->
+        <div class="bg-white dark:bg-[#121214] shadow-[0_10px_40px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-slate-200 dark:border-white/10 rounded-2xl p-6 flex flex-col justify-between dashboard-card-reveal" style="animation-delay: 300ms;">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-red-500/10 dark:bg-red-500/20 flex items-center justify-center text-red-500 mb-4">
+                    <i class="fa-solid fa-link-slash text-xl"></i>
+                </div>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{{ __('admin.404_logger') }}</h2>
+                <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mb-6">{{ __('admin.404_logger_desc') }}</p>
+            </div>
+            <a href="{{ route('admin.seo.failed-links.index') }}" class="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-[#121214] hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-[900] text-[13px] transition-all shadow-sm">
+                <i class="fa-solid fa-arrow-right rtl:fa-arrow-left text-[14px]"></i>
+                {{ __('admin.view_404_logs') }}
+            </a>
+        </div>
+
+        <!-- Robots.txt Editor Card -->
+        <div class="bg-white dark:bg-[#121214] shadow-[0_10px_40px_rgba(0,0,0,0.04)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.4)] border border-slate-200 dark:border-white/10 rounded-2xl p-6 flex flex-col justify-between dashboard-card-reveal" style="animation-delay: 400ms;">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-teal-500/10 dark:bg-teal-500/20 flex items-center justify-center text-teal-500 mb-4">
+                    <i class="fa-solid fa-robot text-xl"></i>
+                </div>
+                <h2 class="text-lg font-bold text-slate-900 dark:text-white mb-2">{{ __('admin.robots_editor') }}</h2>
+                <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mb-6">{{ __('admin.robots_editor_desc') }}</p>
+            </div>
+            <a href="{{ route('admin.seo.robots') }}" class="w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-white dark:bg-[#121214] hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-300 rounded-xl font-[900] text-[13px] transition-all shadow-sm">
+                <i class="fa-solid fa-arrow-right rtl:fa-arrow-left text-[14px]"></i>
+                {{ __('admin.edit_robots_txt') }}
             </a>
         </div>
     </div>

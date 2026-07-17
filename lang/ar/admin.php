@@ -485,4 +485,28 @@ return [
   'claimed' => 'مملوك',
   'unclaimed' => 'غير مملوك',
   'welcome_claimed_successfully' => 'مرحباً بك في لوحة التحكم الخاصة بك! لقد نجحت في المطالبة بملف تعريف عملك.',
+  
+  // Phase 2 SEO Smart Tools
+  'redirects_manager' => 'إدارة التوجيهات (301/302)',
+  'redirects_desc' => 'إدارة توجيهات الروابط للحفاظ على ترتيبك في محركات البحث.',
+  'manage_redirects' => 'إدارة التوجيهات',
+  'source_url' => 'الرابط القديم (المصدر)',
+  'target_url' => 'الرابط الجديد (الوجهة)',
+  'status_code' => 'رمز الحالة',
+  'create_redirect' => 'إنشاء توجيه',
+  
+  '404_logger' => 'سجل أخطاء 404',
+  '404_logger_desc' => 'مراقبة الروابط المعطلة لإصلاحها قبل أن تؤثر على تحسين محركات البحث (SEO).',
+  'view_404_logs' => 'عرض سجلات 404',
+  'url' => 'الرابط',
+  'hits' => 'الزيارات',
+  'last_seen' => 'آخر ظهور',
+  
+  'robots_editor' => 'محرر Robots.txt',
+  'robots_editor_desc' => 'تعديل ملف robots.txt مباشرة للتحكم في عناكب محركات البحث.',
+  'edit_robots_txt' => 'تعديل robots.txt',
+  'robots_txt_warning' => 'هام: يرجى الحذر!',
+  'robots_txt_warning_desc' => 'قد يمنع ملف robots.txt غير الصحيح محركات البحث من أرشفة موقعك بالكامل. قم بتعديل هذا الملف فقط إذا كنت تعرف ما تفعله.',
+  'view_live' => 'عرض الملف المباشر',
+  'suggested_links' => 'روابط مقترحة:',
 ];

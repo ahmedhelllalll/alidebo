@@ -112,6 +112,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/dashboard/seo', [Admin\SeoController::class, 'dashboard'])->name('dashboard.seo');
         Route::post('/dashboard/seo/sitemap/regenerate', [Admin\SeoController::class, 'regenerateSitemap'])->name('dashboard.seo.sitemap.regenerate');
         
+        Route::prefix('seo')->name('seo.')->group(function () {
+            Route::resource('redirects', Admin\RedirectController::class)->except(['show']);
+            Route::get('failed-links', [Admin\FailedLinkController::class, 'index'])->name('failed-links.index');
+            Route::delete('failed-links/{failed_link}', [Admin\FailedLinkController::class, 'destroy'])->name('failed-links.destroy');
+            Route::get('robots', [Admin\SeoController::class, 'robots'])->name('robots');
+            Route::post('robots', [Admin\SeoController::class, 'updateRobots'])->name('robots.update');
+        });
+        
         Route::get('/locations', [Admin\LocationController::class, 'index'])->name('locations.index');
         
         Route::resource('countries', Admin\CountryController::class);

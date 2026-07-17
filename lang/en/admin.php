@@ -485,4 +485,28 @@ return [
   'claimed' => 'Claimed',
   'unclaimed' => 'Unclaimed',
   'welcome_claimed_successfully' => 'Welcome to your dashboard! You have successfully claimed your business profile.',
+  
+  // Phase 2 SEO Smart Tools
+  'redirects_manager' => '301/302 Redirects',
+  'redirects_desc' => 'Manage URL redirections to preserve your search ranking.',
+  'manage_redirects' => 'Manage Redirects',
+  'source_url' => 'Source URL (Old)',
+  'target_url' => 'Target URL (New)',
+  'status_code' => 'Status Code',
+  'create_redirect' => 'Create Redirect',
+  
+  '404_logger' => '404 Error Logger',
+  '404_logger_desc' => 'Monitor broken links to fix them before they harm SEO.',
+  'view_404_logs' => 'View 404 Logs',
+  'url' => 'URL',
+  'hits' => 'Hits',
+  'last_seen' => 'Last Seen',
+  
+  'robots_editor' => 'Robots.txt Editor',
+  'robots_editor_desc' => 'Directly edit the robots.txt file to control search engine crawlers.',
+  'edit_robots_txt' => 'Edit robots.txt',
+  'robots_txt_warning' => 'Important: Proceed with caution!',
+  'robots_txt_warning_desc' => 'An incorrect robots.txt file can prevent search engines from indexing your site entirely. Only edit this if you know what you are doing.',
+  'view_live' => 'View Live File',
+  'suggested_links' => 'Suggested Links:',
 ];
