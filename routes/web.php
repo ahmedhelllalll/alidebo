@@ -110,8 +110,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('blogs', Admin\BlogPostController::class);
         
         Route::get('/dashboard/seo', [Admin\SeoController::class, 'dashboard'])->name('dashboard.seo');
+        Route::get('/dashboard/seo/search-insights', [Admin\SeoController::class, 'searchInsights'])->name('dashboard.seo.search-insights');
         Route::post('/dashboard/seo/sitemap/regenerate', [Admin\SeoController::class, 'regenerateSitemap'])->name('dashboard.seo.sitemap.regenerate');
         
+        Route::post('/indexing/request', [Admin\GoogleIndexingController::class, 'requestIndexing'])->name('indexing.request');
+
         Route::prefix('seo')->name('seo.')->group(function () {
             Route::resource('redirects', Admin\RedirectController::class)->except(['show']);
             Route::get('failed-links', [Admin\FailedLinkController::class, 'index'])->name('failed-links.index');

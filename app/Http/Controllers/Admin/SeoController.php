@@ -42,4 +42,20 @@ class SeoController extends Controller
         
         return redirect()->back()->with('success', __('admin.saved_successfully'));
     }
+
+    public function searchInsights(Request $request, \App\Services\GoogleSearchConsoleService $gscService)
+    {
+        $period = $request->input('period', '30'); // 7, 30, 90 days
+        $startDate = now()->subDays((int)$period)->format('Y-m-d');
+        $endDate = now()->format('Y-m-d');
+        $siteUrl = env('APP_URL');
+
+        // Get daily clicks and impressions for charts
+        $chartData = $gscService->getAnalyticsData($siteUrl, $startDate, $endDate, ['date']);
+        
+        // Get top queries for data tables
+        $topQueries = $gscService->getAnalyticsData($siteUrl, $startDate, $endDate, ['query'], 50);
+
+        return view('admin.seo.search-insights', compact('chartData', 'topQueries', 'period'));
+    }
 }

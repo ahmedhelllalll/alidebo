@@ -97,6 +97,7 @@
                             <th class="px-6 py-4 text-start">{{ __('admin.slug') }}</th>
                             <th class="px-6 py-4 text-start">{{ __('admin.status') }}</th>
                             <th class="px-6 py-4 text-start">{{ __('admin.created_at') }}</th>
+                            <th class="px-6 py-4 text-start">{{ __('admin.indexing') }}</th>
                             <th class="px-6 py-4 text-end">{{ __('admin.actions') }}</th>
                         </tr>
                     </thead>
@@ -142,6 +143,28 @@
                             {{-- Created At --}}
                             <td class="px-6 py-4 text-slate-400 dark:text-zinc-500 text-[13px]">
                                 {{ $page->created_at?->diffForHumans() }}
+                            </td>
+
+                            {{-- Indexing --}}
+                            <td class="px-6 py-4">
+                                @php
+                                    $log = \App\Models\GoogleIndexLog::where('indexable_type', 'App\Models\Page')->where('indexable_id', $page->id)->first();
+                                @endphp
+                                @if($log)
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wider border {{ $log->status == 'submitted' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : ($log->status == 'failed' ? 'bg-red-50 text-red-600 border-red-200' : 'bg-amber-50 text-amber-600 border-amber-200') }}">
+                                        {{ $log->status }}
+                                    </span>
+                                @else
+                                    <form action="{{ route('admin.indexing.request') }}" method="POST" class="inline">
+                                        @csrf
+                                        <input type="hidden" name="url" value="{{ url('/' . $page->slug) }}">
+                                        <input type="hidden" name="indexable_type" value="App\Models\Page">
+                                        <input type="hidden" name="indexable_id" value="{{ $page->id }}">
+                                        <button type="submit" class="text-[11px] font-black uppercase tracking-wider text-primary hover:text-primary-light transition-colors flex items-center gap-1 bg-primary/10 px-2.5 py-1 rounded-md">
+                                            <i class="fa-brands fa-google"></i> {{ __('admin.request_index') }}
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
 
                             {{-- Actions --}}

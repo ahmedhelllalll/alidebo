@@ -9,6 +9,12 @@
             <h1 class="text-2xl sm:text-3xl font-[900] tracking-tight bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">{{ __('admin.seo_dashboard') }}</h1>
             <p class="text-sm font-medium text-slate-500 dark:text-zinc-500 mt-1 sm:mt-1.5">{{ __('admin.seo_desc') }}</p>
         </div>
+        <div>
+            <a href="{{ route('admin.dashboard.seo.search-insights') }}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white rounded-xl font-[900] text-[13px] shadow-[0_8px_20px_rgba(99,102,241,0.25)] hover:shadow-[0_12px_25px_rgba(99,102,241,0.35)] transition-all active:scale-[0.98]">
+                <i class="fa-solid fa-chart-line text-[14px]"></i>
+                {{ __('admin.google_search_insights') }}
+            </a>
+        </div>
     </div>
 
 

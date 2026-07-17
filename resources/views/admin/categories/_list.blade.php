@@ -11,6 +11,7 @@
                 <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">TR</th>
                 <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">ZH</th>
                 <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.status') }}</th>
+                <th scope="col" class="px-6 py-5 text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.indexing') }}</th>
                 <th scope="col" class="px-6 py-5 text-end text-[13px] font-[900] text-slate-500 dark:text-zinc-400 uppercase ltr:tracking-wider">{{ __('admin.actions') }}</th>
             </tr>
         </x-slot>
@@ -53,6 +54,26 @@
                         </button>
                     </div>
                 </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                @php
+                    $log = \App\Models\GoogleIndexLog::where('indexable_type', 'App\Models\Category')->where('indexable_id', $category->id)->first();
+                @endphp
+                @if($log)
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wider border {{ $log->status == 'submitted' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : ($log->status == 'failed' ? 'bg-red-50 text-red-600 border-red-200' : 'bg-amber-50 text-amber-600 border-amber-200') }}">
+                        {{ $log->status }}
+                    </span>
+                @else
+                    <form action="{{ route('admin.indexing.request') }}" method="POST" class="inline">
+                        @csrf
+                        <input type="hidden" name="url" value="{{ url('/category/' . $category->slug) }}">
+                        <input type="hidden" name="indexable_type" value="App\Models\Category">
+                        <input type="hidden" name="indexable_id" value="{{ $category->id }}">
+                        <button type="submit" class="text-[11px] font-black uppercase tracking-wider text-primary hover:text-primary-light transition-colors flex items-center gap-1 bg-primary/10 px-2.5 py-1 rounded-md">
+                            <i class="fa-brands fa-google"></i> {{ __('admin.request_index') }}
+                        </button>
+                    </form>
+                @endif
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-end">
                 <div class="flex items-center justify-end gap-3">
@@ -124,6 +145,26 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 {{ __('admin.delete') }}
             </button>
+        </div>
+        <div class="mt-4 pt-4 border-t border-slate-50 dark:border-white/[0.03]">
+            @php
+                $logMobile = \App\Models\GoogleIndexLog::where('indexable_type', 'App\Models\Category')->where('indexable_id', $category->id)->first();
+            @endphp
+            @if($logMobile)
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-black uppercase tracking-wider border {{ $logMobile->status == 'submitted' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : ($logMobile->status == 'failed' ? 'bg-red-50 text-red-600 border-red-200' : 'bg-amber-50 text-amber-600 border-amber-200') }}">
+                    <i class="fa-brands fa-google"></i> {{ $logMobile->status }}
+                </span>
+            @else
+                <form action="{{ route('admin.indexing.request') }}" method="POST" class="w-full">
+                    @csrf
+                    <input type="hidden" name="url" value="{{ url('/category/' . $category->slug) }}">
+                    <input type="hidden" name="indexable_type" value="App\Models\Category">
+                    <input type="hidden" name="indexable_id" value="{{ $category->id }}">
+                    <button type="submit" class="w-full text-[13px] font-[900] bg-primary/10 text-primary py-2.5 rounded-xl hover:bg-primary/20 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-google"></i> {{ __('admin.request_index') }}
+                    </button>
+                </form>
+            @endif
         </div>
     </div>
     @empty
