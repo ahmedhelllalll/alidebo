@@ -97,4 +97,106 @@ class GoogleSearchConsoleService
             ];
         }
     }
+
+    /**
+     * Get sitemaps submitted to Google Search Console
+     *
+     * @param string $siteUrl
+     * @return array
+     */
+    public function getSitemaps($siteUrl)
+    {
+        try {
+            $accessToken = $this->getAccessToken();
+            $url = 'https://searchconsole.googleapis.com/webmasters/v3/sites/' . urlencode($siteUrl) . '/sitemaps';
+
+            $response = Http::withToken($accessToken)->get($url);
+
+            if (!$response->successful()) {
+                throw new \Exception('Search Console API Error: ' . $response->body());
+            }
+
+            $sitemaps = $response->json('sitemap') ?? [];
+            $expandedSitemaps = [];
+
+            foreach ($sitemaps as $sitemap) {
+                $expandedSitemaps[] = $sitemap;
+                
+                // If it's an index, try to read the local sitemap to find children
+                if (!empty($sitemap['isSitemapsIndex'])) {
+                    $path = parse_url($sitemap['path'], PHP_URL_PATH);
+                    $localPath = public_path(ltrim($path, '/'));
+                    
+                    if (file_exists($localPath)) {
+                        $xml = simplexml_load_file($localPath);
+                        if ($xml && isset($xml->sitemap)) {
+                            foreach ($xml->sitemap as $childSitemap) {
+                                $childUrl = (string) $childSitemap->loc;
+                                
+                                // Fetch child details from GSC API
+                                $childApiUrl = 'https://searchconsole.googleapis.com/webmasters/v3/sites/' . urlencode($siteUrl) . '/sitemaps/' . urlencode($childUrl);
+                                $childResponse = Http::withToken($accessToken)->get($childApiUrl);
+                                
+                                if ($childResponse->successful()) {
+                                    $childData = $childResponse->json();
+                                    $childData['is_child'] = true;
+                                    $expandedSitemaps[] = $childData;
+                                } else {
+                                    // Add a placeholder if API fetch fails or it's not known to GSC yet
+                                    $expandedSitemaps[] = [
+                                        'path' => $childUrl,
+                                        'is_child' => true,
+                                        'status' => 'Pending'
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return [
+                'success' => true,
+                'sitemaps' => $expandedSitemaps
+            ];
+        } catch (\Exception $e) {
+            Log::error('Google Search Console Sitemaps API Error: ' . $e->getMessage(), [
+                'siteUrl' => $siteUrl
+            ]);
+            
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'sitemaps' => []
+            ];
+        }
+    }
+
+    /**
+     * Get the first available site URL from Google Search Console
+     *
+     * @return string
+     */
+    public function getSiteUrl()
+    {
+        return \Illuminate\Support\Facades\Cache::remember('google_search_console_site_url', 86400, function () {
+            try {
+                $accessToken = $this->getAccessToken();
+                $response = Http::withToken($accessToken)
+                    ->get('https://searchconsole.googleapis.com/webmasters/v3/sites');
+
+                if ($response->successful()) {
+                    $sites = $response->json('siteEntry');
+                    if (!empty($sites)) {
+                        return $sites[0]['siteUrl'];
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::error('Google Search Console Sites API Error: ' . $e->getMessage());
+            }
+
+            // Fallback to sc-domain of the APP_URL
+            return 'sc-domain:' . parse_url(env('APP_URL'), PHP_URL_HOST);
+        });
+    }
 }
