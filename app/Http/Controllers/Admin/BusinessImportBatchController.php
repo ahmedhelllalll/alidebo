@@ -48,9 +48,6 @@ class BusinessImportBatchController extends Controller
                 'status' => 'processing',
             ]);
             
-            // FORCE queue workers to restart to ensure they load the latest code!
-            \Illuminate\Support\Facades\Artisan::call('queue:restart');
-            
             Excel::queueImport(new BusinessProfilesImport($adminUser->email, $adminUser->id, $batch->id), $request->file('file'));
 
             return response()->json([
