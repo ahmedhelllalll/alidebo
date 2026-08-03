@@ -10,30 +10,43 @@
             <h1 class="text-2xl sm:text-3xl font-[900] tracking-tight ltr:bg-gradient-to-r rtl:bg-gradient-to-l from-slate-900 to-slate-600 dark:from-white dark:to-zinc-400 bg-clip-text text-transparent">{{ __('admin.businesses') }}</h1>
             <p class="text-sm font-medium text-slate-500 dark:text-zinc-500 mt-1 sm:mt-1.5">{{ __('admin.all_businesses') }} (<span id="total-count-header" data-total="{{ $businesses->total() }}">{{ $businesses->total() }}</span>)</p>
         </div>
-        <a href="{{ route('admin.businesses.create') }}" class="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-light text-white rounded-xl font-[900] text-[14px] shadow-[0_8px_20px_rgba(244,80,24,0.25)] hover:shadow-[0_12px_25px_rgba(244,80,24,0.35)] transition-all active:scale-[0.98]">
-            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-            {{ __('admin.add_new') }}
-        </a>
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+            <a href="{{ route('admin.businesses.create') }}" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-light text-white rounded-xl font-[900] text-[14px] shadow-[0_8px_20px_rgba(244,80,24,0.25)] hover:shadow-[0_12px_25px_rgba(244,80,24,0.35)] transition-all active:scale-[0.98]">
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                {{ __('admin.add_new') }}
+            </a>
+        </div>
     </div>
     {{-- Filter & Search Bar --}}
     <div class="flex flex-col md:flex-row items-center justify-between gap-4 bg-white/50 dark:bg-zinc-900/30 backdrop-blur-xl p-4 rounded-2xl border border-white/60 dark:border-white/[0.05] shadow-sm relative z-20">
-        {{-- Status Tabs --}}
-        <div class="flex items-center p-1 bg-slate-100/50 dark:bg-zinc-800/50 rounded-xl w-full md:w-auto overflow-x-auto custom-scrollbar-hide whitespace-nowrap">
-            <button onclick="setStatusFilter('', this)" id="tab-all" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ !request('status') ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
-                {{ __('admin.all') }}
-            </button>
-            <button onclick="setStatusFilter('pending', this)" id="tab-pending" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'pending' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
-                {{ __('admin.pending') }}
-            </button>
-            <button onclick="setStatusFilter('approved', this)" id="tab-approved" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'approved' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
-                {{ __('admin.approved') }}
-            </button>
-            <button onclick="setStatusFilter('claimed', this)" id="tab-claimed" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'claimed' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
-                {{ __('admin.claimed') }}
-            </button>
-            <button onclick="setStatusFilter('unclaimed', this)" id="tab-unclaimed" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'unclaimed' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
-                {{ __('admin.unclaimed') }}
-            </button>
+        <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+            {{-- Status Tabs --}}
+            <div class="flex items-center p-1 bg-slate-100/50 dark:bg-zinc-800/50 rounded-xl overflow-x-auto custom-scrollbar-hide whitespace-nowrap">
+                <button onclick="setStatusFilter('', this)" id="tab-all" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ !request('status') ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+                    {{ __('admin.all') }}
+                </button>
+                <button onclick="setStatusFilter('pending', this)" id="tab-pending" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'pending' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+                    {{ __('admin.pending') }}
+                </button>
+                <button onclick="setStatusFilter('approved', this)" id="tab-approved" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'approved' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+                    {{ __('admin.approved') }}
+                </button>
+                <button onclick="setStatusFilter('claimed', this)" id="tab-claimed" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'claimed' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+                    {{ __('admin.claimed') }}
+                </button>
+                <button onclick="setStatusFilter('unclaimed', this)" id="tab-unclaimed" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'unclaimed' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
+                    {{ __('admin.unclaimed') }}
+                </button>
+            </div>
+            
+            @if(request('batch_id'))
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 rounded-lg shadow-sm">
+                    <span class="text-[13px] font-bold text-rose-600 dark:text-rose-400">{{ __('admin.showing_batch', ['id' => request('batch_id')]) }}</span>
+                    <a href="{{ route('admin.businesses.index') }}" class="text-rose-400 hover:text-rose-600 dark:hover:text-rose-300 transition-colors bg-white/50 dark:bg-zinc-800/50 rounded p-0.5" title="Clear Filter">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </a>
+                </div>
+            @endif
         </div>
         {{-- Smart Search --}}
         <div class="relative w-full md:w-1/2 group" id="search-input-wrapper">
@@ -166,6 +179,8 @@
     </x-slot>
 </x-admin.modal>
 
+
+
 @push('scripts')
 <script>
     let currentStatus = '{{ request("status", "") }}';
@@ -217,6 +232,8 @@
     // Export for inline onclicks in component
     window.closeModal = (id) => window.modals[id]?.hide();
     initModals();
+
+
 
     function openEditForm(id) {
         window.location.href = `${window.AppConfig.adminUrl}/businesses/${id}/edit`;
@@ -465,7 +482,7 @@
                         <p class="text-[10px] font-medium text-slate-400 mt-0.5 truncate">${metaText}</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 shrink-0 ml-2 rtl:mr-2 rtl:ml-0">
+                <div class="flex items-center gap-2 shrink-0 ms-2 rtl:me-2 rtl:ms-0">
                     <span class="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-lg ${statusClass}">
                         ${biz.status}
                     </span>

@@ -770,7 +770,7 @@
                         <div class="flex ${isUser ? 'justify-end' : 'justify-start'} mb-5 gap-2.5">
                             ${!isUser ? avatar : ''}
                             <div class="flex flex-col ${isUser ? 'items-end' : 'items-start'} max-w-[80%]">
-                                <div class="px-4 py-2.5 text-[13px] leading-relaxed shadow-sm ${isUser ? 'bg-primary text-white rounded-[20px] rounded-br-[4px]' : 'bg-white dark:bg-[#121214] text-slate-900 dark:text-zinc-100 rounded-[20px] rounded-bl-[4px] border border-slate-100 dark:border-white/5'}">
+                                <div class="px-4 py-2.5 text-[13px] leading-relaxed shadow-sm ${isUser ? 'bg-primary text-white rounded-[20px] rounded-ee-[4px]' : 'bg-white dark:bg-[#121214] text-slate-900 dark:text-zinc-100 rounded-[20px] rounded-es-[4px] border border-slate-100 dark:border-white/5'}">
                                     ${msg.message}
                                 </div>
                                 <span class="text-[9px] text-slate-400 mt-1.5 px-1 font-bold tracking-wide uppercase">${msg.time_ago}</span>

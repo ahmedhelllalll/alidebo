@@ -432,6 +432,15 @@
                         <span class="sidebar-text">{{ __('admin.add_new') }}</span>
                         <span class="sidebar-tooltip">{{ __('admin.add_new') }}</span>
                     </a>
+                    <a href="{{ route('admin.import-batches.index') }}"
+                        class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.import-batches.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
+                        <span class="nav-active-bar"></span>
+                        <div class="w-[20px] h-[20px] shrink-0 flex items-center justify-center">
+                            <i class="fa-solid fa-file-import text-[14px] transition-transform duration-200 group-hover:scale-110"></i>
+                        </div>
+                        <span class="sidebar-text">{{ __('admin.import_manager') ?? 'Import Manager' }}</span>
+                        <span class="sidebar-tooltip">{{ __('admin.import_manager') ?? 'Import Manager' }}</span>
+                    </a>
                     <a href="{{ route('admin.categories.index') }}"
                         class="sidebar-nav-item relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold transition-colors group {{ request()->routeIs('admin.categories.*') ? 'nav-active bg-primary/[0.07] text-primary dark:text-primary-light' : 'text-slate-500 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-800/40 hover:text-slate-700 dark:hover:text-zinc-200' }}">
                         <span class="nav-active-bar"></span>
@@ -552,7 +561,7 @@
                             <i class="fa-solid fa-user text-primary text-sm"></i>
                         </div>
                     </div>
-                    <div class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-white dark:bg-[#09090b] flex items-center justify-center shadow-sm">
+                    <div class="absolute -bottom-1 -end-1 w-4 h-4 rounded-full bg-white dark:bg-[#09090b] flex items-center justify-center shadow-sm">
                         <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse border-2 border-white dark:border-[#09090b]"></div>
                     </div>
                 </div>

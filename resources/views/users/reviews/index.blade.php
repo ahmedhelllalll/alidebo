@@ -17,14 +17,14 @@
     <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-black/5 dark:border-white/[0.04] overflow-hidden">
         @if($reviews->count() > 0)
             <div class="overflow-x-auto">
-                <table class="w-full text-sm text-left">
+                <table class="w-full text-sm text-start">
                     <thead class="text-xs text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-800/50 uppercase">
                         <tr>
                             <th class="px-6 py-4 font-semibold">{{ __('dashboard.index.rating') }}</th>
                             <th class="px-6 py-4 font-semibold">{{ __('dashboard.index.comment') }}</th>
                             <th class="px-6 py-4 font-semibold">{{ __('dashboard.index.status') }}</th>
                             <th class="px-6 py-4 font-semibold">{{ __('dashboard.index.date') }}</th>
-                            <th class="px-6 py-4 font-semibold text-right">{{ __('dashboard.index.action') }}</th>
+                            <th class="px-6 py-4 font-semibold text-end">{{ __('dashboard.index.action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-black/5 dark:divide-white/[0.04]">
@@ -48,7 +48,7 @@
                                 <td class="px-6 py-4">
                                     <p class="text-zinc-700 dark:text-zinc-300 line-clamp-2">{{ $review->comment }}</p>
                                     @if($review->reply)
-                                        <div class="mt-2 pl-3 border-l-2 border-indigo-500 text-xs">
+                                        <div class="mt-2 ps-3 border-s-2 border-indigo-500 text-xs">
                                             <span class="font-semibold text-zinc-900 dark:text-white">{{ __('directory.business_reply') }}</span>
                                             <p class="text-zinc-600 dark:text-zinc-400 mt-1">{{ $review->reply }}</p>
                                         </div>
@@ -67,7 +67,7 @@
                                 <td class="px-6 py-4 text-zinc-500 dark:text-zinc-400">
                                     {{ $review->created_at->format('M d, Y') }}
                                 </td>
-                                <td class="px-6 py-4 text-right">
+                                <td class="px-6 py-4 text-end">
                                     <button @click="openReply = !openReply" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm font-medium">
                                         {{ __('dashboard.index.reply_to_review') }}
                                     </button>

@@ -23,7 +23,7 @@
                 <input type="text" name="seo_metadata[meta_title]" id="seo_meta_title" x-model="title" @input="updatePreview"
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                        placeholder="e.g. Best Services | Alidebo" maxlength="60">
-                <p class="mt-1 text-xs text-gray-500 text-right"><span x-text="title.length"></span>/60</p>
+                <p class="mt-1 text-xs text-gray-500 text-end"><span x-text="title.length"></span>/60</p>
             </div>
 
             <div>
@@ -31,7 +31,7 @@
                 <textarea name="seo_metadata[meta_description]" id="seo_meta_description" rows="3" x-model="description" @input="updatePreview"
                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white"
                           placeholder="A brief description of the page..." maxlength="160"></textarea>
-                <p class="mt-1 text-xs text-gray-500 text-right"><span x-text="description.length"></span>/160</p>
+                <p class="mt-1 text-xs text-gray-500 text-end"><span x-text="description.length"></span>/160</p>
             </div>
 
             <div>
@@ -67,7 +67,7 @@
                         <div x-show="previewUrl" class="absolute inset-0 w-full h-full p-2" style="display: none;">
                             <img :src="previewUrl" class="w-full h-full object-contain rounded-xl" />
                             <div class="absolute inset-0 bg-black/50 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center m-2">
-                                <span class="text-white font-bold text-sm bg-black/50 px-3 py-1 rounded-lg"><i class="fa-solid fa-pen mr-1"></i> {{ __('admin.change_image') }}</span>
+                                <span class="text-white font-bold text-sm bg-black/50 px-3 py-1 rounded-lg"><i class="fa-solid fa-pen me-1"></i> {{ __('admin.change_image') }}</span>
                             </div>
                         </div>
 

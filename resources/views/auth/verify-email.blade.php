@@ -95,7 +95,7 @@
                 <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary to-orange-400 flex items-center justify-center border-2 border-white dark:border-zinc-800">
                     <img src="{{ asset('images/logo.webp') }}" class="w-8 h-8 object-contain">
                 </div>
-                <div class="space-y-3 flex-1 text-right">
+                <div class="space-y-3 flex-1 text-end">
                     <div class="w-32 h-3 bg-slate-100 dark:bg-zinc-800 rounded-full"></div>
                     <div class="w-20 h-2 bg-slate-50 dark:bg-zinc-800/50 rounded-full"></div>
                 </div>
@@ -104,7 +104,7 @@
                 <div class="w-full h-2.5 bg-slate-100 dark:bg-zinc-800 rounded-full shadow-inner"></div>
                 <div class="w-5/6 h-2.5 bg-slate-100 dark:bg-zinc-800 rounded-full shadow-inner"></div>
             </div>
-            <div class="absolute -bottom-5 -left-5 w-14 h-14 bg-primary rounded-2xl shadow-lg flex items-center justify-center text-white scale-110 border-4 border-white dark:border-[#09090b]">
+            <div class="absolute -bottom-5 -start-5 w-14 h-14 bg-primary rounded-2xl shadow-lg flex items-center justify-center text-white scale-110 border-4 border-white dark:border-[#09090b]">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>
             </div>
         </div>

@@ -102,4 +102,5 @@ return [
   'claim_invited_title' => '您受邀认领此商家！',
   'claim_invited_desc' => '认领后，您将完全控制相关信息、评论和潜在客户。',
   'claim_now' => '立即认领',
+    'general_gallery' => '通用图库',
 ];

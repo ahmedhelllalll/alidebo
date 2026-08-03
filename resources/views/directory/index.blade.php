@@ -59,10 +59,10 @@
         <!-- Ambient Corner Glows -->
         <div class="absolute top-0 inset-x-0 h-[600px] pointer-events-none overflow-hidden z-0 opacity-40 dark:opacity-30">
             <div
-                class="absolute -top-40 -left-40 w-[400px] h-[400px] bg-primary/10 dark:bg-primary/10 blur-[130px] rounded-full">
+                class="absolute -top-40 -start-40 w-[400px] h-[400px] bg-primary/10 dark:bg-primary/10 blur-[130px] rounded-full">
             </div>
             <div
-                class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/10 dark:bg-primary/10 blur-[140px] rounded-full">
+                class="absolute -top-40 -end-40 w-[500px] h-[500px] bg-primary/10 dark:bg-primary/10 blur-[140px] rounded-full">
             </div>
         </div>
 
@@ -119,14 +119,14 @@
                             class="flex-1 py-3 text-[13px] font-black uppercase tracking-wider transition-colors relative"
                             :class="activeTab === 'categories' ? 'text-primary' : 'text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300'">
                             {{ __('directory.categories') }}
-                            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
+                            <div class="absolute bottom-0 start-0 end-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
                                 :class="activeTab === 'categories' ? 'scale-x-100' : 'scale-x-0'"></div>
                         </button>
                         <button type="button" @click="activeTab = 'countries'" 
                             class="flex-1 py-3 text-[13px] font-black uppercase tracking-wider transition-colors relative"
                             :class="activeTab === 'countries' ? 'text-primary' : 'text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300'">
                             {{ __('directory.country') ?? 'Country' }}
-                            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
+                            <div class="absolute bottom-0 start-0 end-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
                                 :class="activeTab === 'countries' ? 'scale-x-100' : 'scale-x-0'"></div>
                         </button>
                     </div>
@@ -251,14 +251,14 @@
                                         class="flex-1 pb-3 text-[13px] font-black uppercase tracking-wider transition-colors relative"
                                         :class="activeTab === 'categories' ? 'text-primary' : 'text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300'">
                                         {{ __('directory.categories') }}
-                                        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
+                                        <div class="absolute bottom-0 start-0 end-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
                                             :class="activeTab === 'categories' ? 'scale-x-100' : 'scale-x-0'"></div>
                                     </button>
                                     <button type="button" @click="activeTab = 'countries'" 
                                         class="flex-1 pb-3 text-[13px] font-black uppercase tracking-wider transition-colors relative"
                                         :class="activeTab === 'countries' ? 'text-primary' : 'text-slate-400 hover:text-slate-600 dark:text-zinc-500 dark:hover:text-zinc-300'">
                                         {{ __('directory.country') ?? 'Country' }}
-                                        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
+                                        <div class="absolute bottom-0 start-0 end-0 h-0.5 bg-primary transition-transform duration-300 origin-left"
                                             :class="activeTab === 'countries' ? 'scale-x-100' : 'scale-x-0'"></div>
                                     </button>
                                 </div>
@@ -405,7 +405,7 @@
                                     x-transition:leave="transition ease-in duration-150"
                                     x-transition:leave-start="opacity-100 translate-y-0"
                                     x-transition:leave-end="opacity-0 translate-y-1"
-                                    class="absolute top-full left-0 right-0 mt-2 z-[99999]">
+                                    class="absolute top-full start-0 end-0 mt-2 z-[99999]">
                                     <div class="flex items-center gap-2 px-4 py-2.5 bg-amber-50 dark:bg-amber-500/10 border border-amber-200/80 dark:border-amber-500/20 rounded-xl text-amber-700 dark:text-amber-400 text-sm font-semibold">
                                         <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -422,7 +422,7 @@
                                     x-transition:leave="transition ease-in duration-150"
                                     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
                                     x-transition:leave-end="opacity-0 translate-y-2 scale-95"
-                                    class="absolute top-full left-0 right-0 mt-3 bg-white dark:bg-[#121214]/95 backdrop-blur-2xl border border-slate-200 dark:border-zinc-800/80 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] overflow-y-auto max-h-[400px] sidebar-scroll scroll-smooth snap-y snap-mandatory scroll-p-3 z-[99999] text-left" data-lenis-prevent>
+                                    class="absolute top-full start-0 end-0 mt-3 bg-white dark:bg-[#121214]/95 backdrop-blur-2xl border border-slate-200 dark:border-zinc-800/80 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] overflow-y-auto max-h-[400px] sidebar-scroll scroll-smooth snap-y snap-mandatory scroll-p-3 z-[99999] text-start" data-lenis-prevent>
                                     <!-- Loading State -->
                                     <div x-show="loading" class="p-3 space-y-2">
                                         <div
@@ -652,22 +652,22 @@
                                     <div class="py-1">
                                         <button type="button" @click="selectedSort = 'newest'; submitForm(); sortOpen = false"
                                             :class="{'bg-primary/5 text-primary': selectedSort === 'newest', 'text-slate-600 dark:text-zinc-400': selectedSort !== 'newest'}"
-                                            class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                            class="w-full text-start px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
                                             {{ __('directory.sort_newest') ?? 'Newest' }}
                                         </button>
                                         <button type="button" @click="selectedSort = 'oldest'; submitForm(); sortOpen = false"
                                             :class="{'bg-primary/5 text-primary': selectedSort === 'oldest', 'text-slate-600 dark:text-zinc-400': selectedSort !== 'oldest'}"
-                                            class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                            class="w-full text-start px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
                                             {{ __('directory.sort_oldest') ?? 'Oldest' }}
                                         </button>
                                         <button type="button" @click="selectedSort = 'a-z'; submitForm(); sortOpen = false"
                                             :class="{'bg-primary/5 text-primary': selectedSort === 'a-z', 'text-slate-600 dark:text-zinc-400': selectedSort !== 'a-z'}"
-                                            class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                            class="w-full text-start px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
                                             {{ __('directory.sort_az') ?? 'Name (A-Z)' }}
                                         </button>
                                         <button type="button" @click="selectedSort = 'z-a'; submitForm(); sortOpen = false"
                                             :class="{'bg-primary/5 text-primary': selectedSort === 'z-a', 'text-slate-600 dark:text-zinc-400': selectedSort !== 'z-a'}"
-                                            class="w-full text-left px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
+                                            class="w-full text-start px-4 py-2 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-zinc-800/50 transition-colors">
                                             {{ __('directory.sort_za') ?? 'Name (Z-A)' }}
                                         </button>
                                     </div>

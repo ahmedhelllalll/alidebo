@@ -155,70 +155,69 @@
       position: fixed; inset: 0; z-index: 100000;
       display: flex; align-items: center; justify-content: center;
       pointer-events: none; opacity: 0;
+      transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
-    #lightbox.active { pointer-events: all; }
-    #lightbox-bg-img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: blur(40px) brightness(0.35);
-      transform: scale(1.1) translateZ(0);
-      will-change: transform, opacity;
-      backface-visibility: hidden;
-      z-index: 0;
-      transition: opacity 0.3s ease;
-    }
+    #lightbox.active { pointer-events: all; opacity: 1; }
+    
     #lightbox-backdrop {
       position: absolute; inset: 0;
-      background: rgba(0,0,0,0.65);
+      background: rgba(10, 10, 12, 0.9);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       z-index: 1;
     }
     #lightbox-img-wrap {
       position: relative; z-index: 1;
       width: 90vw; max-width: 1100px;
-      max-height: 80vh;
+      max-height: 85vh;
       display: flex; align-items: center; justify-content: center;
     }
     #lightbox-img {
-      max-width: 100%; max-height: 80vh;
+      max-width: 100%; max-height: 85vh;
       object-fit: contain; display: block;
-      border: 1px solid rgba(255,255,255,0.05);
       user-select: none; -webkit-user-drag: none;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     }
     #lightbox-close {
-      position: absolute; top: clamp(0.75rem, 3vw, 1.5rem); right: clamp(0.75rem, 3vw, 1.5rem); z-index: 2;
+      position: absolute; top: clamp(1rem, 3vw, 2rem); right: clamp(1rem, 3vw, 2rem); z-index: 2;
       width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
       color: #fff; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; transition: background 0.2s;
+      font-size: 1.1rem; transition: all 0.2s;
       touch-action: manipulation;
+      backdrop-filter: blur(8px);
     }
-    #lightbox-close:hover { background: rgba(255,255,255,0.14); }
+    [dir="rtl"] #lightbox-close { right: auto; left: clamp(1rem, 3vw, 2rem); }
+    #lightbox-close:hover { background: rgba(255,255,255,0.15); transform: scale(1.05); }
     #lightbox-counter {
-      position: absolute; bottom: clamp(0.75rem, 3vw, 1.5rem); left: 50%; transform: translateX(-50%); z-index: 2;
-      font-size: 0.65rem; letter-spacing: 0.22em; color: rgba(255,255,255,0.3); text-transform: uppercase;
+      position: absolute; bottom: clamp(1rem, 3vw, 2rem); left: 50%; transform: translateX(-50%); z-index: 2;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; color: rgba(255,255,255,0.6); text-transform: uppercase;
       white-space: nowrap;
     }
     #lightbox-prev, #lightbox-next {
       position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
-      width: 48px; height: 48px; border-radius: 50%;
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
       color: #fff; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; transition: background 0.2s;
+      transition: all 0.2s;
       touch-action: manipulation;
+      backdrop-filter: blur(8px);
     }
-    #lightbox-prev { left: clamp(0.5rem, 2vw, 1.25rem); }
-    #lightbox-next { right: clamp(0.5rem, 2vw, 1.25rem); }
-    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(255,255,255,0.14); }
+    #lightbox-prev { inset-inline-start: clamp(1rem, 3vw, 2.5rem); }
+    #lightbox-next { inset-inline-end: clamp(1rem, 3vw, 2.5rem); }
+    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(255,255,255,0.15); transform: translateY(-50%) scale(1.05); }
     #lightbox-prev:disabled, #lightbox-next:disabled { opacity: 0.2; pointer-events: none; }
-
+    
     @media (max-width: 480px) {
-      #lightbox-prev, #lightbox-next { top: auto; bottom: 3rem; transform: none; }
-      #lightbox-prev { left: 25%; transform: translateX(-50%); }
-      #lightbox-next { right: 25%; transform: translateX(50%); }
+      #lightbox-prev, #lightbox-next { top: auto; bottom: 4rem; transform: none; width: 44px; height: 44px; }
+      #lightbox-prev:hover, #lightbox-next:hover { transform: scale(1.05); }
+      #lightbox-prev { inset-inline-start: 20%; margin-inline-start: -22px; }
+      #lightbox-next { inset-inline-end: 20%; margin-inline-end: -22px; }
     }
+
 
     /* ─────────────────────────────────────────────────
        CAROUSEL  (7-10 images)
@@ -532,59 +531,102 @@
 
                 {{-- Premium Gallery --}}
                 @php
-                    $mediaCount = $business->media->count();
-                    $mediaItems = $business->media;
+                    $categories = $business->imageCategories()->has('media')->get();
+                    $generalMedia = $business->media()->whereNull('business_image_category_id')->get();
+                    $galleryGroups = collect();
+                    
+                    if ($generalMedia->count() > 0 || $categories->count() == 0) {
+                        $galleryGroups->push((object)[
+                            'id' => 'general',
+                            'name' => __('directory.general_gallery', [], 'en', 'General'),
+                            'media' => $generalMedia
+                        ]);
+                    }
+                    foreach($categories as $cat) {
+                        $galleryGroups->push((object)[
+                            'id' => 'cat_' . $cat->id,
+                            'name' => $cat->name,
+                            'media' => $cat->media
+                        ]);
+                    }
                 @endphp
 
-                @if($mediaCount > 0)
-                <div id="gallery-section" class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 p-8 sm:p-10 profile-fade scroll-mt-24">
-                    <div class="mb-8 flex items-center justify-between">
+                @if($business->media->count() > 0)
+                <div id="gallery-section-wrapper" x-data="{ activeTab: '{{ $galleryGroups->first()->id }}' }" class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 p-8 sm:p-10 profile-fade scroll-mt-24">
+                    <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-2 flex items-center gap-3">
                                 <span class="w-1.5 h-6 rounded-full bg-primary block"></span>
                                 {{ __('directory.profile_gallery') }}
                             </h2>
                             <p class="text-sm font-medium text-slate-500 dark:text-zinc-400">
-                                {{ $mediaCount }} {{ $mediaCount === 1 ? __('directory.profile_photo') : __('directory.profile_photos') }}
+                                {{ $business->media->count() }} {{ $business->media->count() === 1 ? __('directory.profile_photo') : __('directory.profile_photos') }}
                             </p>
                         </div>
                     </div>
 
-                    <div id="gallery-container" class="rounded-2xl overflow-hidden">
-                        @if($mediaCount <= 6)
-                            <div class="gallery-grid count-{{ $mediaCount }}">
-                                @foreach($mediaItems->take(6) as $idx => $item)
-                                <div class="gallery-item" data-index="{{ $idx }}" tabindex="0" role="button" aria-label="{{ $item->caption ?? $business->name }}">
-                                    <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}" loading="lazy" />
-                                    <div class="gallery-item-overlay">
-                                        <span class="gallery-item-label">{{ $item->caption ?? $business->name }}</span>
-                                    </div>
-                                </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="carousel-wrap">
-                                <div class="carousel-track" id="carousel-track">
-                                    @foreach($mediaItems as $idx => $item)
-                                    <div class="carousel-slide gallery-item" data-index="{{ $idx }}" tabindex="0" role="button" aria-label="{{ $item->caption ?? $business->name }}">
-                                        <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}" loading="lazy"/>
+                    @if($galleryGroups->count() > 1)
+                    <div class="flex overflow-x-auto gap-2 pb-4 mb-4 hide-scrollbar">
+                        @foreach($galleryGroups as $group)
+                        <button @click="activeTab = '{{ $group->id }}'; setTimeout(() => window.dispatchEvent(new Event('resize')), 100)" 
+                                :class="activeTab === '{{ $group->id }}' ? 'bg-primary text-white shadow-md' : 'bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-700'"
+                                class="px-5 py-2.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-300">
+                            {{ $group->name }}
+                        </button>
+                        @endforeach
+                    </div>
+                    @endif
+
+                    <div class="relative min-h-[300px]">
+                        @foreach($galleryGroups as $group)
+                        @php 
+                            $mediaCount = $group->media->count();
+                            $mediaItems = $group->media;
+                        @endphp
+                        <div x-show="activeTab === '{{ $group->id }}'" 
+                             x-transition:enter="transition ease-out duration-300" 
+                             x-transition:enter-start="opacity-0 transform translate-y-4" 
+                             x-transition:enter-end="opacity-100 transform translate-y-0"
+                             class="gallery-category-container" data-category="{{ $group->id }}" style="display: none;" x-init="if (activeTab === '{{ $group->id }}') $el.style.display = 'block'">
+                            
+                            @if($mediaCount == 0)
+                                <div class="text-center p-8 text-slate-400 text-sm">No images.</div>
+                            @elseif($mediaCount <= 6)
+                                <div class="gallery-grid count-{{ $mediaCount }}">
+                                    @foreach($mediaItems->take(6) as $idx => $item)
+                                    <div class="gallery-item" data-src="{{ $item->file_url }}" tabindex="0" role="button" aria-label="{{ $item->caption ?? $business->name }}">
+                                        <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}" loading="lazy" />
                                         <div class="gallery-item-overlay">
                                             <span class="gallery-item-label">{{ $item->caption ?? $business->name }}</span>
                                         </div>
                                     </div>
                                     @endforeach
                                 </div>
-                            </div>
-                            <nav class="carousel-nav" aria-label="Carousel navigation">
-                                <button class="carousel-btn" id="carousel-prev" disabled>
-                                    <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-                                </button>
-                                <div class="carousel-dots" id="carousel-dots"></div>
-                                <button class="carousel-btn" id="carousel-next">
-                                    <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
-                                </button>
-                            </nav>
-                        @endif
+                            @else
+                                <div class="carousel-wrap">
+                                    <div class="carousel-track">
+                                        @foreach($mediaItems as $idx => $item)
+                                        <div class="carousel-slide gallery-item" data-src="{{ $item->file_url }}" tabindex="0" role="button" aria-label="{{ $item->caption ?? $business->name }}">
+                                            <img src="{{ $item->file_url }}" alt="{{ $item->caption ?? $business->name }}" loading="lazy"/>
+                                            <div class="gallery-item-overlay">
+                                                <span class="gallery-item-label">{{ $item->caption ?? $business->name }}</span>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <nav class="carousel-nav" aria-label="Carousel navigation">
+                                    <button class="carousel-btn carousel-prev" disabled>
+                                        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                    </button>
+                                    <div class="carousel-dots"></div>
+                                    <button class="carousel-btn carousel-next">
+                                        <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                    </button>
+                                </nav>
+                            @endif
+                        </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -851,7 +893,7 @@
                                 
                                 @if($review->reply)
                                     <div class="mt-6 p-5 sm:p-6 bg-slate-100/50 dark:bg-black/40 rounded-2xl border border-slate-200/50 dark:border-white/5 relative">
-                                        <div class="absolute -top-3 left-6 px-3 py-1 bg-primary text-white text-[11px] font-bold uppercase tracking-widest rounded-full shadow-sm">{{ __('directory.business_reply') }}</div>
+                                        <div class="absolute -top-3 start-6 px-3 py-1 bg-primary text-white text-[11px] font-bold uppercase tracking-widest rounded-full shadow-sm">{{ __('directory.business_reply') }}</div>
                                         <p class="text-[15px] text-slate-700 dark:text-zinc-400 leading-relaxed mt-2">{{ $review->reply }}</p>
                                     </div>
                                 @endif
@@ -871,7 +913,6 @@
 
 <!-- ── Lightbox ── -->
 <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
-  <img id="lightbox-bg-img" src="" alt="" />
   <div id="lightbox-backdrop"></div>
   <button id="lightbox-prev" aria-label="Previous">
       <svg class="w-8 h-8 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
@@ -930,137 +971,147 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ══════════════════ INIT GALLERY ══════════════════ */
-    if (IMAGES.length <= 6) {
-      const items = document.querySelectorAll('.gallery-grid .gallery-item');
-      gsap.set(items, { opacity:0, y:36, scale:0.97 });
-      items.forEach((item, i) => {
-        ScrollTrigger.create({
-          trigger: item, start:'top 92%', once:true,
-          onEnter: () => gsap.to(item,{ opacity:1, y:0, scale:1, duration:0.8, delay:(i%3)*0.07, ease:'expo.out' })
+    // Initialize standard grids
+    const items = document.querySelectorAll('.gallery-grid .gallery-item');
+    if(items.length > 0) {
+        gsap.set(items, { opacity:0, y:36, scale:0.97 });
+        items.forEach((item, i) => {
+          ScrollTrigger.create({
+            trigger: item, start:'top 92%', once:true,
+            onEnter: () => gsap.to(item,{ opacity:1, y:0, scale:1, duration:0.8, delay:(i%3)*0.07, ease:'expo.out' })
+          });
+          addHoverZoom(item);
         });
-        addHoverZoom(item);
-      });
-    } else {
-      initCarousel();
     }
+    
+    // Initialize all carousels
+    initCarousels();
     bindClicks();
 
-    /* ── Carousel ── */
-    function initCarousel() {
-      const track   = document.getElementById('carousel-track');
-      const prevBtn = document.getElementById('carousel-prev');
-      const nextBtn = document.getElementById('carousel-next');
-      const dotsWrap= document.getElementById('carousel-dots');
-      if (!track) return;
+    /* ── Carousels ── */
+    function initCarousels() {
+      const tracks = document.querySelectorAll('.carousel-track');
+      tracks.forEach(track => {
+        const wrap = track.closest('.gallery-category-container');
+        const prevBtn = wrap.querySelector('.carousel-prev');
+        const nextBtn = wrap.querySelector('.carousel-next');
+        const dotsWrap= wrap.querySelector('.carousel-dots');
+        if (!track) return;
 
-      carouselSlidesVisible = slidesVisible();
-      const slides = track.querySelectorAll('.carousel-slide');
-      
-      function buildDots() {
-         const maxI = Math.max(0, IMAGES.length - carouselSlidesVisible);
-         let dotsHTML = '';
-         for(let i=0; i<=maxI; i++) {
-             dotsHTML += `<div class="dot${i===0?' active':''}" data-dot="${i}"></div>`;
-         }
-         dotsWrap.innerHTML = dotsHTML;
-      }
-      buildDots();
-
-      gsap.set(slides, { opacity:0, y:28, scale:0.97 });
-      ScrollTrigger.create({
-        trigger: track, start:'top 92%', once:true,
-        onEnter: () => gsap.to(slides,{ opacity:1, y:0, scale:1, stagger:0.06, duration:0.75, ease:'expo.out' })
-      });
-      slides.forEach(s => addHoverZoom(s));
-
-      function maxIdx() { return Math.max(0, IMAGES.length - carouselSlidesVisible); }
-
-      function updateDots() {
-        dotsWrap.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===carouselIndex));
-      }
-      function updateBtns() {
-        prevBtn.disabled = carouselIndex === 0;
-        nextBtn.disabled = carouselIndex >= maxIdx();
-      }
-
-      function slideWidth() {
-        const s = track.querySelector('.carousel-slide');
-        return s ? s.offsetWidth + 2 : 0;
-      }
-
-      function goTo(idx) {
-        carouselIndex = Math.max(0, Math.min(idx, maxIdx()));
-        const isRtl = document.documentElement.dir === 'rtl';
-        gsap.to(track, { x: (isRtl ? 1 : -1) * carouselIndex * slideWidth(), duration:0.75, ease:'expo.inOut' });
-        updateDots(); updateBtns();
-      }
-
-      prevBtn.addEventListener('click', () => goTo(carouselIndex - 1));
-      nextBtn.addEventListener('click', () => goTo(carouselIndex + 1));
-      dotsWrap.addEventListener('click', e => {
-        const d = e.target.closest('.dot');
-        if (d) goTo(+d.dataset.dot);
-      });
-
-      let startX = 0;
-      track.addEventListener('pointerdown', e => { startX = e.clientX; track.setPointerCapture(e.pointerId); });
-      track.addEventListener('pointerup',   e => {
-        const dx = e.clientX - startX;
-        if (Math.abs(dx) > 44) {
-            const isRtl = document.documentElement.dir === 'rtl';
-            const dragDir = dx < 0 ? 1 : -1;
-            goTo(carouselIndex + (isRtl ? -dragDir : dragDir));
+        let cIndex = 0;
+        let carouselSlidesVisible = slidesVisible();
+        const slides = track.querySelectorAll('.carousel-slide');
+        const slideCount = slides.length;
+        
+        function buildDots() {
+           const maxI = Math.max(0, slideCount - carouselSlidesVisible);
+           let dotsHTML = '';
+           for(let i=0; i<=maxI; i++) {
+               dotsHTML += `<div class="dot${i===0?' active':''}" data-dot="${i}"></div>`;
+           }
+           if (dotsWrap) dotsWrap.innerHTML = dotsHTML;
         }
-      });
+        buildDots();
 
-      let resizeTO;
-      const resizeObs = new ResizeObserver(() => {
-        clearTimeout(resizeTO);
-        resizeTO = setTimeout(() => {
+        gsap.set(slides, { opacity:0, y:28, scale:0.97 });
+        ScrollTrigger.create({
+          trigger: track, start:'top 92%', once:true,
+          onEnter: () => gsap.to(slides,{ opacity:1, y:0, scale:1, stagger:0.06, duration:0.75, ease:'expo.out' })
+        });
+        slides.forEach(s => addHoverZoom(s));
+
+        function maxIdx() { return Math.max(0, slideCount - carouselSlidesVisible); }
+
+        function updateDots() {
+          if (dotsWrap) dotsWrap.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===cIndex));
+        }
+        function updateBtns() {
+          if (prevBtn) prevBtn.disabled = cIndex === 0;
+          if (nextBtn) nextBtn.disabled = cIndex >= maxIdx();
+        }
+
+        function slideWidth() {
+          const s = track.querySelector('.carousel-slide');
+          return s ? s.offsetWidth + 2 : 0;
+        }
+
+        function goTo(idx) {
+          cIndex = Math.max(0, Math.min(idx, maxIdx()));
+          const isRtl = document.documentElement.dir === 'rtl';
+          gsap.to(track, { x: (isRtl ? 1 : -1) * cIndex * slideWidth(), duration:0.75, ease:'expo.inOut' });
+          updateDots(); updateBtns();
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', () => goTo(cIndex - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => goTo(cIndex + 1));
+        if (dotsWrap) dotsWrap.addEventListener('click', e => {
+          const d = e.target.closest('.dot');
+          if (d) goTo(+d.dataset.dot);
+        });
+
+        let startX = 0;
+        track.addEventListener('pointerdown', e => { startX = e.clientX; track.setPointerCapture(e.pointerId); });
+        track.addEventListener('pointerup',   e => {
+          const dx = e.clientX - startX;
+          if (Math.abs(dx) > 44) {
+              const isRtl = document.documentElement.dir === 'rtl';
+              const dragDir = dx < 0 ? 1 : -1;
+              goTo(cIndex + (isRtl ? -dragDir : dragDir));
+          }
+        });
+
+        window.addEventListener('resize', () => {
+          if (wrap && wrap.style.display === 'none') return;
           const nv = slidesVisible();
           if (nv !== carouselSlidesVisible) {
             carouselSlidesVisible = nv;
             const pct = 100 / nv;
             slides.forEach(s => { s.style.flexBasis = `calc(${pct}% - 2px)`; });
             buildDots();
-            carouselIndex = Math.min(carouselIndex, maxIdx());
+            cIndex = Math.min(cIndex, maxIdx());
           }
           const isRtl = document.documentElement.dir === 'rtl';
-          gsap.set(track, { x: (isRtl ? 1 : -1) * carouselIndex * slideWidth() });
+          gsap.set(track, { x: (isRtl ? 1 : -1) * cIndex * slideWidth() });
           updateDots(); updateBtns();
-        }, 80);
+        });
+
+        const pct = 100 / carouselSlidesVisible;
+        slides.forEach(s => { s.style.flexBasis = `calc(${pct}% - 2px)`; });
+
+        updateBtns();
       });
-      resizeObs.observe(track.parentElement);
-
-      // Initial basis setup
-      const pct = 100 / carouselSlidesVisible;
-      slides.forEach(s => { s.style.flexBasis = `calc(${pct}% - 2px)`; });
-
-      updateBtns();
     }
 
     /* ══════════════════ CLICK → LIGHTBOX ══════════════════ */
     function bindClicks() {
-      const container = document.getElementById('gallery-section');
+      const container = document.getElementById('gallery-section-wrapper');
       if(!container) return;
       
       let downX = 0, downY = 0;
       let downTarget = null;
       container.addEventListener('pointerdown', e => {
         downX = e.clientX; downY = e.clientY;
-        downTarget = e.target.closest('[data-index]');
+        downTarget = e.target.closest('.gallery-item');
       });
 
       container.addEventListener('pointerup', e => {
         if (!downTarget) return;
         const dist = Math.hypot(e.clientX - downX, e.clientY - downY);
-        if (dist < 10) openLightbox(+downTarget.dataset.index);
+        if (dist < 10) {
+            const src = downTarget.dataset.src;
+            const index = IMAGES.findIndex(img => img.src === src);
+            if(index !== -1) openLightbox(index);
+        }
         downTarget = null;
       });
       container.addEventListener('keydown', e => {
         if (e.key==='Enter'||e.key===' ') {
-          const item = e.target.closest('[data-index]');
-          if (item) openLightbox(+item.dataset.index);
+          const item = e.target.closest('.gallery-item');
+          if (item) {
+              const src = item.dataset.src;
+              const index = IMAGES.findIndex(img => img.src === src);
+              if(index !== -1) openLightbox(index);
+          }
         }
       });
     }
@@ -1068,7 +1119,6 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ══════════════════ LIGHTBOX ══════════════════ */
     const lb      = document.getElementById('lightbox');
     const lbImg   = document.getElementById('lightbox-img');
-    const lbBgImg = document.getElementById('lightbox-bg-img');
     const lbCount = document.getElementById('lightbox-counter');
     const lbClose = document.getElementById('lightbox-close');
     const lbPrev  = document.getElementById('lightbox-prev');
@@ -1097,9 +1147,6 @@ document.addEventListener('DOMContentLoaded', () => {
       lbCount.textContent = `${lightboxIndex+1} \u2014 ${IMAGES.length}`;
       lbPrev.disabled = lightboxIndex === 0;
       lbNext.disabled = lightboxIndex === IMAGES.length - 1;
-      
-      // Update the blurred background image too
-      lbBgImg.src = img.src;
 
       if (!animate) { 
         lbImg.src = img.src; 
@@ -1122,9 +1169,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', e => {
       if (!isLightboxOpen) return;
-      if (e.key==='Escape') closeLightbox();
-      if (e.key==='ArrowLeft'  && lightboxIndex>0) { lightboxIndex--; setLbImage(-1); }
-      if (e.key==='ArrowRight' && lightboxIndex<IMAGES.length-1) { lightboxIndex++; setLbImage(1); }
+      if (e.key === 'Escape') closeLightbox();
+      const isRtl = document.documentElement.dir === 'rtl';
+      const isNextKey = isRtl ? e.key === 'ArrowLeft' : e.key === 'ArrowRight';
+      const isPrevKey = isRtl ? e.key === 'ArrowRight' : e.key === 'ArrowLeft';
+      
+      if (isPrevKey && lightboxIndex > 0) { lightboxIndex--; setLbImage(-1); }
+      if (isNextKey && lightboxIndex < IMAGES.length - 1) { lightboxIndex++; setLbImage(1); }
     });
 
     let lbTx = 0;
@@ -1132,8 +1183,12 @@ document.addEventListener('DOMContentLoaded', () => {
     lb.addEventListener('touchend',   e => {
       const dx = e.changedTouches[0].clientX - lbTx;
       if (Math.abs(dx) > 48) {
-        if (dx < 0 && lightboxIndex < IMAGES.length-1) { lightboxIndex++; setLbImage(1); }
-        if (dx > 0 && lightboxIndex > 0) { lightboxIndex--; setLbImage(-1); }
+        const isRtl = document.documentElement.dir === 'rtl';
+        const isNextSwipe = isRtl ? dx > 0 : dx < 0;
+        const isPrevSwipe = isRtl ? dx < 0 : dx > 0;
+        
+        if (isNextSwipe && lightboxIndex < IMAGES.length - 1) { lightboxIndex++; setLbImage(1); }
+        if (isPrevSwipe && lightboxIndex > 0) { lightboxIndex--; setLbImage(-1); }
       }
     });
 

@@ -35,7 +35,7 @@
             <td class="px-6 py-4 whitespace-nowrap text-[13px] text-slate-600 dark:text-zinc-400">{{ $category->name_tr ?: '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap text-[13px] text-slate-600 dark:text-zinc-400">{{ $category->name_zh ?: '-' }}</td>
             <td class="px-6 py-4 whitespace-nowrap">
-                <div class="relative inline-block text-left">
+                <div class="relative inline-block text-start">
                     <button type="button" onclick="toggleStatusMenu(event, 'status-menu-desktop-{{ $category->id }}')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-700/50 bg-white dark:bg-zinc-900 text-[12px] font-[900] shadow-sm hover:border-slate-300 dark:hover:border-zinc-600 transition-colors status-btn-[{{ $category->id }}]">
                         @if($category->status === 'active')
                             <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div><span class="text-emerald-700 dark:text-emerald-400">{{ __('admin.active') }}</span>
@@ -117,7 +117,7 @@
                     </div>
                 </div>
             </div>
-            <div class="relative inline-block text-left">
+            <div class="relative inline-block text-start">
                 <button type="button" onclick="toggleStatusMenu(event, 'status-menu-mobile-{{ $category->id }}')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-700/50 bg-white dark:bg-zinc-900 text-[12px] font-[900] shadow-sm hover:border-slate-300 dark:hover:border-zinc-600 transition-colors status-btn-[{{ $category->id }}]">
                     @if($category->status === 'active')
                         <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div><span class="text-emerald-700 dark:text-emerald-400">{{ __('admin.active') }}</span>

@@ -18,7 +18,7 @@ class LogFailedLinks
     {
         $response = $next($request);
 
-        if ($response->status() == 404 && !$request->is('api/*')) {
+        if ($response->getStatusCode() == 404 && !$request->is('api/*')) {
             $url = $request->path();
             // Don't log static assets if they accidentally hit this
             if (!preg_match('/\.(js|css|png|jpg|jpeg|gif|svg|ico|webp)$/i', $url)) {

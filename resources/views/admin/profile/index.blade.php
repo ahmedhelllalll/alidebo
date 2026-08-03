@@ -97,7 +97,7 @@
         <div class="space-y-6">
             <div class="bg-gradient-to-br from-primary to-orange-500 p-[1.5px] rounded-[24px] shadow-lg shadow-primary/20 relative reveal-item" style="animation-delay: 0.2s;">
                 <div class="bg-white dark:bg-[#121214] rounded-[22px] p-6 text-center relative overflow-hidden">
-                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
+                    <div class="absolute -top-10 -end-10 w-32 h-32 bg-primary/10 rounded-full blur-2xl"></div>
                     
                     <div class="w-24 h-24 mx-auto bg-slate-50 dark:bg-zinc-800 rounded-full flex items-center justify-center border-4 border-white dark:border-zinc-900 shadow-md relative z-10">
                         <i class="fa-solid fa-user-shield text-4xl text-primary"></i>

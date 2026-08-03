@@ -74,7 +74,7 @@
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 text-primary flex items-center justify-center shrink-0 shadow-inner ring-1 ring-primary/10">
                             <i aria-hidden="true" class="fa-solid fa-fingerprint text-lg"></i>
                         </div>
-                        <span class="absolute -top-2 ltr:-right-2 rtl:-left-2 w-6 h-6 rounded-full bg-primary text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-primary/30">01</span>
+                        <span class="absolute -top-2 ltr:-end-2 rtl:-start-2 w-6 h-6 rounded-full bg-primary text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-primary/30">01</span>
                     </div>
                     <div>
                         <h3 class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest">{{ __('admin.identity_title') }}</h3>
@@ -120,7 +120,7 @@
                                 <div class="p-3 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
                                     <div class="relative">
                                         <i class="fa-solid fa-magnifying-glass absolute start-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                        <input type="text" class="dropdown-search w-full bg-white dark:bg-zinc-900 border-none rounded-xl py-2 ps-9 ltr:pr-4 rtl:pl-4 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 text-slate-700 dark:text-zinc-200" placeholder="{{ __('admin.search') }}">
+                                        <input type="text" class="dropdown-search w-full bg-white dark:bg-zinc-900 border-none rounded-xl py-2 ps-9 ltr:pe-4 rtl:ps-4 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 text-slate-700 dark:text-zinc-200" placeholder="{{ __('admin.search') }}">
                                     </div>
                                 </div>
                                 <div class="dropdown-list max-h-60 overflow-y-auto custom-scrollbar p-2 space-y-1">
@@ -186,7 +186,7 @@
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 text-emerald-500 flex items-center justify-center shrink-0 shadow-inner ring-1 ring-emerald-500/10">
                             <i aria-hidden="true" class="fa-solid fa-map-location-dot text-lg"></i>
                         </div>
-                        <span class="absolute -top-2 ltr:-right-2 rtl:-left-2 w-6 h-6 rounded-full bg-emerald-500 text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-emerald-500/30">02</span>
+                        <span class="absolute -top-2 ltr:-end-2 rtl:-start-2 w-6 h-6 rounded-full bg-emerald-500 text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-emerald-500/30">02</span>
                     </div>
                     <div>
                         <h3 class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest">{{ __('admin.location') }} & {{ __('admin.contact') }}</h3>
@@ -215,7 +215,7 @@
                                 <div class="p-3 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
                                     <div class="relative">
                                         <i class="fa-solid fa-magnifying-glass absolute start-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                        <input type="text" class="dropdown-search w-full bg-white dark:bg-zinc-900 border-none rounded-xl py-2 ps-9 ltr:pr-4 rtl:pl-4 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-700 dark:text-zinc-200" placeholder="{{ __('admin.search') }}">
+                                        <input type="text" class="dropdown-search w-full bg-white dark:bg-zinc-900 border-none rounded-xl py-2 ps-9 ltr:pe-4 rtl:ps-4 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-700 dark:text-zinc-200" placeholder="{{ __('admin.search') }}">
                                     </div>
                                 </div>
                                 <div class="dropdown-list max-h-60 overflow-y-auto custom-scrollbar p-2 space-y-1">
@@ -256,7 +256,7 @@
                                 <div class="p-3 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
                                     <div class="relative">
                                         <i class="fa-solid fa-magnifying-glass absolute start-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                        <input type="text" class="dropdown-search w-full bg-white dark:bg-zinc-900 border-none rounded-xl py-2 ps-9 ltr:pr-4 rtl:pl-4 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-700 dark:text-zinc-200" placeholder="{{ __('admin.search') }}">
+                                        <input type="text" class="dropdown-search w-full bg-white dark:bg-zinc-900 border-none rounded-xl py-2 ps-9 ltr:pe-4 rtl:ps-4 text-sm font-bold outline-none focus:ring-2 focus:ring-emerald-500/20 text-slate-700 dark:text-zinc-200" placeholder="{{ __('admin.search') }}">
                                     </div>
                                 </div>
                                 <div class="dropdown-list max-h-60 overflow-y-auto custom-scrollbar p-2 space-y-1">
@@ -344,7 +344,7 @@
                             <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500/15 to-violet-500/5 text-violet-500 flex items-center justify-center shrink-0 shadow-inner ring-1 ring-violet-500/10">
                                 <i aria-hidden="true" class="fa-solid fa-share-nodes text-lg"></i>
                             </div>
-                            <span class="absolute -top-2 ltr:-right-2 rtl:-left-2 w-6 h-6 rounded-full bg-violet-500 text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-violet-500/30">03</span>
+                            <span class="absolute -top-2 ltr:-end-2 rtl:-start-2 w-6 h-6 rounded-full bg-violet-500 text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-violet-500/30">03</span>
                         </div>
                         <div>
                             <h3 class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest">{{ __('admin.social_media') }}</h3>
@@ -384,7 +384,7 @@
                         <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500/15 to-purple-500/5 text-purple-500 flex items-center justify-center shrink-0 shadow-inner ring-1 ring-purple-500/10">
                             <i aria-hidden="true" class="fa-solid fa-palette text-lg"></i>
                         </div>
-                        <span class="absolute -top-2 ltr:-right-2 rtl:-left-2 w-6 h-6 rounded-full bg-purple-500 text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-purple-500/30">04</span>
+                        <span class="absolute -top-2 ltr:-end-2 rtl:-start-2 w-6 h-6 rounded-full bg-purple-500 text-white text-[9px] font-black flex items-center justify-center shadow-lg shadow-purple-500/30">04</span>
                     </div>
                     <div>
                         <h3 class="text-sm font-black text-slate-800 dark:text-white uppercase tracking-widest">{{ __('admin.visuals_title') }}</h3>
@@ -428,14 +428,19 @@
                 {{-- Gallery --}}
                 <div class="space-y-6 lg:col-span-2">
                     <div class="flex items-center justify-between border-b border-slate-100 dark:border-white/5 pb-5">
-                        <div class="flex items-center gap-3 text-purple-500">
-                            <div class="w-8 h-8 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500">
                                 <i aria-hidden="true" class="fa-solid fa-images text-sm"></i>
                             </div>
-                            <span class="text-[10px] font-black uppercase tracking-widest text-start">{{ __('admin.premium_gallery') }}</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-start text-purple-500">{{ __('admin.premium_gallery') }}</span>
                         </div>
-                        <div class="text-[10px] font-black text-slate-600 dark:text-zinc-300 bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 px-4 py-2 rounded-full shadow-inner" id="gallery-count" data-template="{{ __('admin.gallery_count') }}">
-                            {{ __('admin.gallery_count', ['current' => 0]) }}
+                        <div class="flex items-center gap-3">
+                            <button type="button" onclick="promptCreateCategoryAdmin()" class="flex items-center gap-2 px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold hover:bg-primary/90 transition-all active:scale-[0.98] shadow-sm whitespace-nowrap">
+                                <i aria-hidden="true" class="fa-solid fa-plus"></i> {{ __('admin.add_category') ?? 'New Category' }}
+                            </button>
+                            <div class="text-[10px] font-black text-slate-600 dark:text-zinc-300 bg-slate-100/80 dark:bg-white/5 border border-slate-200/60 dark:border-white/10 px-4 py-2 rounded-full shadow-inner" id="gallery-count" data-template="{{ __('admin.gallery_count') }}">
+                                {{ __('admin.gallery_count', ['current' => 0]) }}
+                            </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6" id="gallery-preview-grid">
@@ -450,6 +455,9 @@
                         </div>
                         <p class="field-error text-[10px] font-bold text-red-500 mt-1.5 hidden" id="error_gallery"></p>
                     </div>
+                    
+                    {{-- NEW CATEGORIES WRAPPER --}}
+                    <div id="adminCategoriesWrapper" class="space-y-6 mt-6"></div>
                 </div>
             </div>
         </div>
@@ -811,6 +819,160 @@
         }
     };
 
+    window.showCustomModal = function(options) {
+        const { type = 'confirm', title, desc = '', placeholder = '', defaultValue = '', confirmText = '{{ __("admin.save") ?? "Save" }}', cancelText = '{{ __("admin.cancel") ?? "Cancel" }}', confirmClass = 'bg-primary hover:bg-primary-dark', onConfirm } = options;
+        const overlay = document.createElement('div');
+        overlay.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300';
+        let inputHtml = '';
+        if (type === 'input') {
+            inputHtml = `<input type="text" id="customModalInput" value="${defaultValue}" placeholder="${placeholder}" class="w-full mt-4 bg-transparent border border-slate-300 dark:border-white/20 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-800 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">`;
+        }
+        let descHtml = desc ? `<p class="text-sm text-slate-500 dark:text-zinc-400 mt-2 leading-relaxed">${desc}</p>` : '';
+        overlay.innerHTML = `
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 md:p-7 w-full max-w-sm shadow-[0_10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)] scale-95 transition-transform duration-300 border border-slate-200/60 dark:border-white/10" dir="${document.documentElement.dir || 'auto'}">
+                <h3 class="text-lg font-bold text-slate-800 dark:text-white text-start leading-tight">${title}</h3>
+                ${descHtml}
+                ${inputHtml}
+                <div class="flex items-center gap-3 mt-6">
+                    <button type="button" id="customModalCancel" class="flex-1 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">${cancelText}</button>
+                    <button type="button" id="customModalConfirm" class="flex-1 px-4 py-2 rounded-xl text-sm font-semibold text-white shadow-sm ${confirmClass} transition-colors">${confirmText}</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        const inputEl = overlay.querySelector('#customModalInput');
+        requestAnimationFrame(() => {
+            overlay.classList.remove('opacity-0');
+            overlay.children[0].classList.remove('scale-95');
+            if (inputEl) inputEl.focus();
+        });
+        const closeModal = () => {
+            overlay.classList.add('opacity-0');
+            overlay.children[0].classList.add('scale-95');
+            setTimeout(() => overlay.remove(), 300);
+        };
+        overlay.querySelector('#customModalCancel').onclick = closeModal;
+        overlay.querySelector('#customModalConfirm').onclick = async () => {
+            let val = null;
+            if (type === 'input') {
+                val = inputEl.value.trim();
+                if(!val) {
+                    if(typeof gsap !== 'undefined') gsap.fromTo(inputEl, {x: -5}, {x: 5, duration: 0.1, yoyo: true, repeat: 3});
+                    else inputEl.classList.add('border-red-500');
+                    return;
+                }
+            }
+            if (onConfirm) await onConfirm(val);
+            closeModal();
+        };
+    };
+
+    let newCategoryIndex = 0;
+    window.promptCreateCategoryAdmin = function() {
+        showCustomModal({
+            type: 'input',
+            title: '{{ __("admin.add_category") ?? "Add Category" }}',
+            placeholder: '{{ __("admin.category_name") ?? "Category Name" }}',
+            onConfirm: (name) => {
+                if(!name) return;
+                const wrapper = document.getElementById('adminCategoriesWrapper');
+                if(wrapper) {
+                    const currentIndex = newCategoryIndex++;
+                    const newBlock = document.createElement('div');
+                    newBlock.className = 'admin-category-block bg-slate-50/50 dark:bg-white/[0.02] p-5 rounded-2xl border border-slate-200 dark:border-white/10';
+                    newBlock.dataset.newCategoryId = currentIndex;
+                    
+                    const escapedName = name.replace(/'/g, "\\'");
+                    const html = `
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-3">
+                            <h4 class="text-[13px] font-black text-slate-800 dark:text-white uppercase tracking-widest"><span class="cat-name-display">${name}</span> <span class="text-xs font-medium text-slate-400 ms-2">(<span class="cat-count">0</span>/10)</span></h4>
+                            <input type="hidden" name="new_categories[${currentIndex}][name]" value="${escapedName}">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="promptEditNewCategoryAdmin(${currentIndex})" class="w-7 h-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors" title="{{ __('admin.edit_category') ?? 'Edit Category' }}"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                            <button type="button" onclick="deleteNewCategoryAdmin(${currentIndex})" class="w-7 h-7 rounded-lg bg-red-500/10 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors" title="{{ __('admin.delete') ?? 'Delete Category' }}"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-6 admin-gallery-grid-container" id="new-cat-grid-${currentIndex}">
+                        <div class="relative aspect-square border-2 border-dashed border-slate-200 dark:border-white/10 flex items-center justify-center hover:border-purple-400/40 transition-all duration-500 cursor-pointer group/add bg-gradient-to-br from-slate-50/50 to-slate-100/20 dark:from-white/[0.02] dark:to-white/[0.01] hover:from-purple-50/30 hover:to-purple-100/10">
+                            <div class="text-center space-y-2 z-0">
+                                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-white/5 group-hover/add:bg-purple-500/10 flex items-center justify-center mx-auto transition-all duration-300">
+                                    <i aria-hidden="true" class="fa-solid fa-plus text-slate-300 dark:text-zinc-600 text-lg group-hover/add:text-purple-400 group-hover/add:scale-110 group-hover/add:rotate-90 transition-all duration-300"></i>
+                                </div>
+                                <span class="text-[9px] font-black uppercase tracking-widest block text-slate-400 group-hover/add:text-purple-400 transition-colors">{{ __('admin.add_new') ?? 'Add New' }}</span>
+                            </div>
+                            <input type="file" name="new_categories[${currentIndex}][images][]" multiple accept="image/*" onchange="handleCategoryUpload(this, '${currentIndex}')" class="absolute inset-0 opacity-0 cursor-pointer z-10">
+                        </div>
+                    </div>`;
+                    newBlock.innerHTML = html;
+                    wrapper.appendChild(newBlock);
+                }
+            }
+        });
+    };
+
+    window.promptEditNewCategoryAdmin = function(id) {
+        const block = document.querySelector(`.admin-category-block[data-new-category-id="${id}"]`);
+        if(!block) return;
+        const nameInput = block.querySelector(`input[name="new_categories[${id}][name]"]`);
+        const nameDisplay = block.querySelector('.cat-name-display');
+        
+        showCustomModal({
+            type: 'input',
+            title: '{{ __("admin.edit_category") ?? "Edit Category" }}',
+            placeholder: '{{ __("admin.category_name") ?? "Category Name" }}',
+            defaultValue: nameInput.value,
+            onConfirm: (newName) => {
+                if(!newName) return;
+                nameInput.value = newName.replace(/'/g, "\\'");
+                nameDisplay.innerText = newName;
+            }
+        });
+    };
+
+    window.handleCategoryUpload = function(input, catIndex) {
+        if (!input.files || !input.files[0]) return;
+        const grid = document.getElementById('new-cat-grid-' + catIndex);
+        const addButton = input.closest('.group\\/add');
+        
+        // Count how many we are adding
+        const files = Array.from(input.files);
+        let countEl = grid.closest('.admin-category-block').querySelector('.cat-count');
+        let currentCount = parseInt(countEl.innerText) || 0;
+        
+        files.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = e => {
+                const id = 'new-cat-img-' + Date.now() + '-' + index;
+                const div = document.createElement('div');
+                div.className = 'group/media relative aspect-square rounded-[2rem] overflow-hidden border border-slate-100 dark:border-white/5 shadow-sm opacity-0 scale-90';
+                div.id = id;
+                div.innerHTML = `
+                    <img src="${e.target.result}" class="w-full h-full object-cover transition-transform duration-700 group-hover/media:scale-110">
+                    <div class="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/media:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                        <button type="button" aria-label="{{ __('admin.delete') }}" onclick="removeCategoryMedia('${id}', this)" class="w-10 h-10 rounded-full bg-white/20 hover:bg-red-500/80 text-white flex items-center justify-center transition-all">
+                            <i class="fa-solid fa-trash-can text-sm" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                `;
+                grid.insertBefore(div, addButton);
+                if(typeof gsap !== 'undefined') gsap.to(div, { opacity: 1, scale: 1, duration: 0.6, ease: 'expo.out' });
+                else div.classList.remove('opacity-0', 'scale-90');
+                
+                currentCount++;
+                countEl.innerText = currentCount;
+            }
+            reader.readAsDataURL(file);
+        });
+        
+        // Note: the file input value is not cleared because the user just added files to it,
+        // and we want those files to be submitted with the form. If they add more files, 
+        // the standard behavior is to replace the previous files in the input.
+        // For a true append system, we would need DataTransfer logic, but for simple form 
+        // upload, replacing is acceptable.
+    };
+
     window.handleGalleryUpload = function(input) {
         if (!input.files || !input.files[0]) return;
         const grid = document.getElementById('gallery-preview-grid');
@@ -847,6 +1009,28 @@
             } else {
                 el.remove();
                 updateGalleryCount();
+            }
+        }
+    };
+
+    window.removeCategoryMedia = function(id, btn) {
+        const el = document.getElementById(id);
+        if(el) {
+            if(typeof gsap !== 'undefined') {
+                gsap.to(el, { opacity: 0, scale: 0.8, duration: 0.3, onComplete: () => el.remove() });
+            } else {
+                el.remove();
+            }
+        }
+    };
+
+    window.deleteNewCategoryAdmin = function(id) {
+        const block = document.querySelector(`.admin-category-block[data-new-category-id="${id}"]`);
+        if(block) {
+            if(typeof gsap !== 'undefined') {
+                gsap.to(block, { opacity: 0, scale: 0.95, duration: 0.3, onComplete: () => block.remove() });
+            } else {
+                block.remove();
             }
         }
     };

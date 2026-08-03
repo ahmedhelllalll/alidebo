@@ -54,13 +54,13 @@
                             </header>
                             <div class="space-y-6 md:space-y-8">
                                 <div class="group">
-                                    <label for="biz_name" class="block text-sm md:text-base font-bold text-zinc-700 dark:text-zinc-300 mb-3 mr-1">اسم البيزنس <span class="text-primary">*</span></label>
+                                    <label for="biz_name" class="block text-sm md:text-base font-bold text-zinc-700 dark:text-zinc-300 mb-3 me-1">اسم البيزنس <span class="text-primary">*</span></label>
                                     <input type="text" id="biz_name" name="name" required 
                                         class="w-full p-4 md:p-5 rounded-2xl md:rounded-3xl bg-zinc-50 dark:bg-zinc-900 border-2 border-transparent focus:border-primary focus:bg-white dark:focus:bg-zinc-800 outline-none transition-all duration-200 text-lg md:text-xl font-bold dark:text-white" 
                                         placeholder="مثلاً: متجر الأناقة">
                                 </div>
                                 <div class="group">
-                                    <label for="biz_desc" class="block text-sm md:text-base font-bold text-zinc-700 dark:text-zinc-300 mb-3 mr-1">وصف مختصر</label>
+                                    <label for="biz_desc" class="block text-sm md:text-base font-bold text-zinc-700 dark:text-zinc-300 mb-3 me-1">وصف مختصر</label>
                                     <textarea id="biz_desc" name="description" rows="4" 
                                         class="w-full p-4 md:p-5 rounded-2xl md:rounded-3xl bg-zinc-50 dark:bg-zinc-900 border-2 border-transparent focus:border-primary focus:bg-white dark:focus:bg-zinc-800 outline-none transition-all duration-200 resize-none dark:text-white text-base md:text-lg" 
                                         placeholder="ماذا تقدم لعملائك؟"></textarea>
@@ -76,16 +76,16 @@
                                 <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-zinc-900 dark:text-white">ما هو مجال عملك؟</h2>
                                 <div class="relative group">
                                     <input type="text" id="cat-search" 
-                                        class="w-full p-4 md:p-5 pr-12 md:pr-14 rounded-2xl md:rounded-3xl bg-zinc-100 dark:bg-zinc-900 border-2 border-transparent focus:border-primary focus:bg-white dark:focus:bg-zinc-800 outline-none dark:text-white transition-all duration-200 text-base md:text-lg" 
+                                        class="w-full p-4 md:p-5 pe-12 md:pe-14 rounded-2xl md:rounded-3xl bg-zinc-100 dark:bg-zinc-900 border-2 border-transparent focus:border-primary focus:bg-white dark:focus:bg-zinc-800 outline-none dark:text-white transition-all duration-200 text-base md:text-lg" 
                                         placeholder="ابحث عن مجالك (مثلاً: مطعم، ملابس...)" 
                                         autocomplete="off">
-                                    <svg class="w-5 h-5 md:w-6 md:h-6 absolute right-4 md:right-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-5 h-5 md:w-6 md:h-6 absolute end-4 md:end-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                     </svg>
                                 </div>
                             </header>
                             <div id="category-container" class="relative">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 max-h-[350px] md:max-h-[400px] overflow-y-auto pl-2 custom-scrollbar will-change-transform" id="categories-grid">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 max-h-[350px] md:max-h-[400px] overflow-y-auto ps-2 custom-scrollbar will-change-transform" id="categories-grid">
                                     @foreach(\App\Models\Category::all() as $category)
                                     <label class="category-card cursor-pointer group">
                                         <input type="radio" name="category_id" value="{{ $category->id }}" class="peer sr-only">
@@ -122,7 +122,7 @@
                                 <div id="contact-methods-container" class="space-y-4">
                                     <!-- WhatsApp - Primary by default -->
                                     <div class="contact-item group relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-2xl p-4 md:p-5 border-2 border-green-400 dark:border-green-600 transition-all duration-200 primary-method" data-contact="whatsapp" data-primary="true">
-                                        <div class="absolute -top-3 md:-top-4 right-3 md:right-5 bg-green-500 text-white px-3 md:px-5 py-1 md:py-1.5 rounded-full text-sm md:text-base font-bold shadow-lg flex items-center gap-1.5">
+                                        <div class="absolute -top-3 md:-top-4 end-3 md:end-5 bg-green-500 text-white px-3 md:px-5 py-1 md:py-1.5 rounded-full text-sm md:text-base font-bold shadow-lg flex items-center gap-1.5">
                                             <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 20 20">
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
                                             </svg>
@@ -247,14 +247,14 @@
                             <div class="space-y-5 md:space-y-7">
                                 <!-- Country Combobox -->
                                 <div class="relative" id="country-combobox">
-                                    <label class="text-sm md:text-base font-bold text-zinc-600 dark:text-zinc-400 mb-3 block mr-1">الدولة <span class="text-primary">*</span></label>
+                                    <label class="text-sm md:text-base font-bold text-zinc-600 dark:text-zinc-400 mb-3 block me-1">الدولة <span class="text-primary">*</span></label>
                                     <div class="relative group">
                                         <input type="text" id="country-search-input" 
-                                            class="w-full p-4 md:p-5 pr-12 md:pr-14 rounded-2xl md:rounded-3xl bg-zinc-50 dark:bg-zinc-900 border-2 border-transparent focus:border-primary outline-none transition-all duration-200 dark:text-white font-bold text-base md:text-lg cursor-text" 
+                                            class="w-full p-4 md:p-5 pe-12 md:pe-14 rounded-2xl md:rounded-3xl bg-zinc-50 dark:bg-zinc-900 border-2 border-transparent focus:border-primary outline-none transition-all duration-200 dark:text-white font-bold text-base md:text-lg cursor-text" 
                                             placeholder="ابحث عن الدولة..." 
                                             autocomplete="off">
                                         <input type="hidden" name="country_id" id="country-hidden-id" required>
-                                        <svg class="w-5 h-5 md:w-6 md:h-6 absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5 md:w-6 md:h-6 absolute start-4 md:start-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                     </div>
@@ -266,15 +266,15 @@
                                 </div>
                                 <!-- City Combobox -->
                                 <div class="relative opacity-40 pointer-events-none transition-opacity duration-300" id="city-combobox">
-                                    <label class="text-sm md:text-base font-bold text-zinc-600 dark:text-zinc-400 mb-3 block mr-1">المدينة <span class="text-primary">*</span></label>
+                                    <label class="text-sm md:text-base font-bold text-zinc-600 dark:text-zinc-400 mb-3 block me-1">المدينة <span class="text-primary">*</span></label>
                                     <div class="relative group">
                                         <input type="text" id="city-search-input" 
-                                            class="w-full p-4 md:p-5 pr-12 md:pr-14 rounded-2xl md:rounded-3xl bg-zinc-50 dark:bg-zinc-900 border-2 border-transparent focus:border-primary outline-none transition-all duration-200 dark:text-white font-bold text-base md:text-lg cursor-text" 
+                                            class="w-full p-4 md:p-5 pe-12 md:pe-14 rounded-2xl md:rounded-3xl bg-zinc-50 dark:bg-zinc-900 border-2 border-transparent focus:border-primary outline-none transition-all duration-200 dark:text-white font-bold text-base md:text-lg cursor-text" 
                                             placeholder="ابحث عن المدينة..." 
                                             autocomplete="off"
                                             disabled>
                                         <input type="hidden" name="city_id" id="city-hidden-id" required>
-                                        <svg class="w-5 h-5 md:w-6 md:h-6 absolute left-4 md:left-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-5 h-5 md:w-6 md:h-6 absolute start-4 md:start-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                     </div>
@@ -282,7 +282,7 @@
                                 </div>
                                 <!-- Manual City Input -->
                                 <div id="manual-city-container" class="hidden animate-fade-in group">
-                                    <label for="manual_city_name" class="block text-sm md:text-base font-bold text-zinc-700 dark:text-zinc-300 mb-3 mr-1">اسم المدينة (إضافة يدوية) <span class="text-primary">*</span></label>
+                                    <label for="manual_city_name" class="block text-sm md:text-base font-bold text-zinc-700 dark:text-zinc-300 mb-3 me-1">اسم المدينة (إضافة يدوية) <span class="text-primary">*</span></label>
                                     <input type="text" id="manual_city_name" 
                                         class="w-full p-4 md:p-5 rounded-2xl md:rounded-3xl bg-zinc-50 dark:bg-zinc-900 border-2 border-primary focus:bg-white dark:focus:bg-zinc-800 outline-none transition-all duration-200 dark:text-white font-bold text-base md:text-lg" 
                                         placeholder="اكتب اسم مدينتك هنا">
@@ -304,7 +304,7 @@
             </form>
         </div>
         <!-- Right side - Illustration (hidden on mobile, visible on desktop) -->
-        <div class="hidden md:flex md:w-2/5 lg:w-1/3 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-900/80 relative flex-col items-center justify-center p-10 lg:p-16 border-b md:border-b-0 md:border-r border-zinc-200 dark:border-zinc-800">
+        <div class="hidden md:flex md:w-2/5 lg:w-1/3 bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900/50 dark:to-zinc-900/80 relative flex-col items-center justify-center p-10 lg:p-16 border-b md:border-b-0 md:border-e border-zinc-200 dark:border-zinc-800">
             <div class="absolute inset-0 opacity-30 dark:opacity-10" style="background-image: radial-gradient(#f45018 0.5px, transparent 0.5px); background-size: 30px 30px;"></div>
             <div class="relative z-10 text-center space-y-8 lg:space-y-10">
                 <div class="w-full max-w-[220px] lg:max-w-[300px] mx-auto aspect-square relative">
@@ -325,8 +325,8 @@
 <div id="add-cat-modal" class="fixed inset-0 z-[10000] hidden items-center justify-center p-5">
     <div class="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm transition-opacity duration-200" onclick="closeAddCategoryModal()"></div>
     <div class="relative w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl md:rounded-[3rem] p-8 md:p-10 shadow-2xl border border-zinc-200 dark:border-zinc-800 transform transition-all duration-200 scale-95 animate-fade-in" id="modal-content">
-        <h3 class="text-2xl md:text-3xl font-black mb-3 dark:text-white text-right">إضافة فئة جديدة</h3>
-        <p class="text-zinc-500 dark:text-zinc-400 mb-8 md:mb-10 text-right text-base md:text-lg leading-relaxed">هل تود إضافة "<span id="new-cat-label" class="text-primary font-bold"></span>" كفئة عمل جديدة إلى القائمة؟</p>
+        <h3 class="text-2xl md:text-3xl font-black mb-3 dark:text-white text-end">إضافة فئة جديدة</h3>
+        <p class="text-zinc-500 dark:text-zinc-400 mb-8 md:mb-10 text-end text-base md:text-lg leading-relaxed">هل تود إضافة "<span id="new-cat-label" class="text-primary font-bold"></span>" كفئة عمل جديدة إلى القائمة؟</p>
         <div class="flex flex-col sm:flex-row gap-3 md:gap-4">
             <button type="button" onclick="confirmAddCategory()" class="flex-1 py-4 md:py-5 bg-primary text-white rounded-xl md:rounded-2xl font-bold text-base md:text-lg shadow-lg shadow-primary/20 hover:brightness-110 transition-all duration-200">تأكيد الإضافة</button>
             <button type="button" onclick="closeAddCategoryModal()" class="flex-1 py-4 md:py-5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 rounded-xl md:rounded-2xl font-bold text-base md:text-lg hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all duration-200">إلغاء</button>
@@ -337,8 +337,8 @@
 <div id="add-contact-modal" class="fixed inset-0 z-[10000] hidden items-center justify-center p-5">
     <div class="absolute inset-0 bg-zinc-950/60 backdrop-blur-sm transition-opacity duration-200" onclick="closeContactMethodModal()"></div>
     <div class="relative w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl md:rounded-[3rem] p-8 md:p-10 shadow-2xl border border-zinc-200 dark:border-zinc-800 transform transition-all duration-200 scale-95 animate-fade-in">
-        <h3 class="text-2xl md:text-3xl font-black mb-6 md:mb-8 dark:text-white text-right">إضافة طريقة تواصل</h3>
-        <div class="space-y-3 md:space-y-4 max-h-[400px] md:max-h-[450px] overflow-y-auto custom-scrollbar pl-2 md:pl-3 will-change-transform">
+        <h3 class="text-2xl md:text-3xl font-black mb-6 md:mb-8 dark:text-white text-end">إضافة طريقة تواصل</h3>
+        <div class="space-y-3 md:space-y-4 max-h-[400px] md:max-h-[450px] overflow-y-auto custom-scrollbar ps-2 md:ps-3 will-change-transform">
             <!-- Twitter -->
             <div onclick="addContactMethod('twitter')" class="p-4 md:p-5 rounded-2xl border-2 border-zinc-200 dark:border-zinc-700 hover:border-sky-400 hover:bg-sky-50 dark:hover:bg-sky-950/30 cursor-pointer transition-all duration-200">
                 <div class="flex items-center gap-4">
@@ -656,7 +656,7 @@
                 contactItem.classList.add('primary-method');
                 contactItem.setAttribute('data-primary', 'true');
                 const badge = document.createElement('div');
-                badge.className = 'primary-badge absolute -top-3 md:-top-4 right-3 md:right-5 bg-green-500 text-white px-3 md:px-5 py-1 md:py-1.5 rounded-full text-sm md:text-base font-bold shadow-lg flex items-center gap-1.5';
+                badge.className = 'primary-badge absolute -top-3 md:-top-4 end-3 md:end-5 bg-green-500 text-white px-3 md:px-5 py-1 md:py-1.5 rounded-full text-sm md:text-base font-bold shadow-lg flex items-center gap-1.5';
                 badge.innerHTML = `
                     <svg class="w-3.5 h-3.5 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>

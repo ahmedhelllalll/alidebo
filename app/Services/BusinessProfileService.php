@@ -122,9 +122,15 @@ class BusinessProfileService
         OptimizeProfileContent::dispatch($business);
     }
 
-    public function uploadMedia(BusinessProfile $business, array $files, ?array $captions): array
+    public function uploadMedia(BusinessProfile $business, array $files, ?array $captions, ?int $categoryId = null): array
     {
-        $existingCount = $business->media()->count();
+        $query = $business->media();
+        if ($categoryId) {
+            $query->where('business_image_category_id', $categoryId);
+        } else {
+            $query->whereNull('business_image_category_id');
+        }
+        $existingCount = $query->count();
         $uploaded = [];
 
         foreach ($files as $index => $image) {
@@ -135,15 +141,24 @@ class BusinessProfileService
                 'caption' => $captions[$index] ?? null,
                 'order' => $existingCount + $index,
                 'disk' => 'r2',
+                'business_image_category_id' => $categoryId,
             ]);
             $uploaded[] = [
                 'id' => $media->id,
                 'file_path' => $media->file_url,
                 'caption' => $media->caption,
+                'category_id' => $categoryId,
             ];
         }
 
         return $uploaded;
+    }
+
+    public function createImageCategory(BusinessProfile $business, string $name)
+    {
+        return $business->imageCategories()->create([
+            'name' => $name
+        ]);
     }
 
     public function updateMediaOrder(array $orderIds): void

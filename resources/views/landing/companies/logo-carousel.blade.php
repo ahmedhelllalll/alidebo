@@ -7,8 +7,8 @@
     </div>
 
     <!-- Gradient Masks for seamless fade -->
-    <div class="absolute inset-y-0 left-0 w-24 sm:w-48 bg-gradient-to-r from-slate-50 dark:from-[#09090b] to-transparent z-10 pointer-events-none"></div>
-    <div class="absolute inset-y-0 right-0 w-24 sm:w-48 bg-gradient-to-l from-slate-50 dark:from-[#09090b] to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute inset-y-0 start-0 w-24 sm:w-48 bg-gradient-to-r from-slate-50 dark:from-[#09090b] to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute inset-y-0 end-0 w-24 sm:w-48 bg-gradient-to-l from-slate-50 dark:from-[#09090b] to-transparent z-10 pointer-events-none"></div>
 
     <!-- Marquee Track -->
     <div class="marquee">
@@ -27,7 +27,7 @@
         <div class="logo-marquee-content items-center">
             {{-- We duplicate the list to make the loop mathematically seamless (-50% translation) --}}
             @for ($i = 0; $i < 2; $i++)
-                <div class="flex items-center gap-16 sm:gap-24 pr-16 sm:pr-24 shrink-0">
+                <div class="flex items-center gap-16 sm:gap-24 pe-16 sm:pe-24 shrink-0">
                     @foreach($displayCompanies as $company)
                         <a href="{{ $company['url'] }}" class="logo-marquee-item flex items-center justify-center opacity-50 hover:opacity-100 transition-all duration-300">
                             <img src="{{ $company['logo'] }}" alt="{{ $company['name'] }}" class="h-10 sm:h-12 w-auto object-contain max-w-[140px] grayscale hover:grayscale-0 transition-all duration-300" loading="lazy" onerror="this.style.display='none'">

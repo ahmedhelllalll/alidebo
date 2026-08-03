@@ -31,7 +31,7 @@
             </div>
         </div>
     </section>
-    <section class="w-full lg:w-[45%] min-h-screen flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'border-r lg:border-l order-2 lg:order-1 text-right' : 'border-l lg:border-r order-2 text-left' }}">
+    <section class="w-full lg:w-[45%] min-h-screen flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'border-e lg:border-s order-2 lg:order-1 text-end' : 'border-s lg:border-e order-2 text-start' }}">
         <div class="w-full max-w-md mx-auto fade-in">
             <header class="mb-10">
                 <div class="flex items-center justify-start gap-3 mb-10 group cursor-pointer" onclick="window.location.href='/'">

@@ -15,7 +15,7 @@
                         <i class="fa-solid fa-headset text-primary text-sm"></i>
                     </div>
                 </div>
-                <div class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-sm"></div>
+                <div class="absolute bottom-0 end-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white dark:border-zinc-900 shadow-sm"></div>
             </div>
             <div>
                 <h2 class="text-[15px] font-bold text-zinc-900 dark:text-white leading-tight">{{ __('dashboard.index.priority_support') ?? 'Priority Support' }}</h2>
@@ -50,13 +50,13 @@
                 <div :class="[
                     'max-w-[75%] rounded-2xl px-5 py-3 text-[14px] shadow-sm', 
                     msg.sender_type === 'user' 
-                        ? 'bg-primary text-white rounded-br-sm' 
-                        : 'bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-black/5 dark:border-white/[0.04] rounded-bl-sm'
+                        ? 'bg-primary text-white rounded-ee-sm' 
+                        : 'bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-black/5 dark:border-white/[0.04] rounded-es-sm'
                 ]">
                     <p x-text="msg.message" class="whitespace-pre-wrap leading-relaxed"></p>
                     <span :class="[
                         'text-[10px] mt-1.5 block',
-                        msg.sender_type === 'user' ? 'text-white/70 text-right' : 'text-zinc-400 text-left'
+                        msg.sender_type === 'user' ? 'text-white/70 text-end' : 'text-zinc-400 text-start'
                     ]" x-text="msg.time_ago"></span>
                 </div>
             </div>
@@ -64,7 +64,7 @@
 
         <template x-if="isAdminTyping">
             <div class="flex w-full justify-start mt-2" style="animation: msgSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(12px);">
-                <div class="max-w-[75%] rounded-2xl px-5 py-4 shadow-sm bg-white dark:bg-zinc-800 border border-black/5 dark:border-white/[0.04] rounded-bl-sm flex items-center gap-1.5">
+                <div class="max-w-[75%] rounded-2xl px-5 py-4 shadow-sm bg-white dark:bg-zinc-800 border border-black/5 dark:border-white/[0.04] rounded-es-sm flex items-center gap-1.5">
                     <div class="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full" style="animation: typingWave 1.4s infinite ease-in-out; animation-delay: 0ms;"></div>
                     <div class="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full" style="animation: typingWave 1.4s infinite ease-in-out; animation-delay: 160ms;"></div>
                     <div class="w-1.5 h-1.5 bg-zinc-400 dark:bg-zinc-500 rounded-full" style="animation: typingWave 1.4s infinite ease-in-out; animation-delay: 320ms;"></div>

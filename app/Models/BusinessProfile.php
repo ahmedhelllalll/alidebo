@@ -32,6 +32,7 @@ class BusinessProfile extends Model
         'approved_at',
         'disk',
         'claim_token',
+        'import_batch_id',
     ];
 
     protected $casts = [
@@ -72,6 +73,11 @@ class BusinessProfile extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
+    public function importBatch(): BelongsTo
+    {
+        return $this->belongsTo(BusinessImportBatch::class, 'import_batch_id');
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -85,6 +91,11 @@ class BusinessProfile extends Model
     public function media(): HasMany
     {
         return $this->hasMany(BusinessMedia::class)->orderBy('order');
+    }
+
+    public function imageCategories(): HasMany
+    {
+        return $this->hasMany(BusinessImageCategory::class);
     }
 
     public function leads(): HasMany

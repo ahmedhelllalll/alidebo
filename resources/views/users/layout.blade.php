@@ -158,13 +158,13 @@
                 <div class="relative" x-data="notificationsMenu()" @click.away="open = false">
                     <button @click="toggle()" class="relative p-2 rounded-full text-zinc-500 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-transparent">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                        <span x-show="count > 0" x-cloak class="absolute top-1 right-1.5 flex h-2 w-2">
+                        <span x-show="count > 0" x-cloak class="absolute top-1 end-1.5 flex h-2 w-2">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                         </span>
                     </button>
 
-                    <div x-show="open" x-transition.opacity.scale.95 x-cloak class="absolute top-full right-0 mt-2 w-80 bg-white dark:bg-[#0e0e11] rounded-2xl shadow-xl border border-zinc-200 dark:border-white/5 overflow-hidden z-50 origin-top-right">
+                    <div x-show="open" x-transition.opacity.scale.95 x-cloak class="absolute top-full end-0 mt-2 w-80 bg-white dark:bg-[#0e0e11] rounded-2xl shadow-xl border border-zinc-200 dark:border-white/5 overflow-hidden z-50 origin-top-right">
                         <div class="p-4 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
                             <h3 class="text-sm font-bold text-zinc-900 dark:text-white">Notifications</h3>
                             <button x-show="count > 0" @click="markAllAsRead()" class="text-xs font-semibold text-primary hover:text-primary-dark transition-colors">Mark all read</button>

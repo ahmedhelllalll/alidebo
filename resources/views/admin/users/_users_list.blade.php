@@ -32,7 +32,7 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-[14px] font-medium text-slate-500 dark:text-zinc-400">{{ $user->email }}</td>
             <td class="px-6 py-4 whitespace-nowrap relative">
-                <div class="relative inline-block text-left">
+                <div class="relative inline-block text-start">
                     <button type="button" onclick="toggleRoleMenu(event, 'role-menu-desk-{{ $user->id }}')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-700/50 bg-white dark:bg-zinc-900 text-[12px] font-[900] shadow-sm hover:border-slate-300 dark:hover:border-zinc-600 transition-colors role-btn-[{{ $user->id }}] {{ auth()->id() === $user->id ? 'opacity-50 cursor-not-allowed' : '' }}" {{ auth()->id() === $user->id ? 'disabled' : '' }}>
                         @if($user->role === 'admin')
                             <div class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div><span class="text-purple-700 dark:text-purple-400">{{ __('admin.admin_role') }}</span>
@@ -98,7 +98,7 @@
                     <h3 class="text-[12px] font-medium text-slate-500 dark:text-zinc-400 break-all">{{ $user->email }}</h3>
                 </div>
             </div>
-            <div class="relative inline-block text-left">
+            <div class="relative inline-block text-start">
                 <button type="button" onclick="toggleRoleMenu(event, 'role-menu-mobile-{{ $user->id }}')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-700/50 bg-white dark:bg-zinc-900 text-[12px] font-[900] shadow-sm hover:border-slate-300 dark:hover:border-zinc-600 transition-colors role-btn-[{{ $user->id }}] {{ auth()->id() === $user->id ? 'opacity-50 cursor-not-allowed' : '' }}" {{ auth()->id() === $user->id ? 'disabled' : '' }}>
                     @if($user->role === 'admin')
                         <div class="w-1.5 h-1.5 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.5)]"></div><span class="text-purple-700 dark:text-purple-400">{{ __('admin.admin_role') }}</span>

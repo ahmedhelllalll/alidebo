@@ -25,7 +25,7 @@
             </div>
 
             {{-- Minimalist Visual (Right) --}}
-            <div class="w-full lg:w-1/2 h-[350px] sm:h-[450px] lg:h-auto lg:self-stretch relative overflow-hidden bg-slate-100/50 dark:bg-zinc-900/20 border-t lg:border-t-0 lg:border-l border-slate-200/60 dark:border-zinc-800/60 flex items-center justify-center">
+            <div class="w-full lg:w-1/2 h-[350px] sm:h-[450px] lg:h-auto lg:self-stretch relative overflow-hidden bg-slate-100/50 dark:bg-zinc-900/20 border-t lg:border-t-0 lg:border-s border-slate-200/60 dark:border-zinc-800/60 flex items-center justify-center">
                 
                 {{-- Decorative Gradients --}}
                 <div class="absolute inset-0 pointer-events-none overflow-hidden">

@@ -105,4 +105,5 @@ return [
   'claim_invited_title' => '¡Has sido invitado a reclamar este negocio!',
   'claim_invited_desc' => 'Al reclamarlo, tendrás control total sobre la información, reseñas y clientes potenciales.',
   'claim_now' => 'Reclamar ahora',
+    'general_gallery' => 'Galería General',
 ];

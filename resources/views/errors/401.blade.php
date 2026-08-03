@@ -5,9 +5,9 @@
 @section('glow_colors', '#3b82f6, #60a5fa, #3b82f6')
 @section('float_animation', 'floating 5s ease-in-out infinite')
 @section('content')
-<section class="w-full lg:w-[45%] flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'border-l order-2 lg:order-1 text-right' : 'border-r order-2 text-left' }}">
+<section class="w-full lg:w-[45%] flex flex-col justify-center px-8 py-12 lg:px-16 relative z-10 bg-white dark:bg-zinc-950 border-slate-100 dark:border-zinc-900 {{ app()->getLocale() == 'ar' ? 'border-s order-2 lg:order-1 text-end' : 'border-e order-2 text-start' }}">
     <div class="w-full max-w-md mx-auto fade-in">
-        <header class="mb-10 text-right">
+        <header class="mb-10 text-end">
             <div class="inline-flex items-center justify-center gap-2 mb-6 px-4 py-2 rounded-full bg-blue-500/10 text-blue-600 font-bold text-sm">
                 <span>{{ __('errors.401.title') }}</span>
             </div>

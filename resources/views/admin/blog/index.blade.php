@@ -101,7 +101,7 @@
                     @endif
 
                     {{-- Status Badge (Absolute Top Right) --}}
-                    <div class="absolute top-3 right-3 rtl:right-auto rtl:left-3 z-10">
+                    <div class="absolute top-3 end-3 rtl:end-auto rtl:start-3 z-10">
                         @if($post->status === 'published')
                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest bg-white/90 dark:bg-zinc-900/90 text-emerald-600 dark:text-emerald-400 backdrop-blur-md shadow-sm border border-black/5 dark:border-white/10">
                                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>

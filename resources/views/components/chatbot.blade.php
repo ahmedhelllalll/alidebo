@@ -69,7 +69,7 @@
     }
 </style>
 
-<div id="dibo-chatbot-container" class="fixed bottom-6 left-6 rtl:left-auto rtl:right-6 z-[90000] flex flex-col items-start pointer-events-none" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+<div id="dibo-chatbot-container" class="fixed bottom-6 start-6 rtl:start-auto rtl:end-6 z-[90000] flex flex-col items-start pointer-events-none" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
     
     {{-- Chat Window --}}
     <div id="chatbot-window" class="hidden-state pointer-events-auto mb-4 w-[350px] sm:w-[380px] h-[500px] max-h-[calc(100vh-6rem)] max-w-[calc(100vw-3rem)] bg-white dark:bg-[#09090b] rounded-3xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.5)] border border-slate-200/60 dark:border-zinc-800/60 overflow-hidden flex flex-col">
@@ -97,7 +97,7 @@
         <div id="chatbot-messages" data-lenis-prevent class="flex-1 p-5 overflow-y-auto scroll-smooth flex flex-col gap-4 bg-slate-50/50 dark:bg-zinc-900/30">
             {{-- Initial Greeting --}}
             <div class="flex flex-col gap-1 items-start rtl:items-start max-w-[90%]">
-                <div class="chat-bubble-ai prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-800 dark:prose-strong:text-slate-200 prose-ul:my-1 prose-li:my-0 px-5 py-3 rounded-3xl rounded-tl-sm text-[14px] shadow-md border border-slate-100 dark:border-zinc-800/60">
+                <div class="chat-bubble-ai prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-800 dark:prose-strong:text-slate-200 prose-ul:my-1 prose-li:my-0 px-5 py-3 rounded-3xl rounded-ss-sm text-[14px] shadow-md border border-slate-100 dark:border-zinc-800/60">
                     {{ __('chatbot.greeting') ?? 'Welcome to AliDebo! How can I help you today? 😊' }}
                 </div>
             </div>
@@ -145,7 +145,7 @@
         <svg id="chatbot-icon-close" class="w-6 h-6 absolute inset-0 m-auto opacity-0 scale-50 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         
         {{-- Notification Badge --}}
-        <span class="absolute top-0 right-0 flex h-3 w-3">
+        <span class="absolute top-0 end-0 flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500 border-2 border-white dark:border-[#09090b]"></span>
         </span>
@@ -286,7 +286,7 @@
             bubble.className = `px-5 py-3 rounded-3xl text-[14px] leading-relaxed shadow-md chat-bubble-user rounded-tr-sm`;
             bubble.innerHTML = escapeHtml(text).replace(/\n/g, '<br>');
         } else {
-            bubble.className = `chat-bubble-ai prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-800 dark:prose-strong:text-slate-200 prose-ul:my-1 prose-li:my-0 px-5 py-3 rounded-3xl rounded-tl-sm text-[14px] shadow-md border border-slate-100 dark:border-zinc-800/60`;
+            bubble.className = `chat-bubble-ai prose prose-sm dark:prose-invert prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-800 dark:prose-strong:text-slate-200 prose-ul:my-1 prose-li:my-0 px-5 py-3 rounded-3xl rounded-ss-sm text-[14px] shadow-md border border-slate-100 dark:border-zinc-800/60`;
             if (typeof marked !== 'undefined' && typeof DOMPurify !== 'undefined') {
                 const rawHtml = marked.parse(text);
                 bubble.innerHTML = DOMPurify.sanitize(rawHtml);
@@ -307,7 +307,7 @@
         msgDiv.className = `flex flex-col gap-1 max-w-[85%] self-start items-start`;
         
         const bubble = document.createElement('div');
-        bubble.className = `px-4 py-3.5 rounded-2xl rounded-tl-sm chat-bubble-ai shadow-sm flex items-center gap-1.5`;
+        bubble.className = `px-4 py-3.5 rounded-2xl rounded-ss-sm chat-bubble-ai shadow-sm flex items-center gap-1.5`;
         bubble.innerHTML = `
             <div class="w-1.5 h-1.5 bg-slate-400 dark:bg-zinc-500 rounded-full typing-dot"></div>
             <div class="w-1.5 h-1.5 bg-slate-400 dark:bg-zinc-500 rounded-full typing-dot"></div>

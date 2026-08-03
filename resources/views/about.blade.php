@@ -7,8 +7,8 @@
 <div class="relative overflow-hidden bg-white dark:bg-[#0a0a0c]">
     <!-- Ambient Corner Glows -->
     <div class="absolute top-0 inset-x-0 h-[600px] pointer-events-none overflow-hidden z-0 opacity-40 dark:opacity-30">
-        <div class="absolute -top-40 -left-40 w-[400px] h-[400px] bg-primary/10 dark:bg-primary/10 blur-[130px] rounded-full"></div>
-        <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/10 dark:bg-primary/10 blur-[140px] rounded-full"></div>
+        <div class="absolute -top-40 -start-40 w-[400px] h-[400px] bg-primary/10 dark:bg-primary/10 blur-[130px] rounded-full"></div>
+        <div class="absolute -top-40 -end-40 w-[500px] h-[500px] bg-primary/10 dark:bg-primary/10 blur-[140px] rounded-full"></div>
     </div>
 
     <!-- Floating Hero Section (Matches CTA-Ads Style from Welcome Page) -->
@@ -16,7 +16,7 @@
     <section class="reveal relative w-full bg-white dark:bg-[#0a0a0c] rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] flex flex-col lg:flex-row items-center justify-between">
         
         {{-- Text Content (Left) --}}
-        <div class="w-full lg:w-1/2 p-8 sm:p-12 lg:p-20 relative z-10 flex flex-col items-center lg:items-start text-center lg:text-start lg:rtl:text-right">
+        <div class="w-full lg:w-1/2 p-8 sm:p-12 lg:p-20 relative z-10 flex flex-col items-center lg:items-start text-center lg:text-start lg:rtl:text-end">
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-[900] tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
                 {!! __('about.hero_title') !!}
             </h1>
@@ -26,7 +26,7 @@
         </div>
 
         {{-- Minimalist Visual (Right) --}}
-        <div class="w-full lg:w-1/2 h-[350px] sm:h-[450px] lg:h-auto lg:self-stretch relative overflow-hidden bg-slate-100/50 dark:bg-zinc-900/20 border-t lg:border-t-0 lg:border-l border-slate-200/60 dark:border-zinc-800/60 flex items-center justify-center rtl:lg:border-l-0 rtl:lg:border-r">
+        <div class="w-full lg:w-1/2 h-[350px] sm:h-[450px] lg:h-auto lg:self-stretch relative overflow-hidden bg-slate-100/50 dark:bg-zinc-900/20 border-t lg:border-t-0 lg:border-s border-slate-200/60 dark:border-zinc-800/60 flex items-center justify-center rtl:lg:border-s-0 rtl:lg:border-e">
             
             {{-- Decorative Gradients --}}
             <div class="absolute inset-0 pointer-events-none overflow-hidden">

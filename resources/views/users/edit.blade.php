@@ -371,58 +371,84 @@
                             </div>
                             <div>
                                 <h3 class="text-[13px] font-bold text-zinc-900 dark:text-white tracking-tight">{{ __('forms.business.tab_gallery') ?? 'Gallery' }}</h3>
-                                <p class="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5"><span id="mediaCount">{{ $business->media->count() }}</span>/10 {{ __('forms.business.max_images') ?? 'images · drag to reorder' }}</p>
+                                <p class="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5">Organize your images into categories (Max 5 categories, 10 images each)</p>
                             </div>
                         </div>
-                        <button type="button" onclick="document.getElementById('galleryInput').click()" id="addImagesBtn"
-                                class="flex items-center gap-2 px-4 py-2.5 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-xl text-xs font-bold hover:bg-zinc-700 dark:hover:bg-zinc-100 transition-all active:scale-[0.98] shadow-sm whitespace-nowrap">
+                        <button type="button" onclick="promptCreateCategory()" 
+                                class="flex items-center gap-2 px-4 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary/90 transition-all active:scale-[0.98] shadow-sm whitespace-nowrap">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                            {{ __('forms.business.add_new_images') ?? 'Add Images' }}
+                            New Category
                         </button>
                     </div>
 
-                    <div class="p-6 md:p-8">
-                        <input type="file" id="galleryInput" class="hidden" multiple accept="image/*">
-
-                        {{-- Upload Progress --}}
-                        <div id="uploadProgress" class="hidden mb-5 p-4 bg-primary/5 border border-primary/20 rounded-xl">
-                            <div class="flex justify-between items-center text-xs font-bold text-primary mb-2">
-                                <span>Uploading images…</span><span id="uploadPercent">0%</span>
+                    <div class="p-6 md:p-8 space-y-8">
+                        @php
+                            $generalMedia = $business->media->whereNull('business_image_category_id');
+                            $categories = $business->imageCategories;
+                        @endphp
+                        
+                        <div id="categoriesWrapper" class="space-y-8">
+                            {{-- GENERAL CATEGORY --}}
+                            @if($generalMedia->count() > 0 || $categories->count() == 0)
+                            <div class="category-block bg-zinc-50/50 dark:bg-zinc-800/30 p-5 rounded-2xl border border-zinc-100 dark:border-zinc-800" data-category-id="">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h4 class="text-sm font-bold text-zinc-800 dark:text-zinc-200">General Gallery <span class="text-xs font-normal text-zinc-400 ms-2">(<span class="cat-count">{{ $generalMedia->count() }}</span>/10)</span></h4>
+                                    <button type="button" onclick="document.getElementById('galleryInput_general').click()" class="text-xs font-bold text-primary hover:text-primary/80">Add Images</button>
+                                </div>
+                                <input type="file" id="galleryInput_general" class="hidden" multiple accept="image/*" onchange="handleCategoryUpload(this, '')">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 gallery-grid-container">
+                                    @forelse($generalMedia as $media)
+                                        <div class="group relative aspect-square bg-zinc-50 dark:bg-zinc-900/50 border border-black/[0.04] dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm" data-id="{{ $media->id }}">
+                                            <img src="{{ $media->file_url }}" class="w-full h-full object-cover pointer-events-none">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-zinc-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
+                                                <div class="flex justify-end">
+                                                    <button type="button" onclick="deleteMedia({{ $media->id }},this)"
+                                                            class="w-7 h-7 bg-rose-500 hover:bg-rose-600 text-white rounded-lg flex items-center justify-center transition-colors shadow-sm">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                    </button>
+                                                </div>
+                                                <input type="text" value="{{ $media->caption }}" class="w-full bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder:text-white/50 outline-none focus:border-white/60 transition-colors" placeholder="Add caption…" onchange="updateCaption({{ $media->id }},this.value)">
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="col-span-full py-8 text-center text-zinc-400 text-xs empty-state">No images in this category</div>
+                                    @endforelse
+                                </div>
                             </div>
-                            <div class="h-1.5 bg-primary/20 rounded-full overflow-hidden">
-                                <div id="uploadBar" class="h-full bg-primary rounded-full transition-all duration-300" style="width:0%"></div>
-                            </div>
-                        </div>
+                            @endif
 
-                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4" id="galleryGrid">
-                            @forelse($business->media as $media)
-                            <div class="group relative aspect-square bg-zinc-50 dark:bg-zinc-900/50 border border-black/[0.04] dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm" data-id="{{ $media->id }}">
-                                <img src="{{ $media->file_url }}" class="w-full h-full object-cover pointer-events-none">
-                                <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-zinc-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
-                                    <div class="flex justify-end">
-                                        <button type="button" onclick="deleteMedia({{ $media->id }},this)"
-                                                class="w-7 h-7 bg-rose-500 hover:bg-rose-600 text-white rounded-lg flex items-center justify-center transition-colors shadow-sm">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        </button>
+                            {{-- CUSTOM CATEGORIES --}}
+                            @foreach($categories as $category)
+                            <div class="category-block bg-zinc-50/50 dark:bg-zinc-800/30 p-5 rounded-2xl border border-zinc-100 dark:border-zinc-800" data-category-id="{{ $category->id }}">
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <h4 class="text-sm font-bold text-zinc-800 dark:text-zinc-200">{{ $category->name }} <span class="text-xs font-normal text-zinc-400 ms-2">(<span class="cat-count">{{ $category->media->count() }}</span>/10)</span></h4>
+                                        <button type="button" onclick="promptEditCategory({{ $category->id }}, '{{ addslashes($category->name) }}')" class="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors" title="Edit Category"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+                                        <button type="button" onclick="deleteCategory({{ $category->id }}, this)" class="w-6 h-6 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-colors" title="Delete Category"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
                                     </div>
-                                    <input type="text" value="{{ $media->caption }}"
-                                           class="w-full bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder:text-white/50 outline-none focus:border-white/60 transition-colors"
-                                           placeholder="Add caption…"
-                                           onchange="updateCaption({{ $media->id }},this.value)">
+                                    <button type="button" onclick="document.getElementById('galleryInput_{{ $category->id }}').click()" class="text-xs font-bold text-primary hover:text-primary/80">Add Images</button>
                                 </div>
-                                <div class="absolute top-2 start-2 w-6 h-6 bg-zinc-900/40 backdrop-blur-sm rounded-lg flex items-center justify-center cursor-grab text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg>
+                                <input type="file" id="galleryInput_{{ $category->id }}" class="hidden" multiple accept="image/*" onchange="handleCategoryUpload(this, '{{ $category->id }}')">
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 gallery-grid-container">
+                                    @forelse($category->media as $media)
+                                        <div class="group relative aspect-square bg-zinc-50 dark:bg-zinc-900/50 border border-black/[0.04] dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm" data-id="{{ $media->id }}">
+                                            <img src="{{ $media->file_url }}" class="w-full h-full object-cover pointer-events-none">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-zinc-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
+                                                <div class="flex justify-end">
+                                                    <button type="button" onclick="deleteMedia({{ $media->id }},this)"
+                                                            class="w-7 h-7 bg-rose-500 hover:bg-rose-600 text-white rounded-lg flex items-center justify-center transition-colors shadow-sm">
+                                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                    </button>
+                                                </div>
+                                                <input type="text" value="{{ $media->caption }}" class="w-full bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder:text-white/50 outline-none focus:border-white/60 transition-colors" placeholder="Add caption…" onchange="updateCaption({{ $media->id }},this.value)">
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="col-span-full py-8 text-center text-zinc-400 text-xs empty-state">No images in this category</div>
+                                    @endforelse
                                 </div>
                             </div>
-                            @empty
-                            <div class="col-span-full py-16 text-center border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-2xl" id="emptyGalleryState">
-                                <div class="w-12 h-12 bg-zinc-100 dark:bg-zinc-800 rounded-2xl flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-6 h-6 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                </div>
-                                <p class="text-sm font-bold text-zinc-500 dark:text-zinc-400">{{ __('forms.business.no_images_uploaded') ?? 'No images yet' }}</p>
-                                <p class="text-xs text-zinc-400 mt-1">Click "Add Images" to upload up to 10 photos</p>
-                            </div>
-                            @endforelse
+                            @endforeach
                         </div>
                     </div>
                 </section>
@@ -462,6 +488,7 @@
 
 @push('scripts')
 
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script>
 /* ═══════════════════════════════════════════════
    TOAST NOTIFICATION SYSTEM
@@ -565,94 +592,285 @@ const spy = new IntersectionObserver(entries => {
 document.querySelectorAll('#basic,#visual,#location,#social,#gallery').forEach(s => spy.observe(s));
 
 /* ═══ GALLERY — SORTABLE DRAG & DROP ═══ */
-const galleryGrid = document.getElementById('galleryGrid');
-if(galleryGrid) {
-    new Sortable(galleryGrid, {
-        animation: 200,
-        ghostClass: 'opacity-30',
-        handle: '[class*="cursor-grab"]',
-        onEnd() {
-            const order = [...galleryGrid.children].map(el => el.dataset.id).filter(Boolean);
-            if(!order.length) return;
-            fetch('{{ route("business.media.order") }}', {
+function initSortables() {
+    document.querySelectorAll('.gallery-grid-container').forEach(grid => {
+        new Sortable(grid, {
+            animation: 200,
+            ghostClass: 'opacity-30',
+            handle: '[class*="cursor-grab"]',
+            onEnd() {
+                const order = [...grid.children].map(el => el.dataset.id).filter(Boolean);
+                if(!order.length) return;
+                fetch('{{ route("business.media.order") }}', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                    body: JSON.stringify({ order })
+                }).then(r => r.json()).then(d => { if(d.success) showToast('info','Order saved','Gallery order has been updated.', 2000); });
+            }
+        });
+    });
+}
+initSortables();
+
+/* ═══ GALLERY — CREATE CATEGORY ═══ */
+    window.showCustomModal = function(options) {
+        const { type = 'confirm', title, desc = '', placeholder = '', defaultValue = '', confirmText = '{{ __("admin.save") ?? "Save" }}', cancelText = '{{ __("admin.cancel") ?? "Cancel" }}', confirmClass = 'bg-primary hover:bg-primary-dark', onConfirm } = options;
+        const overlay = document.createElement('div');
+        overlay.className = 'fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300';
+        let inputHtml = '';
+        if (type === 'input') {
+            inputHtml = `<input type="text" id="customModalInput" value="${defaultValue}" placeholder="${placeholder}" class="w-full mt-4 bg-transparent border border-slate-300 dark:border-white/20 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-800 dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">`;
+        }
+        let descHtml = desc ? `<p class="text-sm text-slate-500 dark:text-zinc-400 mt-2 leading-relaxed">${desc}</p>` : '';
+        overlay.innerHTML = `
+            <div class="bg-white dark:bg-zinc-900 rounded-2xl p-6 md:p-7 w-full max-w-sm shadow-[0_10px_40px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_rgba(0,0,0,0.5)] scale-95 transition-transform duration-300 border border-slate-200/60 dark:border-white/10" dir="${document.documentElement.dir || 'auto'}">
+                <h3 class="text-lg font-bold text-slate-800 dark:text-white text-start leading-tight">${title}</h3>
+                ${descHtml}
+                ${inputHtml}
+                <div class="flex items-center gap-3 mt-6">
+                    <button type="button" id="customModalCancel" class="flex-1 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 dark:text-zinc-300 bg-slate-100 dark:bg-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors">${cancelText}</button>
+                    <button type="button" id="customModalConfirm" class="flex-1 px-4 py-2 rounded-xl text-sm font-semibold text-white shadow-sm ${confirmClass} transition-colors">${confirmText}</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+        const inputEl = overlay.querySelector('#customModalInput');
+        requestAnimationFrame(() => {
+            overlay.classList.remove('opacity-0');
+            overlay.children[0].classList.remove('scale-95');
+            if (inputEl) inputEl.focus();
+        });
+        const closeModal = () => {
+            overlay.classList.add('opacity-0');
+            overlay.children[0].classList.add('scale-95');
+            setTimeout(() => overlay.remove(), 300);
+        };
+        overlay.querySelector('#customModalCancel').onclick = closeModal;
+        overlay.querySelector('#customModalConfirm').onclick = async () => {
+            let val = null;
+            if (type === 'input') {
+                val = inputEl.value.trim();
+                if(!val) {
+                    if(typeof gsap !== 'undefined') gsap.fromTo(inputEl, {x: -5}, {x: 5, duration: 0.1, yoyo: true, repeat: 3});
+                    else inputEl.classList.add('border-red-500');
+                    return;
+                }
+            }
+            
+            if (onConfirm) {
+                const btn = overlay.querySelector('#customModalConfirm');
+                const cancelBtn = overlay.querySelector('#customModalCancel');
+                const originalText = btn.innerHTML;
+                btn.disabled = true;
+                cancelBtn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin me-2"></i>${originalText}`;
+                
+                try {
+                    await onConfirm(val);
+                } catch (e) {
+                    console.error(e);
+                }
+            }
+            closeModal();
+        };
+    };
+
+function promptCreateCategory() {
+    showCustomModal({
+        type: 'input',
+        title: 'Add Category',
+        placeholder: 'Category Name',
+        onConfirm: (name) => {
+            if(!name) return;
+    
+            return fetch('{{ route("business.categories.store") }}', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-                body: JSON.stringify({ order })
-            }).then(r => r.json()).then(d => { if(d.success) showToast('info','Order saved','Gallery order has been updated.', 2000); });
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' },
+                body: JSON.stringify({ name })
+            }).then(r => r.json()).then(d => {
+                if(d.success) {
+                    showToast('success','Category Created', 'Your new category has been added.');
+                    
+                    const wrapper = document.getElementById('categoriesWrapper');
+                    if(wrapper) {
+                        const newBlock = document.createElement('div');
+                        newBlock.className = 'category-block bg-zinc-50/50 dark:bg-zinc-800/30 p-5 rounded-2xl border border-zinc-100 dark:border-zinc-800';
+                        newBlock.dataset.categoryId = d.category.id;
+                        
+                        const escapedName = d.category.name.replace(/'/g, "\\'");
+                        const html = `
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="flex items-center gap-3">
+                                    <h4 class="text-sm font-bold text-zinc-800 dark:text-zinc-200">${d.category.name} <span class="text-xs font-normal text-zinc-400 ms-2">(<span class="cat-count">0</span>/10)</span></h4>
+                                    <button type="button" onclick="promptEditCategory(${d.category.id}, '${escapedName}')" class="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-500 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors" title="Edit Category"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg></button>
+                                    <button type="button" onclick="deleteCategory(${d.category.id}, this)" class="w-6 h-6 rounded-lg bg-rose-500/10 text-rose-500 flex items-center justify-center hover:bg-rose-500 hover:text-white transition-colors" title="Delete Category"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                                </div>
+                                <button type="button" onclick="document.getElementById('galleryInput_${d.category.id}').click()" class="text-xs font-bold text-primary hover:text-primary/80">Add Images</button>
+                            </div>
+                            <input type="file" id="galleryInput_${d.category.id}" class="hidden" multiple accept="image/*" onchange="handleCategoryUpload(this, '${d.category.id}')">
+                            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 gallery-grid-container">
+                                <div class="col-span-full py-8 text-center text-zinc-400 text-xs empty-state">No images in this category</div>
+                            </div>
+                        `;
+                        newBlock.innerHTML = html;
+                        wrapper.appendChild(newBlock);
+                        
+                        // Re-initialize Sortable for the new grid if it exists
+                        if (typeof Sortable !== 'undefined') {
+                            const newGrid = newBlock.querySelector('.gallery-grid-container');
+                            new Sortable(newGrid, {
+                                animation: 200, ghostClass: 'opacity-30', handle: '[class*="cursor-grab"]',
+                                onEnd() {
+                                    const order = [...newGrid.children].map(el => el.dataset.id).filter(Boolean);
+                                    if(!order.length) return;
+                                    fetch('{{ route("business.media.order") }}', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content }, body: JSON.stringify({ order }) }).then(r => r.json()).then(d => { if(d.success) showToast('info','Order saved','Gallery order has been updated.', 2000); });
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    showToast('error','Failed', d.message || 'Could not create category.');
+                }
+            }).catch(() => showToast('error','Error','Connection problem.'));
+        }
+    });
+}
+
+/* ═══ PROMPT EDIT CATEGORY ═══ */
+function promptEditCategory(id, currentName) {
+    showCustomModal({
+        type: 'input',
+        title: 'Edit Category',
+        defaultValue: currentName,
+        placeholder: 'Category Name',
+        confirmClass: 'bg-blue-500 hover:bg-blue-600 shadow-blue-500/30',
+        onConfirm: (name) => {
+            if(!name || name === currentName) return;
+            return fetch(`{{ url('dashboard/business/categories') }}/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' },
+                body: JSON.stringify({ name })
+            }).then(r => r.json()).then(d => {
+                if(d.success) {
+                    showToast('success', 'Category Updated', 'The category name has been changed.');
+                    const block = document.querySelector(`.category-block[data-category-id="${id}"]`);
+                    if(block) {
+                        const h4 = block.querySelector('h4');
+                        if(h4 && h4.firstChild) {
+                            h4.firstChild.textContent = d.category.name + ' ';
+                        }
+                        const editBtn = block.querySelector('button[title="Edit Category"]');
+                        if(editBtn) {
+                            const escapedName = d.category.name.replace(/'/g, "\\'");
+                            editBtn.setAttribute('onclick', `promptEditCategory(${id}, '${escapedName}')`);
+                        }
+                    }
+                } else {
+                    showToast('error','Failed', d.message || 'Could not update category.');
+                }
+            }).catch(() => showToast('error','Error', 'Connection problem.'));
+        }
+    });
+}
+
+/* ═══ GALLERY — DELETE CATEGORY ═══ */
+function deleteCategory(id, btn) {
+    showCustomModal({
+        type: 'confirm',
+        title: 'Delete category?',
+        desc: 'This action will also remove all images in this category.',
+        confirmText: 'Delete',
+        confirmClass: 'bg-rose-500 hover:bg-rose-600 shadow-rose-500/30',
+        onConfirm: () => {
+            return fetch(`{{ url('dashboard/business/categories') }}/${id}`, {
+                method: 'DELETE',
+                headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
+            }).then(r => r.json()).then(d => {
+                if(d.success) {
+                    btn.closest('.category-block').remove();
+                    showToast('success','Category Deleted','The category and its images were removed.');
+                } else { showToast('error','Failed', d.message || 'Could not delete category.'); }
+            }).catch(() => showToast('error','Error','Connection problem.'));
         }
     });
 }
 
 /* ═══ GALLERY — AJAX UPLOAD ═══ */
-document.getElementById('galleryInput').addEventListener('change', function() {
-    if(!this.files.length) return;
-    const currentCount = galleryGrid.querySelectorAll('[data-id]').length;
-    if(currentCount + this.files.length > 10) {
-        showToast('warning','Limit reached',`You can only have 10 images total. You have ${currentCount} currently.`);
-        this.value = ''; return;
+function handleCategoryUpload(input, categoryId) {
+    if(!input.files.length) return;
+    const block = input.closest('.category-block');
+    const grid = block.querySelector('.gallery-grid-container');
+    const currentCount = grid.querySelectorAll('[data-id]').length;
+    if(currentCount + input.files.length > 10) {
+        showToast('warning','Limit reached',`You can only have 10 images per category.`);
+        input.value = ''; return;
     }
     const formData = new FormData();
-    [...this.files].forEach(f => formData.append('images[]', f));
+    [...input.files].forEach(f => formData.append('images[]', f));
+    if(categoryId) formData.append('category_id', categoryId);
 
-    const progressEl = document.getElementById('uploadProgress');
-    const bar = document.getElementById('uploadBar');
-    const pct = document.getElementById('uploadPercent');
-    progressEl.classList.remove('hidden');
-    bar.style.width = '0%'; pct.textContent = '0%';
+    const countSpan = block.querySelector('.cat-count');
+    countSpan.innerHTML = '<span class="animate-pulse">...</span>';
 
-    const xhr = new XMLHttpRequest();
-    xhr.upload.onprogress = e => {
-        if(e.lengthComputable) {
-            const p = Math.round((e.loaded/e.total)*100);
-            bar.style.width = p+'%'; pct.textContent = p+'%';
+    fetch('{{ route("business.media.upload") }}', {
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' },
+        body: formData
+    }).then(r => r.json()).then(data => {
+        input.value = '';
+        if(data.success) {
+            showToast('success','Images uploaded','Your gallery has been updated.');
+            const empty = block.querySelector('.empty-state');
+            if(empty) empty.remove();
+            data.media.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'group relative aspect-square bg-zinc-50 dark:bg-zinc-900/50 border border-black/[0.04] dark:border-white/[0.06] rounded-xl overflow-hidden shadow-sm';
+                div.dataset.id = m.id;
+                div.innerHTML = `<img src="${m.file_path}" class="w-full h-full object-cover pointer-events-none">
+                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-zinc-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
+                        <div class="flex justify-end"><button type="button" onclick="deleteMedia(${m.id},this)" class="w-7 h-7 bg-rose-500 hover:bg-rose-600 text-white rounded-lg flex items-center justify-center transition-colors shadow-sm"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div>
+                        <input type="text" value="${m.caption || ''}" class="w-full bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder:text-white/50 outline-none focus:border-white/60 transition-colors" placeholder="Add caption…" onchange="updateCaption(${m.id},this.value)">
+                    </div>
+                    <div class="absolute top-2 start-2 w-6 h-6 bg-zinc-900/40 backdrop-blur-sm rounded-lg flex items-center justify-center cursor-grab text-white opacity-0 group-hover:opacity-100 transition-opacity"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg></div>`;
+                grid.appendChild(div);
+            });
+            countSpan.textContent = grid.querySelectorAll('[data-id]').length;
+            initSortables();
+        } else {
+            countSpan.textContent = currentCount;
+            showToast('error','Upload failed', data.error || 'Could not upload images.');
         }
-    };
-    xhr.onload = () => {
-        progressEl.classList.add('hidden');
-        this.value = '';
-        try {
-            const data = JSON.parse(xhr.responseText);
-            if(xhr.status >= 200 && xhr.status < 300 && data.success) {
-                showToast('success','Images uploaded','Your gallery has been updated successfully.');
-                const empty = document.getElementById('emptyGalleryState');
-                if(empty) empty.remove();
-                data.media.forEach(m => {
-                    const div = document.createElement('div');
-                    div.className = 'group relative aspect-square bg-zinc-50 dark:bg-zinc-900/50 border border-black/5 dark:border-white/[0.04] rounded-xl overflow-hidden shadow-sm';
-                    div.dataset.id = m.id;
-                    div.innerHTML = `<img src="${m.file_path}" class="w-full h-full object-cover pointer-events-none">
-                        <div class="absolute inset-0 bg-gradient-to-t from-zinc-900/80 via-zinc-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-3">
-                            <div class="flex justify-end"><button type="button" onclick="deleteMedia(${m.id},this)" class="w-7 h-7 bg-rose-500 hover:bg-rose-600 text-white rounded-lg flex items-center justify-center transition-colors"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button></div>
-                            <input type="text" class="w-full bg-black/40 backdrop-blur-sm border border-white/20 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder:text-white/50 outline-none focus:border-white/60" placeholder="Add caption…" onchange="updateCaption(${m.id},this.value)">
-                        </div>
-                        <div class="absolute top-2 start-2 w-6 h-6 bg-zinc-900/40 backdrop-blur-sm rounded-lg flex items-center justify-center cursor-grab text-white opacity-0 group-hover:opacity-100 transition-opacity"><svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-8a2 2 0 1 0-.001-4.001A2 2 0 0 0 13 6zm0 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z"/></svg></div>`;
-                    galleryGrid.appendChild(div);
-                });
-                document.getElementById('mediaCount').textContent = galleryGrid.querySelectorAll('[data-id]').length;
-            } else {
-                showToast('error','Upload failed', data.error || 'Could not upload images.');
-            }
-        } catch(e) { showToast('error','Error','Unexpected server response.'); }
-    };
-    xhr.onerror = () => { progressEl.classList.add('hidden'); showToast('error','Connection error','Please check your connection.'); };
-    xhr.open('POST','{{ route("business.media.upload") }}');
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
-    xhr.send(formData);
-});
+    }).catch(() => {
+        countSpan.textContent = currentCount;
+        showToast('error','Connection error','Please check your connection.');
+    });
+}
 
 /* ═══ GALLERY — DELETE ═══ */
 function deleteMedia(id, btn) {
-    confirmDialog('Delete image?','This action cannot be undone.','Delete', () => {
-        fetch(`{{ url('dashboard/business/media') }}/${id}`, {
-            method: 'DELETE',
-            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
-        }).then(r => r.json()).then(d => {
-            if(d.success) {
-                btn.closest('[data-id]').remove();
-                document.getElementById('mediaCount').textContent = galleryGrid.querySelectorAll('[data-id]').length;
-                showToast('success','Image deleted','The image has been removed from your gallery.');
-            } else { showToast('error','Delete failed','Could not delete this image.'); }
-        }).catch(() => showToast('error','Error','Connection problem.'));
+    showCustomModal({
+        type: 'confirm',
+        title: 'Delete image?',
+        desc: 'This action cannot be undone.',
+        confirmText: 'Delete',
+        confirmClass: 'bg-rose-500 hover:bg-rose-600 shadow-rose-500/30',
+        onConfirm: () => {
+            return fetch(`{{ url('dashboard/business/media') }}/${id}`, {
+                method: 'DELETE',
+                headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content, 'Accept': 'application/json' }
+            }).then(r => r.json()).then(d => {
+                if(d.success) {
+                    const block = btn.closest('.category-block');
+                    btn.closest('[data-id]').remove();
+                    if(block) {
+                        const grid = block.querySelector('.gallery-grid-container');
+                        const countSpan = block.querySelector('.cat-count');
+                        countSpan.textContent = grid.querySelectorAll('[data-id]').length;
+                    }
+                    showToast('success','Image deleted','The image has been removed from your gallery.');
+                } else { showToast('error','Delete failed','Could not delete this image.'); }
+            }).catch(() => showToast('error','Error','Connection problem.'));
+        }
     });
 }
 

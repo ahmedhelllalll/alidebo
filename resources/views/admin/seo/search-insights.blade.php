@@ -16,7 +16,7 @@
         </div>
         <div class="flex items-center gap-3">
             <a href="{{ route('admin.dashboard.seo') }}" class="px-4 py-2 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-lg text-sm font-semibold text-slate-700 dark:text-zinc-300 hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors shadow-sm">
-                <i class="fa-solid fa-arrow-left rtl:fa-arrow-right mr-2 rtl:ml-2 rtl:mr-0"></i> {{ __('admin.back_to_seo') }}
+                <i class="fa-solid fa-arrow-left rtl:fa-arrow-right me-2 rtl:ms-2 rtl:me-0"></i> {{ __('admin.back_to_seo') }}
             </a>
             
             <div class="relative" id="period-dropdown-container">
@@ -173,11 +173,11 @@
             <table class="w-full text-start text-sm whitespace-nowrap">
                 <thead class="bg-slate-50/50 dark:bg-zinc-800/50 border-b border-slate-200/80 dark:border-zinc-800/80 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider">
                     <tr>
-                        <th class="px-4 py-3 text-left font-semibold">{{ __('admin.keyword_query') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.clicks') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.impressions') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.ctr') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.position') }}</th>
+                        <th class="px-4 py-3 text-start font-semibold">{{ __('admin.keyword_query') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.clicks') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.impressions') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.ctr') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.position') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-slate-700 dark:text-zinc-300 font-medium">
@@ -191,10 +191,10 @@
                                 {{ $row['keys'][0] ?? '-' }}
                             </div>
                         </td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['clicks']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['impressions']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
-                        <td class="px-4 py-3 text-right tabular-nums">
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['clicks']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['impressions']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
+                        <td class="px-4 py-3 text-end tabular-nums">
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800 dark:bg-zinc-800 dark:text-zinc-300">
                                 {{ number_format($row['position'], 1) }}
                             </span>
@@ -224,11 +224,11 @@
             <table class="w-full text-start text-sm whitespace-nowrap">
                 <thead class="bg-slate-50/50 dark:bg-zinc-800/50 border-b border-slate-200/80 dark:border-zinc-800/80 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider">
                     <tr>
-                        <th class="px-4 py-3 text-left font-semibold">{{ __('admin.page_url') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.clicks') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.impressions') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.ctr') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.position') }}</th>
+                        <th class="px-4 py-3 text-start font-semibold">{{ __('admin.page_url') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.clicks') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.impressions') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.ctr') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.position') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-slate-700 dark:text-zinc-300 font-medium">
@@ -246,10 +246,10 @@
                                 </a>
                             </div>
                         </td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['clicks']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['impressions']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
-                        <td class="px-4 py-3 text-right tabular-nums">
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['clicks']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['impressions']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
+                        <td class="px-4 py-3 text-end tabular-nums">
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800 dark:bg-zinc-800 dark:text-zinc-300">
                                 {{ number_format($row['position'], 1) }}
                             </span>
@@ -279,11 +279,11 @@
             <table class="w-full text-start text-sm whitespace-nowrap">
                 <thead class="bg-slate-50/50 dark:bg-zinc-800/50 border-b border-slate-200/80 dark:border-zinc-800/80 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider">
                     <tr>
-                        <th class="px-4 py-3 text-left font-semibold">{{ __('admin.country') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.clicks') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.impressions') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.ctr') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.position') }}</th>
+                        <th class="px-4 py-3 text-start font-semibold">{{ __('admin.country') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.clicks') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.impressions') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.ctr') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.position') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-slate-700 dark:text-zinc-300 font-medium">
@@ -297,10 +297,10 @@
                                 <span class="uppercase tracking-widest">{{ $row['keys'][0] ?? '-' }}</span>
                             </div>
                         </td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['clicks']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['impressions']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
-                        <td class="px-4 py-3 text-right tabular-nums">
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['clicks']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['impressions']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
+                        <td class="px-4 py-3 text-end tabular-nums">
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800 dark:bg-zinc-800 dark:text-zinc-300">
                                 {{ number_format($row['position'], 1) }}
                             </span>
@@ -330,11 +330,11 @@
             <table class="w-full text-start text-sm whitespace-nowrap">
                 <thead class="bg-slate-50/50 dark:bg-zinc-800/50 border-b border-slate-200/80 dark:border-zinc-800/80 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider">
                     <tr>
-                        <th class="px-4 py-3 text-left font-semibold">{{ __('admin.appearance_type') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.clicks') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.impressions') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.ctr') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.position') }}</th>
+                        <th class="px-4 py-3 text-start font-semibold">{{ __('admin.appearance_type') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.clicks') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.impressions') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.ctr') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.position') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-slate-700 dark:text-zinc-300 font-medium">
@@ -345,10 +345,10 @@
                                 {{ ucwords(strtolower(str_replace('_', ' ', $row['keys'][0] ?? '-'))) }}
                             </span>
                         </td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['clicks']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['impressions']) }}</td>
-                        <td class="px-4 py-3 text-right tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
-                        <td class="px-4 py-3 text-right tabular-nums">
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['clicks']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['impressions']) }}</td>
+                        <td class="px-4 py-3 text-end tabular-nums">{{ number_format($row['ctr'] * 100, 2) }}%</td>
+                        <td class="px-4 py-3 text-end tabular-nums">
                             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-800 dark:bg-zinc-800 dark:text-zinc-300">
                                 {{ number_format($row['position'], 1) }}
                             </span>
@@ -378,12 +378,12 @@
             <table class="w-full text-start text-sm whitespace-nowrap">
                 <thead class="bg-slate-50/50 dark:bg-zinc-800/50 border-b border-slate-200/80 dark:border-zinc-800/80 text-slate-500 dark:text-zinc-400 text-xs font-semibold tracking-wider">
                     <tr>
-                        <th class="px-4 py-3 text-left font-semibold">{{ __('admin.sitemap_path') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.last_downloaded') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.discovered_urls') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.indexed_urls') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.warnings') }}</th>
-                        <th class="px-4 py-3 text-right font-semibold">{{ __('admin.errors') }}</th>
+                        <th class="px-4 py-3 text-start font-semibold">{{ __('admin.sitemap_path') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.last_downloaded') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.discovered_urls') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.indexed_urls') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.warnings') }}</th>
+                        <th class="px-4 py-3 text-end font-semibold">{{ __('admin.errors') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-zinc-800 text-slate-700 dark:text-zinc-300 font-medium">
@@ -401,7 +401,7 @@
                     @endphp
                     <tr class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/30 transition-colors {{ $isChild ? 'bg-slate-50/30 dark:bg-zinc-900/50' : '' }}">
                         <td class="px-4 py-3 text-slate-900 dark:text-white font-semibold">
-                            <div class="flex items-center gap-3 {{ $isChild ? 'pl-8' : '' }}">
+                            <div class="flex items-center gap-3 {{ $isChild ? 'ps-8' : '' }}">
                                 @if($isChild)
                                     <i class="fa-solid fa-arrow-turn-up rotate-90 text-slate-300 dark:text-zinc-600 text-[10px]"></i>
                                 @else
@@ -416,23 +416,23 @@
                                 </a>
                             </div>
                         </td>
-                        <td class="px-4 py-3 text-right tabular-nums text-slate-500 dark:text-zinc-400">
+                        <td class="px-4 py-3 text-end tabular-nums text-slate-500 dark:text-zinc-400">
                             {{ isset($sitemap['lastDownloaded']) ? \Carbon\Carbon::parse($sitemap['lastDownloaded'])->format('M d, Y H:i') : '-' }}
                         </td>
-                        <td class="px-4 py-3 text-right tabular-nums text-blue-600 dark:text-blue-400 font-bold">
+                        <td class="px-4 py-3 text-end tabular-nums text-blue-600 dark:text-blue-400 font-bold">
                             {{ $submittedUrls > 0 ? number_format($submittedUrls) : '-' }}
                         </td>
-                        <td class="px-4 py-3 text-right tabular-nums text-emerald-600 dark:text-emerald-400 font-bold">
+                        <td class="px-4 py-3 text-end tabular-nums text-emerald-600 dark:text-emerald-400 font-bold">
                             {{ $indexedUrls > 0 ? number_format($indexedUrls) : '-' }}
                         </td>
-                        <td class="px-4 py-3 text-right">
+                        <td class="px-4 py-3 text-end">
                             @if(empty($sitemap['warnings']) || $sitemap['warnings'] == 0)
                                 <span class="text-slate-400 dark:text-zinc-600">-</span>
                             @else
                                 <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-500"><i class="fa-solid fa-triangle-exclamation"></i> {{ $sitemap['warnings'] }}</span>
                             @endif
                         </td>
-                        <td class="px-4 py-3 text-right">
+                        <td class="px-4 py-3 text-end">
                             @if(empty($sitemap['errors']) || $sitemap['errors'] == 0)
                                 <span class="text-slate-400 dark:text-zinc-600">-</span>
                             @else

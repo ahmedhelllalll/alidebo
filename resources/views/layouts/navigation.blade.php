@@ -117,8 +117,8 @@
                     @auth
                         <a href="{{ route('dashboard') }}" 
                            class="relative inline-flex items-center gap-2 px-7 py-3 overflow-hidden font-black text-white transition-all duration-300 bg-zinc-950 dark:bg-white dark:text-black rounded-2xl group shadow-xl hover:shadow-primary/20">
-                            <span class="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-primary rounded group-hover:-mr-4 group-hover:-mt-4">
-                                <span class="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white/20"></span>
+                            <span class="absolute top-0 end-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-primary rounded group-hover:-me-4 group-hover:-mt-4">
+                                <span class="absolute top-0 end-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white/20"></span>
                             </span>
                             <span class="relative text-xs tracking-widest uppercase">لوحة التحكم</span>
                             <svg class="w-4 h-4 relative transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>

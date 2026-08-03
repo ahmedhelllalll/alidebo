@@ -147,10 +147,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/businesses/search-users', [Admin\BusinessController::class, 'searchUsers'])->name('businesses.search-users');
         Route::post('/businesses/bulk-status', [Admin\BusinessController::class, 'bulkStatus'])->name('businesses.bulk-status');
         Route::resource('businesses', Admin\BusinessController::class);
+        
+        Route::get('/import-batches/{importBatch}/errors', [Admin\BusinessImportBatchController::class, 'downloadErrors'])->name('import-batches.errors');
+        Route::resource('import-batches', Admin\BusinessImportBatchController::class)->only(['index', 'store', 'destroy']);
         Route::get('/countries/{country}/cities', [Admin\BusinessController::class, 'getCitiesByCountry'])->name('countries.cities');
         Route::patch('/businesses/{business}/status', [Admin\BusinessController::class, 'updateStatus'])->name('businesses.update-status');
         Route::post('/businesses/{business}/claim', [Admin\BusinessController::class, 'claim'])->name('businesses.claim');
         Route::post('/businesses/{business}/generate-claim-link', [Admin\BusinessController::class, 'generateClaimLink'])->name('businesses.generate-claim-link');
+        
+        // Admin Business Categories and Media
+        Route::post('/businesses/{business}/categories', [Admin\BusinessController::class, 'storeCategory'])->name('businesses.categories.store');
+        Route::put('/businesses/{business}/categories/{id}', [Admin\BusinessController::class, 'updateCategory'])->name('businesses.categories.update');
+        Route::delete('/businesses/{business}/categories/{id}', [Admin\BusinessController::class, 'destroyCategory'])->name('businesses.categories.destroy');
+        Route::post('/businesses/{business}/media', [Admin\BusinessController::class, 'uploadMedia'])->name('businesses.media.upload');
+        Route::delete('/businesses/{business}/media/{id}', [Admin\BusinessController::class, 'destroyMedia'])->name('businesses.media.destroy');
+
         Route::get('/profile', [Admin\ProfileController::class, 'index'])->name('profile');
         Route::patch('/profile', [Admin\ProfileController::class, 'update'])->name('profile.update');
         Route::patch('/profile/password', [Admin\ProfileController::class, 'updatePassword'])->name('profile.password');
@@ -177,6 +188,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('/update', [BusinessProfileController::class, 'update'])->name('business.update');
 
             Route::post('/sections/sync', [BusinessProfileController::class, 'syncSections'])->name('business.sections.sync');
+
+            Route::post('/categories', [BusinessProfileController::class, 'storeCategory'])->name('business.categories.store');
+            Route::put('/categories/{id}', [BusinessProfileController::class, 'updateCategory'])->name('business.categories.update');
+            Route::delete('/categories/{id}', [BusinessProfileController::class, 'destroyCategory'])->name('business.categories.destroy');
 
             Route::post('/media', [BusinessProfileController::class, 'uploadMedia'])->name('business.media.upload');
             Route::post('/media/order', [App\Http\Controllers\User\BusinessProfileController::class, 'updateMediaOrder'])->name('business.media.order');

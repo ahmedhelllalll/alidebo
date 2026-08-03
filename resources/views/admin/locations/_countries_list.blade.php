@@ -20,7 +20,7 @@
             <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 bg-slate-100/80 dark:bg-zinc-800/80 rounded-lg text-slate-600 dark:text-zinc-300 font-mono text-[12px] font-bold">{{ $country->code }}</span></td>
             <td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-[900]">{{ $country->cities_count ?? 0 }}</span></td>
             <td class="px-6 py-4 whitespace-nowrap">
-                <div class="relative inline-block text-left">
+                <div class="relative inline-block text-start">
                     <button type="button" onclick="toggleStatusMenu(event, 'status-menu-country-desk-{{ $country->id }}', 'countries')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-700/50 bg-white dark:bg-zinc-900 text-[12px] font-[900] shadow-sm hover:border-slate-300 dark:hover:border-zinc-600 transition-colors status-btn-country-[{{ $country->id }}]">
                         @if($country->status === 'active')
                             <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div><span class="text-emerald-700 dark:text-emerald-400">{{ __('admin.active') }}</span>
@@ -67,7 +67,7 @@
                     </div>
                 </div>
             </div>
-            <div class="relative inline-block text-left">
+            <div class="relative inline-block text-start">
                 <button type="button" onclick="toggleStatusMenu(event, 'status-menu-country-mobile-{{ $country->id }}', 'countries')" class="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-zinc-700/50 bg-white dark:bg-zinc-900 text-[12px] font-[900] shadow-sm hover:border-slate-300 dark:hover:border-zinc-600 transition-colors status-btn-country-[{{ $country->id }}]">
                     @if($country->status === 'active')
                         <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div><span class="text-emerald-700 dark:text-emerald-400">{{ __('admin.active') }}</span>

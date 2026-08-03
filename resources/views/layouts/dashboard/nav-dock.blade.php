@@ -1,5 +1,5 @@
 <div class="lg:hidden">
-    <header id="smart-header" class="fixed top-0 left-0 right-0 z-[1000] px-4 pt-3 pb-2 transition-transform duration-500 will-change-transform" style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);">
+    <header id="smart-header" class="fixed top-0 start-0 end-0 z-[1000] px-4 pt-3 pb-2 transition-transform duration-500 will-change-transform" style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);">
         <div class="bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl border border-zinc-200/50 dark:border-zinc-800/50 rounded-2xl shadow-sm h-16 flex items-center justify-between px-4">
 
             <div class="flex items-center gap-3 min-w-0">
@@ -23,7 +23,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                     </svg>
-                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 border-2 border-white dark:border-zinc-950 rounded-full"></span>
+                    <span class="absolute top-2.5 end-2.5 w-2 h-2 bg-red-500 border-2 border-white dark:border-zinc-950 rounded-full"></span>
                 </a>
             </div>
         </div>
@@ -31,7 +31,7 @@
 
     <div class="h-24"></div>
 
-    <nav id="mobile-dock" class="fixed bottom-0 left-0 right-0 z-[1000] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-200 dark:border-zinc-800 rounded-t-[1.8rem] shadow-[0_-5px_20px_rgba(0,0,0,0.03)] pb-safe">
+    <nav id="mobile-dock" class="fixed bottom-0 start-0 end-0 z-[1000] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-200 dark:border-zinc-800 rounded-t-[1.8rem] shadow-[0_-5px_20px_rgba(0,0,0,0.03)] pb-safe">
         <div class="flex items-center justify-around h-16 px-4">
             @php
             $navItems = [

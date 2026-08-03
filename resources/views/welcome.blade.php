@@ -5,7 +5,7 @@
 
 @section('content')
     @if(session('onboarding_company'))
-        <div id="welcome-toast" style="z-index: 2147483647;" class="hero-font fixed bottom-4 left-4 right-4 sm:bottom-6 sm:left-auto sm:right-6 rtl:sm:right-auto rtl:sm:left-6 w-auto sm:w-full sm:max-w-sm bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)] rounded-[1.25rem] p-5 sm:p-6 border border-gray-200/50 dark:border-white/10 transform transition-all duration-700 translate-y-0 opacity-100 flex flex-col gap-4">
+        <div id="welcome-toast" style="z-index: 2147483647;" class="hero-font fixed bottom-4 start-4 end-4 sm:bottom-6 sm:start-auto sm:end-6 rtl:sm:end-auto rtl:sm:start-6 w-auto sm:w-full sm:max-w-sm bg-white/95 dark:bg-[#09090b]/95 backdrop-blur-xl shadow-[0_20px_50px_-12px_rgba(0,0,0,0.3)] dark:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.7)] rounded-[1.25rem] p-5 sm:p-6 border border-gray-200/50 dark:border-white/10 transform transition-all duration-700 translate-y-0 opacity-100 flex flex-col gap-4">
             <div class="flex items-start gap-4">
                 <div class="flex-shrink-0 mt-0.5">
                     <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 shadow-inner">

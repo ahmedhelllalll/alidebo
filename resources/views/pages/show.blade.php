@@ -26,7 +26,7 @@
                     <ol class="inline-flex items-center space-x-1 md:space-x-3 bg-white/60 dark:bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-slate-200 dark:border-white/10 shadow-sm">
                         <li class="inline-flex items-center">
                             <a href="{{ route('home') }}" class="inline-flex items-center text-xs font-bold text-slate-500 hover:text-primary dark:text-zinc-400 dark:hover:text-primary transition-colors">
-                                <i class="fa-solid fa-house mr-2"></i> {{ __('landing.home') ?? 'Home' }}
+                                <i class="fa-solid fa-house me-2"></i> {{ __('landing.home') ?? 'Home' }}
                             </a>
                         </li>
                         <li>
@@ -66,7 +66,7 @@
     @if($page->layout_style === 'cards')
         <div class="container mx-auto px-4 sm:px-6 py-16 lg:py-24 -mt-16 relative z-20">
             <div class="max-w-5xl mx-auto bg-white dark:bg-[#121214] rounded-[2.5rem] p-8 md:p-12 lg:p-16 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] border border-slate-100 dark:border-white/5 reveal" style="animation-delay: 0.2s;">
-                <div class="prose dark:prose-invert prose-lg max-w-none prose-headings:font-[900] prose-a:text-primary hover:prose-a:text-primary-light prose-img:rounded-3xl prose-img:shadow-xl prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic page-content">
+                <div class="prose dark:prose-invert prose-lg max-w-none prose-headings:font-[900] prose-a:text-primary hover:prose-a:text-primary-light prose-img:rounded-3xl prose-img:shadow-xl prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-e-2xl prose-blockquote:not-italic page-content">
                     {!! $contentHTML !!}
                 </div>
             </div>
@@ -84,11 +84,11 @@
                             </div>
                             {{ __('admin.table_of_contents') ?? 'Table of Contents' }}
                         </h3>
-                        <p class="text-slate-500 dark:text-zinc-400 text-sm font-medium mb-6 ml-11">
+                        <p class="text-slate-500 dark:text-zinc-400 text-sm font-medium mb-6 ms-11">
                             {{ __('landing.page_split_desc') ?? 'Navigate through the sections of this page.' }}
                         </p>
                         
-                        <nav id="toc-container" class="space-y-1 ml-11 relative before:absolute before:inset-y-0 before:-left-4 before:w-0.5 before:bg-slate-100 dark:before:bg-zinc-800">
+                        <nav id="toc-container" class="space-y-1 ms-11 relative before:absolute before:inset-y-0 before:-start-4 before:w-0.5 before:bg-slate-100 dark:before:bg-zinc-800">
                             {{-- TOC populated by JS --}}
                         </nav>
                     </div>
@@ -96,7 +96,7 @@
 
                 {{-- Content --}}
                 <div class="lg:col-span-8 reveal" style="animation-delay: 0.2s;">
-                    <div class="prose dark:prose-invert max-w-none prose-headings:font-[900] prose-a:text-primary hover:prose-a:text-primary-light prose-img:rounded-3xl prose-img:shadow-xl prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic bg-white dark:bg-[#121214] p-8 md:p-12 rounded-[2.5rem] border border-slate-100 dark:border-zinc-800 shadow-xl page-content">
+                    <div class="prose dark:prose-invert max-w-none prose-headings:font-[900] prose-a:text-primary hover:prose-a:text-primary-light prose-img:rounded-3xl prose-img:shadow-xl prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-e-2xl prose-blockquote:not-italic bg-white dark:bg-[#121214] p-8 md:p-12 rounded-[2.5rem] border border-slate-100 dark:border-zinc-800 shadow-xl page-content">
                         {!! $contentHTML !!}
                     </div>
                 </div>
@@ -107,7 +107,7 @@
         {{-- Default Layout --}}
         <div class="container mx-auto px-4 sm:px-6 py-16 lg:py-24">
             <div class="max-w-4xl mx-auto reveal" style="animation-delay: 0.2s;">
-                <div class="prose dark:prose-invert prose-lg max-w-none prose-headings:font-[900] prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-primary-light prose-img:rounded-3xl prose-img:shadow-xl prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-2xl prose-blockquote:not-italic page-content">
+                <div class="prose dark:prose-invert prose-lg max-w-none prose-headings:font-[900] prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-primary-light prose-img:rounded-3xl prose-img:shadow-xl prose-blockquote:border-primary prose-blockquote:bg-primary/5 prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-e-2xl prose-blockquote:not-italic page-content">
                     {!! $contentHTML !!}
                 </div>
             </div>
@@ -155,7 +155,7 @@
                     const link = document.createElement('a');
                     link.href = '#' + heading.id;
                     link.textContent = heading.textContent;
-                    link.className = `block py-2 text-sm font-bold transition-all duration-300 relative before:absolute before:top-1/2 before:-translate-y-1/2 before:-left-4 before:w-0.5 before:h-0 before:bg-primary before:transition-all before:duration-300 ${level === 3 ? 'ml-4 text-slate-500 hover:text-slate-900 dark:text-zinc-500 dark:hover:text-zinc-300 text-xs' : 'text-slate-700 hover:text-primary dark:text-zinc-400 dark:hover:text-primary'} toc-link`;
+                    link.className = `block py-2 text-sm font-bold transition-all duration-300 relative before:absolute before:top-1/2 before:-translate-y-1/2 before:-start-4 before:w-0.5 before:h-0 before:bg-primary before:transition-all before:duration-300 ${level === 3 ? 'ms-4 text-slate-500 hover:text-slate-900 dark:text-zinc-500 dark:hover:text-zinc-300 text-xs' : 'text-slate-700 hover:text-primary dark:text-zinc-400 dark:hover:text-primary'} toc-link`;
                     
                     link.addEventListener('click', (e) => {
                         e.preventDefault();

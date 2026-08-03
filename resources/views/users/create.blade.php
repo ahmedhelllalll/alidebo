@@ -204,7 +204,7 @@
 
     {{-- Stepper UI --}}
     <div class="mb-6 mt-2 relative flex items-center justify-between px-2 gsap-stepper max-w-4xl mx-auto w-full shrink-0">
-        <div class="absolute top-[20px] left-0 right-0 h-[2px] bg-slate-100 dark:bg-zinc-800/50 z-0 mx-8"></div>
+        <div class="absolute top-[20px] start-0 end-0 h-[2px] bg-slate-100 dark:bg-zinc-800/50 z-0 mx-8"></div>
 
         <template x-for="i in 5" :key="i">
             <div class="relative z-10 flex flex-col items-center group cursor-pointer" @click="goToStep(i)">
@@ -229,7 +229,7 @@
     {{-- Unified Card Container --}}
     <div class="flex flex-col lg:flex-row lg:rtl:flex-row-reverse flex-1 overflow-hidden w-full max-w-6xl mx-auto glass-morphism premium-shadow rounded-[2rem] border border-white/20 dark:border-white/5 h-full">
         {{-- Visual Feedback (Left side / Left in RTL) --}}
-        <div class="hidden lg:flex w-1/3 xl:w-[350px] shrink-0 bg-slate-50/20 dark:bg-zinc-900/30 border-r border-slate-100/50 dark:border-zinc-800/50 flex-col items-center justify-center overflow-hidden p-6 lg:rounded-l-[2rem]">
+        <div class="hidden lg:flex w-1/3 xl:w-[350px] shrink-0 bg-slate-50/20 dark:bg-zinc-900/30 border-e border-slate-100/50 dark:border-zinc-800/50 flex-col items-center justify-center overflow-hidden p-6 lg:rounded-s-[2rem]">
             <div class="w-full h-full flex items-center justify-center">
                 <img x-show="step === 1" src="{{ asset('images/onboarding/welcome.svg') }}" class="w-full h-full object-contain filter drop-shadow-2xl" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
                 <img x-show="step === 2 || step === 3" src="{{ asset('images/onboarding/category.svg') }}" class="w-full h-full object-contain filter drop-shadow-2xl" style="display: none;" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100">
@@ -273,11 +273,11 @@
                         </div>
                         <input type="text" id="business_name" name="name" x-model="fields.name.value" @input="validateField('name'); generateSlug()" @blur="fields.name.touched = true; validateField('name')" :aria-invalid="fields.name.error && fields.name.touched ? 'true' : 'false'" placeholder="{{ __('forms.business.biz_name_placeholder') }}" class="flex-1 bg-transparent px-4 py-3 text-sm font-bold outline-none border-0 focus:ring-0 text-slate-900 dark:text-zinc-100 placeholder:text-slate-400">
                     </div>
-                    <p class="text-[11px] text-slate-400 dark:text-zinc-400 mt-1.5 pl-1 font-semibold leading-relaxed" id="name_help">
+                    <p class="text-[11px] text-slate-400 dark:text-zinc-400 mt-1.5 ps-1 font-semibold leading-relaxed" id="name_help">
                         {{ __('forms.business.biz_name_help') ?? (app()->getLocale() == 'ar' ? 'استخدم اسماً مميزاً وسهل التذكر لعملائك (3 أحرف على الأقل).' : 'Use a memorable name that represents your brand (min 3 chars).') }}
                     </p>
                     <div aria-live="polite">
-                        <p class="text-[11px] font-bold text-rose-500 mt-1 min-h-[16px] pl-1 transition-all" x-show="fields.name.error && fields.name.touched" x-transition id="name_error">{{ __('forms.business.biz_name_error') }}</p>
+                        <p class="text-[11px] font-bold text-rose-500 mt-1 min-h-[16px] ps-1 transition-all" x-show="fields.name.error && fields.name.touched" x-transition id="name_error">{{ __('forms.business.biz_name_error') }}</p>
                     </div>
                 </div>
 
@@ -292,21 +292,21 @@
                             </svg>
                         </div>
                         <div class="flex-1 flex items-center relative min-w-0" dir="ltr">
-                            <span class="flex items-center px-2 sm:px-3 bg-slate-50 dark:bg-zinc-800/40 border-r border-slate-100 dark:border-white/[0.08] text-slate-400 dark:text-zinc-400 font-bold text-xs sm:text-sm select-none h-full whitespace-nowrap shrink-0">{{ str_replace(['http://', 'https://'], '', config('app.url')) }}/</span>
-                            <input type="text" id="business_slug" name="slug" x-model="fields.slug.value" @input="fields.slug.value = fields.slug.value.toLowerCase().replace(/[^a-z0-9\u0600-\u06FF\-]+/g, '').replace(/-+/g, '-'); slugManuallyEdited = true; checkSlug();" :aria-invalid="fields.slug.error && fields.slug.touched ? 'true' : 'false'" placeholder="{{ __('forms.business.slug_placeholder') ?? 'elegance-studio' }}" class="flex-1 min-w-0 bg-transparent pl-2 sm:pl-4 pr-10 sm:pr-12 py-3 text-xs sm:text-sm font-bold outline-none border-0 focus:ring-0 text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 truncate">
-                            <div class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10 bg-white/80 dark:bg-zinc-900/80 px-1" aria-live="polite">
+                            <span class="flex items-center px-2 sm:px-3 bg-slate-50 dark:bg-zinc-800/40 border-e border-slate-100 dark:border-white/[0.08] text-slate-400 dark:text-zinc-400 font-bold text-xs sm:text-sm select-none h-full whitespace-nowrap shrink-0">{{ str_replace(['http://', 'https://'], '', config('app.url')) }}/</span>
+                            <input type="text" id="business_slug" name="slug" x-model="fields.slug.value" @input="fields.slug.value = fields.slug.value.toLowerCase().replace(/[^a-z0-9\u0600-\u06FF\-]+/g, '').replace(/-+/g, '-'); slugManuallyEdited = true; checkSlug();" :aria-invalid="fields.slug.error && fields.slug.touched ? 'true' : 'false'" placeholder="{{ __('forms.business.slug_placeholder') ?? 'elegance-studio' }}" class="flex-1 min-w-0 bg-transparent ps-2 sm:ps-4 pe-10 sm:pe-12 py-3 text-xs sm:text-sm font-bold outline-none border-0 focus:ring-0 text-slate-900 dark:text-zinc-100 placeholder:text-slate-400 truncate">
+                            <div class="absolute end-3 sm:end-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 z-10 bg-white/80 dark:bg-zinc-900/80 px-1" aria-live="polite">
                                 <svg x-show="fields.slug.checking" class="w-4 h-4 animate-spin text-slate-400" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                 <svg x-show="fields.slug.valid && !fields.slug.checking && fields.slug.touched" class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                                 <svg x-show="fields.slug.error && !fields.slug.checking && fields.slug.touched" class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>
                             </div>
                         </div>
                     </div>
-                    <p class="text-[11px] text-slate-400 dark:text-zinc-400 mt-1.5 pl-1 font-semibold leading-relaxed" id="slug_help">
+                    <p class="text-[11px] text-slate-400 dark:text-zinc-400 mt-1.5 ps-1 font-semibold leading-relaxed" id="slug_help">
                         {{ __('forms.business.slug_help') ?? (app()->getLocale() == 'ar' ? 'هذا هو رابط ملفك التجاري الفريد الذي ستشاركه مع عملائك. يتم توليده تلقائياً.' : 'This is your unique URL that clients will visit. It is auto-generated.') }}
                     </p>
                     <div aria-live="polite">
                         <div x-show="fields.slug.error && !fields.slug.checking && fields.slug.touched" x-collapse>
-                            <p class="text-[11px] font-bold text-rose-500 mt-1 pl-1" id="slug_error">{{ __('forms.business.slug_taken') ?? 'This URL is already taken.' }}</p>
+                            <p class="text-[11px] font-bold text-rose-500 mt-1 ps-1" id="slug_error">{{ __('forms.business.slug_taken') ?? 'This URL is already taken.' }}</p>
                             <template x-if="fields.slug.suggestions.length > 0">
                                 <div class="mt-2 bg-slate-50 dark:bg-zinc-900/50 p-2.5 rounded-xl border border-slate-100 dark:border-white/[0.05]">
                                     <p class="text-[10px] uppercase tracking-widest font-black text-slate-500 mb-1.5">{{ __('forms.business.slug_suggestions') ?? 'Available Suggestions:' }}</p>
@@ -340,11 +340,11 @@
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                         </button>
                     </div>
-                    <p class="text-[11px] text-slate-400 dark:text-zinc-400 mt-2 pl-1 font-semibold leading-relaxed">
+                    <p class="text-[11px] text-slate-400 dark:text-zinc-400 mt-2 ps-1 font-semibold leading-relaxed">
                         {{ __('forms.business.custom_category_review_note') ?? 'Note: We will review the custom category name and add it to our system.' }}
                     </p>
                     <div aria-live="polite">
-                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1" x-show="fields.category.error && fields.category.touched" x-transition>{{ __('forms.business.category_error') }}</p>
+                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1" x-show="fields.category.error && fields.category.touched" x-transition>{{ __('forms.business.category_error') }}</p>
                     </div>
                 </div>
 
@@ -353,8 +353,8 @@
                     {{-- Search Bar --}}
                     <div class="relative mb-4 w-full">
                         <label for="search_category" class="sr-only">{{ __('forms.business.search_category') }}</label>
-                        <input type="text" id="search_category" x-model="searchCat" placeholder="{{ __('forms.business.search_category') }}" class="w-full input-premium rounded-2xl py-3.5 sm:py-4 pr-4 sm:pr-6 pl-10 sm:pl-12 rtl:pl-4 sm:rtl:pl-6 rtl:pr-10 sm:rtl:pr-12 text-sm sm:text-base font-bold outline-none shadow-sm" :class="fields.category.error && fields.category.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
-                        <svg class="absolute left-4 rtl:left-auto rtl:right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="search_category" x-model="searchCat" placeholder="{{ __('forms.business.search_category') }}" class="w-full input-premium rounded-2xl py-3.5 sm:py-4 pe-4 sm:pe-6 ps-10 sm:ps-12 rtl:ps-4 sm:rtl:ps-6 rtl:pe-10 sm:rtl:pe-12 text-sm sm:text-base font-bold outline-none shadow-sm" :class="fields.category.error && fields.category.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
+                        <svg class="absolute start-4 rtl:start-auto rtl:end-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
 
                     {{-- Grid Scroll Container --}}
@@ -406,13 +406,13 @@
                         </button>
                     </div>
                     <input type="hidden" name="category_id" :value="fields.category.value">
-                    <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1" x-show="fields.category.error && fields.category.touched" x-transition>{{ __('forms.business.category_error') }}</p>
+                    <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1" x-show="fields.category.error && fields.category.touched" x-transition>{{ __('forms.business.category_error') }}</p>
                 </div>
             </div>
         </div>
 
         {{-- Step 3 - Sub-step 1: Description --}}
-        <div x-show="step === 3 && mediaSubStep === 1" class="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1 gsap-step-3-1" style="display: none;">
+        <div x-show="step === 3 && mediaSubStep === 1" class="space-y-4 overflow-y-auto custom-scrollbar pe-2 flex-1 gsap-step-3-1" style="display: none;">
             <div class="text-start px-2">
                 <h2 class="text-2xl font-[800] text-slate-900 dark:text-white tracking-tight mb-1">{{ __('forms.business.biz_desc') }}</h2>
                 <p class="text-slate-500 dark:text-zinc-500 text-sm font-medium">{{ __('forms.business.biz_desc_placeholder') }}</p>
@@ -459,14 +459,14 @@
                         </div>
                     </div>
                     <div aria-live="polite">
-                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1 transition-all" x-show="fields.description.error && fields.description.touched" x-transition id="desc_error">{{ __('forms.business.biz_desc_min') }}</p>
+                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1 transition-all" x-show="fields.description.error && fields.description.touched" x-transition id="desc_error">{{ __('forms.business.biz_desc_min') }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
         {{-- Step 3 - Sub-step 2: Visuals/Media --}}
-        <div x-show="step === 3 && mediaSubStep === 2" class="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1 gsap-step-3-2" style="display: none;">
+        <div x-show="step === 3 && mediaSubStep === 2" class="space-y-4 overflow-y-auto custom-scrollbar pe-2 flex-1 gsap-step-3-2" style="display: none;">
             <div class="text-start px-2">
                 <h2 class="text-2xl font-[800] text-slate-900 dark:text-white tracking-tight mb-1">{{ __('forms.business.visual_identity') }}</h2>
                 <p class="text-slate-500 dark:text-zinc-500 text-sm font-medium">{{ __('forms.business.visual_identity_desc') }}</p>
@@ -505,7 +505,7 @@
                         </div>
                         <input type="file" name="logo" id="logoInput" class="hidden" accept="image/jpeg,image/png,image/webp,image/jpg" @change="handleImageUpload($el, 'logo')">
                         <div aria-live="polite">
-                            <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1 transition-all" x-show="fields.logo.error && fields.logo.touched" x-transition x-text="fields.logo.errorMessage"></p>
+                            <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1 transition-all" x-show="fields.logo.error && fields.logo.touched" x-transition x-text="fields.logo.errorMessage"></p>
                         </div>
                     </div>
 
@@ -539,7 +539,7 @@
                         </div>
                         <input type="file" name="cover" id="coverInput" class="hidden" accept="image/jpeg,image/png,image/webp,image/jpg" @change="handleImageUpload($el, 'cover')">
                         <div aria-live="polite">
-                            <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1 transition-all" x-show="fields.cover.error && fields.cover.touched" x-transition x-text="fields.cover.errorMessage"></p>
+                            <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1 transition-all" x-show="fields.cover.error && fields.cover.touched" x-transition x-text="fields.cover.errorMessage"></p>
                         </div>
                     </div>
                 </div>
@@ -547,7 +547,7 @@
         </div>
 
         {{-- Step 4 - Sub-step 1: Country Selection --}}
-        <div x-show="step === 4 && locationSubStep === 1" class="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1 gsap-step-4-1" style="display: none;">
+        <div x-show="step === 4 && locationSubStep === 1" class="space-y-4 overflow-y-auto custom-scrollbar pe-2 flex-1 gsap-step-4-1" style="display: none;">
             <div class="text-start px-2">
                 <h2 class="text-2xl font-[800] text-slate-900 dark:text-white tracking-tight mb-1">{{ __('forms.business.country') }}</h2>
                 <p class="text-slate-500 dark:text-zinc-500 text-sm font-medium">{{ __('forms.business.pick_country') }}</p>
@@ -564,7 +564,7 @@
                         </button>
                     </div>
                     <div aria-live="polite">
-                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1" x-show="fields.country.error && fields.country.touched" x-transition>{{ __('forms.business.country_error') }}</p>
+                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1" x-show="fields.country.error && fields.country.touched" x-transition>{{ __('forms.business.country_error') }}</p>
                     </div>
                 </div>
 
@@ -573,8 +573,8 @@
                     {{-- Search Bar --}}
                     <div class="relative mb-2 w-full">
                         <label for="search_country" class="sr-only">{{ __('forms.business.search_country') }}</label>
-                        <input type="text" id="search_country" x-model="searchCountry" placeholder="{{ __('forms.business.search_country') }}" class="w-full input-premium rounded-2xl py-3.5 sm:py-4 pr-4 sm:pr-6 pl-10 sm:pl-12 rtl:pl-4 sm:rtl:pl-6 rtl:pr-10 sm:rtl:pr-12 text-sm sm:text-base font-bold outline-none shadow-sm" :class="fields.country.error && fields.country.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
-                        <svg class="absolute left-4 rtl:left-auto rtl:right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="search_country" x-model="searchCountry" placeholder="{{ __('forms.business.search_country') }}" class="w-full input-premium rounded-2xl py-3.5 sm:py-4 pe-4 sm:pe-6 ps-10 sm:ps-12 rtl:ps-4 sm:rtl:ps-6 rtl:pe-10 sm:rtl:pe-12 text-sm sm:text-base font-bold outline-none shadow-sm" :class="fields.country.error && fields.country.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
+                        <svg class="absolute start-4 rtl:start-auto rtl:end-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
 
                     {{-- Cannot Find Country Link --}}
@@ -626,13 +626,13 @@
                     </div>
 
                     <input type="hidden" name="country_id" :value="selectedCountry">
-                    <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1" x-show="fields.country.error && fields.country.touched && !showCustomCountry" x-transition>{{ __('forms.business.country_error') }}</p>
+                    <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1" x-show="fields.country.error && fields.country.touched && !showCustomCountry" x-transition>{{ __('forms.business.country_error') }}</p>
                 </div>
             </div>
         </div>
 
         {{-- Step 4 - Sub-step 2: City Selection --}}
-        <div x-show="step === 4 && locationSubStep === 2" class="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1 gsap-step-4-2" style="display: none;">
+        <div x-show="step === 4 && locationSubStep === 2" class="space-y-4 overflow-y-auto custom-scrollbar pe-2 flex-1 gsap-step-4-2" style="display: none;">
             <div class="text-start px-2">
                 <h2 class="text-2xl font-[800] text-slate-900 dark:text-white tracking-tight mb-1">{{ __('forms.business.city') }}</h2>
                 <p class="text-slate-500 dark:text-zinc-500 text-sm font-medium">{{ __('forms.business.pick_city') }}</p>
@@ -649,7 +649,7 @@
                         </button>
                     </div>
                     <div aria-live="polite">
-                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1" x-show="fields.city.error && fields.city.touched" x-transition>{{ __('forms.business.city_error') }}</p>
+                        <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1" x-show="fields.city.error && fields.city.touched" x-transition>{{ __('forms.business.city_error') }}</p>
                     </div>
                 </div>
 
@@ -658,8 +658,8 @@
                     {{-- Search Bar --}}
                     <div class="relative mb-2 w-full">
                         <label for="search_city" class="sr-only">{{ __('forms.business.search_city') }}</label>
-                        <input type="text" id="search_city" x-model="searchCity" placeholder="{{ __('forms.business.search_city') }}" class="w-full input-premium rounded-2xl py-3.5 sm:py-4 pr-4 sm:pr-6 pl-10 sm:pl-12 rtl:pl-4 sm:rtl:pl-6 rtl:pr-10 sm:rtl:pr-12 text-sm sm:text-base font-bold outline-none shadow-sm" :class="fields.city.error && fields.city.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
-                        <svg class="absolute left-4 rtl:left-auto rtl:right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="search_city" x-model="searchCity" placeholder="{{ __('forms.business.search_city') }}" class="w-full input-premium rounded-2xl py-3.5 sm:py-4 pe-4 sm:pe-6 ps-10 sm:ps-12 rtl:ps-4 sm:rtl:ps-6 rtl:pe-10 sm:rtl:pe-12 text-sm sm:text-base font-bold outline-none shadow-sm" :class="fields.city.error && fields.city.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
+                        <svg class="absolute start-4 rtl:start-auto rtl:end-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
 
                     {{-- Cannot Find City Link --}}
@@ -700,13 +700,13 @@
                     </div>
 
                     <input type="hidden" name="city_id" :value="fields.city.value">
-                    <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] pl-1" x-show="fields.city.error && fields.city.touched && !showCustomCity" x-transition>{{ __('forms.business.city_error') }}</p>
+                    <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1" x-show="fields.city.error && fields.city.touched && !showCustomCity" x-transition>{{ __('forms.business.city_error') }}</p>
                 </div>
             </div>
         </div>
 
         {{-- Step 4 - Sub-step 3: Physical Address details --}}
-        <div x-show="step === 4 && locationSubStep === 3" class="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1 gsap-step-4-3" style="display: none;">
+        <div x-show="step === 4 && locationSubStep === 3" class="space-y-4 overflow-y-auto custom-scrollbar pe-2 flex-1 gsap-step-4-3" style="display: none;">
             <div class="text-start px-2">
                 <h2 class="text-2xl font-[800] text-slate-900 dark:text-white tracking-tight mb-1">{{ __('forms.business.address') }}</h2>
                 <p class="text-slate-500 dark:text-zinc-500 text-sm font-medium">{{ __('forms.business.select_location') }}</p>
@@ -718,7 +718,7 @@
                     <label for="business_address" class="block text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mb-3 text-start">{{ __('forms.business.address') }} ({{ __('forms.business.optional') }})</label>
                     <div class="relative">
                         <input type="text" id="business_address" name="address" placeholder="{{ __('forms.business.address_placeholder') }}" class="w-full input-premium rounded-2xl px-4 py-3.5 sm:px-6 sm:py-5 text-sm sm:text-base font-bold outline-none shadow-sm">
-                        <svg class="absolute right-6 rtl:right-auto rtl:left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400/60" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <svg class="absolute end-6 rtl:end-auto rtl:start-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400/60" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     </div>
                 </div>
 
@@ -729,7 +729,7 @@
                     </div>
                     <div class="flex-1 text-slate-500 dark:text-zinc-400 text-xs font-medium leading-relaxed text-start">
                         <p class="font-extrabold text-slate-800 dark:text-zinc-200 mb-1.5 uppercase tracking-wider text-[11px]">{{ __('forms.business.location_tips_title') }}</p>
-                        <ul class="list-disc list-inside space-y-1.5 pl-1">
+                        <ul class="list-disc list-inside space-y-1.5 ps-1">
                             <li>{{ __('forms.business.location_tips_street') }}</li>
                             <li>{{ __('forms.business.location_tips_landmark') }}</li>
                         </ul>
@@ -739,7 +739,7 @@
         </div>
 
         {{-- Step 5: Digital Connectivity --}}
-        <div x-show="step === 5" class="space-y-6 overflow-y-auto custom-scrollbar pr-2 flex-1 gsap-step-5" style="display: none;">
+        <div x-show="step === 5" class="space-y-6 overflow-y-auto custom-scrollbar pe-2 flex-1 gsap-step-5" style="display: none;">
             <div class="text-start">
                 <h2 class="text-2xl font-[800] text-slate-900 dark:text-white tracking-tight mb-1">{{ __('forms.business.social_links') }}</h2>
                 <p class="text-slate-500 dark:text-zinc-500 text-sm font-medium">{{ __('forms.business.social_links_desc') ?? 'Connect your audience with your digital footprint.' }}</p>
@@ -794,17 +794,17 @@
                     <div class="flex flex-col gap-2 {{ $key === 'website' ? 'md:col-span-2' : '' }}">
                         <label for="social_{{$key}}" class="block text-[10px] font-black text-slate-500 dark:text-zinc-400 uppercase tracking-widest mb-1 text-start">{{ $data['label'] }} {!! $key === 'phone' ? '<span class="text-rose-500">*</span>' : '' !!}</label>
                         <div class="relative w-full">
-                            <div class="absolute left-4.5 rtl:left-auto rtl:right-4.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center pointer-events-none transition-transform duration-300" style="color: {{ $data['hex'] }};">
+                            <div class="absolute start-4.5 rtl:start-auto rtl:end-4.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center pointer-events-none transition-transform duration-300" style="color: {{ $data['hex'] }};">
                                 <svg class="w-5 h-5" {{ isset($data['fill']) ? 'fill="currentColor"' : 'fill="none" stroke="currentColor" stroke-width="2.5"' }} viewBox="0 0 24 24">{!! $data['icon'] !!}</svg>
                             </div>
-                            <input type="{{$data['type']}}" id="social_{{$key}}" name="social_links[{{$key}}]" {{ $key === 'phone' ? 'required aria-required="true"' : '' }} x-model="fields.links.{{$key}}.value" @input="validateLink('{{$key}}')" placeholder="{{ __('forms.business.' . $key . '_placeholder') ?? 'Enter details' }}" class="w-full input-premium rounded-2xl pl-13 pr-12 rtl:pr-13 rtl:pl-12 py-3 text-sm font-bold outline-none social-active-card brand-{{$key}}" style="--brand-color: {{ $data['hex'] }}" :class="fields.links.{{$key}}.error && fields.links.{{$key}}.touched ? 'border-rose-500 ring-4 ring-rose-500/20' : ''">
+                            <input type="{{$data['type']}}" id="social_{{$key}}" name="social_links[{{$key}}]" {{ $key === 'phone' ? 'required aria-required="true"' : '' }} x-model="fields.links.{{$key}}.value" @input="validateLink('{{$key}}')" placeholder="{{ __('forms.business.' . $key . '_placeholder') ?? 'Enter details' }}" class="w-full input-premium rounded-2xl ps-13 pe-12 rtl:pe-13 rtl:ps-12 py-3 text-sm font-bold outline-none social-active-card brand-{{$key}}" style="--brand-color: {{ $data['hex'] }}" :class="fields.links.{{$key}}.error && fields.links.{{$key}}.touched ? 'border-rose-500 ring-4 ring-rose-500/20' : ''">
                             
-                            <div class="absolute right-4 rtl:right-auto rtl:left-4 top-1/2 -translate-y-1/2 validation-icon flex items-center justify-center shrink-0">
+                            <div class="absolute end-4 rtl:end-auto rtl:start-4 top-1/2 -translate-y-1/2 validation-icon flex items-center justify-center shrink-0">
                                 <svg x-show="fields.links.{{$key}}.valid && fields.links.{{$key}}.value.length > 0 && !fields.links.{{$key}}.error" class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
                                 <svg x-show="fields.links.{{$key}}.error && fields.links.{{$key}}.touched" class="w-5 h-5 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>
                             </div>
                         </div>
-                        <p class="text-[10px] font-bold text-rose-500 mt-1 pl-1" x-show="fields.links.{{$key}}.error && fields.links.{{$key}}.touched" style="display: none;">{{ __('forms.business.invalid_link') ?? 'Invalid format' }}</p>
+                        <p class="text-[10px] font-bold text-rose-500 mt-1 ps-1" x-show="fields.links.{{$key}}.error && fields.links.{{$key}}.touched" style="display: none;">{{ __('forms.business.invalid_link') ?? 'Invalid format' }}</p>
                     </div>
                     @endforeach
                 </div>
@@ -832,12 +832,12 @@
                                     <div class="flex flex-col gap-2">
                                         <label :for="'social_'+socialId" class="block text-[10px] font-black uppercase tracking-widest text-slate-500 mb-1 text-start">{{ $data['label'] }}</label>
                                         <div class="relative w-full">
-                                            <div class="absolute left-4.5 rtl:left-auto rtl:right-4.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center pointer-events-none transition-transform duration-300" style="color: {{ $data['hex'] }};">
+                                            <div class="absolute start-4.5 rtl:start-auto rtl:end-4.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center pointer-events-none transition-transform duration-300" style="color: {{ $data['hex'] }};">
                                                 <svg class="w-5 h-5" {{ isset($data['fill']) ? 'fill="currentColor"' : 'fill="none" stroke="currentColor" stroke-width="2.5"' }} viewBox="0 0 24 24">{!! $data['icon'] !!}</svg>
                                             </div>
-                                            <input type="{{$data['type']}}" :id="'social_'+socialId" name="social_links[{{$key}}]" x-ref="input_{{$key}}" x-model="fields.links.{{$key}}.value" @input="validateLink('{{$key}}')" placeholder="{{ __('forms.business.' . $key . '_placeholder') ?? 'Enter handle or URL' }}" class="w-full input-premium rounded-2xl pl-13 pr-14 rtl:pr-13 rtl:pl-14 py-3 text-sm font-bold outline-none social-active-card brand-{{$key}}" style="--brand-color: {{ $data['hex'] }}" :class="fields.links.{{$key}}.error ? 'border-rose-500 ring-4 ring-rose-500/20' : ''">
+                                            <input type="{{$data['type']}}" :id="'social_'+socialId" name="social_links[{{$key}}]" x-ref="input_{{$key}}" x-model="fields.links.{{$key}}.value" @input="validateLink('{{$key}}')" placeholder="{{ __('forms.business.' . $key . '_placeholder') ?? 'Enter handle or URL' }}" class="w-full input-premium rounded-2xl ps-13 pe-14 rtl:pe-13 rtl:ps-14 py-3 text-sm font-bold outline-none social-active-card brand-{{$key}}" style="--brand-color: {{ $data['hex'] }}" :class="fields.links.{{$key}}.error ? 'border-rose-500 ring-4 ring-rose-500/20' : ''">
                                             
-                                            <div class="absolute right-4 rtl:right-auto rtl:left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                                            <div class="absolute end-4 rtl:end-auto rtl:start-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
                                                 <button type="button" @click="removeSocialField('{{$key}}')" class="w-6 h-6 rounded-lg flex items-center justify-center text-slate-300 dark:text-zinc-600 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all duration-200 shrink-0 sm:opacity-0 sm:group-hover/card:opacity-100" title="{{ __('forms.business.remove') ?? 'Remove' }}">
                                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                                 </button>
@@ -861,7 +861,7 @@
                                     <svg class="w-4 h-4" style="color: var(--brand-color, {{ $data['hex'] }});" {{ isset($data['fill']) ? 'fill="currentColor"' : 'fill="none" stroke="currentColor" stroke-width="2"' }} viewBox="0 0 24 24">{!! $data['icon'] !!}</svg>
                                 </div>
                                 <span class="text-[11px] font-bold text-slate-600 dark:text-zinc-300 whitespace-nowrap">{{ $data['label'] }}</span>
-                                <div class="w-5 h-5 rounded-md bg-slate-100 dark:bg-white/5 flex items-center justify-center transition-all duration-300 ml-1 plus-btn">
+                                <div class="w-5 h-5 rounded-md bg-slate-100 dark:bg-white/5 flex items-center justify-center transition-all duration-300 ms-1 plus-btn">
                                     <svg class="w-3 h-3 text-slate-400 dark:text-zinc-500 transition-transform duration-300 plus-icon" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                                 </div>
                             </button>

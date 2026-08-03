@@ -229,8 +229,8 @@
                                     
                                     <div class="px-4 py-2.5 text-[14px] leading-[1.5] shadow-sm relative group/bubble
                                         ${isAdmin
-                                            ? 'bg-primary text-white ' + (isLastInGroup ? 'rounded-[18px] rounded-br-[4px]' : 'rounded-[18px]')
-                                            : 'bg-white dark:bg-zinc-800 text-slate-900 dark:text-white border border-slate-200/60 dark:border-zinc-700/60 ' + (isLastInGroup ? 'rounded-[18px] rounded-bl-[4px]' : 'rounded-[18px]')
+                                            ? 'bg-primary text-white ' + (isLastInGroup ? 'rounded-[18px] rounded-ee-[4px]' : 'rounded-[18px]')
+                                            : 'bg-white dark:bg-zinc-800 text-slate-900 dark:text-white border border-slate-200/60 dark:border-zinc-700/60 ' + (isLastInGroup ? 'rounded-[18px] rounded-es-[4px]' : 'rounded-[18px]')
                                         }">
                                         <div class="break-words whitespace-pre-wrap">${msg.message}</div>
                                         <div class="flex items-center justify-start gap-1 mt-0.5 ${isAdmin ? 'text-white/80' : 'text-slate-500 dark:text-zinc-400'}" style="font-size: 9px; line-height: 1;" dir="ltr">
@@ -255,7 +255,7 @@
                                 {{ strtoupper(substr($support_chat->user->name ?? "?", 0, 1)) }}
                             </div>
                             <div class="flex flex-col items-start">
-                                <div class="px-4 py-3.5 shadow-sm relative bg-white dark:bg-zinc-800 border border-slate-200/60 dark:border-zinc-700/60 rounded-[18px] rounded-bl-[4px] flex items-center gap-1">
+                                <div class="px-4 py-3.5 shadow-sm relative bg-white dark:bg-zinc-800 border border-slate-200/60 dark:border-zinc-700/60 rounded-[18px] rounded-es-[4px] flex items-center gap-1">
                                     <div class="w-1.5 h-1.5 bg-slate-400 dark:bg-zinc-500 rounded-full" style="animation: typingWave 1.4s infinite ease-in-out; animation-delay: 0ms;"></div>
                                     <div class="w-1.5 h-1.5 bg-slate-400 dark:bg-zinc-500 rounded-full" style="animation: typingWave 1.4s infinite ease-in-out; animation-delay: 160ms;"></div>
                                     <div class="w-1.5 h-1.5 bg-slate-400 dark:bg-zinc-500 rounded-full" style="animation: typingWave 1.4s infinite ease-in-out; animation-delay: 320ms;"></div>

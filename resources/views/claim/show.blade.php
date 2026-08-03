@@ -7,8 +7,8 @@
     
     <!-- Background Accents -->
     <div class="absolute inset-0 pointer-events-none overflow-hidden">
-        <div class="absolute -top-40 -right-40 w-96 h-96 bg-primary/10 rounded-full blur-[100px]"></div>
-        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px]"></div>
+        <div class="absolute -top-40 -end-40 w-96 h-96 bg-primary/10 rounded-full blur-[100px]"></div>
+        <div class="absolute -bottom-40 -start-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px]"></div>
     </div>
 
     <div class="relative w-full max-w-2xl bg-white dark:bg-[#121214] rounded-[2rem] border border-slate-200/60 dark:border-white/[0.05] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden">

@@ -27,7 +27,7 @@
                 <div>
                     <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('admin.slug') }}</label>
                     <input type="text" name="slug" id="slug" value="{{ old('slug', $page->slug) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white" data-ignore-id="{{ $page->id }}">
-                    <p id="slug_error" class="mt-1 text-xs text-red-500 hidden"><i class="fa-solid fa-circle-exclamation mr-1"></i> This slug is already taken. Please choose another.</p>
+                    <p id="slug_error" class="mt-1 text-xs text-red-500 hidden"><i class="fa-solid fa-circle-exclamation me-1"></i> This slug is already taken. Please choose another.</p>
                 </div>
             </div>
 

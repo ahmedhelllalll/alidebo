@@ -12,18 +12,28 @@ class BusinessMedia extends Model
         'type',
         'caption',
         'order',
-        'disk'
+        'disk',
+        'business_image_category_id'
     ];
 
     protected $appends = ['file_url'];
 
     public function getFileUrlAttribute()
     {
-        return $this->file_path ? \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->file_path) : null;
+        if (!$this->file_path) return null;
+        if (str_starts_with($this->file_path, 'http://') || str_starts_with($this->file_path, 'https://')) {
+            return $this->file_path;
+        }
+        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->file_path);
     }
 
     public function businessProfile(): BelongsTo
     {
         return $this->belongsTo(BusinessProfile::class);
+    }
+
+    public function imageCategory(): BelongsTo
+    {
+        return $this->belongsTo(BusinessImageCategory::class, 'business_image_category_id');
     }
 }

@@ -138,7 +138,7 @@ class BusinessProfileController extends Controller
 
     public function edit()
     {
-        $business = Auth::user()->businessProfile()->with(['media', 'city.country'])->firstOrFail();
+        $business = Auth::user()->businessProfile()->with(['media', 'imageCategories.media', 'city.country'])->firstOrFail();
         $categories = Cache::remember('categories_all', 86400, fn() => Category::all());
         $countries = Country::with('cities')->get();
         $categoryImages = Cache::remember('categories_images', 86400, fn() => Category::whereNotNull('image')->get());
@@ -167,15 +167,70 @@ class BusinessProfileController extends Controller
         return redirect()->route('business.index')->with('success', 'تم تحديث البيانات');
     }
 
+    public function storeCategory(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:50']);
+        
+        $business = Auth::user()->businessProfile;
+        if (!$business) return response()->json(['error' => 'Business profile not found.'], 404);
+        
+        $maxCategories = 5;
+        if ($business->imageCategories()->count() >= $maxCategories) {
+            return response()->json(['error' => "You cannot create more than {$maxCategories} categories."], 422);
+        }
+
+        $category = $this->profileService->createImageCategory($business, $request->name);
+
+        return response()->json(['success' => true, 'category' => $category]);
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $request->validate(['name' => 'required|string|max:50']);
+        
+        $business = Auth::user()->businessProfile;
+        if (!$business) return response()->json(['error' => 'Business profile not found.'], 404);
+        
+        $category = $business->imageCategories()->findOrFail($id);
+        $category->update(['name' => $request->name]);
+
+        return response()->json(['success' => true, 'category' => $category]);
+    }
+
+    public function destroyCategory($id)
+    {
+        $business = Auth::user()->businessProfile;
+        if (!$business) return response()->json(['error' => 'Business profile not found.'], 404);
+        
+        $category = $business->imageCategories()->findOrFail($id);
+        
+        foreach($category->media as $media) {
+            $this->profileService->deleteMedia($media);
+        }
+        
+        $category->delete();
+
+        return response()->json(['success' => true]);
+    }
+
     public function uploadMedia(Request $request)
     {
         $request->validate([
             'images' => 'required|array|max:10',
             'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
+            'category_id' => 'nullable|exists:business_image_categories,id'
         ]);
 
         $business = Auth::user()->businessProfile;
-        $existingCount = $business->media()->count();
+        $categoryId = $request->category_id;
+        
+        if ($categoryId) {
+            $business->imageCategories()->findOrFail($categoryId); // verify ownership
+            $existingCount = $business->media()->where('business_image_category_id', $categoryId)->count();
+        } else {
+            $existingCount = $business->media()->whereNull('business_image_category_id')->count();
+        }
+        
         $maxTotal = 10;
 
         if ($existingCount + count($request->file('images')) > $maxTotal) {
@@ -184,7 +239,7 @@ class BusinessProfileController extends Controller
             ], 422);
         }
 
-        $uploaded = $this->profileService->uploadMedia($business, $request->file('images'), $request->captions ?? []);
+        $uploaded = $this->profileService->uploadMedia($business, $request->file('images'), $request->captions ?? [], $categoryId);
 
         return response()->json(['success' => true, 'media' => $uploaded]);
     }
@@ -232,7 +287,7 @@ class BusinessProfileController extends Controller
     public function show($slug)
     {
         $business = BusinessProfile::where('slug', $slug)
-            ->with(['category', 'city', 'media'])
+            ->with(['category', 'city', 'media', 'imageCategories.media'])
             ->firstOrFail();
 
         $claimToken = request()->query('claim_token');

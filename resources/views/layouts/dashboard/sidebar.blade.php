@@ -1,11 +1,11 @@
-<aside id="sidebar" class="sidebar-right flex flex-col transition-all duration-500 border-l border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 group/sidebar w-64 [&.sidebar-collapsed]:w-20">
+<aside id="sidebar" class="sidebar-right flex flex-col transition-all duration-500 border-s border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 group/sidebar w-64 [&.sidebar-collapsed]:w-20">
     <div class="header-section flex flex-col flex-shrink-0 p-5">
         <div class="flex items-center justify-between w-full group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:gap-8">
             <div class="flex items-center gap-3 min-w-0 group-[.sidebar-collapsed]/sidebar:justify-center group-[.sidebar-collapsed]/sidebar:gap-0">
                 <div class="flex-shrink-0">
                     <img src="{{ asset('images/logo.webp') }}" class="w-10 h-10 object-contain" alt="Logo">
                 </div>
-                <span class="text-xl font-black tracking-tight label-text dark:text-white text-zinc-900 whitespace-nowrap overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:w-0 group-[.sidebar-collapsed]/sidebar:opacity-0 group-[.sidebar-collapsed]/sidebar:mr-0">alidebo</span>
+                <span class="text-xl font-black tracking-tight label-text dark:text-white text-zinc-900 whitespace-nowrap overflow-hidden transition-all duration-300 group-[.sidebar-collapsed]/sidebar:w-0 group-[.sidebar-collapsed]/sidebar:opacity-0 group-[.sidebar-collapsed]/sidebar:me-0">alidebo</span>
             </div>
 
             <div class="flex items-center gap-2 group-[.sidebar-collapsed]/sidebar:flex-col group-[.sidebar-collapsed]/sidebar:w-full group-[.sidebar-collapsed]/sidebar:items-center group-[.sidebar-collapsed]/sidebar:gap-5">
@@ -13,15 +13,15 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
                     </svg>
-                    <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-zinc-950"></span>
-                    <span class="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/tip:opacity-100 transition-all translate-x-2 group-hover/tip:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">الإشعارات</span>
+                    <span class="absolute top-2 end-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-zinc-950"></span>
+                    <span class="pointer-events-none absolute end-full me-4 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/tip:opacity-100 transition-all translate-x-2 group-hover/tip:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">الإشعارات</span>
                 </div>
 
                 <div class="cursor-pointer p-2 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-xl transition-all hidden lg:flex items-center justify-center relative group/tip" onclick="toggleSidebar()">
                     <svg id="toggle-icon" class="w-6 h-6 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path id="icon-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
-                    <span class="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/tip:opacity-100 transition-all translate-x-2 group-hover/tip:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">طي القائمة</span>
+                    <span class="pointer-events-none absolute end-full me-4 top-1/2 -translate-y-1/2 px-2.5 py-1.5 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/tip:opacity-100 transition-all translate-x-2 group-hover/tip:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">طي القائمة</span>
                 </div>
 
                 <div class="lg:hidden p-2 cursor-pointer text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-900 rounded-xl transition-all flex items-center justify-center" onclick="closeMobileMenu()">
@@ -45,7 +45,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                 </div>
-                <span class="font-bold mr-3.5 whitespace-nowrap">الرئيسية</span>
+                <span class="font-bold me-3.5 whitespace-nowrap">الرئيسية</span>
             </a>
             <a href="{{ route('business.index') }}" class="flex items-center px-4 py-3 rounded-xl transition-all hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-600 dark:text-zinc-400 {{ request()->routeIs('business.index') ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm' : '' }}">
                 <div class="flex-shrink-0 flex items-center justify-center w-6">
@@ -53,7 +53,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                     </svg>
                 </div>
-                <span class="font-bold mr-3.5 whitespace-nowrap">أعمالي</span>
+                <span class="font-bold me-3.5 whitespace-nowrap">أعمالي</span>
             </a>
             <a href="{{ route('business.create') }}" class="flex items-center px-4 py-3 rounded-xl transition-all hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-600 dark:text-zinc-400 {{ request()->routeIs('business.create') ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm' : '' }}">
                 <div class="flex-shrink-0 flex items-center justify-center w-6">
@@ -61,7 +61,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                     </svg>
                 </div>
-                <span class="font-bold mr-3.5 whitespace-nowrap">إضافة بيزنس</span>
+                <span class="font-bold me-3.5 whitespace-nowrap">إضافة بيزنس</span>
             </a>
         </div>
 
@@ -70,19 +70,19 @@
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                 </svg>
-                <span class="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">الرئيسية</span>
+                <span class="pointer-events-none absolute end-full me-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">الرئيسية</span>
             </a>
             <a href="{{ route('business.index') }}" class="group/link flex items-center justify-center p-3 rounded-xl transition-all hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-600 dark:text-zinc-400 relative {{ request()->routeIs('business.index') ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white' : '' }}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
                 </svg>
-                <span class="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">أعمالي</span>
+                <span class="pointer-events-none absolute end-full me-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">أعمالي</span>
             </a>
             <a href="{{ route('business.create') }}" class="group/link flex items-center justify-center p-3 rounded-xl transition-all hover:bg-zinc-100 dark:hover:bg-zinc-900 text-zinc-600 dark:text-zinc-400 relative {{ request()->routeIs('business.create') ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white' : '' }}">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                <span class="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">إضافة بيزنس</span>
+                <span class="pointer-events-none absolute end-full me-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">إضافة بيزنس</span>
             </a>
         </div>
     </nav>
@@ -95,13 +95,13 @@
                 @else
                 {{ Auth::check() ? substr(Auth::user()->name, 0, 1) : 'U' }}
                 @endif
-                <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-zinc-900 rounded-full"></div>
+                <div class="absolute bottom-0 end-0 w-2.5 h-2.5 bg-green-500 border-2 border-white dark:border-zinc-900 rounded-full"></div>
             </div>
-            <div class="min-w-0 mr-3.5 flex-1 transition-all duration-300 overflow-hidden group-[.sidebar-collapsed]/sidebar:hidden">
+            <div class="min-w-0 me-3.5 flex-1 transition-all duration-300 overflow-hidden group-[.sidebar-collapsed]/sidebar:hidden">
                 <p class="text-sm font-bold truncate dark:text-zinc-100 text-zinc-900">{{ Auth::check() ? Auth::user()->name : 'مستخدم' }}</p>
                 <p class="text-[10px] lowercase dark:text-zinc-500 text-zinc-400 truncate mt-0.5">{{ Auth::check() ? Auth::user()->email : 'mail@example.com' }}</p>
             </div>
-            <span class="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/user:opacity-100 transition-all translate-x-2 group-hover/user:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold hidden group-[.sidebar-collapsed]/sidebar:block">الملف الشخصي</span>
+            <span class="pointer-events-none absolute end-full me-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/user:opacity-100 transition-all translate-x-2 group-hover/user:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold hidden group-[.sidebar-collapsed]/sidebar:block">الملف الشخصي</span>
         </div>
 
         <div class="h-px w-full bg-zinc-200/60 dark:bg-zinc-800/60 group-[.sidebar-collapsed]/sidebar:hidden"></div>
@@ -144,7 +144,7 @@
                         <svg class="w-6 h-6 transition-transform group-hover/link:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                         </svg>
-                        <span class="pointer-events-none absolute right-full mr-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">تسجيل الخروج</span>
+                        <span class="pointer-events-none absolute end-full me-4 top-1/2 -translate-y-1/2 px-2.5 py-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 text-xs rounded-lg opacity-0 group-hover/link:opacity-100 transition-all translate-x-2 group-hover/link:translate-x-0 whitespace-nowrap z-50 shadow-xl border border-zinc-200 dark:border-white font-bold">تسجيل الخروج</span>
                     </button>
                 </form>
             </div>

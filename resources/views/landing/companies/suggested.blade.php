@@ -65,7 +65,7 @@
                                             </div>
                                         @endif
                                     </div>
-                                    <span class="absolute -bottom-1 -right-1 inline-flex items-center justify-center w-7 h-7 rounded-full bg-indigo-500 text-white shadow-lg border-2 border-slate-900 z-10" title="Verified">
+                                    <span class="absolute -bottom-1 -end-1 inline-flex items-center justify-center w-7 h-7 rounded-full bg-indigo-500 text-white shadow-lg border-2 border-slate-900 z-10" title="Verified">
                                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                                     </span>
                                 </div>
@@ -108,10 +108,10 @@
                 </div>
 
                 <!-- Navigation Arrows -->
-                <button class="carousel-prev absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 opacity-0 group-hover:opacity-100" aria-label="Previous slide">
+                <button class="carousel-prev absolute start-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 opacity-0 group-hover:opacity-100" aria-label="Previous slide">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
-                <button class="carousel-next absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 opacity-0 group-hover:opacity-100" aria-label="Next slide">
+                <button class="carousel-next absolute end-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white flex items-center justify-center hover:bg-white/20 hover:scale-110 transition-all duration-300 opacity-0 group-hover:opacity-100" aria-label="Next slide">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
 

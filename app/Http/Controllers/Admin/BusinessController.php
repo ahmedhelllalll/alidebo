@@ -14,6 +14,8 @@ use App\Services\BusinessProfileService;
 use App\Traits\LogsAdminActivity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BusinessProfilesImport;
 
 class BusinessController extends Controller
 {
@@ -72,6 +74,11 @@ class BusinessController extends Controller
             } elseif ($request->status === 'unclaimed') {
                 $query->whereNull('business_profiles.owner_id');
             }
+        }
+
+        // Batch Filter
+        if ($request->filled('batch_id')) {
+            $query->where('business_profiles.import_batch_id', $request->batch_id);
         }
 
         if ($request->ajax() && $request->has('suggest')) {
@@ -209,9 +216,19 @@ class BusinessController extends Controller
         $validated['owner_id'] = null; // Forced null for admin creations
         $business = $this->profileService->createProfile($user, $validated, $request);
 
-        // Handle Gallery Uploads
+        // Handle Gallery Uploads (Uncategorized)
         if ($request->hasFile('gallery')) {
             $this->profileService->uploadMedia($business, $request->file('gallery'), $request->captions);
+        }
+
+        // Handle Categorized Gallery Uploads
+        if ($request->has('new_categories') && is_array($request->new_categories)) {
+            foreach ($request->new_categories as $index => $catData) {
+                if (!empty($catData['name']) && $request->hasFile("new_categories.{$index}.images")) {
+                    $category = $this->profileService->createImageCategory($business, $catData['name']);
+                    $this->profileService->uploadMedia($business, $request->file("new_categories.{$index}.images"), [], $category->id);
+                }
+            }
         }
 
         $this->logAdminAction('business_created', $business);
@@ -247,6 +264,7 @@ class BusinessController extends Controller
 
         $categories = Category::select('id', 'name_en', 'name_ar')->get();
         $countries = Country::where('status', 'active')->select('id', 'name_en', 'name_ar')->get();
+        $business->load('media', 'imageCategories.media');
         
         return view('admin.businesses.edit', compact('business', 'categories', 'countries'));
     }
@@ -419,5 +437,79 @@ class BusinessController extends Controller
             'success' => true,
             'link' => $link
         ]);
+    }
+
+    public function storeCategory(Request $request, BusinessProfile $business)
+    {
+        $this->authorize('update', $business);
+        $request->validate(['name' => 'required|string|max:50']);
+
+        $maxCategories = 5;
+        if ($business->imageCategories()->count() >= $maxCategories) {
+            return response()->json(['error' => "You cannot create more than {$maxCategories} categories."], 422);
+        }
+
+        $category = $this->profileService->createImageCategory($business, $request->name);
+        return response()->json(['success' => true, 'category' => $category]);
+    }
+
+    public function updateCategory(Request $request, BusinessProfile $business, $id)
+    {
+        $this->authorize('update', $business);
+        $request->validate(['name' => 'required|string|max:50']);
+
+        $category = $business->imageCategories()->findOrFail($id);
+        $category->update(['name' => $request->name]);
+
+        return response()->json(['success' => true, 'category' => $category]);
+    }
+
+    public function destroyCategory(BusinessProfile $business, $id)
+    {
+        $this->authorize('update', $business);
+        $category = $business->imageCategories()->findOrFail($id);
+        
+        foreach($category->media as $media) {
+            $this->profileService->deleteMedia($media);
+        }
+        
+        $category->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function uploadMedia(Request $request, BusinessProfile $business)
+    {
+        $this->authorize('update', $business);
+        $request->validate([
+            'images' => 'required|array|max:10',
+            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120',
+            'category_id' => 'nullable|exists:business_image_categories,id'
+        ]);
+
+        $categoryId = $request->category_id;
+        
+        if ($categoryId) {
+            $business->imageCategories()->findOrFail($categoryId); 
+            $existingCount = $business->media()->where('business_image_category_id', $categoryId)->count();
+        } else {
+            $existingCount = $business->media()->whereNull('business_image_category_id')->count();
+        }
+        
+        $maxTotal = 10;
+
+        if ($existingCount + count($request->file('images')) > $maxTotal) {
+            return response()->json(['error' => "لا يمكنك إضافة أكثر من {$maxTotal} صورة."], 422);
+        }
+
+        $uploaded = $this->profileService->uploadMedia($business, $request->file('images'), $request->captions ?? [], $categoryId);
+        return response()->json(['success' => true, 'media' => $uploaded]);
+    }
+
+    public function destroyMedia(BusinessProfile $business, $id)
+    {
+        $this->authorize('update', $business);
+        $media = \App\Models\BusinessMedia::where('id', $id)->where('business_profile_id', $business->id)->firstOrFail();
+        $this->profileService->deleteMedia($media);
+        return response()->json(['success' => true]);
     }
 }

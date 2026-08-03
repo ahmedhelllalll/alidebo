@@ -30,11 +30,11 @@
     <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-zinc-800/60 pb-1">
         <button onclick="switchTab('countries')" id="type-tab-countries" class="px-5 py-3 text-[14px] font-[900] transition-colors relative text-primary dark:text-primary-light">
             <i class="fa-solid fa-earth-americas me-1.5"></i> {{ __('admin.countries') }}
-            <div class="absolute bottom-[-1px] left-0 w-full h-[2px] bg-primary rounded-t-full origin-left transition-transform duration-300" id="countries-indicator"></div>
+            <div class="absolute bottom-[-1px] start-0 w-full h-[2px] bg-primary rounded-t-full origin-left transition-transform duration-300" id="countries-indicator"></div>
         </button>
         <button onclick="switchTab('cities')" id="type-tab-cities" class="px-5 py-3 text-[14px] font-[900] transition-colors relative text-slate-500 hover:text-slate-700 dark:text-zinc-500 dark:hover:text-zinc-300">
             <i class="fa-solid fa-city me-1.5"></i> {{ __('admin.cities') }}
-            <div class="absolute bottom-[-1px] left-0 w-full h-[2px] bg-primary rounded-t-full origin-left scale-x-0 transition-transform duration-300" id="cities-indicator"></div>
+            <div class="absolute bottom-[-1px] start-0 w-full h-[2px] bg-primary rounded-t-full origin-left scale-x-0 transition-transform duration-300" id="cities-indicator"></div>
         </button>
     </div>
     {{-- Filter & Search Bar --}}

@@ -43,7 +43,7 @@
                     </div>
                 @endif
 
-                <div class="strip-info absolute bottom-8 left-8 right-8 rtl:left-8 rtl:right-8 z-2 transition-transform duration-600 ease-out text-left rtl:text-right">
+                <div class="strip-info absolute bottom-8 start-8 end-8 rtl:start-8 rtl:end-8 z-2 transition-transform duration-600 ease-out text-start rtl:text-end">
                     <em class="not-italic text-[0.65rem] text-rose-400 dark:text-[#ff3b30] font-extrabold tracking-[2px] uppercase block mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                         {{ $company->approved_at ? $company->approved_at->diffForHumans() : 'Recently' }}
                     </em>
