@@ -405,7 +405,7 @@ return [
     'import_failed' => 'Failed to start import.',
     'showing_batch' => 'Showing Batch #:id',
     'click_to_upload' => 'Click to upload or drag & drop',
-    'accepted_formats' => 'Accepted formats: .xlsx, .csv',,
+    'accepted_formats' => 'Accepted formats: .xlsx, .csv',
   'delete_lead_confirm_title' => 'Delete Lead Confirm Title',
   'delete_lead_confirm_desc' => 'Delete Lead Confirm Desc',
   'lead_details' => 'Lead Details',
