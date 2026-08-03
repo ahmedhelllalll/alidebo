@@ -41,10 +41,8 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         \Maatwebsite\Excel\Imports\HeadingRowFormatter::default('none');
 
         $this->adminEmail = $adminEmail;
-        // Fallback to finding user by email if adminId wasn't passed by older queued jobs
         $this->adminId = $adminId ?? (\App\Models\User::where('email', $adminEmail)->first()->id ?? 1);
         $this->importId = Str::uuid()->toString();
-        $this->normalizer = new DataNormalizationService();
         $this->disk = config('filesystems.default');
         $this->batchId = $batchId;
 
@@ -58,6 +56,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
     public function collection(Collection $rows)
     {
+        $this->normalizer = new DataNormalizationService();
         $categories = Category::all();
         $cities = City::all();
         $countries = Country::all();

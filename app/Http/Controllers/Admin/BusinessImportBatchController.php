@@ -41,14 +41,24 @@ class BusinessImportBatchController extends Controller
 
         try {
             $adminUser = auth()->user();
+            $file = $request->file('file');
             
             $batch = BusinessImportBatch::create([
                 'admin_id' => $adminUser->id,
-                'original_file_name' => $request->file('file')->getClientOriginalName(),
+                'original_file_name' => $file->getClientOriginalName(),
                 'status' => 'processing',
             ]);
             
-            Excel::queueImport(new BusinessProfilesImport($adminUser->email, $adminUser->id, $batch->id), $request->file('file'));
+            // Store file to local disk first, so the Queue worker can safely access it via string path
+            $filePath = $file->store('imports/batches', 'local');
+            
+            try {
+                Excel::queueImport(new BusinessProfilesImport($adminUser->email, $adminUser->id, $batch->id), $filePath, 'local');
+            } catch (\Exception $queueException) {
+                \Log::error('Queue Import Dispatch Failed: ' . $queueException->getMessage());
+                $batch->update(['status' => 'failed']);
+                throw $queueException;
+            }
 
             return response()->json([
                 'success' => true,
