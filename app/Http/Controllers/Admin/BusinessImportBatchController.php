@@ -68,7 +68,7 @@ class BusinessImportBatchController extends Controller
             \Log::error('Excel Import Trigger Failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => __('admin.import_failed') ?? 'Failed to start import: ' . $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine()
+                'message' => __('admin.import_failed') . ' Details: ' . $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine()
             ], 500);
         }
     }
