@@ -54,7 +54,7 @@ class BusinessImportBatchController extends Controller
             
             try {
                 Excel::queueImport(new BusinessProfilesImport($adminUser->email, $adminUser->id, $batch->id), $filePath, 'local');
-            } catch (\Exception $queueException) {
+            } catch (\Throwable $queueException) {
                 \Log::error('Queue Import Dispatch Failed: ' . $queueException->getMessage());
                 $batch->update(['status' => 'failed']);
                 throw $queueException;
@@ -64,11 +64,11 @@ class BusinessImportBatchController extends Controller
                 'success' => true,
                 'message' => __('admin.import_started') ?? 'Import started in the background. You will receive an email upon completion.'
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             \Log::error('Excel Import Trigger Failed: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => __('admin.import_failed') ?? 'Failed to start import: ' . $e->getMessage()
+                'message' => __('admin.import_failed') ?? 'Failed to start import: ' . $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine()
             ], 500);
         }
     }
