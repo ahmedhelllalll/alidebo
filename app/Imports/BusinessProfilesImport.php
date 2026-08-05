@@ -269,7 +269,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
     public function chunkSize(): int
     {
-        return 100;
+        return 10;
     }
 
     public function registerEvents(): array

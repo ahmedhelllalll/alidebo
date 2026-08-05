@@ -14,18 +14,17 @@ class BusinessProfileService
 {
     public function formatContactMethods(array $validated): array
     {
-        $links = $validated['social_links'] ?? [];
         return [
-            'whatsapp' => $links['whatsapp'] ?? null,
-            'phone' => $links['phone'] ?? null,
-            'website' => $links['website'] ?? null,
-            'facebook' => $links['facebook'] ?? null,
-            'instagram' => $links['instagram'] ?? null,
-            'twitter' => $links['twitter'] ?? null,
-            'tiktok' => $links['tiktok'] ?? null,
-            'linkedin' => $links['linkedin'] ?? null,
-            'youtube' => $links['youtube'] ?? null,
-            'snapchat' => $links['snapchat'] ?? null,
+            'whatsapp' => $validated['whatsapp'] ?? null,
+            'phone' => $validated['phone'] ?? null,
+            'website' => $validated['website'] ?? null,
+            'facebook' => $validated['facebook'] ?? null,
+            'instagram' => $validated['instagram'] ?? null,
+            'twitter' => $validated['twitter'] ?? null,
+            'tiktok' => $validated['tiktok'] ?? null,
+            'linkedin' => $validated['linkedin'] ?? null,
+            'youtube' => $validated['youtube'] ?? null,
+            'snapchat' => $validated['snapchat'] ?? null,
         ];
     }
 

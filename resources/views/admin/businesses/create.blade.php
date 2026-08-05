@@ -139,6 +139,7 @@
                                 </div>
                             </div>
                         </div>
+                        <p class="field-error text-[10px] font-bold text-red-500 mt-1.5 hidden" id="error_category_id"></p>
                     </div>
                     {{-- Description --}}
                     <div class="input-group lg:col-span-2">
@@ -266,6 +267,7 @@
                                 </div>
                             </div>
                         </div>
+                        <p class="field-error text-[10px] font-bold text-red-500 mt-1.5 hidden" id="error_city_id"></p>
                     </div>
                     {{-- Address --}}
                     <div class="input-group lg:col-span-2">
