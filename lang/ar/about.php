@@ -18,7 +18,7 @@ return [
     'value1_desc' => 'تميز في سوق تنافسي. تخضع كل شركة في منصتنا لعملية تحقق صارمة، مما يضمن لك التواصل فقط مع مزودي خدمات وشراكات موثوقة وعالية الجودة.',
     
     'value2_title' => 'أداء هندسي فائق',
-    'value2_desc' => 'تم تصميم منصتنا لتقديم تجربة سلسة تزيد من تحويلاتك. بتوجيه من المؤسس <a href="https://www.linkedin.com/in/tarek-deyab-94a622293/" target="_blank" class="text-primary font-bold hover:underline">طارق دياب</a>، ورؤية مستشار الأعمال <a href="https://www.linkedin.com/in/mazen-ramadan-b1143a315/" target="_blank" class="text-primary font-bold hover:underline">مازن رمضان</a>، والتطوير الهندسي المتقن لـ <a href="https://www.linkedin.com/in/ahmed-helal-3410522a7/" target="_blank" class="text-primary font-bold hover:underline">أحمد هلال</a>، نضمن لك أفضل تجربة رقمية.',
+    'value2_desc' => 'تم تصميم منصتنا لتقديم تجربة سلسة تزيد من تحويلاتك. بتوجيه من المؤسس (رائد الأعمال) <a href="https://www.linkedin.com/in/tarek-deyab-94a622293/" target="_blank" class="text-primary font-bold hover:underline">طارق دياب</a>، ورؤية مستشار الأعمال <a href="https://www.linkedin.com/in/mazen-ramadan-b1143a315/" target="_blank" class="text-primary font-bold hover:underline">مازن رمضان</a>، والتطوير الهندسي المتقن لـ <a href="https://www.linkedin.com/in/ahmed-helal-3410522a7/" target="_blank" class="text-primary font-bold hover:underline">أحمد هلال</a>، نضمن لك أفضل تجربة رقمية.',
     
     'value3_title' => 'تسريع نمو أعمالك',
     'value3_desc' => 'احصل على عملاء محتملين ذوي جودة عالية وحسّن ظهور علامتك التجارية في محركات البحث. دليلنا المترجم يساعدك على اقتحام أسواق دولية جديدة بكل سهولة.',

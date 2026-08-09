@@ -18,7 +18,7 @@ return [
     'value1_desc' => '在拥挤的市场中脱颖而出。Alidebo 上的每一家企业都经过严格审查，确保您只与值得信赖的高质量 B2B 合作伙伴建立联系。',
     
     'value2_title' => '为卓越性能而生',
-    'value2_desc' => 'Alidebo 旨在提供无缝的高转化率体验。在创始人 <a href="https://www.linkedin.com/in/tarek-deyab-94a622293/" target="_blank" class="text-primary font-bold hover:underline">Tarek Deyab</a> 的愿景、商业顾问 <a href="https://www.linkedin.com/in/mazen-ramadan-b1143a315/" target="_blank" class="text-primary font-bold hover:underline">Mazen Ramadan</a> 的指导，以及 <a href="https://www.linkedin.com/in/ahmed-helal-3410522a7/" target="_blank" class="text-primary font-bold hover:underline">Ahmed Helal</a> 的专业工程设计下，我们的架构致力于推动实际业绩。',
+    'value2_desc' => 'Alidebo 旨在提供无缝的高转化率体验。在创始人（企业家） <a href="https://www.linkedin.com/in/tarek-deyab-94a622293/" target="_blank" class="text-primary font-bold hover:underline">Tarek Deyab</a> 的愿景、商业顾问 <a href="https://www.linkedin.com/in/mazen-ramadan-b1143a315/" target="_blank" class="text-primary font-bold hover:underline">Mazen Ramadan</a> 的指导，以及 <a href="https://www.linkedin.com/in/ahmed-helal-3410522a7/" target="_blank" class="text-primary font-bold hover:underline">Ahmed Helal</a> 的专业工程设计下，我们的架构致力于推动实际业绩。',
     
     'value3_title' => '加速您的业务增长',
     'value3_desc' => '生成高质量的入境潜在客户，并提高您品牌在搜索引擎中的知名度。我们本地化的企业名录可帮助您轻松打入新的国际市场。',
