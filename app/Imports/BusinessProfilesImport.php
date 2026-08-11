@@ -36,6 +36,8 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
     private $normalizer;
     private $batchId;
 
+    public $timeout = 1800; // 30 minutes to prevent chunk timeout
+
     public function __construct($adminEmail, $adminId = null, $batchId = null)
     {
         \Maatwebsite\Excel\Imports\HeadingRowFormatter::default('none');
@@ -228,7 +230,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
     private function downloadAndStoreImage($url, $folder)
     {
         try {
-            $response = Http::timeout(10)->get($url);
+            $response = Http::timeout(5)->get($url);
             if ($response->successful()) {
                 $extension = 'jpg'; // Default, or parse from content-type
                 $contentType = $response->header('Content-Type');
@@ -269,7 +271,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
     public function chunkSize(): int
     {
-        return 10;
+        return 2;
     }
 
     public function registerEvents(): array
