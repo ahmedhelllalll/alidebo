@@ -48,17 +48,17 @@ class DirectoryController extends Controller
             // Apply Sort
             if ($request->filled('sort')) {
                 if ($request->sort === 'newest') {
-                    $query->latest('approved_at');
+                    $query->latest('approved_at')->orderBy('id', 'desc');
                 } elseif ($request->sort === 'oldest') {
-                    $query->oldest('approved_at');
+                    $query->oldest('approved_at')->orderBy('id', 'asc');
                 } elseif ($request->sort === 'a-z') {
-                    $query->orderBy('name', 'asc');
+                    $query->orderBy('name', 'asc')->orderBy('id', 'desc');
                 } elseif ($request->sort === 'z-a') {
-                    $query->orderBy('name', 'desc');
+                    $query->orderBy('name', 'desc')->orderBy('id', 'desc');
                 }
             } else {
                 // Default sort
-                $query->latest('approved_at');
+                $query->latest('approved_at')->orderBy('id', 'desc');
             }
 
             $businesses = $query->paginate(12)->withQueryString();

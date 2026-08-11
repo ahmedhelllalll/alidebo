@@ -26,8 +26,10 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
                         @if($company->cover)
                             <img src="{{ $company->cover_url }}" alt="{{ $company->name }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        @elseif($company->category && $company->category->image_url)
+                            <img src="{{ $company->category->image_url }}" alt="{{ $company->category->name }}" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80">
                         @else
-                            <img src="{{ asset('images/home-background.webp') }}" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80">
+                            <div class="w-full h-full bg-gradient-to-br from-slate-200 to-slate-100 dark:from-zinc-800 dark:to-zinc-900 transition-transform duration-700 group-hover:scale-105 opacity-80"></div>
                         @endif
                     </div>
 
@@ -52,11 +54,10 @@
                                     <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
                                 </div>
                             </div>
-                            <div class="relative overflow-hidden h-[3rem] mb-4 flex-1">
-                                <p class="text-sm text-slate-500 dark:text-zinc-400 font-medium leading-relaxed">
+                            <div class="relative mb-4 flex-1">
+                                <p class="text-sm text-slate-500 dark:text-zinc-400 font-medium leading-relaxed line-clamp-2 sm:line-clamp-3">
                                     {{ $company->description ?? __('landing.featured_desc') }}
                                 </p>
-                                <div class="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-white dark:from-[#09090b] to-transparent pointer-events-none"></div>
                             </div>
                             
 

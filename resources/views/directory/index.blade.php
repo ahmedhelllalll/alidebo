@@ -710,10 +710,12 @@
                                                         <img src="{{ $business->cover_url }}" alt="{{ $business->name }}" loading="lazy"
                                                             decoding="async"
                                                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                                    @else
-                                                        <img src="{{ asset('images/home-background.webp') }}" alt="" loading="lazy"
+                                                    @elseif($business->category && $business->category->image_url)
+                                                        <img src="{{ $business->category->image_url }}" alt="{{ $business->category->name }}" loading="lazy"
                                                             decoding="async"
                                                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80">
+                                                    @else
+                                                        <div class="w-full h-full bg-gradient-to-br from-slate-200 to-slate-100 dark:from-zinc-800 dark:to-zinc-900 transition-transform duration-700 group-hover:scale-105 opacity-80"></div>
                                                     @endif
                                                 </div>
 
@@ -761,11 +763,10 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="relative overflow-hidden h-[2.75rem] sm:h-[3rem] mb-3 flex-1 z-40" @click.stop>
-                                                            <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium leading-relaxed selection:bg-primary/20 cursor-text">
+                                                        <div class="relative mb-3 flex-1 z-40" @click.stop>
+                                                            <p class="text-xs sm:text-sm text-slate-500 dark:text-zinc-400 font-medium leading-relaxed line-clamp-2 sm:line-clamp-3 selection:bg-primary/20 cursor-text">
                                                                 {{ $business->description ?? '...' }}
                                                             </p>
-                                                            <div class="absolute bottom-0 inset-x-0 h-6 bg-gradient-to-t from-white dark:from-[#09090b] to-transparent pointer-events-none"></div>
                                                         </div>
 
 
