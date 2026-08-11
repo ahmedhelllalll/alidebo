@@ -12,7 +12,7 @@ class DirectoryController extends Controller
 {
     public function index(Request $request)
     {
-        $cacheKey = 'directory_index_' . md5(json_encode($request->all()));
+        $cacheKey = 'directory_index_v2_' . md5(json_encode($request->all()));
 
         $data = \Illuminate\Support\Facades\Cache::remember($cacheKey, now()->addMinutes(10), function() use ($request) {
             $query = BusinessProfile::with(['category', 'city', 'owner'])->where('status', 'approved');
