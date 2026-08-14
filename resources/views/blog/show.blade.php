@@ -3,14 +3,24 @@
 @php
     $locale = app()->getLocale();
     $title = $post->title[$locale] ?? $post->title['en'] ?? '';
-    $rawContent = $post->content[$locale] ?? $post->content['en'] ?? '';
+    // Get raw content specifically for the requested locale
+    $rawContent = $post->content[$locale] ?? '';
+    $hasContent = !empty(trim(strip_tags($rawContent)));
+    
+    // Fallback to English ONLY for extracting JSON-LD scripts (so schemas don't break if content is missing)
+    $fallbackContent = $hasContent ? $rawContent : ($post->content['en'] ?? '');
     
     // Extract JSON-LD scripts to move them to the <head>
     $jsonLdScripts = [];
     $content = preg_replace_callback('/<script\b[^>]*type=["\']application\/ld\+json["\'][^>]*>.*?<\/script>/is', function($matches) use (&$jsonLdScripts) {
         $jsonLdScripts[] = $matches[0];
         return '';
-    }, $rawContent);
+    }, $fallbackContent);
+    
+    // Ensure $content is completely empty if there is no content for this locale
+    if (!$hasContent) {
+        $content = '';
+    }
     
     if (isset($post->seoMetadata)) {
         $metaTitle = $post->seoMetadata->meta_title[$locale] ?? null;
@@ -107,7 +117,23 @@
                 prose-code:bg-slate-100 dark:prose-code:bg-zinc-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-lg prose-code:text-sm prose-code:font-bold prose-code:text-primary
                 text-start rtl
             " dir="auto">
-                {!! \Illuminate\Support\Str::markdown($content, ['html_input' => 'allow']) !!}
+                @if($hasContent)
+                    {!! \Illuminate\Support\Str::markdown($content, ['html_input' => 'allow']) !!}
+                @else
+                    <div class="flex flex-col items-center justify-center py-16 text-center not-prose">
+                        <div class="w-20 h-20 mb-6 text-slate-300 dark:text-zinc-700">
+                            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-black text-slate-900 dark:text-white mb-3">
+                            {{ $locale === 'ar' ? 'قريباً...' : 'Translation Coming Soon...' }}
+                        </h2>
+                        <p class="text-slate-500 dark:text-zinc-400 max-w-md mx-auto">
+                            {{ $locale === 'ar' ? 'هذا المقال غير متوفر باللغة المحددة حالياً. نحن نعمل على ترجمته وسيكون متاحاً قريباً!' : 'This article is not yet available in your selected language. We are working on it and it will be available soon!' }}
+                        </p>
+                    </div>
+                @endif
             </article>
         </div>
 
