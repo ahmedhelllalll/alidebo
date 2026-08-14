@@ -3,7 +3,14 @@
 @php
     $locale = app()->getLocale();
     $title = $post->title[$locale] ?? $post->title['en'] ?? '';
-    $content = $post->content[$locale] ?? $post->content['en'] ?? '';
+    $rawContent = $post->content[$locale] ?? $post->content['en'] ?? '';
+    
+    // Extract JSON-LD scripts to move them to the <head>
+    $jsonLdScripts = [];
+    $content = preg_replace_callback('/<script\b[^>]*type=["\']application\/ld\+json["\'][^>]*>.*?<\/script>/is', function($matches) use (&$jsonLdScripts) {
+        $jsonLdScripts[] = $matches[0];
+        return '';
+    }, $rawContent);
     
     if (isset($post->seoMetadata)) {
         $metaTitle = $post->seoMetadata->meta_title[$locale] ?? null;
@@ -19,6 +26,12 @@
 
 @if(isset($metaDesc))
     @section('meta_description', $metaDesc)
+@endif
+
+@if(!empty($jsonLdScripts))
+    @push('styles')
+        {!! implode("\n", $jsonLdScripts) !!}
+    @endpush
 @endif
 
 @section('content')
