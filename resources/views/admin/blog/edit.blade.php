@@ -112,7 +112,7 @@
                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('admin.content') }}</label>
                 @foreach(['en', 'ar', 'es', 'de', 'zh', 'tr'] as $loc)
                     <div x-show="activeTab === '{{ $loc }}'" x-cloak class="mt-1">
-                        <textarea name="content[{{ $loc }}]" rows="12" class="tinymce-editor block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white" placeholder="{{ strtoupper($loc) }} Content">{{ old('content.'.$loc, $blog->content[$loc] ?? '') }}</textarea>
+                        <textarea name="content[{{ $loc }}]" rows="15" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white font-mono" placeholder="{{ strtoupper($loc) }} Content (Markdown supported)">{{ old('content.'.$loc, $blog->content[$loc] ?? '') }}</textarea>
                     </div>
                 @endforeach
             </div>
@@ -269,34 +269,6 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
-<script>
-    tinymce.init({
-        selector: '.tinymce-editor',
-        plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code',
-        toolbar_mode: 'floating',
-        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code',
-        extended_valid_elements: 'script[type|id|src|async|defer]',
-        forced_root_block: false,
-        force_br_newlines: true,
-        force_p_newlines: false,
-        remove_linebreaks: false,
-        entity_encoding: 'raw',
-        height: 400,
-        menubar: false,
-        base_url: '{{ asset('js/tinymce') }}',
-        suffix: '.min',
-        license_key: 'gpl',
-        promotion: false,
-        skin: document.documentElement.classList.contains('dark') ? 'oxide-dark' : 'oxide',
-        content_css: document.documentElement.classList.contains('dark') ? 'dark' : 'default',
-        setup: function (editor) {
-            editor.on('change', function () {
-                editor.save(); // ensure textarea gets updated for form submission
-            });
-        }
-    });
-
     document.addEventListener('DOMContentLoaded', function() {
         const slugInput = document.getElementById('slug');
         const slugError = document.getElementById('slug_error');
