@@ -235,6 +235,7 @@
 @endsection
 
 @push('scripts')
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         const slugInput = document.getElementById('slug');
         const slugError = document.getElementById('slug_error');
