@@ -94,14 +94,7 @@
                 prose-code:bg-slate-100 dark:prose-code:bg-zinc-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-lg prose-code:text-sm prose-code:font-bold prose-code:text-primary
                 text-start rtl
             " dir="auto">
-                @php
-                    // TinyMCE often wraps pasted Markdown in <p> tags and uses &nbsp;
-                    // which prevents Str::markdown from recognizing the Markdown syntax.
-                    // We replace them with newlines before parsing.
-                    $cleanContent = str_replace(['<p>', '</p>', '&nbsp;'], ["\n", "\n", " "], $content);
-                    $cleanContent = html_entity_decode($cleanContent, ENT_QUOTES, 'UTF-8');
-                @endphp
-                {!! \Illuminate\Support\Str::markdown($cleanContent, ['html_input' => 'allow']) !!}
+                {!! \Illuminate\Support\Str::markdown($content, ['html_input' => 'allow']) !!}
             </article>
         </div>
 
