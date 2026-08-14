@@ -11,7 +11,26 @@
     </div>
 
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            @if($posts->isEmpty())
+            @php
+                $locale = app()->getLocale();
+                $featuredPost = null;
+                $remainingPosts = collect();
+                
+                if (!$posts->isEmpty()) {
+                    foreach($posts as $p) {
+                        $t = $p->title[$locale] ?? null;
+                        if (!$t) continue;
+                        
+                        if (!$featuredPost) {
+                            $featuredPost = $p;
+                        } else {
+                            $remainingPosts->push($p);
+                        }
+                    }
+                }
+            @endphp
+
+            @if(!$featuredPost)
                 {{-- Smart Empty State --}}
                 <div class="reveal relative w-full bg-white dark:bg-[#0a0a0c] rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
                     <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-50 pointer-events-none"></div>
@@ -33,23 +52,7 @@
                 </div>
             @else
                 {{-- Featured Post (first post gets hero treatment) --}}
-                @php
-                    $locale = app()->getLocale();
-                    $featuredPost = null;
-                    $remainingPosts = collect();
-                    foreach($posts as $idx => $p) {
-                        $t = $p->title[$locale] ?? null;
-                        if (!$t) continue;
-                        if (!$featuredPost) {
-                            $featuredPost = $p;
-                        } else {
-                            $remainingPosts->push($p);
-                        }
-                    }
-                @endphp
-
-                @if($featuredPost)
-                    @php $featuredTitle = $featuredPost->title[$locale]; @endphp
+                @php $featuredTitle = $featuredPost->title[$locale]; @endphp
                     <a href="{{ route('blog.show', $featuredPost->slug) }}" class="reveal group relative flex flex-col lg:flex-row h-full bg-white dark:bg-[#09090b] rounded-[2rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 transition-all duration-300 ease-out will-change-transform hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.4)] hover:-translate-y-1.5 mb-8">
                         <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
                         
@@ -82,7 +85,6 @@
                             </div>
                         </div>
                     </a>
-                @endif
 
                 {{-- Editorial Vertical List (Next 3 Posts) --}}
                 @php

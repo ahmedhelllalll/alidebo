@@ -17,6 +17,10 @@
         return '';
     }, $fallbackContent);
     
+    // Strip H1 tags and Markdown H1s (#) to prevent duplicate title in body
+    $content = preg_replace('/^#\s+.*$/m', '', $content);
+    $content = preg_replace('/<h1\b[^>]*>.*?<\/h1>/is', '', $content);
+    
     // Ensure $content is completely empty if there is no content for this locale
     if (!$hasContent) {
         $content = '';
@@ -103,17 +107,18 @@
         {{-- Article Content --}}
         <div class="reveal">
             <article class="
-                prose prose-lg dark:prose-invert max-w-none
-                prose-headings:font-[900] prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-white
-                prose-h2:text-2xl prose-h2:sm:text-3xl prose-h2:mt-14 prose-h2:mb-6
-                prose-h3:text-xl prose-h3:sm:text-2xl prose-h3:mt-10 prose-h3:mb-5
-                prose-p:text-[17px] prose-p:text-slate-600 dark:prose-p:text-zinc-400 prose-p:font-medium prose-p:leading-[1.9] prose-p:mb-7
+                prose prose-lg dark:prose-invert max-w-3xl mx-auto leading-relaxed
+                prose-headings:font-[900] prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-white prose-headings:my-8
+                prose-h2:text-2xl prose-h2:sm:text-3xl
+                prose-h3:text-xl prose-h3:sm:text-2xl
+                prose-p:text-[17px] prose-p:text-slate-600 dark:prose-p:text-zinc-400 prose-p:font-medium prose-p:mb-7
                 prose-a:text-primary hover:prose-a:text-primary-light prose-a:font-bold prose-a:underline prose-a:underline-offset-4 prose-a:decoration-primary/30 hover:prose-a:decoration-primary
                 prose-blockquote:border-s-4 prose-blockquote:border-primary/30 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-zinc-900/50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-e-2xl prose-blockquote:text-slate-700 dark:prose-blockquote:text-zinc-300 prose-blockquote:font-medium prose-blockquote:not-italic
                 prose-strong:font-[900] prose-strong:text-slate-900 dark:prose-strong:text-white
                 prose-ul:list-disc prose-ul:ps-6 prose-ol:list-decimal prose-ol:ps-6
-                prose-li:text-[17px] prose-li:text-slate-600 dark:prose-li:text-zinc-400 prose-li:font-medium prose-li:mb-2 prose-li:leading-[1.9]
-                prose-img:rounded-[1.5rem] prose-img:border prose-img:border-slate-200/80 dark:prose-img:border-zinc-800/80 prose-img:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)]
+                prose-li:text-[17px] prose-li:text-slate-600 dark:prose-li:text-zinc-400 prose-li:font-medium prose-li:mb-2
+                prose-img:rounded-[1.5rem] prose-img:border prose-img:border-slate-200/80 dark:prose-img:border-zinc-800/80 prose-img:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] prose-img:my-8
+                prose-hr:my-8 prose-hr:border-slate-200 dark:prose-hr:border-zinc-800
                 prose-code:bg-slate-100 dark:prose-code:bg-zinc-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-lg prose-code:text-sm prose-code:font-bold prose-code:text-primary
                 text-start rtl
             " dir="auto">
