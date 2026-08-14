@@ -273,9 +273,10 @@
 <script>
     tinymce.init({
         selector: '.tinymce-editor',
-        plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
+        plugins: 'advlist autolink lists link image charmap preview anchor pagebreak code',
         toolbar_mode: 'floating',
-        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code',
+        extended_valid_elements: 'script[type|id|src|async|defer]',
         height: 400,
         menubar: false,
         base_url: '{{ asset('js/tinymce') }}',
