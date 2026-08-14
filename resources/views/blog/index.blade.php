@@ -66,14 +66,15 @@
                         
                         {{-- Featured Content --}}
                         <div class="w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative z-10">
-                            <time datetime="{{ $featuredPost->published_at->toIso8601String() }}" class="text-xs font-black text-primary uppercase tracking-widest mb-6">
-                                {{ $featuredPost->published_at->format('M d, Y') }}
+                            @php $fDate = $featuredPost->published_at ?? $featuredPost->created_at; @endphp
+                            <time datetime="{{ $fDate->toIso8601String() }}" class="text-xs font-black text-primary uppercase tracking-widest mb-6">
+                                {{ $fDate->format('M d, Y') }}
                             </time>
                             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-[900] text-slate-900 dark:text-white leading-tight mb-6 group-hover:text-primary transition-colors line-clamp-3">
                                 {{ $featuredTitle }}
                             </h2>
                             <div class="text-sm sm:text-base text-slate-600 dark:text-zinc-400 font-medium leading-relaxed line-clamp-3 mb-8">
-                                {{ $featuredPost->description[$locale] ?? strip_tags($featuredPost->content[$locale] ?? '') }}
+                                {{ $featuredPost->description[$locale] ?? \Illuminate\Support\Str::limit(strip_tags($featuredPost->content[$locale] ?? ''), 250) }}
                             </div>
                             <div class="flex items-center text-primary font-[900] text-sm uppercase tracking-widest">
                                 {{ __('home.read_more') }}
@@ -103,8 +104,9 @@
                                 @endphp
                                 <a href="{{ route('blog.show', $post->slug) }}" class="reveal group flex flex-col md:flex-row md:items-center py-8 border-b border-slate-200/80 dark:border-zinc-800/80 hover:bg-slate-50/50 dark:hover:bg-zinc-900/20 transition-colors">
                                     <div class="w-full md:w-1/4 mb-4 md:mb-0">
-                                        <time datetime="{{ $post->published_at->toIso8601String() }}" class="text-sm font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest block">
-                                            {{ $post->published_at->format('M d, Y') }}
+                                        @php $pDate = $post->published_at ?? $post->created_at; @endphp
+                                        <time datetime="{{ $pDate->toIso8601String() }}" class="text-sm font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest block">
+                                            {{ $pDate->format('M d, Y') }}
                                         </time>
                                     </div>
                                     <div class="w-full md:w-2/4 px-0 md:px-8">
@@ -150,8 +152,9 @@
                                 
                                 {{-- Content --}}
                                 <div class="flex-1 min-w-0 py-2">
-                                    <time datetime="{{ $post->published_at->toIso8601String() }}" class="text-[11px] font-black text-primary uppercase tracking-widest mb-3 block">
-                                        {{ $post->published_at->format('M d, Y') }}
+                                    @php $gDate = $post->published_at ?? $post->created_at; @endphp
+                                    <time datetime="{{ $gDate->toIso8601String() }}" class="text-[11px] font-black text-primary uppercase tracking-widest mb-3 block">
+                                        {{ $gDate->format('M d, Y') }}
                                     </time>
                                     <h4 class="text-lg sm:text-xl font-[900] text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
                                         {{ $postTitle }}

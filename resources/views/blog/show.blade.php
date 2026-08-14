@@ -41,8 +41,9 @@
 
         {{-- Article Header --}}
         <header class="mb-12 reveal">
-            <time datetime="{{ $post->published_at->toIso8601String() }}" class="text-xs font-black text-primary uppercase tracking-widest mb-6 block">
-                {{ $post->published_at->format('M d, Y') }}
+            @php $postDate = $post->published_at ?? $post->created_at; @endphp
+            <time datetime="{{ $postDate->toIso8601String() }}" class="text-xs font-black text-primary uppercase tracking-widest mb-6 block">
+                {{ $postDate->format('M d, Y') }}
             </time>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl font-[900] tracking-tight text-slate-900 dark:text-white leading-tight mb-6">
                 {{ $title }}
@@ -91,9 +92,9 @@
                 prose-li:text-[17px] prose-li:text-slate-600 dark:prose-li:text-zinc-400 prose-li:font-medium prose-li:mb-2 prose-li:leading-[1.9]
                 prose-img:rounded-[1.5rem] prose-img:border prose-img:border-slate-200/80 dark:prose-img:border-zinc-800/80 prose-img:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)]
                 prose-code:bg-slate-100 dark:prose-code:bg-zinc-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-lg prose-code:text-sm prose-code:font-bold prose-code:text-primary
-                text-start
-            ">
-                {!! $content !!}
+                text-start rtl
+            " dir="auto">
+                {!! \Illuminate\Support\Str::markdown($content, ['html_input' => 'allow']) !!}
             </article>
         </div>
 
