@@ -59,7 +59,7 @@
     <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 sm:pt-40 pb-24">
         
         {{-- Back Link --}}
-        <div class="mb-12 reveal">
+        <div class="mb-12">
             <a href="{{ route('blog.index') }}" class="inline-flex items-center text-sm font-[900] text-slate-500 dark:text-zinc-400 hover:text-primary transition-colors group uppercase tracking-widest">
                 <i class="fa-solid fa-arrow-left me-3 rtl:rotate-180 transition-transform duration-300 group-hover:-translate-x-1 rtl:group-hover:translate-x-1 text-xs"></i>
                 {{ __('home.back_to_blog') }}
@@ -67,7 +67,7 @@
         </div>
 
         {{-- Article Header --}}
-        <header class="mb-12 reveal">
+        <header class="mb-12">
             @php $postDate = $post->published_at ?? $post->created_at; @endphp
             <time datetime="{{ $postDate->toIso8601String() }}" class="text-xs font-black text-primary uppercase tracking-widest mb-6 block">
                 {{ $postDate->format('M d, Y') }}
@@ -87,7 +87,7 @@
             @php
                 $mediaAlt = $post->media_alt[app()->getLocale()] ?? $title;
             @endphp
-            <div class="reveal mb-16">
+            <div class="mb-16">
                 <div class="w-full rounded-[2rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 bg-slate-50 dark:bg-zinc-900 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
                     @if($post->media_type === 'image')
                         <img src="{{ asset('storage/' . $post->media_url) }}" alt="{{ $mediaAlt }}" class="w-full h-auto max-h-[550px] object-cover">
@@ -105,7 +105,7 @@
         @endif
 
         {{-- Article Content --}}
-        <div class="reveal">
+        <div>
             <article class="
                 prose prose-lg dark:prose-invert max-w-3xl mx-auto leading-relaxed
                 prose-headings:font-[900] prose-headings:tracking-tight prose-headings:text-slate-900 dark:prose-headings:text-white prose-headings:my-8
@@ -143,7 +143,7 @@
         </div>
 
         {{-- Divider & Share --}}
-        <div class="reveal mt-20 pt-10 border-t border-slate-200/80 dark:border-zinc-800/80">
+        <div class="mt-20 pt-10 border-t border-slate-200/80 dark:border-zinc-800/80">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
                 <span class="text-xs font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest">
                     {{ __('home.share_article') ?? 'Share' }}

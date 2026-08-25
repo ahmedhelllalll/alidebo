@@ -33,7 +33,7 @@
 
             @if(!$featuredPost)
                 {{-- Smart Empty State --}}
-                <div class="reveal relative w-full bg-white dark:bg-[#0a0a0c] rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
+                <div class="relative w-full bg-white dark:bg-[#0a0a0c] rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
                     <div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-50 pointer-events-none"></div>
                     <div class="p-12 sm:p-20 lg:p-24 text-center max-w-3xl mx-auto relative z-10">
                         <div class="w-20 h-20 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center mb-8 border border-primary/20">
@@ -54,7 +54,7 @@
             @else
                 {{-- Featured Post (first post gets hero treatment) --}}
                 @php $featuredTitle = $featuredPost->title[$locale]; @endphp
-                    <a href="{{ route('blog.show', $featuredPost->slug) }}" class="reveal group relative flex flex-col lg:flex-row h-full bg-white dark:bg-[#09090b] rounded-[2rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 transition-all duration-300 ease-out will-change-transform hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.4)] hover:-translate-y-1.5 mb-8">
+                    <a href="{{ route('blog.show', $featuredPost->slug) }}" class="group relative flex flex-col lg:flex-row h-full bg-white dark:bg-[#09090b] rounded-[2rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 transition-all duration-300 ease-out will-change-transform hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.4)] hover:-translate-y-1.5 mb-8">
                         <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out pointer-events-none"></div>
                         
                         {{-- Featured Image --}}
@@ -95,7 +95,7 @@
                                 $postTitle = $post->title[$locale] ?? null;
                                 if (!$postTitle) continue;
                             @endphp
-                            <a href="{{ route('blog.show', $post->slug) }}" class="reveal group flex flex-col bg-white dark:bg-[#09090b] rounded-[1.5rem] border border-slate-100 dark:border-zinc-800/80 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                            <a href="{{ route('blog.show', $post->slug) }}" class="group flex flex-col h-full bg-white dark:bg-[#09090b] rounded-[1.5rem] border border-slate-100 dark:border-zinc-800/80 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                                 {{-- Thumbnail --}}
                                 <div class="w-full aspect-[16/10] overflow-hidden bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-100 dark:border-zinc-800/80">
                                     @if($post->media_url && $post->media_type === 'image')
@@ -130,7 +130,7 @@
                 @endif
 
                 @if($posts->hasPages())
-                    <div class="mt-16 flex justify-center reveal">
+                    <div class="mt-16 flex justify-center">
                         {{ $posts->links() }}
                     </div>
                 @endif
