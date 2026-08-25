@@ -102,19 +102,19 @@
 @push('scripts')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
+  "@@context": "https://schema.org",
+  "@@type": "AboutPage",
   "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ url()->current() }}"
+    "@@type": "WebPage",
+    "@@id": "{{ url()->current() }}"
   },
   "name": "{{ __('landing.nav_about') }}",
   "description": "{{ __('about.hero_subtitle') }}",
   "publisher": {
-    "@type": "Organization",
+    "@@type": "Organization",
     "name": "alidebo",
     "logo": {
-      "@type": "ImageObject",
+      "@@type": "ImageObject",
       "url": "{{ asset('images/logo.webp') }}"
     }
   }

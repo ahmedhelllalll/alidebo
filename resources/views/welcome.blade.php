@@ -63,18 +63,18 @@
     @push('scripts')
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@graph": [
+      "@@context": "https://schema.org",
+      "@@graph": [
         {
-          "@type": "WebSite",
-          "@id": "{{ url('/') }}#website",
+          "@@type": "WebSite",
+          "@@id": "{{ url('/') }}#website",
           "url": "{{ url('/') }}",
           "name": "alidebo",
           "description": "{{ __('landing.meta_description') }}",
           "potentialAction": [{
-            "@type": "SearchAction",
+            "@@type": "SearchAction",
             "target": {
-              "@type": "EntryPoint",
+              "@@type": "EntryPoint",
               "urlTemplate": "{{ url('/directory/search') }}?q={search_term_string}"
             },
             "query-input": "required name=search_term_string"
@@ -82,19 +82,19 @@
           "inLanguage": "{{ app()->getLocale() }}"
         },
         {
-          "@type": "Organization",
-          "@id": "{{ url('/') }}#organization",
+          "@@type": "Organization",
+          "@@id": "{{ url('/') }}#organization",
           "name": "alidebo",
           "url": "{{ url('/') }}",
           "logo": {
-            "@type": "ImageObject",
+            "@@type": "ImageObject",
             "inLanguage": "{{ app()->getLocale() }}",
-            "@id": "{{ url('/') }}#logo",
+            "@@id": "{{ url('/') }}#logo",
             "url": "{{ asset('images/logo.webp') }}",
             "caption": "alidebo"
           },
           "image": {
-            "@id": "{{ url('/') }}#logo"
+            "@@id": "{{ url('/') }}#logo"
           }
         }
       ]

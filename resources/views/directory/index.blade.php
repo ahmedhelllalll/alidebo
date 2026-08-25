@@ -1039,19 +1039,19 @@
     
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
+      "@@context": "https://schema.org",
+      "@@type": "CollectionPage",
       "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "{{ url()->current() }}"
+        "@@type": "WebPage",
+        "@@id": "{{ url()->current() }}"
       },
       "name": "{{ __('directory.title') }}",
       "description": "{{ __('landing.meta_description') }}",
       "publisher": {
-        "@type": "Organization",
+        "@@type": "Organization",
         "name": "alidebo",
         "logo": {
-          "@type": "ImageObject",
+          "@@type": "ImageObject",
           "url": "{{ asset('images/logo.webp') }}"
         }
       }

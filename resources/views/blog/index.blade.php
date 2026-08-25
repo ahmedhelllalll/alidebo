@@ -141,19 +141,19 @@
 @push('scripts')
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "Blog",
+  "@@context": "https://schema.org",
+  "@@type": "Blog",
   "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "{{ url()->current() }}"
+    "@@type": "WebPage",
+    "@@id": "{{ url()->current() }}"
   },
   "name": "{{ __('home.blog_title') ?? 'Blog' }}",
   "description": "{{ __('home.blog_empty_msg') ?? 'Latest insights, industry news, and comprehensive guides.' }}",
   "publisher": {
-    "@type": "Organization",
+    "@@type": "Organization",
     "name": "alidebo",
     "logo": {
-      "@type": "ImageObject",
+      "@@type": "ImageObject",
       "url": "{{ asset('images/logo.webp') }}"
     }
   }
