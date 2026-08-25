@@ -86,81 +86,42 @@
                         </div>
                     </a>
 
-                {{-- Editorial Vertical List (Next 3 Posts) --}}
-                @php
-                    $listPosts = $remainingPosts->take(3);
-                    $gridPosts = $remainingPosts->skip(3);
-                @endphp
-
-                @if($listPosts->isNotEmpty())
-                    <div class="mb-16">
-                        <div class="flex items-center mb-8 reveal">
-                            <h3 class="text-xl font-[900] text-slate-900 dark:text-white uppercase tracking-widest">{{ __('home.latest_insights') ?? 'Latest Insights' }}</h3>
-                            <div class="h-px bg-slate-200 dark:bg-zinc-800 flex-1 ms-6"></div>
-                        </div>
-                        <div class="flex flex-col border-t border-slate-200/80 dark:border-zinc-800/80">
-                            @foreach($listPosts as $post)
-                                @php
-                                    $postTitle = $post->title[$locale] ?? null;
-                                    if (!$postTitle) continue;
-                                @endphp
-                                <a href="{{ route('blog.show', $post->slug) }}" class="reveal group flex flex-col md:flex-row md:items-center py-8 border-b border-slate-200/80 dark:border-zinc-800/80 hover:bg-slate-50/50 dark:hover:bg-zinc-900/20 transition-colors">
-                                    <div class="w-full md:w-1/4 mb-4 md:mb-0">
-                                        @php $pDate = $post->published_at ?? $post->created_at; @endphp
-                                        <time datetime="{{ $pDate->toIso8601String() }}" class="text-sm font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest block">
-                                            {{ $pDate->format('M d, Y') }}
-                                        </time>
-                                    </div>
-                                    <div class="w-full md:w-2/4 px-0 md:px-8">
-                                        <h3 class="text-2xl font-[900] text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
-                                            {{ $postTitle }}
-                                        </h3>
-                                    </div>
-                                    <div class="w-full md:w-1/4 flex justify-start md:justify-end mt-6 md:mt-0">
-                                        <div class="flex items-center text-primary font-[900] text-sm uppercase tracking-widest opacity-0 -translate-x-4 rtl:translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 rtl:group-hover:translate-x-0 transition-all duration-300">
-                                            {{ __('home.read_more') }}
-                                            <i class="fa-solid fa-arrow-right ms-3 rtl:rotate-180"></i>
-                                        </div>
-                                    </div>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-
-                {{-- Archive Grid --}}
-                @if($gridPosts->isNotEmpty())
-                    <div class="flex items-center mb-8 reveal">
-                        <h3 class="text-xl font-[900] text-slate-900 dark:text-white uppercase tracking-widest">{{ __('home.archive') ?? 'Archive' }}</h3>
-                        <div class="h-px bg-slate-200 dark:bg-zinc-800 flex-1 ms-6"></div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-                        @foreach($gridPosts as $post)
+                {{-- Other Posts (Minimal Cards) --}}
+                @if($remainingPosts->isNotEmpty())
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mt-12">
+                        @foreach($remainingPosts as $post)
                             @php
                                 $postTitle = $post->title[$locale] ?? null;
                                 if (!$postTitle) continue;
                             @endphp
-                            <a href="{{ route('blog.show', $post->slug) }}" class="reveal group relative flex flex-col sm:flex-row items-center gap-6 p-6 rounded-[2rem] bg-white dark:bg-[#09090b] border border-slate-200/80 dark:border-zinc-800/80 transition-all duration-300 hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.4)] hover:-translate-y-1">
+                            <a href="{{ route('blog.show', $post->slug) }}" class="reveal group flex flex-col bg-white dark:bg-[#09090b] rounded-[1.5rem] border border-slate-100 dark:border-zinc-800/80 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                                 {{-- Thumbnail --}}
-                                <div class="w-full sm:w-32 h-48 sm:h-32 shrink-0 rounded-[1.5rem] overflow-hidden bg-slate-100 dark:bg-zinc-800/50">
+                                <div class="w-full aspect-[16/10] overflow-hidden bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-100 dark:border-zinc-800/80">
                                     @if($post->media_url && $post->media_type === 'image')
-                                        <img src="{{ asset('storage/' . $post->media_url) }}" alt="{{ $postTitle }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                        <img src="{{ asset('storage/' . $post->media_url) }}" alt="{{ $postTitle }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center">
-                                            <i class="fa-solid fa-image text-2xl text-slate-300 dark:text-zinc-600 opacity-50"></i>
+                                            <i class="fa-solid fa-image text-3xl text-slate-300 dark:text-zinc-600 opacity-50"></i>
                                         </div>
                                     @endif
                                 </div>
                                 
                                 {{-- Content --}}
-                                <div class="flex-1 min-w-0 py-2">
-                                    @php $gDate = $post->published_at ?? $post->created_at; @endphp
-                                    <time datetime="{{ $gDate->toIso8601String() }}" class="text-[11px] font-black text-primary uppercase tracking-widest mb-3 block">
-                                        {{ $gDate->format('M d, Y') }}
+                                <div class="p-6 sm:p-8 flex flex-col flex-1">
+                                    @php $pDate = $post->published_at ?? $post->created_at; @endphp
+                                    <time datetime="{{ $pDate->toIso8601String() }}" class="text-[12px] font-[900] text-primary uppercase tracking-widest mb-4 block">
+                                        {{ $pDate->format('M d, Y') }}
                                     </time>
-                                    <h4 class="text-lg sm:text-xl font-[900] text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                                    <h4 class="text-xl sm:text-2xl font-[900] text-slate-900 dark:text-white leading-tight group-hover:text-primary transition-colors mb-4 line-clamp-2">
                                         {{ $postTitle }}
                                     </h4>
+                                    <div class="text-sm text-slate-600 dark:text-zinc-400 font-medium leading-relaxed line-clamp-3 mb-6 flex-1">
+                                        {{ $post->description[$locale] ?? \Illuminate\Support\Str::limit(strip_tags($post->content[$locale] ?? ''), 120) }}
+                                    </div>
+                                    <div class="flex items-center text-slate-900 dark:text-white font-[900] text-sm uppercase tracking-widest mt-auto group-hover:text-primary transition-colors">
+                                        {{ __('home.read_more') }}
+                                        <i class="fa-solid fa-arrow-right ms-3 transition-transform duration-300 group-hover:translate-x-2 rtl:rotate-180 rtl:group-hover:-translate-x-2 text-xs"></i>
+                                    </div>
                                 </div>
                             </a>
                         @endforeach
