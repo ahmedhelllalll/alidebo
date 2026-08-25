@@ -828,6 +828,13 @@
 
                 }); // end gsap.context
 
+                // Refresh ScrollTrigger when all assets (including images) are loaded to recalculate heights
+                window.addEventListener('load', () => {
+                    if (typeof ScrollTrigger !== 'undefined') {
+                        ScrollTrigger.refresh();
+                    }
+                });
+
                 // Store context for potential cleanup
                 window.__gsapLandingCtx = ctx;
             } else if (reduceMotion) {

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('landing.nav_about') ?? 'About Us')
+@section('meta_description', __('about.hero_subtitle') ?? 'Learn more about alidebo, our mission, and our values.')
 
 @section('content')
 
@@ -96,6 +97,28 @@
         </div>
         
     </div>
-</section>
 </div>
+
+@push('scripts')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ url()->current() }}"
+  },
+  "name": "{{ __('landing.nav_about') }}",
+  "description": "{{ __('about.hero_subtitle') }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "alidebo",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ asset('images/logo.webp') }}"
+    }
+  }
+}
+</script>
+@endpush
 @endsection

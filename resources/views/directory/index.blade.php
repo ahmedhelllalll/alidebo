@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('directory.title'))
+@section('meta_description', __('landing.meta_description') ?? 'Find the best companies in our directory.')
 
 @push('styles')
     <style>
@@ -1034,5 +1035,26 @@
                 }
             }));
         });
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ url()->current() }}"
+      },
+      "name": "{{ __('directory.title') }}",
+      "description": "{{ __('landing.meta_description') }}",
+      "publisher": {
+        "@type": "Organization",
+        "name": "alidebo",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ asset('images/logo.webp') }}"
+        }
+      }
+    }
     </script>
 @endsection

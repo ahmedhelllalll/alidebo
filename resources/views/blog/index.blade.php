@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('title', __('home.blog_title') ?? 'Blog')
+@section('meta_description', __('home.blog_empty_msg') ?? 'Latest insights, industry news, and comprehensive guides.')
 
 @section('content')
 <div class="relative overflow-hidden bg-white dark:bg-[#0a0a0c] pt-32 sm:pt-40 pb-24 min-h-screen">
@@ -59,7 +60,7 @@
                         {{-- Featured Image --}}
                         <div class="w-full lg:w-1/2 h-[280px] sm:h-[350px] lg:h-auto lg:min-h-[400px] relative overflow-hidden bg-slate-100 dark:bg-zinc-800/50 border-b lg:border-b-0 lg:border-e border-slate-200/60 dark:border-zinc-800/60">
                             @if($featuredPost->media_url && $featuredPost->media_type === 'image')
-                                <img src="{{ asset('storage/' . $featuredPost->media_url) }}" alt="{{ $featuredTitle }}" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105">
+                                <img src="{{ asset('storage/' . $featuredPost->media_url) }}" alt="{{ $featuredTitle }}" class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105" loading="lazy" decoding="async">
                             @else
                                 <div class="w-full h-full flex items-center justify-center">
                                     <i class="fa-solid fa-image text-4xl text-slate-300 dark:text-zinc-600 opacity-50"></i>
@@ -98,7 +99,7 @@
                                 {{-- Thumbnail --}}
                                 <div class="w-full aspect-[16/10] overflow-hidden bg-slate-50 dark:bg-zinc-800/50 border-b border-slate-100 dark:border-zinc-800/80">
                                     @if($post->media_url && $post->media_type === 'image')
-                                        <img src="{{ asset('storage/' . $post->media_url) }}" alt="{{ $postTitle }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                                        <img src="{{ asset('storage/' . $post->media_url) }}" alt="{{ $postTitle }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" decoding="async">
                                     @else
                                         <div class="w-full h-full flex items-center justify-center">
                                             <i class="fa-solid fa-image text-3xl text-slate-300 dark:text-zinc-600 opacity-50"></i>
@@ -136,4 +137,27 @@
             @endif
     </div>
 </div>
+
+@push('scripts')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ url()->current() }}"
+  },
+  "name": "{{ __('home.blog_title') ?? 'Blog' }}",
+  "description": "{{ __('home.blog_empty_msg') ?? 'Latest insights, industry news, and comprehensive guides.' }}",
+  "publisher": {
+    "@type": "Organization",
+    "name": "alidebo",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ asset('images/logo.webp') }}"
+    }
+  }
+}
+</script>
+@endpush
 @endsection
