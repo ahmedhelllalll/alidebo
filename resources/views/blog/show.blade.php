@@ -90,13 +90,13 @@
             <div class="mb-16">
                 <div class="w-full rounded-[2rem] overflow-hidden border border-slate-200/80 dark:border-zinc-800/80 bg-slate-50 dark:bg-zinc-900 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
                     @if($post->media_type === 'image')
-                        <img src="{{ asset('storage/' . $post->media_url) }}" alt="{{ $mediaAlt }}" class="w-full h-auto max-h-[550px] object-cover">
+                        <img src="{{ $post->media_asset_url }}" alt="{{ $mediaAlt }}" class="w-full h-auto max-h-[550px] object-cover">
                     @elseif($post->media_type === 'video')
                         <div class="w-full aspect-video">
                             @if(\Illuminate\Support\Str::startsWith($post->media_url, 'http'))
                                 <iframe src="{{ $post->media_url }}" title="{{ $mediaAlt }}" class="w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             @else
-                                <video src="{{ asset('storage/' . $post->media_url) }}" aria-label="{{ $mediaAlt }}" class="w-full h-full object-cover" controls playsinline></video>
+                                <video src="{{ $post->media_asset_url }}" aria-label="{{ $mediaAlt }}" class="w-full h-full object-cover" controls playsinline></video>
                             @endif
                         </div>
                     @endif

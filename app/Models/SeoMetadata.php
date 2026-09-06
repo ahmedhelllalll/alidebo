@@ -12,6 +12,7 @@ class SeoMetadata extends Model
         'meta_title',
         'meta_description',
         'og_image',
+        'disk',
     ];
 
     protected $casts = [
@@ -24,12 +25,13 @@ class SeoMetadata extends Model
         return $this->morphTo();
     }
 
-    public function getOgImageUrlAttribute()
+    public function getOgImageUrlAttribute(): ?string
     {
         if (!$this->og_image) return null;
         if (str_starts_with($this->og_image, 'http://') || str_starts_with($this->og_image, 'https://')) {
             return $this->og_image;
         }
-        return \Illuminate\Support\Facades\Storage::disk('public')->url($this->og_image);
+        $disk = $this->disk ?? 'public';
+        return \Illuminate\Support\Facades\Storage::disk($disk)->url($this->og_image);
     }
 }

@@ -17,7 +17,12 @@ class BlogPost extends Model
         'media_url',
         'media_alt',
         'status',
+        'disk',
         'published_at',
+    ];
+
+    protected $appends = [
+        'media_asset_url',
     ];
 
     protected $casts = [
@@ -28,16 +33,17 @@ class BlogPost extends Model
         'published_at' => 'datetime',
     ];
 
-    public function getMediaAssetUrlAttribute()
+    public function getMediaAssetUrlAttribute(): ?string
     {
         if (!$this->media_url) {
             return null;
         }
 
-        if ($this->media_type === 'image') {
-            return asset('storage/' . $this->media_url);
+        if (str_starts_with($this->media_url, 'http://') || str_starts_with($this->media_url, 'https://')) {
+            return $this->media_url;
         }
 
-        return $this->media_url;
+        $disk = $this->disk ?? 'public';
+        return \Illuminate\Support\Facades\Storage::disk($disk)->url($this->media_url);
     }
 }

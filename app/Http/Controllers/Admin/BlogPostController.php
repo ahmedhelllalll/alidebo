@@ -59,17 +59,22 @@ class BlogPostController extends Controller
         }
 
         if (isset($data['media_type'])) {
+            $uploadDisk = $this->getUploadDisk();
             if ($data['media_type'] === 'image' && $request->hasFile('image_upload')) {
-                $data['media_url'] = $request->file('image_upload')->store('blog', 'public');
+                $data['media_url'] = $request->file('image_upload')->store('blog', $uploadDisk);
+                $data['disk'] = $uploadDisk;
             } elseif ($data['media_type'] === 'video_embed' && !empty($data['video_url'])) {
                 $data['media_type'] = 'video';
                 $data['media_url'] = $data['video_url'];
+                $data['disk'] = null;
             } elseif ($data['media_type'] === 'video_upload' && $request->hasFile('video_upload')) {
                 $data['media_type'] = 'video';
-                $data['media_url'] = $request->file('video_upload')->store('blog', 'public');
+                $data['media_url'] = $request->file('video_upload')->store('blog', $uploadDisk);
+                $data['disk'] = $uploadDisk;
             } else {
                 $data['media_type'] = 'none';
                 $data['media_url'] = null;
+                $data['disk'] = null;
             }
         }
 
@@ -112,28 +117,33 @@ class BlogPostController extends Controller
         }
 
         if (isset($data['media_type'])) {
+            $uploadDisk = $this->getUploadDisk();
             if ($data['media_type'] === 'image' && $request->hasFile('image_upload')) {
                 if ($blog->media_url) {
-                    Storage::disk('public')->delete($blog->media_url);
+                    Storage::disk($blog->disk ?? 'public')->delete($blog->media_url);
                 }
-                $data['media_url'] = $request->file('image_upload')->store('blog', 'public');
+                $data['media_url'] = $request->file('image_upload')->store('blog', $uploadDisk);
+                $data['disk'] = $uploadDisk;
             } elseif ($data['media_type'] === 'video_embed' && !empty($data['video_url'])) {
                 if ($blog->media_url && !Str::startsWith($blog->media_url, 'http')) {
-                    Storage::disk('public')->delete($blog->media_url);
+                    Storage::disk($blog->disk ?? 'public')->delete($blog->media_url);
                 }
                 $data['media_type'] = 'video';
                 $data['media_url'] = $data['video_url'];
+                $data['disk'] = null;
             } elseif ($data['media_type'] === 'video_upload' && $request->hasFile('video_upload')) {
                 if ($blog->media_url) {
-                    Storage::disk('public')->delete($blog->media_url);
+                    Storage::disk($blog->disk ?? 'public')->delete($blog->media_url);
                 }
                 $data['media_type'] = 'video';
-                $data['media_url'] = $request->file('video_upload')->store('blog', 'public');
+                $data['media_url'] = $request->file('video_upload')->store('blog', $uploadDisk);
+                $data['disk'] = $uploadDisk;
             } elseif ($data['media_type'] === 'none') {
                 if ($blog->media_url) {
-                    Storage::disk('public')->delete($blog->media_url);
+                    Storage::disk($blog->disk ?? 'public')->delete($blog->media_url);
                 }
                 $data['media_url'] = null;
+                $data['disk'] = null;
             } else {
                 // If it's image or video but no new upload/url is provided, retain existing
                 unset($data['media_url']); 
@@ -150,11 +160,16 @@ class BlogPostController extends Controller
 
     public function destroy(BlogPost $blog)
     {
-        if ($blog->media_type === 'image' && $blog->media_url) {
-            Storage::disk('public')->delete($blog->media_url);
+        if ($blog->media_url && !Str::startsWith($blog->media_url, 'http')) {
+            Storage::disk($blog->disk ?? 'public')->delete($blog->media_url);
         }
         $blog->delete();
         return redirect()->route('admin.blogs.index')->with('success', __('admin.blog_deleted'));
+    }
+
+    protected function getUploadDisk(): string
+    {
+        return config('filesystems.disks.r2.bucket') ? 'r2' : 'public';
     }
 
     protected function handleSeoMetadata($model, Request $request)
@@ -173,10 +188,12 @@ class BlogPostController extends Controller
             $seo->meta_description = $metaDesc;
             
             if ($request->hasFile('seo_metadata.og_image')) {
+                $uploadDisk = $this->getUploadDisk();
                 if ($seo->og_image) {
-                    Storage::disk('public')->delete($seo->og_image);
+                    Storage::disk($seo->disk ?? 'public')->delete($seo->og_image);
                 }
-                $seo->og_image = $request->file('seo_metadata.og_image')->store('seo', 'public');
+                $seo->og_image = $request->file('seo_metadata.og_image')->store('seo', $uploadDisk);
+                $seo->disk = $uploadDisk;
             }
             
             $seo->save();

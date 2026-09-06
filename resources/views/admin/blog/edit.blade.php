@@ -194,7 +194,7 @@
                         @if($blog->media_type === 'image' && $blog->media_url)
                             <div class="mt-4" x-show="!imagePreview">
                                 <p class="text-xs text-slate-400 mb-2">{{ __('admin.current_image') }}:</p>
-                                <img src="{{ asset('storage/' . $blog->media_url) }}" alt="{{ __('admin.current_image') }}" class="w-48 h-32 object-cover rounded-lg border border-slate-200 shadow-sm">
+                                <img src="{{ $blog->media_asset_url }}" alt="{{ __('admin.current_image') }}" class="w-48 h-32 object-cover rounded-lg border border-slate-200 shadow-sm">
                             </div>
                         @endif
                         <template x-if="imagePreview">
@@ -230,7 +230,7 @@
                         
                         @if($blog->media_type === 'video' && $blog->media_url && !\Illuminate\Support\Str::startsWith($blog->media_url, 'http'))
                             <div class="mt-4 aspect-video w-full max-w-sm rounded-lg overflow-hidden border border-slate-200 shadow-sm" x-show="!videoPreview">
-                                <video src="{{ asset('storage/' . $blog->media_url) }}" class="w-full h-full object-cover" controls muted></video>
+                                <video src="{{ $blog->media_asset_url }}" class="w-full h-full object-cover" controls muted></video>
                             </div>
                         @endif
 

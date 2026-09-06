@@ -93,7 +93,7 @@
                 {{-- Media Header --}}
                 <div class="relative w-full aspect-[16/10] bg-slate-100 dark:bg-[#1a1a1c] overflow-hidden border-b border-slate-200/60 dark:border-white/5">
                     @if($post->media_url && $post->media_type === 'image')
-                        <img src="{{ asset('storage/' . $post->media_url) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="">
+                        <img src="{{ $post->media_asset_url }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="">
                     @else
                         <div class="w-full h-full flex items-center justify-center">
                             <i class="fa-regular fa-image text-4xl text-slate-300 dark:text-zinc-700 opacity-50"></i>

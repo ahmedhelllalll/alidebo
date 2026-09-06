@@ -6,7 +6,10 @@ use Illuminate\Console\Command;
 use App\Models\Category;
 use App\Models\BusinessProfile;
 use App\Models\BusinessMedia;
+use App\Models\BlogPost;
+use App\Models\SeoMetadata;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MigrateImagesToR2 extends Command
 {
@@ -34,6 +37,8 @@ class MigrateImagesToR2 extends Command
         $this->migrateCategories();
         $this->migrateBusinessProfiles();
         $this->migrateBusinessMedia();
+        $this->migrateBlogPosts();
+        $this->migrateSeoMetadata();
 
         $this->info('Migration to R2 completed successfully.');
     }
@@ -106,6 +111,48 @@ class MigrateImagesToR2 extends Command
                 $this->migrateFile($media->file_path);
             }
             $media->update(['disk' => 'r2']);
+            $bar->advance();
+        }
+        $bar->finish();
+        $this->newLine();
+    }
+
+    private function migrateBlogPosts()
+    {
+        $this->info('Migrating Blog Posts...');
+        $posts = BlogPost::where(function ($query) {
+            $query->where('disk', 'public')
+                  ->orWhereNull('disk');
+        })->whereNotNull('media_url')->get();
+
+        $bar = $this->output->createProgressBar(count($posts));
+
+        foreach ($posts as $post) {
+            if (!Str::startsWith($post->media_url, 'http')) {
+                $this->migrateFile($post->media_url);
+            }
+            $post->update(['disk' => 'r2']);
+            $bar->advance();
+        }
+        $bar->finish();
+        $this->newLine();
+    }
+
+    private function migrateSeoMetadata()
+    {
+        $this->info('Migrating SEO Metadata Images...');
+        $records = SeoMetadata::where(function ($query) {
+            $query->where('disk', 'public')
+                  ->orWhereNull('disk');
+        })->whereNotNull('og_image')->get();
+
+        $bar = $this->output->createProgressBar(count($records));
+
+        foreach ($records as $seo) {
+            if (!Str::startsWith($seo->og_image, 'http')) {
+                $this->migrateFile($seo->og_image);
+            }
+            $seo->update(['disk' => 'r2']);
             $bar->advance();
         }
         $bar->finish();
