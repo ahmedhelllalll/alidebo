@@ -106,4 +106,8 @@ return [
   'claim_invited_desc' => 'Al reclamarlo, tendrás control total sobre la información, reseñas y clientes potenciales.',
   'claim_now' => 'Reclamar ahora',
     'general_gallery' => 'Galería General',
+    'profile_products' => 'Productos y Catálogo',
+    'profile_products_desc' => 'Explore los productos, precios y especificaciones de la empresa.',
+    'view_details' => 'Ver detalles',
+    'request_quote_soon' => 'Solicitar cotización (Próximamente)',
 ];

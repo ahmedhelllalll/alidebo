@@ -26,7 +26,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at',
         'register_ip',
         'last_login_ip',
-        'last_user_agent'
+        'last_user_agent',
+        'products_tour_seen_at',
     ];
 
     protected $hidden = [
@@ -36,6 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'products_tour_seen_at' => 'datetime',
         'password' => 'hashed',
     ];
 

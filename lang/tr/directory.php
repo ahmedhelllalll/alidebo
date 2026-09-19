@@ -103,4 +103,8 @@ return [
   'claim_invited_desc' => 'Sahiplenerek bilgi, inceleme ve potansiyel müşteriler üzerinde tam kontrole sahip olacaksınız.',
   'claim_now' => 'Şimdi Sahiplen',
     'general_gallery' => 'Genel Galeri',
+    'profile_products' => 'Ürünler ve Katalog',
+    'profile_products_desc' => 'Şirketin ürünlerini, fiyatlarını ve teknik özelliklerini inceleyin.',
+    'view_details' => 'Detayları Görüntüle',
+    'request_quote_soon' => 'Teklif İste (Çok Yakında)',
 ];

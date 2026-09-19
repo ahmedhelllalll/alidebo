@@ -103,4 +103,8 @@ return [
   'claim_invited_desc' => 'Wenn Sie es beanspruchen, haben Sie die volle Kontrolle über Informationen, Bewertungen und Leads.',
   'claim_now' => 'Jetzt beanspruchen',
     'general_gallery' => 'Allgemeine Galerie',
+    'profile_products' => 'Produkte & Katalog',
+    'profile_products_desc' => 'Durchsuchen Sie die Produkte, Preise und Spezifikationen des Unternehmens.',
+    'view_details' => 'Details anzeigen',
+    'request_quote_soon' => 'Angebot anfordern (Demnächst)',
 ];

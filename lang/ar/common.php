@@ -9,6 +9,7 @@ return [
     'learn_more' => 'اعرف المزيد',
     'app_preview' => 'صورة لمعاينة لوحة التحكم الخاصة بالتطبيق',
     'alidebo' => 'علي ديبو',
-  'support' => 'Support',
-  'terms' => 'Terms',
+    'support' => 'الدعم',
+    'terms' => 'الشروط والأحكام',
+    'search' => 'بحث',
 ];

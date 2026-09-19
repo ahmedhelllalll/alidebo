@@ -80,6 +80,10 @@
                     <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     <span>{{ __('dashboard.sidebar.business') ?? 'Business Profile' }}</span>
                 </a>
+                <a href="{{ route('products.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-colors {{ request()->routeIs('products.*') ? 'bg-primary/[0.08] text-primary font-semibold' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/40 hover:text-zinc-800 dark:hover:text-zinc-200' }}">
+                    <svg class="w-[18px] h-[18px] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <span>{{ __('products.products') }}</span>
+                </a>
             </div>
 
             {{-- Label: SEO --}}
@@ -488,7 +492,6 @@
             }));
         });
     </script>
-    @stack('scripts')
 
     {{-- Luxury Toast Container --}}
     <div id="luxury-toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[1000] pointer-events-none opacity-0 translate-y-4">
@@ -550,5 +553,6 @@
             showToast("{{ __('landing.coming_soon') ?? 'Coming Soon' }}", "سيتم توفير هذه الميزة قريباً");
         };
     </script>
+    @stack('scripts')
 </body>
 </html>

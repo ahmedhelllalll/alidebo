@@ -280,13 +280,7 @@
 @endpush
 
 @section('content')
-<div class="profile-page min-h-screen bg-slate-50 dark:bg-[#0a0a0c] relative overflow-hidden" x-data="profilePage()">
-
-    {{-- Ambient Glow --}}
-    <div class="profile-glow w-[600px] h-[600px] bg-primary/20 -top-60 -start-40 absolute z-0"></div>
-    <div class="profile-glow w-[500px] h-[500px] bg-primary/10 top-[40%] -end-40 absolute z-0"></div>
-
-
+<div class="profile-page min-h-screen bg-white dark:bg-[#09090b] relative" x-data="profilePage()">
 
     <div class="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 pt-24 sm:pt-32 pb-8 sm:pb-12 relative z-10">
         {{-- STATUS BANNERS --}}
@@ -350,10 +344,10 @@
                 <div class="sticky-sidebar space-y-6">
                     
                     {{-- Profile Card --}}
-                    <div class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 border border-slate-100 dark:border-zinc-800 overflow-hidden profile-fade">
+                    <div class="overflow-hidden profile-fade">
                         
                         {{-- Cover Image --}}
-                        <div class="relative h-40 w-full overflow-hidden">
+                        <div class="relative h-44 w-full overflow-hidden rounded-2xl sm:rounded-3xl">
                             @if($business->cover)
                                 <img src="{{ str_contains($business->cover, 'categories') ? asset($business->cover) : $business->cover_url }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -375,7 +369,7 @@
                         </div>
 
                         {{-- Details --}}
-                        <div class="px-6 pb-8 relative z-20 -mt-12 text-center flex flex-col items-center">
+                        <div class="px-2 pb-2 relative z-20 -mt-12 text-center flex flex-col items-center">
                             {{-- Logo --}}
                             <div class="w-24 h-24 rounded-[1.25rem] logo-ring overflow-hidden bg-white dark:bg-[#0e0e11] mb-4 shadow-lg shrink-0">
                                 @if($business->logo)
@@ -391,70 +385,126 @@
                                 <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
                                     {{ $business->name }}
                                 </h1>
-                                @if($business->status === 'approved')
-                                <div title="{{ __('directory.profile_verified') }}">
-                                    <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center mt-1">
-                                        <svg class="w-3.5 h-3.5 text-primary" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                                @endif
                             </div>
 
-                            <div class="flex flex-wrap justify-center gap-2 mb-4 mt-2">
+                            <div class="flex flex-wrap justify-center gap-2 mb-2 mt-1">
                                 @if($business->category)
                                 <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-primary/5 dark:bg-primary/10 text-primary border border-primary/10">
                                     {{ $business->category->name }}
                                 </span>
                                 @endif
                             </div>
+
+                            {{-- Tagline & Quick Stats (Airbnb Reference Style) --}}
+                            @php
+                                $tagline = null;
+                                if (!empty($business->description)) {
+                                    $cleanDesc = trim(preg_replace('/\s+/', ' ', $business->description));
+                                    $tagline = \Illuminate\Support\Str::limit($cleanDesc, 75, '...');
+                                }
+                                $productsCount = $business->products ? $business->products->count() : 0;
+                                $approvedReviews = $business->reviews ? $business->reviews->where('status', 'approved') : collect();
+                                $reviewsCount = $approvedReviews->count();
+                                $avgRating = $business->averageRating();
+                            @endphp
+
+                            @if($tagline)
+                            <p dir="auto" class="text-xs sm:text-[13px] font-medium text-slate-500 dark:text-zinc-400 text-center leading-relaxed mt-1 w-full max-w-[320px] px-1 line-clamp-1" title="{{ $business->description }}">
+                                {{ $tagline }}
+                            </p>
+                            @endif
+
+                            @if($productsCount > 0 || $reviewsCount > 0)
+                            <div class="flex flex-wrap items-center justify-center gap-2 mt-3">
+                                @if($reviewsCount > 0)
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-zinc-800/80 text-slate-700 dark:text-zinc-300 border border-slate-200/60 dark:border-zinc-700/50 shadow-xs">
+                                    <svg class="w-3.5 h-3.5 text-amber-500 fill-amber-500 shrink-0" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                    <span>{{ number_format($avgRating, 1) }}</span>
+                                    <span class="text-slate-400 dark:text-zinc-500 font-normal">({{ $reviewsCount }})</span>
+                                </div>
+                                @endif
+
+                                @if($productsCount > 0)
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-zinc-800/80 text-slate-700 dark:text-zinc-300 border border-slate-200/60 dark:border-zinc-700/50 shadow-xs">
+                                    <svg class="w-3.5 h-3.5 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                    </svg>
+                                    <span>{{ $productsCount }} {{ app()->getLocale() === 'ar' ? ($productsCount === 1 ? 'منتج' : 'منتجات') : ($productsCount === 1 ? 'Product' : 'Products') }}</span>
+                                </div>
+                                @endif
+                            </div>
+                            @endif
                             
                             @if($business->city)
-                            <p class="text-sm font-medium text-slate-500 dark:text-zinc-400 flex items-center justify-center gap-1.5 mb-2">
+                            <p class="text-sm font-medium text-slate-500 dark:text-zinc-400 flex items-center justify-center gap-1.5 mt-3">
                                 <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 {{ $business->city->name }}@if($business->city->country), {{ $business->city->country->name }}@endif
                             </p>
                             @endif
                             
-                            <p class="text-[13px] font-medium text-slate-400 dark:text-zinc-500 flex items-center justify-center gap-1.5 mt-2">
+                            <p class="text-[13px] font-medium text-slate-400 dark:text-zinc-500 flex items-center justify-center gap-1.5 mt-1">
                                 <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                 {{ __('directory.profile_member_since') }} {{ $business->created_at->format('M Y') }}
                             </p>
                         </div>
                     </div>
 
-                    {{-- Quick Contacts --}}
+                    {{-- Quick Contacts / CTA Section (Dominant Primary Action) --}}
                     @php
                         $contacts = $business->contact_methods ?? [];
-                        $hasContacts = !empty($contacts['whatsapp']) || !empty($contacts['phone']) || !empty($contacts['email']) || !empty($contacts['website']) || !empty($contacts['instagram']) || !empty($contacts['facebook']) || !empty($contacts['twitter']) || !empty($contacts['tiktok']) || !empty($contacts['linkedin']);
+                        $hasWhatsapp = !empty($contacts['whatsapp']);
+                        $hasPhone = !empty($contacts['phone']);
+                        $hasEmail = !empty($contacts['email']);
+                        $hasSocials = !empty($contacts['website']) || !empty($contacts['instagram']) || !empty($contacts['facebook']) || !empty($contacts['twitter']) || !empty($contacts['tiktok']) || !empty($contacts['linkedin']);
+                        $hasContacts = $hasWhatsapp || $hasPhone || $hasEmail || $hasSocials;
                     @endphp
 
                     @if($hasContacts)
-                    <div class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 border border-slate-100 dark:border-zinc-800 p-6 profile-fade profile-fade-delay-1">
-                        <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-zinc-500 mb-5 text-center">{{ __('directory.profile_contact') }}</h3>
-                        <div class="flex flex-col gap-3">
-                            @if(!empty($contacts['whatsapp']))
-                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contacts['whatsapp']) }}" target="_blank" rel="noopener" class="contact-pill w-full inline-flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl text-sm font-bold bg-emerald-500 text-white shadow-lg shadow-emerald-500/25 hover:bg-emerald-600 hover:-translate-y-0.5 transition-all">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.47 1.316 4.972l-1.341 4.922 5.035-1.321c1.442.786 3.064 1.2 4.733 1.2 5.507 0 9.988-4.479 9.988-9.988 0-5.508-4.481-9.988-9.988-9.988zm5.952 14.129c-.255.719-1.488 1.309-2.039 1.391-.497.073-.789.243-2.993-.655-2.203-.898-3.626-3.141-3.737-3.289-.112-.149-.912-1.21-.912-2.308 0-1.097.575-1.637.779-1.859.204-.223.446-.279.595-.279.149 0 .297.001.427.007.137.007.319-.052.499.383.181.437.618 1.503.671 1.614.053.111.088.241.014.39-.074.148-.111.241-.223.371-.111.13-.231.291-.329.39-.111.111-.227.233-.098.455.129.223.576.953 1.238 1.541.852.759 1.569 1.01 1.792 1.121.223.111.353.093.484-.056.13-.149.559-.652.707-.869.149-.223.298-.186.502-.112.204.073 1.298.614 1.52.726.223.111.371.167.426.26.056.093.056.541-.199 1.26z"/></svg>
-                                {{ __('directory.profile_whatsapp') }}
+                    <div class="pt-6 border-t border-slate-100 dark:border-zinc-800/80 px-2 profile-fade profile-fade-delay-1">
+                        <h3 class="text-xs font-black uppercase tracking-[0.2em] text-slate-400 dark:text-zinc-500 mb-4 text-center">{{ __('directory.profile_contact') }}</h3>
+                        <div class="flex flex-col gap-2.5">
+                            {{-- Primary Dominant CTA --}}
+                            @if($hasWhatsapp)
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $contacts['whatsapp']) }}" target="_blank" rel="noopener" class="w-full inline-flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl text-[15px] font-extrabold bg-emerald-500 hover:bg-emerald-600 text-white shadow-md shadow-emerald-500/20 hover:shadow-lg hover:shadow-emerald-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+                                <svg class="w-5 h-5 fill-current shrink-0" viewBox="0 0 24 24"><path d="M12.012 2c-5.508 0-9.987 4.479-9.987 9.988 0 1.757.455 3.47 1.316 4.972l-1.341 4.922 5.035-1.321c1.442.786 3.064 1.2 4.733 1.2 5.507 0 9.988-4.479 9.988-9.988 0-5.508-4.481-9.988-9.988-9.988zm5.952 14.129c-.255.719-1.488 1.309-2.039 1.391-.497.073-.789.243-2.993-.655-2.203-.898-3.626-3.141-3.737-3.289-.112-.149-.912-1.21-.912-2.308 0-1.097.575-1.637.779-1.859.204-.223.446-.279.595-.279.149 0 .297.001.427.007.137.007.319-.052.499.383.181.437.618 1.503.671 1.614.053.111.088.241.014.39-.074.148-.111.241-.223.371-.111.13-.231.291-.329.39-.111.111-.227.233-.098.455.129.223.576.953 1.238 1.541.852.759 1.569 1.01 1.792 1.121.223.111.353.093.484-.056.13-.149.559-.652.707-.869.149-.223.298-.186.502-.112.204.073 1.298.614 1.52.726.223.111.371.167.426.26.056.093.056.541-.199 1.26z"/></svg>
+                                <span>{{ __('directory.profile_whatsapp') }}</span>
+                            </a>
+                            @elseif($hasPhone)
+                            <a href="tel:{{ $contacts['phone'] }}" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-[15px] font-extrabold bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+                                <svg class="w-5 h-5 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                <span>{{ __('directory.profile_call') }}</span>
+                            </a>
+                            @elseif($hasEmail)
+                            <a href="mailto:{{ $contacts['email'] }}" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-[15px] font-extrabold bg-primary hover:bg-primary-dark text-white shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+                                <svg class="w-5 h-5 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <span>{{ __('directory.profile_email') }}</span>
                             </a>
                             @endif
 
-                            <div class="grid grid-cols-2 gap-3">
-                                @if(!empty($contacts['phone']))
-                                <a href="tel:{{ $contacts['phone'] }}" class="contact-pill inline-flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-semibold bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-400 border border-blue-100 dark:border-blue-900/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                                    {{ __('directory.profile_call') }}
+                            {{-- Secondary Actions (Call & Email) --}}
+                            @if($hasWhatsapp && ($hasPhone || $hasEmail))
+                            <div class="grid {{ $hasPhone && $hasEmail ? 'grid-cols-2' : 'grid-cols-1' }} gap-2">
+                                @if($hasPhone)
+                                <a href="tel:{{ $contacts['phone'] }}" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-zinc-300 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-slate-200/60 dark:border-zinc-700/60 transition-colors">
+                                    <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                                    <span>{{ __('directory.profile_call') }}</span>
                                 </a>
                                 @endif
-                                @if(!empty($contacts['email']))
-                                <a href="mailto:{{ $contacts['email'] }}" class="contact-pill inline-flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-semibold bg-slate-50 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 border border-slate-200 dark:border-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-800 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                    {{ __('directory.profile_email') }}
+                                @if($hasEmail)
+                                <a href="mailto:{{ $contacts['email'] }}" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-zinc-300 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-slate-200/60 dark:border-zinc-700/60 transition-colors">
+                                    <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                    <span>{{ __('directory.profile_email') }}</span>
                                 </a>
                                 @endif
                             </div>
+                            @elseif(!$hasWhatsapp && $hasPhone && $hasEmail)
+                            <a href="mailto:{{ $contacts['email'] }}" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-zinc-300 bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800/80 dark:hover:bg-zinc-800 border border-slate-200/60 dark:border-zinc-700/60 transition-colors">
+                                <svg class="w-3.5 h-3.5 text-slate-500 dark:text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                                <span>{{ __('directory.profile_email') }}</span>
+                            </a>
+                            @endif
 
                             @if(!empty($contacts['website']) || !empty($contacts['instagram']) || !empty($contacts['facebook']) || !empty($contacts['twitter']) || !empty($contacts['tiktok']) || !empty($contacts['linkedin']))
                             <div class="flex flex-wrap items-center justify-center gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-zinc-800/80">
@@ -501,7 +551,7 @@
                 
                 {{-- About & Address --}}
                 @if($business->description || $business->address)
-                <div id="about-section" class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 border border-slate-100 dark:border-zinc-800 p-8 sm:p-10 profile-fade profile-fade-delay-2 scroll-mt-24">
+                <div id="about-section" class="bg-white dark:bg-[#0e0e11] rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-zinc-800 p-8 sm:p-10 profile-fade profile-fade-delay-2 scroll-mt-24">
                     @if($business->description)
                     <div class="mb-8">
                         <h2 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-5 flex items-center gap-3">
@@ -529,6 +579,150 @@
                 </div>
                 @endif
 
+                {{-- Products & Catalog Section (Phase 4) --}}
+                @if($business->status === 'approved' && isset($business->products) && $business->products->count() > 0)
+                <div id="products" class="bg-white dark:bg-[#0e0e11] rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-zinc-800 p-8 sm:p-10 profile-fade scroll-mt-24">
+                    <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-zinc-800/80">
+                        <div>
+                            <h2 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-2 flex items-center gap-3">
+                                <span class="w-1.5 h-6 rounded-full bg-primary block"></span>
+                                {{ __('directory.profile_products') }}
+                            </h2>
+                            <p class="text-sm font-medium text-slate-500 dark:text-zinc-400">
+                                {{ __('directory.profile_products_desc') }}
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            @if($business->products->count() > 2)
+                            <div class="hidden sm:flex items-center gap-1.5">
+                                <button type="button" 
+                                        @click="document.getElementById('products-grid-track')?.scrollBy({ left: (document.documentElement.dir === 'rtl' ? 380 : -380), behavior: 'smooth' })"
+                                        class="w-8 h-8 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-300 hover:text-primary hover:border-primary flex items-center justify-center transition-all shadow-xs cursor-pointer"
+                                        aria-label="Previous">
+                                    <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                                </button>
+                                <button type="button" 
+                                        @click="document.getElementById('products-grid-track')?.scrollBy({ left: (document.documentElement.dir === 'rtl' ? -380 : 380), behavior: 'smooth' })"
+                                        class="w-8 h-8 rounded-full border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-600 dark:text-zinc-300 hover:text-primary hover:border-primary flex items-center justify-center transition-all shadow-xs cursor-pointer"
+                                        aria-label="Next">
+                                    <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                </button>
+                            </div>
+                            @endif
+                            <span class="px-3.5 py-1.5 rounded-full text-xs font-black bg-primary/10 text-primary border border-primary/20 shadow-xs">
+                                {{ $business->products->count() }} {{ __('products.products') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    {{-- Products Grid --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                        @foreach($business->products as $product)
+                            @php
+                                $translation = $product->translations->where('locale', app()->getLocale())->first() 
+                                            ?? $product->translations->where('locale', 'en')->first();
+                                $productTitle = $translation ? $translation->name : ($product->name ?? 'Product #' . $product->id);
+                                $shortDesc = $translation ? $translation->short_description : '';
+                                $fullDesc = $translation ? $translation->full_description : '';
+                                $catName = $product->category 
+                                    ? ($product->category->{'name_' . app()->getLocale()} ?? $product->category->name_en ?? $product->category->name)
+                                    : '';
+                                $coverImage = $product->images->where('is_primary', true)->first() ?? $product->images->first();
+                                $coverUrl = $coverImage ? $coverImage->file_url : asset('images/placeholder.svg');
+
+                                $productData = [
+                                    'id' => $product->id,
+                                    'name' => $productTitle,
+                                    'category' => $catName,
+                                    'status' => $product->status,
+                                    'formatted_price' => $product->formatted_price,
+                                    'base_price' => $product->base_price,
+                                    'currency' => $product->currency,
+                                    'unit' => $product->localized_unit,
+                                    'package_details' => $product->package_details,
+                                    'moq' => $product->moq,
+                                    'sku' => $product->sku,
+                                    'short_description' => $shortDesc,
+                                    'full_description' => $fullDesc,
+                                    'specifications' => $product->specifications->map(fn($s) => ['name' => $s->name, 'value' => $s->value])->values()->all(),
+                                    'images' => $product->images->map(fn($img) => [
+                                        'id' => $img->id,
+                                        'url' => $img->file_url,
+                                        'is_primary' => (bool)$img->is_primary,
+                                        'order' => $img->order,
+                                    ])->values()->all(),
+                                    'cover_image' => $coverUrl,
+                                    'is_public' => true,
+                                ];
+                            @endphp
+
+                            <div id="product-{{ $product->id }}" 
+                                 role="button"
+                                 tabindex="0"
+                                 @click="openProductDetail({{ json_encode($productData, JSON_HEX_APOS | JSON_HEX_QUOT) }}, $event)"
+                                 @keydown.enter="openProductDetail({{ json_encode($productData, JSON_HEX_APOS | JSON_HEX_QUOT) }}, $event)"
+                                 class="group relative rounded-2xl bg-white dark:bg-[#121216] border border-slate-200/90 dark:border-zinc-800/90 hover:border-primary/50 dark:hover:border-primary/50 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/50 transition-all duration-300 flex flex-col p-4 sm:p-5 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40 w-full max-w-md min-w-[280px]">
+                                
+                                {{-- Large Product Cover Image (Balanced Aspect Ratio: 16/10, no badges/overlays) --}}
+                                <div class="relative aspect-[16/10] rounded-xl bg-zinc-100 dark:bg-zinc-800/80 overflow-hidden shrink-0">
+                                    @if($coverUrl)
+                                        <img src="{{ $coverUrl }}" 
+                                             alt="{{ $productTitle }}" 
+                                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out" 
+                                             loading="lazy">
+                                    @else
+                                        <div class="w-full h-full flex flex-col items-center justify-center gap-1.5 text-zinc-400 dark:text-zinc-600 bg-zinc-50 dark:bg-zinc-800">
+                                            <svg class="w-8 h-8 stroke-[1.2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                                            <span class="text-[10px] font-bold">{{ __('products.no_image') }}</span>
+                                        </div>
+                                    @endif
+                                </div>
+
+                                {{-- Details Below Image: Generous Breathing Room --}}
+                                <div class="pt-4 pb-1 px-1 sm:px-1.5 flex-1 flex flex-col justify-between">
+                                    <div class="space-y-2">
+                                        {{-- Price below image (Prominent/bold, comfortable single-line display) --}}
+                                        <div class="flex items-baseline gap-2">
+                                            @if($product->base_price)
+                                                <span class="text-xl font-black text-slate-900 dark:text-white tracking-tight group-hover:text-primary transition-colors">
+                                                    {{ $product->formatted_price }}
+                                                </span>
+                                                @if($product->localized_unit)
+                                                    <span class="text-xs sm:text-sm font-semibold text-slate-400 dark:text-zinc-500">
+                                                        / {{ $product->localized_unit }}
+                                                    </span>
+                                                @endif
+                                            @else
+                                                <span class="text-base sm:text-lg font-black text-primary tracking-tight">
+                                                    {{ __('products.preview_request_quote') }}
+                                                </span>
+                                            @endif
+                                        </div>
+
+                                        {{-- Product Name below Price --}}
+                                        <div class="flex items-start justify-between gap-3 pt-0.5">
+                                            <h3 class="font-semibold text-slate-800 dark:text-zinc-200 text-sm sm:text-[15px] leading-snug line-clamp-2">
+                                                {{ $productTitle }}
+                                            </h3>
+
+                                            {{-- Navigation control: only renders when there are enough products to need navigation (more than fit in one row) --}}
+                                            @if($business->products->count() > 2)
+                                            <span class="mt-0.5 w-7 h-7 rounded-full bg-slate-100 dark:bg-zinc-800/80 group-hover:bg-primary group-hover:text-white text-slate-400 dark:text-zinc-500 flex items-center justify-center shrink-0 transition-all duration-200 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 shadow-xs"
+                                                  aria-hidden="true">
+                                                <svg class="w-4 h-4 stroke-[2.2] rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
                 {{-- Premium Gallery --}}
                 @php
                     $categories = $business->imageCategories()->has('media')->get();
@@ -552,7 +746,7 @@
                 @endphp
 
                 @if($business->media->count() > 0)
-                <div id="gallery-section-wrapper" x-data="{ activeTab: '{{ $galleryGroups->first()->id }}' }" class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 p-8 sm:p-10 profile-fade scroll-mt-24">
+                <div id="gallery-section-wrapper" x-data="{ activeTab: '{{ $galleryGroups->first()->id }}' }" class="bg-white dark:bg-[#0e0e11] rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-zinc-800 p-8 sm:p-10 profile-fade scroll-mt-24">
                     <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div>
                             <h2 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-2 flex items-center gap-3">
@@ -634,7 +828,7 @@
                 @endif
 
                 {{-- Contact Form --}}
-                <div id="contact-form-section" class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 border border-slate-100 dark:border-zinc-800 p-8 sm:p-10 profile-fade scroll-mt-24" x-data="{ leadStatus: '', isSubmitting: false }">
+                <div id="contact-form-section" class="bg-white dark:bg-[#0e0e11] rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-zinc-800 p-8 sm:p-10 profile-fade scroll-mt-24" x-data="{ leadStatus: '', isSubmitting: false }">
                     <h2 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-2 flex items-center gap-3">
                         <span class="w-1.5 h-6 rounded-full bg-primary block"></span>
                         {{ __('directory.get_quote') }}
@@ -702,7 +896,7 @@
                 </div>
 
                 {{-- Reviews --}}
-                <div id="reviews-section" class="bg-white dark:bg-[#0e0e11] rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-black/40 p-8 sm:p-10 profile-fade scroll-mt-24">
+                <div id="reviews-section" class="bg-white dark:bg-[#0e0e11] rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-zinc-800 p-8 sm:p-10 profile-fade scroll-mt-24">
                     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                         <div>
                             <h2 class="text-sm font-black uppercase tracking-[0.2em] text-primary mb-5 flex items-center gap-3">
@@ -909,6 +1103,10 @@
             </div>
         </div>
     </div>
+
+    {{-- Product Detail Modal & Airbnb Gallery Lightbox (Phase 4) --}}
+    @include('users.products.detail-modal')
+    <x-gallery-lightbox id="public-product-gallery" />
 </div>
 
 <!-- ── Lightbox ── -->
@@ -1201,6 +1399,65 @@ document.addEventListener('DOMContentLoaded', () => {
             currentIndex: 0,
             showShareTooltip: false,
             mediaItems: @json($business->media->map(fn($m) => ['url' => $m->file_url, 'caption' => $m->caption])->values()),
+
+            // ── Product Detail Modal & Airbnb Gallery Lightbox (Phase 4) ──
+            detailModal: {
+                open: false,
+                product: null,
+                activeImageIdx: 0,
+            },
+
+            init() {
+                // Smooth scroll to product if hash is present (e.g. #product-16)
+                if (window.location.hash && window.location.hash.startsWith('#product-')) {
+                    const targetEl = document.querySelector(window.location.hash);
+                    if (targetEl) {
+                        setTimeout(() => {
+                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }, 500);
+                    }
+                }
+            },
+
+            openProductDetail(product, event) {
+                this.detailModal.product = product;
+                this.detailModal.activeImageIdx = 0;
+                this.detailModal.open = true;
+                document.body.style.overflow = 'hidden';
+                if (typeof window.lenis !== 'undefined' && window.lenis && typeof window.lenis.stop === 'function') {
+                    window.lenis.stop();
+                }
+            },
+
+            closeDetailModal() {
+                this.detailModal.open = false;
+                this.detailModal.product = null;
+                document.body.style.overflow = '';
+                if (typeof window.lenis !== 'undefined' && window.lenis && typeof window.lenis.start === 'function') {
+                    window.lenis.start();
+                }
+            },
+
+            getActiveHeroImage() {
+                if (!this.detailModal.product || !this.detailModal.product.images) return '';
+                const img = this.detailModal.product.images[this.detailModal.activeImageIdx];
+                return img ? img.url : (this.detailModal.product.cover_image || '');
+            },
+
+            launchGalleryFromModal(event) {
+                if (!this.detailModal.product || !this.detailModal.product.images || this.detailModal.product.images.length === 0) return;
+                const targetEl = event ? event.currentTarget : null;
+                const rect = targetEl ? targetEl.getBoundingClientRect() : null;
+                window.dispatchEvent(new CustomEvent('open-photo-gallery', {
+                    detail: {
+                        images: this.detailModal.product.images,
+                        startIndex: this.detailModal.activeImageIdx || 0,
+                        title: this.detailModal.product.name,
+                        isRtl: {{ app()->getLocale() === 'ar' ? 'true' : 'false' }},
+                        originRect: rect ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height } : null
+                    }
+                }));
+            },
 
             get currentImage() {
                 return this.mediaItems[this.currentIndex] || { url: '', caption: '' };

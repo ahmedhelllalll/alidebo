@@ -18,6 +18,21 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 
+if (app()->environment('local')) {
+    Route::get('/dev-login', function () {
+        $user = \App\Models\User::where('email', 'lhudson@example.com')->first() ?? \App\Models\User::first();
+        auth()->login($user);
+        if (request()->has('lang')) {
+            session(['locale' => request('lang')]);
+        }
+        if (request()->has('edit')) {
+            return redirect()->route('products.edit', request('edit'));
+        }
+        $params = request()->only(['view']);
+        return redirect()->route('products.index', $params);
+    });
+}
+
 Route::get('/', function (\Illuminate\Http\Request $request) {
     if ($request->has('company')) {
         session(['onboarding_company' => $request->query('company')]);
@@ -143,6 +158,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/backups/{id}', [Admin\BackupController::class, 'destroy'])->name('backups.destroy');
         Route::post('/backups/settings', [Admin\BackupController::class, 'updateSettings'])->name('backups.settings');
         
+        Route::patch('/products/{product}/status', [\App\Http\Controllers\Admin\ProductController::class, 'updateStatus'])->name('products.update-status');
+        Route::resource('products', \App\Http\Controllers\Admin\ProductController::class)->only(['index']);
+
         Route::get('/businesses/check-slug', [Admin\BusinessController::class, 'checkSlug'])->name('businesses.check-slug');
         Route::get('/businesses/search-users', [Admin\BusinessController::class, 'searchUsers'])->name('businesses.search-users');
         Route::post('/businesses/bulk-status', [Admin\BusinessController::class, 'bulkStatus'])->name('businesses.bulk-status');
@@ -188,6 +206,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('/update', [BusinessProfileController::class, 'update'])->name('business.update');
 
             Route::post('/sections/sync', [BusinessProfileController::class, 'syncSections'])->name('business.sections.sync');
+
+            Route::post('/products/tour-seen', [\App\Http\Controllers\User\ProductController::class, 'markTourSeen'])->name('products.tour.seen');
+            Route::resource('products', \App\Http\Controllers\User\ProductController::class)->except(['show']);
 
             Route::post('/categories', [BusinessProfileController::class, 'storeCategory'])->name('business.categories.store');
             Route::put('/categories/{id}', [BusinessProfileController::class, 'updateCategory'])->name('business.categories.update');

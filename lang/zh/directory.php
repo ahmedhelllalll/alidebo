@@ -103,4 +103,8 @@ return [
   'claim_invited_desc' => '认领后，您将完全控制相关信息、评论和潜在客户。',
   'claim_now' => '立即认领',
     'general_gallery' => '通用图库',
+    'profile_products' => '产品与目录',
+    'profile_products_desc' => '浏览公司产品、价格及规格参数。',
+    'view_details' => '查看详情',
+    'request_quote_soon' => '请求报价（即将推出）',
 ];

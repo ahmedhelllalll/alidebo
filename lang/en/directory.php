@@ -92,4 +92,8 @@ return [
   'claim_invited_desc' => 'By claiming it, you will have full control over the information, reviews, and leads.',
   'claim_now' => 'Claim Now',
     'general_gallery' => 'General Gallery',
+    'profile_products' => 'Products & Catalog',
+    'profile_products_desc' => 'Browse the company\'s products, pricing, and specifications.',
+    'view_details' => 'View Details',
+    'request_quote_soon' => 'Request Quote (Coming Soon)',
 ];

@@ -88,6 +88,11 @@ class BusinessProfile extends Model
         return $this->belongsTo(City::class);
     }
 
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
     public function media(): HasMany
     {
         return $this->hasMany(BusinessMedia::class)->orderBy('order');

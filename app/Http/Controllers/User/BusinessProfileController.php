@@ -287,7 +287,17 @@ class BusinessProfileController extends Controller
     public function show($slug)
     {
         $business = BusinessProfile::where('slug', $slug)
-            ->with(['category', 'city', 'media', 'imageCategories.media'])
+            ->with([
+                'category',
+                'city',
+                'media',
+                'imageCategories.media',
+                'products' => function ($q) {
+                    $q->where('status', 'approved')
+                      ->with(['translations', 'images', 'category', 'specifications'])
+                      ->orderBy('id', 'desc');
+                }
+            ])
             ->firstOrFail();
 
         $claimToken = request()->query('claim_token');
