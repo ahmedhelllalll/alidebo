@@ -118,7 +118,43 @@
                             <p class="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5">{{ __('forms.business.basic_info_desc') ?? 'Name, category and description' }}</p>
                         </div>
                     </div>
-                    <div class="p-6 md:p-8 space-y-6">
+                    @php
+                        $currentCatId = config('categories.v2_enabled')
+                            ? old('new_category_id', $business->new_category_id ?? null)
+                            : old('category_id', $business->category_id ?? null);
+
+                        $currentCatName = '';
+                        if (config('categories.v2_enabled')) {
+                            if ($business->newCategory && $business->new_category_id == $currentCatId) {
+                                $currentCatName = $business->newCategory->name;
+                            } else {
+                                foreach ($categories as $parent) {
+                                    foreach ($parent->children as $child) {
+                                        if ($child->id == $currentCatId) {
+                                            $currentCatName = $child->name;
+                                            break 2;
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            if ($business->category && $business->category_id == $currentCatId) {
+                                $currentCatName = $business->category->name;
+                            } else {
+                                $found = $categories->firstWhere('id', $currentCatId);
+                                if ($found) {
+                                    $currentCatName = $found->name;
+                                }
+                            }
+                        }
+                    @endphp
+                    <div class="p-6 md:p-8 space-y-6"
+                         x-data="{ 
+                             catId: {{ json_encode($currentCatId) }}, 
+                             catName: '{{ addslashes($currentCatName ?? '') }}', 
+                             catOpen: false, 
+                             searchCat: '' 
+                         }">
 
                         {{-- Business Name --}}
                         <div class="space-y-2">
@@ -137,30 +173,69 @@
 
                         {{-- Category --}}
                         <div class="space-y-2">
-                            <label for="field_category_id" class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">{{ __('forms.business.category') ?? 'Category' }} <span class="text-primary">*</span></label>
-                            <select name="{{ config('categories.v2_enabled') ? 'new_category_id' : 'category_id' }}" 
-                                    id="field_category_id"
-                                    required
-                                    class="form-select w-full bg-white dark:bg-zinc-900/80 border {{ $errors->has('category_id') || $errors->has('new_category_id') ? 'border-rose-400 dark:border-rose-500' : 'border-zinc-200 dark:border-zinc-800' }} rounded-xl px-4 py-3 text-sm font-medium text-zinc-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-200 hover:border-zinc-300 dark:hover:border-zinc-700 cursor-pointer">
-                                <option value="">{{ __('directory.select_category') }}</option>
-                                @if(config('categories.v2_enabled'))
-                                    @foreach($categories as $parent)
-                                        <optgroup label="{{ $parent->name }}">
-                                            @foreach($parent->children as $child)
-                                                <option value="{{ $child->id }}" {{ (old('new_category_id', $business->new_category_id ?? null) == $child->id) ? 'selected' : '' }}>
-                                                    {{ $child->name }}
-                                                </option>
-                                            @endforeach
-                                        </optgroup>
-                                    @endforeach
-                                @else
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ (old('category_id', $business->category_id ?? null) == $category->id) ? 'selected' : '' }}>
-                                            {{ $category->name }}
-                                        </option>
-                                    @endforeach
-                                @endif
-                            </select>
+                            <label class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">{{ __('forms.business.category') ?? 'Category' }} <span class="text-primary">*</span></label>
+                            <input type="hidden" name="{{ config('categories.v2_enabled') ? 'new_category_id' : 'category_id' }}" id="field_category_id" :value="catId">
+                            <div class="relative">
+                                <button type="button" @click="catOpen = !catOpen"
+                                        class="w-full text-start px-4 py-3 bg-white dark:bg-zinc-900/80 border {{ $errors->has('category_id') || $errors->has('new_category_id') ? 'border-rose-400 dark:border-rose-500' : 'border-zinc-200 dark:border-zinc-800' }} rounded-xl flex justify-between items-center text-sm font-medium text-zinc-900 dark:text-white focus:ring-2 focus:ring-primary/15 focus:border-primary transition-all duration-200 hover:border-zinc-300 dark:hover:border-zinc-700 cursor-pointer">
+                                    <span x-text="catName || '{{ __('directory.select_category') }}'" :class="!catName ? 'text-zinc-400' : ''"></span>
+                                    <svg class="w-4 h-4 text-zinc-400 transition-transform duration-200" :class="catOpen?'rotate-180':''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                <div x-show="catOpen" @click.away="catOpen=false"
+                                     x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
+                                     class="absolute start-0 end-0 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.3)] z-50 max-h-60 overflow-y-auto" style="display:none">
+                                    {{-- Search inside custom dropdown --}}
+                                    <div class="p-2.5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 sticky top-0 z-10 backdrop-blur-sm">
+                                        <div class="relative">
+                                            <svg class="w-3.5 h-3.5 text-zinc-400 absolute start-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                            <input type="text" x-model="searchCat" placeholder="{{ __('admin.search') ?? 'Search' }}" 
+                                                   class="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg py-1.5 ps-8 pe-3 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-primary">
+                                        </div>
+                                    </div>
+                                    @if(config('categories.v2_enabled'))
+                                        @foreach($categories as $parent)
+                                            @php
+                                                $parentSearch = mb_strtolower($parent->name . ' ' . ($parent->name_en ?? '') . ' ' . ($parent->name_ar ?? ''));
+                                                $childrenSearch = $parent->children->map(fn($c) => mb_strtolower($c->name . ' ' . ($c->name_en ?? '') . ' ' . ($c->name_ar ?? '')))->join(' ');
+                                                $groupSearch = $parentSearch . ' ' . $childrenSearch;
+                                            @endphp
+                                            <div x-show="searchCat === '' || '{{ addslashes($groupSearch) }}'.includes(searchCat.toLowerCase())">
+                                                {{-- L1 Parent (Group Header) --}}
+                                                <div class="px-3 py-1.5 text-xs font-semibold text-gray-400 bg-gray-50/50 dark:bg-gray-800/50 uppercase tracking-wider cursor-default select-none my-1">
+                                                    {{ $parent->name }}
+                                                </div>
+                                                {{-- L2 Child (Selectable Option) --}}
+                                                @foreach($parent->children as $child)
+                                                    @php
+                                                        $childSearch = mb_strtolower($parent->name . ' ' . $child->name . ' ' . ($child->name_en ?? '') . ' ' . ($child->name_ar ?? ''));
+                                                    @endphp
+                                                    <button type="button"
+                                                            x-show="searchCat === '' || '{{ addslashes($childSearch) }}'.includes(searchCat.toLowerCase())"
+                                                            @click="catId={{ $child->id }}; catName='{{ addslashes($child->name) }}'; catOpen=false; searchCat=''"
+                                                            :class="catId==={{ $child->id }} ? 'bg-primary/5 text-primary font-bold' : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'"
+                                                            data-value="{{ $child->id }}"
+                                                            class="w-full text-start px-4 ps-6 py-2.5 text-sm transition-colors flex items-center gap-3 border-b border-zinc-50 dark:border-zinc-800/50 last:border-0 cursor-pointer">
+                                                        <span>{{ $child->name }}</span>
+                                                        <svg x-show="catId==={{ $child->id }}" class="w-3.5 h-3.5 text-primary ms-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                                    </button>
+                                                @endforeach
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        @foreach($categories as $category)
+                                            <button type="button"
+                                                    x-show="searchCat === '' || '{{ addslashes(mb_strtolower($category->name)) }}'.includes(searchCat.toLowerCase())"
+                                                    @click="catId={{ $category->id }}; catName='{{ addslashes($category->name) }}'; catOpen=false; searchCat=''"
+                                                    :class="catId==={{ $category->id }} ? 'bg-primary/5 text-primary font-bold' : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'"
+                                                    data-value="{{ $category->id }}"
+                                                    class="w-full text-start px-4 py-2.5 text-sm transition-colors flex items-center gap-3 border-b border-zinc-50 dark:border-zinc-800/50 last:border-0 cursor-pointer">
+                                                <span>{{ $category->name }}</span>
+                                                <svg x-show="catId==={{ $category->id }}" class="w-3.5 h-3.5 text-primary ms-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                            </button>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
                             @error('category_id')
                             <p class="text-[11px] text-rose-500 dark:text-rose-400 font-medium flex items-center gap-1.5">
                                 <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>

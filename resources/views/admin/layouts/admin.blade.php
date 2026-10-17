@@ -1498,10 +1498,17 @@
                 const noResults = menu.querySelector('.no-results-msg');
                 let hasMatch = false;
                 items.forEach(item => {
-                    const label = item.dataset.label ? item.dataset.label.toLowerCase() : item.textContent.toLowerCase();
+                    const label = (item.dataset.search || item.dataset.label || item.textContent).toLowerCase();
                     const isMatch = label.includes(query);
                     item.classList.toggle('hidden', !isMatch);
                     if (isMatch) hasMatch = true;
+                });
+                const groupHeaders = menu.querySelectorAll('.category-group-header');
+                groupHeaders.forEach(header => {
+                    const parentId = header.dataset.parentId;
+                    if (!parentId) return;
+                    const visibleChildren = menu.querySelectorAll(`.dropdown-item[data-parent-id="${parentId}"]:not(.hidden)`);
+                    header.classList.toggle('hidden', visibleChildren.length === 0);
                 });
                 if (noResults) {
                     noResults.classList.toggle('hidden', hasMatch);
@@ -1578,6 +1585,7 @@
             }
             if (trigger) {
                 trigger.classList.add('!border-primary/40', 'dark:!border-primary/30', 'bg-primary/[0.02]');
+                trigger.classList.remove('is-invalid', '!border-red-500');
             }
             // Custom event for module-specific logic
             dropdown.dispatchEvent(new CustomEvent('smart-select', { detail: { id, label } }));

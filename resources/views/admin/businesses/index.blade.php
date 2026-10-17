@@ -56,13 +56,13 @@
 
             {{-- Category Filter Select --}}
             <div class="relative min-w-[200px]">
-                <select id="business-category-filter" onchange="setCategoryFilter(this.value)" class="form-select w-full bg-slate-100/70 dark:bg-zinc-800/60 border border-slate-200/60 dark:border-white/10 rounded-xl text-[12px] font-bold py-2 ps-3 pe-8 text-slate-700 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer transition-all">
+                <select id="business-category-filter" onchange="setCategoryFilter(this.value)" class="appearance-none w-full bg-slate-100/70 dark:bg-zinc-800/60 border border-slate-200/60 dark:border-white/10 rounded-xl text-[12px] font-bold py-2 ps-3 pe-8 text-slate-700 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer transition-all">
                     <option value="">{{ __('directory.all_categories') ?? __('directory.select_category') }}</option>
                     @if(config('categories.v2_enabled'))
                         @foreach($categories as $parent)
-                            <optgroup label="{{ $parent->name }}">
+                            <optgroup label="{{ $parent->name }}" class="font-bold text-slate-400 dark:text-zinc-500 bg-white dark:bg-zinc-900">
                                 @foreach($parent->children as $child)
-                                    <option value="{{ $child->id }}" {{ (request('new_category_id') == $child->id || request('category_id') == $child->id) ? 'selected' : '' }}>
+                                    <option value="{{ $child->id }}" {{ (request('new_category_id') == $child->id || request('category_id') == $child->id) ? 'selected' : '' }} class="font-medium text-slate-800 dark:text-zinc-100 bg-white dark:bg-zinc-900">
                                         {{ $child->name }}
                                     </option>
                                 @endforeach
@@ -70,12 +70,15 @@
                         @endforeach
                     @else
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ (request('category_id') == $category->id) ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}" {{ (request('category_id') == $category->id) ? 'selected' : '' }} class="font-medium text-slate-800 dark:text-zinc-100 bg-white dark:bg-zinc-900">
                                 {{ $category->name }}
                             </option>
                         @endforeach
                     @endif
                 </select>
+                <div class="absolute end-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 dark:text-zinc-500">
+                    <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                </div>
             </div>
         </div>
         {{-- Smart Search --}}
