@@ -7,6 +7,8 @@ return [
     'filters' => 'التصفية',
     'clear_filters' => 'مسح التصفية',
     'categories' => 'الفئات',
+    'subcategories' => 'الفئات الفرعية',
+    'all_subcategories' => 'جميع الفئات الفرعية',
     'all_categories' => 'جميع الفئات',
     'locations' => 'المواقع',
     'all_locations' => 'جميع المواقع',

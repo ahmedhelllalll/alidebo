@@ -33,6 +33,8 @@ class BusinessProfile extends Model
         'disk',
         'claim_token',
         'import_batch_id',
+        'new_category_id',
+        'category_needs_review',
     ];
 
     protected $casts = [
@@ -40,6 +42,7 @@ class BusinessProfile extends Model
         'meta_title' => 'array',
         'meta_description' => 'array',
         'is_claimed' => 'boolean',
+        'category_needs_review' => 'boolean',
         'approved_at' => 'datetime',
     ];
 
@@ -80,7 +83,16 @@ class BusinessProfile extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        if (config('categories.v2_enabled', false)) {
+            return $this->belongsTo(NewCategory::class, 'new_category_id');
+        }
+
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function newCategory(): BelongsTo
+    {
+        return $this->belongsTo(NewCategory::class, 'new_category_id');
     }
 
     public function city(): BelongsTo

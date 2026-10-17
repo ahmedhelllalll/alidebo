@@ -30,8 +30,10 @@ class StoreBusinessProfileRequest extends FormRequest
         return [
             'name' => 'required|string|max:255|min:3',
             'slug' => 'required|string|max:255|unique:business_profiles,slug',
-            'category_id' => 'required_without:custom_category_name|nullable|exists:categories,id',
-            'custom_category_name' => 'required_without:category_id|nullable|string|max:255',
+            'category_id' => 'required_without_all:custom_category_name,new_category_id|nullable|exists:categories,id',
+            'new_category_id' => 'nullable|exists:new_categories,id',
+            'category_needs_review' => 'nullable|boolean',
+            'custom_category_name' => 'required_without_all:category_id,new_category_id|nullable|string|max:255',
             'country_id' => 'nullable|exists:countries,id',
             'custom_country_name' => 'nullable|string|max:255',
             'city_id' => 'required_without:custom_city_name|nullable|exists:cities,id',

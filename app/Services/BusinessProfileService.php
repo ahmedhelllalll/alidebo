@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use App\Jobs\OptimizeProfileContent;
+use App\Support\CategoryAliasMapping;
 
 class BusinessProfileService
 {
@@ -63,12 +64,32 @@ class BusinessProfileService
         $coverPath = $this->handleImageUpload($request->file('cover'), 'covers');
         $contactMethods = $this->formatContactMethods($validated);
 
+        // Resolve dual-write for category_id & new_category_id
+        $newCategoryId = $validated['new_category_id'] ?? null;
+        $legacyCategoryId = $validated['category_id'] ?? null;
+        $needsReview = array_key_exists('category_needs_review', $validated)
+            ? (bool)$validated['category_needs_review']
+            : ($newCategoryId ? false : false);
+
+        if ($newCategoryId && !$legacyCategoryId) {
+            $legacyCategoryId = CategoryAliasMapping::getLegacyCategoryId($newCategoryId);
+        } elseif ($legacyCategoryId && !$newCategoryId) {
+            $legacyCat = Category::find($legacyCategoryId);
+            if ($legacyCat) {
+                $mapped = CategoryAliasMapping::resolve($legacyCat->name_en ?: $legacyCat->name_ar);
+                $newCategoryId = $mapped['new_category_id'] ?? null;
+                $needsReview = $mapped['category_needs_review'] ?? ($newCategoryId ? false : true);
+            }
+        }
+
         $data = [
             'user_id' => $user?->id,
             'owner_id' => array_key_exists('owner_id', $validated) ? $validated['owner_id'] : $user?->id,
             'name' => $validated['name'],
             'slug' => $validated['slug'] ?? $this->generateUniqueSlug($validated['name']),
-            'category_id' => $validated['category_id'],
+            'category_id' => $legacyCategoryId,
+            'new_category_id' => $newCategoryId,
+            'category_needs_review' => (bool)$needsReview,
             'city_id' => $validated['city_id'],
             'description' => $validated['description'] ?? null,
             'address' => $validated['address'] ?? null,
@@ -94,6 +115,66 @@ class BusinessProfileService
         $data = collect($validated)->except([
             'logo', 'cover', 'social_links', 'cover_source', 'selected_category_cover'
         ])->toArray();
+
+        // Dual-write sync for category updates
+        $hasNewCat = array_key_exists('new_category_id', $validated) && !is_null($validated['new_category_id']);
+        $hasLegacyCat = array_key_exists('category_id', $validated) && !is_null($validated['category_id']);
+
+        $legacyChanged = $hasLegacyCat && ((int)$validated['category_id'] !== (int)$business->category_id);
+
+        if ($hasNewCat) {
+            // Case 1: new_category_id explicitly updated / provided
+            $newCategoryId = (int)$validated['new_category_id'];
+
+            // Clear review flag unless explicitly passed as true
+            $needsReview = array_key_exists('category_needs_review', $validated)
+                ? (bool)$validated['category_needs_review']
+                : false;
+
+            // Legacy safety: never overwrite an existing non-null category_id with null
+            if ($hasLegacyCat) {
+                $legacyCategoryId = (int)$validated['category_id'];
+            } else {
+                $derivedLegacy = CategoryAliasMapping::getLegacyCategoryId($newCategoryId);
+                $legacyCategoryId = $derivedLegacy ?: $business->category_id;
+            }
+
+            $data['new_category_id'] = $newCategoryId;
+            $data['category_id'] = $legacyCategoryId;
+            $data['category_needs_review'] = $needsReview;
+
+        } elseif ($legacyChanged) {
+            // Case 2: category_id actually changed and new_category_id was not provided
+            $legacyCategoryId = (int)$validated['category_id'];
+            $legacyCat = Category::find($legacyCategoryId);
+
+            $newCategoryId = null;
+            $needsReview = false;
+            if ($legacyCat) {
+                $mapped = CategoryAliasMapping::resolve($legacyCat->name_en ?: $legacyCat->name_ar);
+                $newCategoryId = $mapped['new_category_id'] ?? null;
+                $needsReview = $mapped['category_needs_review'] ?? ($newCategoryId ? false : true);
+            }
+
+            $data['category_id'] = $legacyCategoryId;
+            $data['new_category_id'] = $newCategoryId;
+            $data['category_needs_review'] = (bool)$needsReview;
+
+        } else {
+            // Case 3: Neither category changed, or category_id was submitted with the exact same value.
+            // Retain existing classifications completely untouched!
+            unset($data['new_category_id'], $data['category_needs_review']);
+
+            // Admin may still update review flag independently
+            if (array_key_exists('category_needs_review', $validated)) {
+                $data['category_needs_review'] = (bool)$validated['category_needs_review'];
+            }
+
+            // Legacy safety: ensure existing non-null category_id is never nulled
+            if (array_key_exists('category_id', $data) && is_null($data['category_id']) && !is_null($business->category_id)) {
+                $data['category_id'] = $business->category_id;
+            }
+        }
 
         if ($request->hasFile('logo')) {
             $this->deleteImage($business->logo, $business->disk ?? 'public');

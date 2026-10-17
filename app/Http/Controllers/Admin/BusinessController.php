@@ -37,6 +37,8 @@ class BusinessController extends Controller
                 'business_profiles.name', 
                 'business_profiles.slug', 
                 'business_profiles.category_id', 
+                'business_profiles.new_category_id',
+                'business_profiles.category_needs_review',
                 'business_profiles.city_id', 
                 'business_profiles.user_id',
                 'business_profiles.owner_id',
@@ -73,7 +75,14 @@ class BusinessController extends Controller
                 $query->whereNotNull('business_profiles.owner_id');
             } elseif ($request->status === 'unclaimed') {
                 $query->whereNull('business_profiles.owner_id');
+            } elseif ($request->status === 'needs_review') {
+                $query->where('business_profiles.category_needs_review', true);
             }
+        }
+
+        // Needs Review Filter
+        if ($request->boolean('needs_review')) {
+            $query->where('business_profiles.category_needs_review', true);
         }
 
         // Batch Filter
@@ -108,8 +117,9 @@ class BusinessController extends Controller
 
         $categories = Category::select('id', 'name_en', 'name_ar')->get();
         $countries = Country::where('status', 'active')->select('id', 'name_en', 'name_ar')->get();
+        $needsReviewCount = BusinessProfile::where('category_needs_review', true)->count();
 
-        return view('admin.businesses.index', compact('businesses', 'categories', 'countries'));
+        return view('admin.businesses.index', compact('businesses', 'categories', 'countries', 'needsReviewCount'));
     }
 
     public function create(Request $request)
@@ -173,7 +183,9 @@ class BusinessController extends Controller
 
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'user_id' => 'nullable|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required_without:new_category_id|nullable|exists:categories,id',
+            'new_category_id' => 'nullable|exists:new_categories,id',
+            'category_needs_review' => 'nullable|boolean',
             'city_id' => 'required|exists:cities,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -264,7 +276,7 @@ class BusinessController extends Controller
 
         $categories = Category::select('id', 'name_en', 'name_ar')->get();
         $countries = Country::where('status', 'active')->select('id', 'name_en', 'name_ar')->get();
-        $business->load('media', 'imageCategories.media');
+        $business->load('media', 'imageCategories.media', 'newCategory:id,name_en,name_ar');
         
         return view('admin.businesses.edit', compact('business', 'categories', 'countries'));
     }
@@ -275,7 +287,9 @@ class BusinessController extends Controller
 
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'user_id' => 'nullable|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'required_without:new_category_id|nullable|exists:categories,id',
+            'new_category_id' => 'nullable|exists:new_categories,id',
+            'category_needs_review' => 'nullable|boolean',
             'city_id' => 'required|exists:cities,id',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',

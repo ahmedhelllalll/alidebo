@@ -16,12 +16,25 @@ class RedirectOldUrls
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // 1. Check category redirects (both path-based and query-string based)
+        $categoryRedirect = \App\Services\CategoryRedirectService::handleRequest($request);
+        if ($categoryRedirect) {
+            return $categoryRedirect;
+        }
+
         $path = $request->path();
-        
-        // Check exact path or path with leading slash
-        $redirect = Redirect::where('source_url', $path)
-            ->orWhere('source_url', '/' . ltrim($path, '/'))
-            ->first();
+        $requestUri = ltrim($request->getRequestUri(), '/');
+        $pathWithQuery = $path . ($request->getQueryString() ? '?' . $request->getQueryString() : '');
+
+        // 2. Check exact path or path with query string in redirects table
+        $redirect = Redirect::whereIn('source_url', [
+            $path,
+            '/' . ltrim($path, '/'),
+            $requestUri,
+            '/' . $requestUri,
+            $pathWithQuery,
+            '/' . $pathWithQuery,
+        ])->first();
 
         if ($redirect) {
             return redirect($redirect->target_url, $redirect->status_code);
@@ -30,3 +43,4 @@ class RedirectOldUrls
         return $next($request);
     }
 }
+

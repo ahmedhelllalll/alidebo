@@ -7,6 +7,8 @@ return [
     'filters' => 'Filters',
     'clear_filters' => 'Clear Filters',
     'categories' => 'Categories',
+    'subcategories' => 'Subcategories',
+    'all_subcategories' => 'All Subcategories',
     'all_categories' => 'All Categories',
     'locations' => 'Locations',
     'all_locations' => 'All Locations',

@@ -37,6 +37,12 @@
                 <button onclick="setStatusFilter('unclaimed', this)" id="tab-unclaimed" class="shrink-0 px-5 py-2 text-[13px] font-[900] rounded-lg transition-all {{ request('status') == 'unclaimed' ? 'bg-white dark:bg-zinc-700 text-primary shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-slate-700' }}">
                     {{ __('admin.unclaimed') }}
                 </button>
+                <button onclick="setStatusFilter('needs_review', this)" id="tab-needs_review" class="shrink-0 px-4 py-2 text-[13px] font-[900] rounded-lg transition-all flex items-center gap-1.5 {{ request('status') == 'needs_review' || request('needs_review') ? 'bg-white dark:bg-zinc-700 text-amber-500 shadow-sm' : 'text-slate-500 dark:text-zinc-400 hover:text-amber-500' }}">
+                    <span>{{ __('admin.needs_review') ?? 'Needs Review' }}</span>
+                    @if(isset($needsReviewCount) && $needsReviewCount > 0)
+                        <span class="px-1.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500/10 text-amber-600 dark:text-amber-400">{{ $needsReviewCount }}</span>
+                    @endif
+                </button>
             </div>
             
             @if(request('batch_id'))
@@ -367,7 +373,7 @@
     // --- Search & Filters ---
     function setStatusFilter(status, btn) {
         currentStatus = status;
-        ['all', 'pending', 'approved', 'claimed', 'unclaimed'].forEach(s => {
+        ['all', 'pending', 'approved', 'claimed', 'unclaimed', 'needs_review'].forEach(s => {
             const tabId = s === 'all' ? 'tab-all' : `tab-${s}`;
             const el = document.getElementById(tabId);
             if (!el) return;

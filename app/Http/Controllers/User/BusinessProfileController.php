@@ -18,6 +18,7 @@ use App\Services\BusinessProfileService;
 use App\Models\City;
 use Illuminate\Support\Str;
 use App\Jobs\RecordBusinessView;
+use App\Support\CategoryAliasMapping;
 
 class BusinessProfileController extends Controller
 {
@@ -66,14 +67,16 @@ class BusinessProfileController extends Controller
         }
 
         if (!empty($validated['custom_category_name'])) {
-            $category = Category::firstOrCreate([
-                'name_en' => $validated['custom_category_name'],
-                'name_ar' => $validated['custom_category_name'],
-            ], [
-                'slug' => Str::slug($validated['custom_category_name']) . '-' . uniqid(),
-                'status' => 'active',
-            ]);
-            $validated['category_id'] = $category->id;
+            $resolved = CategoryAliasMapping::resolve($validated['custom_category_name']);
+            if ($resolved) {
+                $validated['new_category_id'] = $resolved['new_category_id'];
+                $validated['category_id'] = CategoryAliasMapping::getLegacyCategoryId($resolved['new_category_id']);
+                $validated['category_needs_review'] = $resolved['category_needs_review'];
+            } else {
+                $validated['new_category_id'] = null;
+                $validated['category_id'] = null;
+                $validated['category_needs_review'] = true;
+            }
         }
 
         if (!empty($validated['custom_country_name']) || !empty($validated['custom_city_name'])) {

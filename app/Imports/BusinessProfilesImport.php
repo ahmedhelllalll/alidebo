@@ -83,7 +83,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                     }
 
                     $categoryName = $this->getValueByFuzzyKey($row, ['category', 'التصنيف']);
-                    $categoryId = $this->resolveCategory($categoryName, $categories);
+                    $catResolution = $this->resolveCategoryData($categoryName, $companyName, $categories);
 
                     $cityName = $this->getValueByFuzzyKey($row, ['city', 'المدينة']);
                     $countryName = $this->getValueByFuzzyKey($row, ['country', 'الدولة']);
@@ -111,7 +111,9 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         'slug' => Str::slug($companyName . '-' . Str::random(5)),
                         'description' => $this->getValueByFuzzyKey($row, ['description', 'الوصف']),
                         'address' => $this->getValueByFuzzyKey($row, ['physical address', 'العنوان بالتفصيل', 'address']),
-                        'category_id' => $categoryId,
+                        'category_id' => $catResolution['legacy_id'],
+                        'new_category_id' => $catResolution['new_id'],
+                        'category_needs_review' => $catResolution['needs_review'],
                         'city_id' => $cityId,
                         'contact_methods' => array_filter($contactMethods),
                         'status' => 'approved', // Auto-approve imported businesses
@@ -165,27 +167,42 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         }
     }
 
-    private function resolveCategory($name, &$categories)
+    private function resolveCategoryData($name, $companyName, &$categories): array
     {
-        if (empty($name))
-            return null;
-
-        $match = $this->normalizer->match($name, $categories, ['name_ar', 'name_en', 'name_de', 'name_es', 'name_tr', 'name_zh']);
-        if ($match) {
-            return $match->id;
+        if (empty($name)) {
+            return ['legacy_id' => null, 'new_id' => null, 'needs_review' => true];
         }
 
-        // Auto-create category
-        $category = Category::create([
-            'name_en' => $name,
-            'name_ar' => $name,
-            'slug' => Str::slug($name . '-' . Str::random(4)),
-            'status' => 'pending', // Pending review by admin
-            'disk' => $this->disk,
-        ]);
-        $categories->push($category);
-        Cache::increment("import_stats_{$this->importId}_new_categories");
-        return $category->id;
+        // 1. Check alias mapping directly (Google Maps place types, production categories, etc.)
+        $mapped = \App\Support\CategoryAliasMapping::resolve($name);
+        if ($mapped && $mapped['new_category_id']) {
+            $legacyId = \App\Support\CategoryAliasMapping::getLegacyCategoryId($mapped['new_category_id']);
+            return [
+                'legacy_id'    => $legacyId,
+                'new_id'       => $mapped['new_category_id'],
+                'needs_review' => $mapped['category_needs_review'],
+            ];
+        }
+
+        // 2. Check if name matches an existing legacy category
+        $match = $this->normalizer->match($name, $categories, ['name_ar', 'name_en', 'name_de', 'name_es', 'name_tr', 'name_zh']);
+        if ($match) {
+            $mapped = \App\Support\CategoryAliasMapping::resolve($match->name_en ?: $match->name_ar);
+            return [
+                'legacy_id'    => $match->id,
+                'new_id'       => $mapped['new_category_id'] ?? null,
+                'needs_review' => $mapped['category_needs_review'] ?? ($mapped['new_category_id'] ? false : true),
+            ];
+        }
+
+        // 3. Unknown category: DO NOT create a new category row!
+        // Flag for review and log in import report/errors
+        if ($this->batchId) {
+            $errorMsg = "Unmapped category '{$name}' for company '{$companyName}' (set to uncategorized and flagged for review)";
+            Storage::disk('local')->append("imports/errors/batch_{$this->batchId}.txt", $errorMsg);
+        }
+
+        return ['legacy_id' => null, 'new_id' => null, 'needs_review' => true];
     }
 
     private function resolveCity($cityName, $countryName, &$cities, &$countries)

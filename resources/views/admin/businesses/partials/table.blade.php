@@ -37,6 +37,12 @@
                             </a>
                             <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-[11px] font-medium text-slate-400">
                                 <span class="bg-primary/5 text-primary dark:bg-primary/10 px-1.5 py-0.5 rounded text-[10px] font-[900] tracking-wide">{{ $business->category->name ?? "N/A" }}</span>
+                                @if($business->category_needs_review)
+                                    <span class="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded text-[10px] font-[900] tracking-wide inline-flex items-center gap-1">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                        {{ __('admin.needs_review') ?? 'Needs Review' }}
+                                    </span>
+                                @endif
                                 <span class="text-slate-300 dark:text-zinc-700">•</span>
                                 <span class="flex items-center gap-1">
                                     <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -154,7 +160,15 @@
                         {{ $business->name }}
                         <svg class="w-3.5 h-3.5 opacity-50 hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                     </a>
-                    <p class="text-[13px] font-bold text-slate-500 dark:text-zinc-400 mt-0.5">{{ $business->category->name ?? "N/A" }}</p>
+                    <div class="flex items-center gap-2 mt-0.5">
+                        <p class="text-[13px] font-bold text-slate-500 dark:text-zinc-400">{{ $business->category->name ?? "N/A" }}</p>
+                        @if($business->category_needs_review)
+                            <span class="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.5 rounded text-[10px] font-[900] tracking-wide inline-flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                {{ __('admin.needs_review') ?? 'Review' }}
+                            </span>
+                        @endif
+                    </div>
                     <div class="flex items-center gap-2 mt-1.5">
                         @if($business->owner_id)
                             <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-primary/5 border border-primary/10 text-[10px] font-bold text-primary">

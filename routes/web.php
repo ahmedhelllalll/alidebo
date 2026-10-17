@@ -338,5 +338,6 @@ Route::fallback(function () {
     }
     
     $locale = session('locale', request()->getPreferredLanguage(['en', 'ar', 'es', 'de', 'zh', 'tr']) ?: 'en');
-    return redirect(url('/' . $locale . '/' . ltrim($path, '/')));
+    $queryString = request()->getQueryString();
+    return redirect(url('/' . $locale . '/' . ltrim($path, '/')) . ($queryString ? '?' . $queryString : ''));
 });

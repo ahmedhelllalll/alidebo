@@ -96,9 +96,23 @@
                     </div>
                     {{-- Category --}}
                     <div class="input-group">
-                        <label id="category_label" class="text-[10px] font-black text-slate-500 dark:text-zinc-400 uppercase tracking-widest mb-2.5 block text-start">
-                            {{ __('admin.category') }} <span class="text-red-400" aria-hidden="true">*</span>
-                        </label>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <label id="category_label" class="text-[10px] font-black text-slate-500 dark:text-zinc-400 uppercase tracking-widest block text-start">
+                                {{ __('admin.category') }} <span class="text-red-400" aria-hidden="true">*</span>
+                            </label>
+                            @if($business->category_needs_review)
+                                <span class="bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px] font-[900] tracking-wide inline-flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                    {{ __('admin.category_needs_review') ?? 'Category Needs Review' }}
+                                </span>
+                            @endif
+                        </div>
+                        @if($business->category_needs_review)
+                            <div class="mb-2.5 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-2 text-amber-700 dark:text-amber-300 text-[11px] font-bold">
+                                <svg class="w-3.5 h-3.5 shrink-0 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                <span>{{ __('admin.category_review_flagged_desc') ?? 'Flagged for category review during categories v2 migration.' }}</span>
+                            </div>
+                        @endif
                         <div class="relative custom-smart-dropdown" id="dropdown_category">
                             <div class="relative flex items-center group">
                                 <div class="absolute start-0 top-0 bottom-0 w-14 flex items-center justify-center text-slate-400 z-10 pointer-events-none transition-colors group-focus-within:text-primary">

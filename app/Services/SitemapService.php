@@ -67,16 +67,37 @@ class SitemapService
         }
 
         // Add Categories
-        $categories = Category::where('status', 'active')->get();
-        foreach ($categories as $category) {
-            $nameField = 'name_' . $locale;
-            if (!empty($category->$nameField)) {
-                $urls[] = [
-                    'loc' => $baseUrl . '/' . $locale . '/directory?category=' . $category->slug,
-                    'lastmod' => $category->updated_at->toAtomString(),
-                    'changefreq' => 'weekly',
-                    'priority' => '0.7'
-                ];
+        if (config('categories.v2_enabled', false)) {
+            $nonEmptyIds = \App\Models\NewCategory::getNonEmptyCategoryIds();
+            $categories = \App\Models\NewCategory::active()
+                ->whereIn('id', $nonEmptyIds)
+                ->get();
+
+            foreach ($categories as $category) {
+                $nameField = 'name_' . $locale;
+                $name = !empty($category->$nameField) ? $category->$nameField : $category->name_en;
+                if (!empty($name)) {
+                    $urls[] = [
+                        'loc' => $baseUrl . '/' . $locale . '/directory?category=' . $category->slug,
+                        'lastmod' => $category->updated_at ? $category->updated_at->toAtomString() : now()->toAtomString(),
+                        'changefreq' => 'weekly',
+                        'priority' => '0.7'
+                    ];
+                }
+            }
+        } else {
+            $categories = Category::where('status', 'active')->get();
+            foreach ($categories as $category) {
+                $nameField = 'name_' . $locale;
+                $name = !empty($category->$nameField) ? $category->$nameField : $category->name_en;
+                if (!empty($name)) {
+                    $urls[] = [
+                        'loc' => $baseUrl . '/' . $locale . '/directory?category=' . $category->slug,
+                        'lastmod' => $category->updated_at ? $category->updated_at->toAtomString() : now()->toAtomString(),
+                        'changefreq' => 'weekly',
+                        'priority' => '0.7'
+                    ];
+                }
             }
         }
 
