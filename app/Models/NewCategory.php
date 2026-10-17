@@ -39,7 +39,11 @@ class NewCategory extends Model
     public function getNameAttribute(): string
     {
         $locale = app()->getLocale();
-        return $this->{'name_' . $locale} ?? $this->name_en ?? $this->name_ar ?? '';
+        $name = $this->{'name_' . $locale} ?? null;
+        if (!empty($name)) {
+            return $name;
+        }
+        return $this->name_en ?? $this->name_ar ?? '';
     }
 
     public function getImageUrlAttribute(): ?string

@@ -44,7 +44,8 @@ class DirectoryController extends Controller
             }
         }
 
-        $cacheKey = 'directory_index_v2_' . ($v2Enabled ? 'v2_' : 'v1_') . md5(json_encode($request->all()));
+        $currentLocale = app()->getLocale() ?: 'en';
+        $cacheKey = 'directory_index_v2_' . $currentLocale . '_' . ($v2Enabled ? 'v2_' : 'v1_') . md5(json_encode($request->all()));
 
         $data = Cache::remember($cacheKey, now()->addMinutes(10), function() use ($request, $v2Enabled) {
             $query = BusinessProfile::with(['category', 'city', 'owner'])->where('status', 'approved');
@@ -277,7 +278,8 @@ class DirectoryController extends Controller
         }
 
         $v2Enabled = config('categories.v2_enabled', false);
-        $cacheKey = 'live_search_' . ($v2Enabled ? 'v2_' : 'v1_') . md5($search);
+        $currentLocale = app()->getLocale() ?: 'en';
+        $cacheKey = 'live_search_' . $currentLocale . '_' . ($v2Enabled ? 'v2_' : 'v1_') . md5($search);
 
         $results = Cache::remember($cacheKey, now()->addMinutes(10), function() use ($search, $v2Enabled) {
             // 1. Search Categories
