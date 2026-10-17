@@ -118,8 +118,7 @@
                             <p class="text-[11px] text-zinc-400 dark:text-zinc-500 mt-0.5">{{ __('forms.business.basic_info_desc') ?? 'Name, category and description' }}</p>
                         </div>
                     </div>
-                    <div class="p-6 md:p-8 space-y-6"
-                         x-data="{ catId: {{ $business->category_id ?? 'null' }}, catName: '{{ addslashes($business->category?->name ?? '') }}', catOpen: false }">
+                    <div class="p-6 md:p-8 space-y-6">
 
                         {{-- Business Name --}}
                         <div class="space-y-2">
@@ -138,29 +137,42 @@
 
                         {{-- Category --}}
                         <div class="space-y-2">
-                            <label class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">{{ __('forms.business.category') ?? 'Category' }} <span class="text-primary">*</span></label>
-                            <input type="hidden" name="category_id" :value="catId">
-                            <div class="relative">
-                                <button type="button" @click="catOpen = !catOpen"
-                                        class="w-full text-start px-4 py-3 bg-white dark:bg-zinc-900/80 border border-zinc-200 dark:border-zinc-800 rounded-xl flex justify-between items-center text-sm font-medium text-zinc-900 dark:text-white focus:ring-2 focus:ring-primary/15 focus:border-primary transition-all duration-200 hover:border-zinc-300 dark:hover:border-zinc-700">
-                                    <span x-text="catName || 'Select Category'" :class="!catName ? 'text-zinc-400' : ''"></span>
-                                    <svg class="w-4 h-4 text-zinc-400 transition-transform" :class="catOpen?'rotate-180':''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                                </button>
-                                <div x-show="catOpen" @click.away="catOpen=false"
-                                     x-transition:enter="transition ease-out duration-100" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
-                                     class="absolute start-0 end-0 mt-2 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-[0_16px_48px_rgba(0,0,0,0.12)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.3)] z-50 max-h-60 overflow-y-auto" style="display:none">
-                                    @foreach($categories as $cat)
-                                    <button type="button"
-                                            @click="catId={{ $cat->id }}; catName='{{ addslashes($cat->name) }}'; catOpen=false"
-                                            :class="catId==={{ $cat->id }} ? 'bg-primary/5 text-primary font-bold' : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'"
-                                            class="w-full text-start px-4 py-2.5 text-sm transition-colors flex items-center gap-3 border-b border-zinc-50 dark:border-zinc-800/50 last:border-0">
-
-                                        {{ $cat->name }}
-                                        <svg x-show="catId==={{ $cat->id }}" class="w-3.5 h-3.5 text-primary ms-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-                                    </button>
+                            <label for="field_category_id" class="block text-[11px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">{{ __('forms.business.category') ?? 'Category' }} <span class="text-primary">*</span></label>
+                            <select name="{{ config('categories.v2_enabled') ? 'new_category_id' : 'category_id' }}" 
+                                    id="field_category_id"
+                                    required
+                                    class="form-select w-full bg-white dark:bg-zinc-900/80 border {{ $errors->has('category_id') || $errors->has('new_category_id') ? 'border-rose-400 dark:border-rose-500' : 'border-zinc-200 dark:border-zinc-800' }} rounded-xl px-4 py-3 text-sm font-medium text-zinc-900 dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/15 outline-none transition-all duration-200 hover:border-zinc-300 dark:hover:border-zinc-700 cursor-pointer">
+                                <option value="">{{ __('directory.select_category') }}</option>
+                                @if(config('categories.v2_enabled'))
+                                    @foreach($categories as $parent)
+                                        <optgroup label="{{ $parent->name }}">
+                                            @foreach($parent->children as $child)
+                                                <option value="{{ $child->id }}" {{ (old('new_category_id', $business->new_category_id ?? null) == $child->id) ? 'selected' : '' }}>
+                                                    {{ $child->name }}
+                                                </option>
+                                            @endforeach
+                                        </optgroup>
                                     @endforeach
-                                </div>
-                            </div>
+                                @else
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ (old('category_id', $business->category_id ?? null) == $category->id) ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            @error('category_id')
+                            <p class="text-[11px] text-rose-500 dark:text-rose-400 font-medium flex items-center gap-1.5">
+                                <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+                                {{ $message }}
+                            </p>
+                            @enderror
+                            @error('new_category_id')
+                            <p class="text-[11px] text-rose-500 dark:text-rose-400 font-medium flex items-center gap-1.5">
+                                <svg class="w-3 h-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01"/></svg>
+                                {{ $message }}
+                            </p>
+                            @enderror
                         </div>
 
                         {{-- Description --}}

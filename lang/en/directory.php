@@ -98,4 +98,5 @@ return [
     'profile_products_desc' => 'Browse the company\'s products, pricing, and specifications.',
     'view_details' => 'View Details',
     'request_quote_soon' => 'Request Quote (Coming Soon)',
+    'select_category' => 'Select Category',
 ];

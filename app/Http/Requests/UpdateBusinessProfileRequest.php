@@ -30,7 +30,7 @@ class UpdateBusinessProfileRequest extends FormRequest
         return [
             'name' => 'required|string|max:255|min:3',
             'category_id' => 'required_without:new_category_id|nullable|exists:categories,id',
-            'new_category_id' => 'nullable|exists:new_categories,id',
+            'new_category_id' => 'required_without:category_id|nullable|exists:new_categories,id',
             'category_needs_review' => 'nullable|boolean',
             'city_id' => 'required|exists:cities,id',
             'description' => 'nullable|string',

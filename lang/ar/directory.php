@@ -98,4 +98,5 @@ return [
     'profile_products_desc' => 'تصفح منتجات الشركة، الأسعار، والمواصفات الفنية.',
     'view_details' => 'عرض التفاصيل',
     'request_quote_soon' => 'طلب تسعيرة (قريباً)',
+    'select_category' => 'اختر التصنيف',
 ];

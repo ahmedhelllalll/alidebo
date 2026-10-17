@@ -53,6 +53,30 @@
                     </a>
                 </div>
             @endif
+
+            {{-- Category Filter Select --}}
+            <div class="relative min-w-[200px]">
+                <select id="business-category-filter" onchange="setCategoryFilter(this.value)" class="form-select w-full bg-slate-100/70 dark:bg-zinc-800/60 border border-slate-200/60 dark:border-white/10 rounded-xl text-[12px] font-bold py-2 ps-3 pe-8 text-slate-700 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-primary/20 cursor-pointer transition-all">
+                    <option value="">{{ __('directory.all_categories') ?? __('directory.select_category') }}</option>
+                    @if(config('categories.v2_enabled'))
+                        @foreach($categories as $parent)
+                            <optgroup label="{{ $parent->name }}">
+                                @foreach($parent->children as $child)
+                                    <option value="{{ $child->id }}" {{ (request('new_category_id') == $child->id || request('category_id') == $child->id) ? 'selected' : '' }}>
+                                        {{ $child->name }}
+                                    </option>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    @else
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ (request('category_id') == $category->id) ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
         </div>
         {{-- Smart Search --}}
         <div class="relative w-full md:w-1/2 group" id="search-input-wrapper">
@@ -190,6 +214,7 @@
 @push('scripts')
 <script>
     let currentStatus = '{{ request("status", "") }}';
+    let currentCategory = '{{ request("new_category_id") ?? request("category_id") ?? "" }}';
     let currentSearch = '{{ request("search", "") }}';
     let searchTimeout = null;
     let businessToReject = null;
@@ -387,6 +412,10 @@
         });
         updateList();
     }
+    function setCategoryFilter(categoryId) {
+        currentCategory = categoryId;
+        updateList();
+    }
     function debounceSearch() {
         clearTimeout(searchTimeout);
         const input = document.getElementById('business-search');
@@ -517,6 +546,18 @@
         try {
             const url = new URL(window.location.href);
             url.searchParams.set('status', currentStatus);
+            if (currentCategory) {
+                @if(config('categories.v2_enabled'))
+                    url.searchParams.set('new_category_id', currentCategory);
+                    url.searchParams.delete('category_id');
+                @else
+                    url.searchParams.set('category_id', currentCategory);
+                    url.searchParams.delete('new_category_id');
+                @endif
+            } else {
+                url.searchParams.delete('new_category_id');
+                url.searchParams.delete('category_id');
+            }
             url.searchParams.set('page', 1);
             const response = await fetch(url.toString(), { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
             if (response.ok) {

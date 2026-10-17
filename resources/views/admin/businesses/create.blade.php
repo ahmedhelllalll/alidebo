@@ -101,45 +101,44 @@
                     </div>
                     {{-- Category --}}
                     <div class="input-group">
-                        <label id="category_label" class="text-[10px] font-black text-slate-500 dark:text-zinc-400 uppercase tracking-widest mb-2.5 block text-start">
+                        <label id="category_label" for="field_category_id" class="text-[10px] font-black text-slate-500 dark:text-zinc-400 uppercase tracking-widest mb-2.5 block text-start">
                             {{ __('admin.category') }} <span class="text-red-400" aria-hidden="true">*</span>
                         </label>
-                        <div class="relative custom-smart-dropdown" id="dropdown_category">
-                            <div class="relative flex items-center group">
-                                <div class="absolute start-0 top-0 bottom-0 w-14 flex items-center justify-center text-slate-400 z-10 pointer-events-none transition-colors group-focus-within:text-primary">
-                                    <i class="fa-solid fa-tags text-sm"></i>
-                                </div>
-                                <input type="hidden" name="category_id" id="field_category_id" required aria-required="true" class="validate-target">
-                                <button type="button" class="dropdown-trigger w-full input-premium rounded-2xl py-5 ps-14 pe-6 text-sm font-bold flex items-center justify-between transition-all duration-300 outline-none cursor-pointer">
-                                    <span class="dropdown-label text-slate-400 dark:text-zinc-600 truncate">{{ __('admin.choose_category') }}</span>
-                                    <i aria-hidden="true" class="fa-solid fa-chevron-down text-[10px] text-slate-300 dark:text-zinc-600 transition-transform duration-300"></i>
-                                </button>
+                        <div class="relative flex items-center group">
+                            <div class="absolute start-0 top-0 bottom-0 w-14 flex items-center justify-center text-slate-400 z-10 pointer-events-none transition-colors group-focus-within:text-primary">
+                                <i class="fa-solid fa-tags text-sm"></i>
                             </div>
-                            {{-- Dropdown Menu --}}
-                            <div class="dropdown-menu hidden absolute z-50 mt-2 w-full bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl overflow-hidden opacity-0 translate-y-2">
-                                <div class="p-3 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02]">
-                                    <div class="relative">
-                                        <i class="fa-solid fa-magnifying-glass absolute start-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-                                        <input type="text" class="dropdown-search w-full bg-white dark:bg-zinc-900 border-none rounded-xl py-2 ps-9 ltr:pe-4 rtl:ps-4 text-sm font-bold outline-none focus:ring-2 focus:ring-primary/20 text-slate-700 dark:text-zinc-200" placeholder="{{ __('admin.search') }}">
-                                    </div>
-                                </div>
-                                <div class="dropdown-list max-h-60 overflow-y-auto custom-scrollbar p-2 space-y-1">
-                                    @foreach($categories as $category)
-                                        <div class="dropdown-item p-3 rounded-xl hover:bg-primary/[0.04] text-slate-700 dark:text-zinc-300 font-bold text-xs cursor-pointer transition-colors" 
-                                             data-id="{{ $category->id }}" data-label="{{ $category->name_en }} / {{ $category->name_ar }}">
-                                            {{ $category->name_en }} / {{ $category->name_ar }}
-                                        </div>
+                            <select name="{{ config('categories.v2_enabled') ? 'new_category_id' : 'category_id' }}" 
+                                    id="field_category_id" 
+                                    required 
+                                    aria-required="true" 
+                                    class="form-select w-full input-premium rounded-2xl py-4 ps-14 pe-10 text-sm font-bold bg-white dark:bg-zinc-900 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-zinc-200 outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all cursor-pointer validate-target"
+                                    onchange="validateFieldRealtime(this)">
+                                <option value="">{{ __('directory.select_category') }}</option>
+                                @if(config('categories.v2_enabled'))
+                                    @foreach($categories as $parent)
+                                        <optgroup label="{{ $parent->name }}">
+                                            @foreach($parent->children as $child)
+                                                <option value="{{ $child->id }}" {{ (old('new_category_id') == $child->id) ? 'selected' : '' }}>
+                                                    {{ $child->name }}
+                                                </option>
+                                            @endforeach
+                                        </optgroup>
                                     @endforeach
-                                    <div class="no-results-msg hidden p-6 text-center">
-                                        <div class="w-12 h-12 rounded-full bg-slate-50 dark:bg-white/[0.02] flex items-center justify-center mx-auto mb-3">
-                                            <i class="fa-solid fa-magnifying-glass text-slate-300 dark:text-zinc-600"></i>
-                                        </div>
-                                        <p class="text-[10px] font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest">{{ __('admin.no_results_found') }}</p>
-                                    </div>
-                                </div>
+                                @else
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ (old('category_id') == $category->id) ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                            <div class="absolute end-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 dark:text-zinc-500">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
                             </div>
                         </div>
                         <p class="field-error text-[10px] font-bold text-red-500 mt-1.5 hidden" id="error_category_id"></p>
+                        <p class="field-error text-[10px] font-bold text-red-500 mt-1.5 hidden" id="error_new_category_id"></p>
                     </div>
                     {{-- Description --}}
                     <div class="input-group lg:col-span-2">

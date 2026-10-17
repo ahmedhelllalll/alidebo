@@ -350,62 +350,43 @@
 
                 {{-- Standard Categories Selector --}}
                 <div class="w-full relative" x-show="!showCustomCategory" x-collapse>
-                    {{-- Search Bar --}}
-                    <div class="relative mb-4 w-full">
-                        <label for="search_category" class="sr-only">{{ __('forms.business.search_category') }}</label>
-                        <input type="text" id="search_category" x-model="searchCat" placeholder="{{ __('forms.business.search_category') }}" class="w-full input-premium rounded-2xl py-3.5 sm:py-4 pe-4 sm:pe-6 ps-10 sm:ps-12 rtl:ps-4 sm:rtl:ps-6 rtl:pe-10 sm:rtl:pe-12 text-sm sm:text-base font-bold outline-none shadow-sm" :class="fields.category.error && fields.category.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
-                        <svg class="absolute start-4 rtl:start-auto rtl:end-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    </div>
-
-                    {{-- Grid Scroll Container --}}
-                    <div class="max-h-[226px] overflow-y-auto light-scrollbar scroll-snap-y px-2 pt-2 pb-6 relative z-10" role="group" aria-label="Categories">
-                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-                            @foreach($categories->unique('name') as $category)
-                            <button type="button" 
-                                    role="switch"
-                                    :aria-checked="fields.category.value == {{ $category->id }} ? 'true' : 'false'"
-                                    @click="selectCategory({{ $category->id }}, '{{ addslashes($category->name) }}', $event)" 
-                                    x-show="searchCat === '' || '{{ mb_strtolower($category->name) }}'.includes(searchCat.toLowerCase())"
-                                    x-transition:enter="transition ease-out duration-300"
-                                    x-transition:enter-start="opacity-0 scale-90 translate-y-2"
-                                    x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                                    x-transition:leave-end="opacity-0 scale-90 translate-y-2"
-                                    data-name="{{ mb_strtolower($category->name) }}"
-                                    class="cat-btn scroll-snap-align-start p-4 text-center text-xs font-bold rounded-2xl border transition-all flex flex-col items-center justify-center h-[90px] gap-2 cursor-pointer shadow-sm animate-fade-in focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
-                                    :class="fields.category.value == {{ $category->id }} ? 'bg-primary/10 border-primary text-primary dark:bg-primary/20 ring-2 ring-primary/20 scale-[1.02]' : 'bg-slate-50/50 hover:bg-slate-100/70 border-slate-200/60 dark:bg-zinc-900/30 dark:border-zinc-800/80 dark:hover:bg-zinc-800/50 text-slate-700 dark:text-zinc-300 hover:border-primary/40 hover:text-primary'">
-                                <span>{{ $category->name }}</span>
-                            </button>
-                            @endforeach
-
-                            {{-- Category Not Found Empty State --}}
-                            <div x-show="!hasCategoryMatches()" 
-                                 x-transition:enter="transition ease-out duration-300"
-                                 x-transition:enter-start="opacity-0 scale-95"
-                                 x-transition:enter-end="opacity-100 scale-100"
-                                 class="col-span-3 text-center py-8 px-4 bg-slate-50/50 dark:bg-zinc-900/30 rounded-2xl border border-slate-200/50 dark:border-zinc-800/80 shadow-inner">
-                                <div class="w-10 h-10 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center mx-auto mb-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                </div>
-                                <p class="text-xs font-extrabold text-slate-800 dark:text-zinc-200 uppercase tracking-wider mb-1">{{ __('forms.business.category_not_found') }}</p>
-                                <p class="text-[11px] text-slate-400 dark:text-zinc-500 font-semibold mb-4 leading-relaxed max-w-sm mx-auto">{{ __('forms.business.category_not_found_desc') }}</p>
-                                <button type="button" @click="showCustomCategory = true; fields.category.value = null; searchCat = ''; validateField('category');" class="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-[800] hover:bg-primary-light shadow-md shadow-primary/10 active:scale-95 transition-all">
-                                    {{ __('forms.business.add_your_category') ?? 'Add your category' }}
-                                </button>
-                            </div>
-                        </div>
+                    <div class="relative w-full mb-3">
+                        <label for="field_category_id" class="sr-only">{{ __('directory.select_category') }}</label>
+                        <select name="{{ config('categories.v2_enabled') ? 'new_category_id' : 'category_id' }}" 
+                                id="field_category_id"
+                                x-model="fields.category.value"
+                                @change="selectCategory($event.target.value, $event.target.options[$event.target.selectedIndex]?.text || '', $event)"
+                                class="form-select w-full input-premium rounded-2xl py-3.5 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-bold outline-none shadow-sm cursor-pointer bg-white dark:bg-zinc-900 border border-slate-200/60 dark:border-zinc-800"
+                                :class="fields.category.error && fields.category.touched ? 'border-rose-500 ring-2 ring-rose-500/20' : ''">
+                            <option value="">{{ __('directory.select_category') }}</option>
+                            @if(config('categories.v2_enabled'))
+                                @foreach($categories as $parent)
+                                    <optgroup label="{{ $parent->name }}">
+                                        @foreach($parent->children as $child)
+                                            <option value="{{ $child->id }}" {{ (old('new_category_id') == $child->id) ? 'selected' : '' }}>
+                                                {{ $child->name }}
+                                            </option>
+                                        @endforeach
+                                    </optgroup>
+                                @endforeach
+                            @else
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ (old('category_id') == $category->id) ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
                     </div>
 
                     {{-- Cannot Find Category Link --}}
-                    <div class="text-center mt-4" x-show="hasCategoryMatches() && fields.category.value === null">
+                    <div class="text-center mt-4">
                         <button type="button" 
-                                @click="showCustomCategory = true; fields.category.value = null; searchCat = ''; validateField('category');" 
+                                @click="showCustomCategory = true; fields.category.value = ''; searchCat = ''; validateField('category');" 
                                 class="text-xs font-bold text-primary hover:text-primary-light hover:underline transition-colors cursor-pointer">
                             {{ __('forms.business.cant_find_category') ?? 'I cannot find my category' }}
                         </button>
                     </div>
-                    <input type="hidden" name="category_id" :value="fields.category.value">
                     <p class="text-[11px] font-bold text-rose-500 mt-2 min-h-[16px] ps-1" x-show="fields.category.error && fields.category.touched" x-transition>{{ __('forms.business.category_error') }}</p>
                 </div>
             </div>

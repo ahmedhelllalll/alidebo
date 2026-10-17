@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\BusinessProfile;
 use App\Models\Category;
+use App\Models\NewCategory;
 use App\Models\Country;
 use App\Models\BusinessMedia;
 use App\Models\BusinessView;
@@ -52,7 +53,14 @@ class BusinessProfileController extends Controller
             return redirect()->route('business.index');
         }
 
-        $categories = Cache::remember('categories_all', 86400, fn() => Category::all());
+        if (config('categories.v2_enabled')) {
+            $categories = NewCategory::whereNull('parent_id')
+                ->with(['children' => function($q) { $q->orderBy('sort_order')->orderBy('name_en'); }])
+                ->orderBy('sort_order')
+                ->get();
+        } else {
+            $categories = Cache::remember('categories_all', 86400, fn() => Category::all());
+        }
         $countries = Country::all();
 
         return view('users.create', compact('categories', 'countries'));
@@ -142,7 +150,14 @@ class BusinessProfileController extends Controller
     public function edit()
     {
         $business = Auth::user()->businessProfile()->with(['media', 'imageCategories.media', 'city.country'])->firstOrFail();
-        $categories = Cache::remember('categories_all', 86400, fn() => Category::all());
+        if (config('categories.v2_enabled')) {
+            $categories = NewCategory::whereNull('parent_id')
+                ->with(['children' => function($q) { $q->orderBy('sort_order')->orderBy('name_en'); }])
+                ->orderBy('sort_order')
+                ->get();
+        } else {
+            $categories = Cache::remember('categories_all', 86400, fn() => Category::all());
+        }
         $countries = Country::with('cities')->get();
         $categoryImages = Cache::remember('categories_images', 86400, fn() => Category::whereNotNull('image')->get());
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\BusinessProfile;
 use App\Models\Category;
+use App\Models\NewCategory;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\User;
@@ -90,6 +91,19 @@ class BusinessController extends Controller
             $query->where('business_profiles.import_batch_id', $request->batch_id);
         }
 
+        // Category Filter
+        if (config('categories.v2_enabled')) {
+            if ($request->filled('new_category_id')) {
+                $query->where('business_profiles.new_category_id', $request->new_category_id);
+            } elseif ($request->filled('category_id')) {
+                $query->where('business_profiles.new_category_id', $request->category_id);
+            }
+        } else {
+            if ($request->filled('category_id')) {
+                $query->where('business_profiles.category_id', $request->category_id);
+            }
+        }
+
         if ($request->ajax() && $request->has('suggest')) {
             $suggestions = $query->limit(10)->get()->map(function($biz) {
                 return [
@@ -109,13 +123,13 @@ class BusinessController extends Controller
             return response()->json($suggestions);
         }
 
-        $businesses = $query->paginate(10);
+        $businesses = $query->paginate(10)->withQueryString();
 
         if ($request->ajax()) {
             return view('admin.businesses.partials.table', compact('businesses'))->render();
         }
 
-        $categories = Category::select('id', 'name_en', 'name_ar')->get();
+        $categories = $this->getCategories();
         $countries = Country::where('status', 'active')->select('id', 'name_en', 'name_ar')->get();
         $needsReviewCount = BusinessProfile::where('category_needs_review', true)->count();
 
@@ -126,7 +140,7 @@ class BusinessController extends Controller
     {
         $this->authorize('create', BusinessProfile::class);
 
-        $categories = Category::select('id', 'name_en', 'name_ar')->get();
+        $categories = $this->getCategories();
         $countries = Country::where('status', 'active')->select('id', 'name_en', 'name_ar')->get();
 
         return view('admin.businesses.create', compact('categories', 'countries'));
@@ -184,7 +198,7 @@ class BusinessController extends Controller
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'user_id' => 'nullable|exists:users,id',
             'category_id' => 'required_without:new_category_id|nullable|exists:categories,id',
-            'new_category_id' => 'nullable|exists:new_categories,id',
+            'new_category_id' => 'required_without:category_id|nullable|exists:new_categories,id',
             'category_needs_review' => 'nullable|boolean',
             'city_id' => 'required|exists:cities,id',
             'name' => 'required|string|max:255',
@@ -274,7 +288,7 @@ class BusinessController extends Controller
     {
         $this->authorize('update', $business);
 
-        $categories = Category::select('id', 'name_en', 'name_ar')->get();
+        $categories = $this->getCategories();
         $countries = Country::where('status', 'active')->select('id', 'name_en', 'name_ar')->get();
         $business->load('media', 'imageCategories.media', 'newCategory:id,name_en,name_ar');
         
@@ -288,7 +302,7 @@ class BusinessController extends Controller
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
             'user_id' => 'nullable|exists:users,id',
             'category_id' => 'required_without:new_category_id|nullable|exists:categories,id',
-            'new_category_id' => 'nullable|exists:new_categories,id',
+            'new_category_id' => 'required_without:category_id|nullable|exists:new_categories,id',
             'category_needs_review' => 'nullable|boolean',
             'city_id' => 'required|exists:cities,id',
             'name' => 'required|string|max:255',
@@ -525,5 +539,17 @@ class BusinessController extends Controller
         $media = \App\Models\BusinessMedia::where('id', $id)->where('business_profile_id', $business->id)->firstOrFail();
         $this->profileService->deleteMedia($media);
         return response()->json(['success' => true]);
+    }
+
+    private function getCategories()
+    {
+        if (config('categories.v2_enabled')) {
+            return NewCategory::whereNull('parent_id')
+                ->with(['children' => function($q) { $q->orderBy('sort_order')->orderBy('name_en'); }])
+                ->orderBy('sort_order')
+                ->get();
+        }
+
+        return Category::all();
     }
 }
