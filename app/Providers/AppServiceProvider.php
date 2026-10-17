@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useTailwind();
         Gate::policy(BusinessProfile::class, BusinessProfilePolicy::class);
 
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+            'category_v2' => \App\Models\NewCategory::class,
+        ]);
+
         Event::listen(Login::class, function ($event) {
             $user = $event->user;
 
