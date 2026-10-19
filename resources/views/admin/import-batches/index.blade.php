@@ -48,10 +48,16 @@
                                         <span class="text-[10px] uppercase font-bold text-slate-400">Total</span>
                                         <span class="text-sm font-bold text-slate-700 dark:text-zinc-300">{{ $batch->total_rows }}</span>
                                     </div>
-                                    <div class="flex flex-col items-center" title="{{ __('admin.imported_rows') ?? 'Success' }}">
-                                        <span class="text-[10px] uppercase font-bold text-emerald-500">Success</span>
+                                    <div class="flex flex-col items-center" title="{{ __('admin.imported_rows') ?? 'Created' }}">
+                                        <span class="text-[10px] uppercase font-bold text-emerald-500">Created</span>
                                         <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">{{ $batch->imported_rows }}</span>
                                     </div>
+                                    @if($batch->updated_rows > 0)
+                                    <div class="flex flex-col items-center" title="{{ __('admin.updated_rows') ?? 'Updated' }}">
+                                        <span class="text-[10px] uppercase font-bold text-blue-500">Updated</span>
+                                        <span class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ $batch->updated_rows }}</span>
+                                    </div>
+                                    @endif
                                     <div class="flex flex-col items-center" title="{{ __('admin.skipped_rows') ?? 'Skipped' }}">
                                         <span class="text-[10px] uppercase font-bold text-red-400">Failed</span>
                                         <span class="text-sm font-bold text-red-500 dark:text-red-400">{{ $batch->skipped_rows }}</span>
@@ -59,28 +65,42 @@
                                 </div>
                             </td>
                             <td class="px-5 py-4">
-                                @if($batch->status === 'completed')
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20">
-                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> {{ __('admin.completed') ?? 'Completed' }}
-                                    </span>
-                                @elseif($batch->status === 'processing')
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-500/20">
-                                        <div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div> {{ __('admin.processing') ?? 'Processing' }}
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-500/20">
-                                        <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div> {{ __('admin.failed') ?? 'Failed' }}
-                                    </span>
-                                @endif
+                                <div class="flex flex-col items-start gap-1">
+                                    @if($batch->is_dry_run)
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200/50 dark:border-amber-500/20">
+                                            <i class="fa-solid fa-flask text-[9px]"></i> {{ __('admin.dry_run') ?? 'Dry Run' }}
+                                        </span>
+                                    @endif
+                                    @if($batch->status === 'completed')
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> {{ __('admin.completed') ?? 'Completed' }}
+                                        </span>
+                                    @elseif($batch->status === 'processing')
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-500/20">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div> {{ __('admin.processing') ?? 'Processing' }}
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-500/20">
+                                            <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div> {{ __('admin.failed') ?? 'Failed' }}
+                                        </span>
+                                    @endif
+                                </div>
                             </td>
                             <td class="px-5 py-4 text-end">
                                 <div class="flex items-center justify-end gap-2 relative">
+                                    @if(!$batch->is_dry_run)
                                     <a href="{{ route('admin.businesses.index', ['batch_id' => $batch->id]) }}" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-xl transition-all" title="{{ __('admin.view_businesses') ?? 'View Businesses' }}">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                                     </a>
+                                    @endif
                                     @if($batch->error_log_path)
                                     <a href="{{ route('admin.import-batches.errors', $batch->id) }}" class="p-2 text-slate-400 hover:text-amber-500 hover:bg-amber-500/10 rounded-xl transition-all" title="{{ __('admin.download_errors') ?? 'Download Errors' }}">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    </a>
+                                    @endif
+                                    @if($batch->rejected_file_path)
+                                    <a href="{{ route('admin.import-batches.rejected', $batch->id) }}" class="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-500/10 rounded-xl transition-all" title="{{ __('admin.download_rejected') ?? 'Download Rejected Rows (CSV)' }}">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9l4 4m0-4l-4 4"/></svg>
                                     </a>
                                     @endif
                                     <button onclick="promptDeleteBatch({{ $batch->id }})" class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all" title="{{ __('admin.rollback_batch') ?? 'Rollback/Delete Batch' }}">
@@ -195,6 +215,14 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
+            <!-- Dry Run Mode Option -->
+            <div class="mt-4 p-3.5 bg-slate-50 dark:bg-zinc-800/60 rounded-2xl border border-slate-200/70 dark:border-white/5 flex items-start gap-3 cursor-pointer" onclick="document.getElementById('is_dry_run').click()">
+                <input type="checkbox" id="is_dry_run" name="is_dry_run" value="1" class="mt-0.5 w-4 h-4 text-emerald-500 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer" onclick="event.stopPropagation()">
+                <div class="flex flex-col">
+                    <span class="text-xs font-bold text-slate-800 dark:text-zinc-200 cursor-pointer">{{ __('admin.dry_run_mode') ?? 'Dry Run / Preview Mode (Validate without saving)' }}</span>
+                    <span class="text-[11px] font-medium text-slate-500 dark:text-zinc-400 mt-0.5">Validates category hierarchy, duplicates, and columns without writing changes to the database.</span>
+                </div>
+            </div>
         </div>
     </div>
     <x-slot name="footer">
@@ -256,6 +284,8 @@
 
     function openImportModal() {
         document.getElementById('import_file').value = '';
+        const dryRunCb = document.getElementById('is_dry_run');
+        if (dryRunCb) dryRunCb.checked = false;
         window.modals?.importExcelModal?.show() || document.getElementById('importExcelModal').classList.remove('hidden');
     }
 
@@ -269,6 +299,10 @@
 
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
+        const dryRunCb = document.getElementById('is_dry_run');
+        if (dryRunCb && dryRunCb.checked) {
+            formData.append('is_dry_run', '1');
+        }
 
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Processing...';

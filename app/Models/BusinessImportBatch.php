@@ -16,9 +16,16 @@ class BusinessImportBatch extends Model
         'original_file_name',
         'total_rows',
         'imported_rows',
+        'updated_rows',
         'skipped_rows',
         'status',
         'error_log_path',
+        'rejected_file_path',
+        'is_dry_run',
+    ];
+
+    protected $casts = [
+        'is_dry_run' => 'boolean',
     ];
 
     public function admin(): BelongsTo

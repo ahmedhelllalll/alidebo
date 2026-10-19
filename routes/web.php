@@ -167,6 +167,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('businesses', Admin\BusinessController::class);
         
         Route::get('/import-batches/{importBatch}/errors', [Admin\BusinessImportBatchController::class, 'downloadErrors'])->name('import-batches.errors');
+        Route::get('/import-batches/{importBatch}/rejected', [Admin\BusinessImportBatchController::class, 'downloadRejected'])->name('import-batches.rejected');
         Route::resource('import-batches', Admin\BusinessImportBatchController::class)->only(['index', 'store', 'destroy']);
         Route::get('/countries/{country}/cities', [Admin\BusinessController::class, 'getCitiesByCountry'])->name('countries.cities');
         Route::patch('/businesses/{business}/status', [Admin\BusinessController::class, 'updateStatus'])->name('businesses.update-status');
