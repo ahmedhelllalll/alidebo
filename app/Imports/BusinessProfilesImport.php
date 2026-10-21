@@ -74,6 +74,10 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         'image_12',
     ];
 
+    public const MAX_IMAGE_SIZE = 5242880; // 5MB limit
+    public const IMAGE_TIMEOUT = 10;        // 10s total timeout
+    public const IMAGE_CONNECT_TIMEOUT = 5; // 5s connection timeout
+
     private $adminEmail;
     private $adminId;
     private $importId;
@@ -129,23 +133,23 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         $cities = City::all();
         $countries = Country::all();
 
-        foreach ($rows as $row) {
-            // Skip entirely blank rows (e.g. empty rows in pre-formatted templates)
-            $rowArray = $row->toArray();
-            $hasAnyContent = false;
-            foreach ($rowArray as $cellVal) {
-                if ($cellVal !== null && trim((string)$cellVal) !== '') {
-                    $hasAnyContent = true;
-                    break;
-                }
-            }
-            if (!$hasAnyContent) {
-                continue;
-            }
-
-            Cache::increment("import_stats_{$this->importId}_total");
-
+        foreach ($rows as $rowIndex => $row) {
             try {
+                // Skip entirely blank rows (e.g. empty rows in pre-formatted templates)
+                $rowArray = $row->toArray();
+                $hasAnyContent = false;
+                foreach ($rowArray as $cellVal) {
+                    if ($cellVal !== null && trim((string)$cellVal) !== '') {
+                        $hasAnyContent = true;
+                        break;
+                    }
+                }
+                if (!$hasAnyContent) {
+                    continue;
+                }
+
+                Cache::increment("import_stats_{$this->importId}_total");
+
                 DB::transaction(function () use ($row, &$newCats, &$legacyCats, &$cities, &$countries) {
                     // 1. Validate Company Name (Mandatory)
                     $companyName = $this->getValueByHeaderName($row, 'company_name');
@@ -240,7 +244,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                             // Logo re-download rule: only update if valid URL and changed
                             if ($logoUrl && filter_var($logoUrl, FILTER_VALIDATE_URL)) {
                                 if ($logoUrl !== $existing->logo_url && $logoUrl !== $existing->logo) {
-                                    $newLogo = $this->downloadAndStoreImage($logoUrl, 'logos');
+                                    $newLogo = $this->downloadAndStoreImage($logoUrl, 'logos', $companyName);
                                     if ($newLogo) {
                                         if ($existing->logo) {
                                             Storage::disk($existing->disk ?: $this->disk)->delete($existing->logo);
@@ -253,7 +257,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                             // Cover re-download rule: only update if valid URL and changed
                             if ($coverUrl && filter_var($coverUrl, FILTER_VALIDATE_URL)) {
                                 if ($coverUrl !== $existing->cover_url && $coverUrl !== $existing->cover) {
-                                    $newCover = $this->downloadAndStoreImage($coverUrl, 'covers');
+                                    $newCover = $this->downloadAndStoreImage($coverUrl, 'covers', $companyName);
                                     if ($newCover) {
                                         if ($existing->cover) {
                                             Storage::disk($existing->disk ?: $this->disk)->delete($existing->cover);
@@ -274,7 +278,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                                         Storage::disk($existingMedia->disk ?: $this->disk)->delete($existingMedia->file_path);
                                         $existingMedia->delete();
                                     }
-                                    $path = $this->downloadAndStoreImage($imgUrl, 'gallery');
+                                    $path = $this->downloadAndStoreImage($imgUrl, 'gallery', $companyName);
                                     if ($path) {
                                         BusinessMedia::create([
                                             'business_profile_id' => $existing->id,
@@ -354,10 +358,10 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
                         // Process Logo & Cover
                         if ($logoUrl && filter_var($logoUrl, FILTER_VALIDATE_URL)) {
-                            $profile->logo = $this->downloadAndStoreImage($logoUrl, 'logos');
+                            $profile->logo = $this->downloadAndStoreImage($logoUrl, 'logos', $companyName);
                         }
                         if ($coverUrl && filter_var($coverUrl, FILTER_VALIDATE_URL)) {
-                            $profile->cover = $this->downloadAndStoreImage($coverUrl, 'covers');
+                            $profile->cover = $this->downloadAndStoreImage($coverUrl, 'covers', $companyName);
                         }
                         $profile->save();
 
@@ -365,7 +369,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         for ($i = 1; $i <= 12; $i++) {
                             $imgUrl = $this->getValueByHeaderName($row, "image_{$i}");
                             if ($imgUrl && filter_var($imgUrl, FILTER_VALIDATE_URL)) {
-                                $path = $this->downloadAndStoreImage($imgUrl, 'gallery');
+                                $path = $this->downloadAndStoreImage($imgUrl, 'gallery', $companyName);
                                 if ($path) {
                                     BusinessMedia::create([
                                         'business_profile_id' => $profile->id,
@@ -384,9 +388,16 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         BusinessImportBatch::where('id', $this->batchId)->increment('imported_rows');
                     }
                 });
-            } catch (\Exception $e) {
-                $this->recordRejectedRow($row, "System Exception: " . $e->getMessage(), 'ERR_SYSTEM_EXCEPTION');
-                Log::error("Excel Import Row Failed: " . $e->getMessage(), ['exception' => $e]);
+            } catch (\Throwable $e) {
+                $errorMsg = "Fatal/System Error: " . $e->getMessage();
+                Log::error("Excel Import Row Fatal Failure: " . $e->getMessage(), [
+                    'row_index' => $rowIndex,
+                    'exception' => $e,
+                    'file'      => $e->getFile(),
+                    'line'      => $e->getLine(),
+                ]);
+                $this->recordRejectedRow($row, $errorMsg, 'ERR_FATAL_ROW');
+                continue;
             }
         }
     }
@@ -669,30 +680,128 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         return $city->id;
     }
 
-    private function downloadAndStoreImage($url, $folder)
+    private function downloadAndStoreImage($url, string $folder, ?string $companyName = null): ?string
     {
-        if ($this->isDryRun) {
+        if ($this->isDryRun || empty($url)) {
+            return null;
+        }
+
+        $url = trim($url);
+        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
             return null;
         }
 
         try {
-            $response = Http::timeout(5)->get($url);
-            if ($response->successful()) {
-                $extension = 'jpg';
-                $contentType = $response->header('Content-Type');
-                if (str_contains($contentType, 'png'))
-                    $extension = 'png';
-                elseif (str_contains($contentType, 'webp'))
-                    $extension = 'webp';
+            // 1. HEAD request check to abort huge files before download
+            try {
+                $head = Http::timeout(self::IMAGE_CONNECT_TIMEOUT)
+                    ->connectTimeout(self::IMAGE_CONNECT_TIMEOUT)
+                    ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; AlideboBot/1.0)'])
+                    ->head($url);
 
-                $filename = 'businesses/' . $folder . '/' . Str::uuid() . '.' . $extension;
-                Storage::disk($this->disk)->put($filename, $response->body());
-                return $filename;
+                if ($head->successful()) {
+                    $contentLength = $head->header('Content-Length');
+                    if ($contentLength !== null && is_numeric($contentLength) && (int)$contentLength > self::MAX_IMAGE_SIZE) {
+                        $sizeMb = round(((int)$contentLength) / (1024 * 1024), 2);
+                        $msg = "Image skipped: size ({$sizeMb}MB) exceeds 5MB limit for URL: {$url}";
+                        Log::warning($msg);
+                        if ($companyName) {
+                            $this->logWarning($msg, $companyName);
+                        }
+                        return null;
+                    }
+                }
+            } catch (\Throwable $headEx) {
+                // Some servers reject HEAD requests; fallback to streaming GET
+                Log::debug("HEAD request skipped for image {$url}: " . $headEx->getMessage());
             }
-        } catch (\Exception $e) {
-            Log::warning("Failed to download image during import: {$url} - {$e->getMessage()}");
+
+            // 2. Stream GET with abort callback if size exceeds 5MB
+            $response = Http::timeout(self::IMAGE_TIMEOUT)
+                ->connectTimeout(self::IMAGE_CONNECT_TIMEOUT)
+                ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; AlideboBot/1.0)'])
+                ->withOptions([
+                    'progress' => function ($downloadTotal, $downloadedNow) use ($url) {
+                        if (($downloadTotal > self::MAX_IMAGE_SIZE) || ($downloadedNow > self::MAX_IMAGE_SIZE)) {
+                            throw new \RuntimeException("Image exceeded maximum 5MB size limit ({$downloadedNow} bytes downloaded): {$url}");
+                        }
+                    },
+                ])
+                ->get($url);
+
+            if (!$response->successful()) {
+                Log::warning("Image download failed with status {$response->status()} for URL: {$url}");
+                return null;
+            }
+
+            $body = $response->body();
+            if (empty($body) || strlen($body) > self::MAX_IMAGE_SIZE) {
+                return null;
+            }
+
+            // 3. Inspect MIME type (magic bytes) & URL extension
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($body);
+            $contentType = strtolower($response->header('Content-Type') ?? '');
+
+            $urlPath = parse_url($url, PHP_URL_PATH);
+            $urlExt = strtolower(pathinfo($urlPath ?? '', PATHINFO_EXTENSION));
+
+            $allowedMimes = [
+                'image/webp'      => 'webp',
+                'image/x-webp'    => 'webp',
+                'image/jpeg'      => 'jpg',
+                'image/jpg'       => 'jpg',
+                'image/pjpeg'     => 'jpg',
+                'image/png'       => 'png',
+                'image/x-png'     => 'png',
+                'image/gif'       => 'gif',
+                'image/svg+xml'   => 'svg',
+                'image/svg'       => 'svg',
+                'image/avif'      => 'avif',
+                'image/bmp'       => 'bmp',
+                'image/x-ms-bmp'  => 'bmp',
+            ];
+
+            $extension = null;
+            if (isset($allowedMimes[$mimeType])) {
+                $extension = $allowedMimes[$mimeType];
+            } elseif (str_contains($contentType, 'webp') || $urlExt === 'webp') {
+                $extension = 'webp';
+            } elseif (str_contains($contentType, 'png') || $urlExt === 'png') {
+                $extension = 'png';
+            } elseif (str_contains($contentType, 'jpeg') || str_contains($contentType, 'jpg') || in_array($urlExt, ['jpg', 'jpeg'])) {
+                $extension = 'jpg';
+            } elseif (str_contains($contentType, 'gif') || $urlExt === 'gif') {
+                $extension = 'gif';
+            } elseif (str_contains($contentType, 'svg') || $urlExt === 'svg') {
+                $extension = 'svg';
+            } elseif (str_contains($contentType, 'avif') || $urlExt === 'avif') {
+                $extension = 'avif';
+            }
+
+            if (!$extension) {
+                $msg = "Image skipped: unsupported or non-image format (mime: {$mimeType}) for URL: {$url}";
+                Log::warning($msg);
+                if ($companyName) {
+                    $this->logWarning($msg, $companyName);
+                }
+                return null;
+            }
+
+            // 4. Store safely to configured disk
+            $filename = 'businesses/' . $folder . '/' . Str::uuid() . '.' . $extension;
+            Storage::disk($this->disk)->put($filename, $body);
+
+            return $filename;
+        } catch (\Throwable $e) {
+            $msg = "Image processing/download failed for {$url}: " . $e->getMessage();
+            Log::warning($msg);
+            if ($companyName) {
+                $this->logWarning($msg, $companyName);
+            }
+            return null;
         }
-        return null;
     }
 
     /**
@@ -805,50 +914,58 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
      */
     private function recordRejectedRow($row, string $reason, string $errorCode = 'ERR_REJECTED'): void
     {
-        Cache::increment("import_stats_{$this->importId}_skipped");
+        try {
+            Cache::increment("import_stats_{$this->importId}_skipped");
 
-        if ($this->batchId) {
-            BusinessImportBatch::where('id', $this->batchId)->increment('skipped_rows');
+            if ($this->batchId) {
+                BusinessImportBatch::where('id', $this->batchId)->increment('skipped_rows');
 
-            // 1. Error Log
-            $logPath = "imports/errors/batch_{$this->batchId}.txt";
-            $companyName = $this->getValueByHeaderName($row, 'company_name') ?: 'Unknown';
-            $logEntry = "[REJECTED] Code: {$errorCode} | Company: '{$companyName}' | Reason: {$reason}\n";
-            Storage::disk('local')->append($logPath, $logEntry);
+                // 1. Error Log
+                $logPath = "imports/errors/batch_{$this->batchId}.txt";
+                $companyName = $this->getValueByHeaderName($row, 'company_name') ?: 'Unknown';
+                $logEntry = "[REJECTED] Code: {$errorCode} | Company: '{$companyName}' | Reason: {$reason}\n";
+                Storage::disk('local')->append($logPath, $logEntry);
 
-            // 2. Rejected CSV Output
-            $rejectedPath = "imports/rejected/batch_{$this->batchId}_rejected.csv";
-            if (!Storage::disk('local')->exists($rejectedPath)) {
+                // 2. Rejected CSV Output
+                $rejectedPath = "imports/rejected/batch_{$this->batchId}_rejected.csv";
+                if (!Storage::disk('local')->exists($rejectedPath)) {
+                    $stream = fopen('php://temp', 'r+');
+                    fwrite($stream, "\xEF\xBB\xBF"); // UTF-8 BOM for Arabic support
+                    $headersWithReason = array_merge(self::HEADERS, ['rejection_reason']);
+                    fputcsv($stream, $headersWithReason);
+                    rewind($stream);
+                    Storage::disk('local')->put($rejectedPath, stream_get_contents($stream));
+                    fclose($stream);
+                }
+
                 $stream = fopen('php://temp', 'r+');
-                fwrite($stream, "\xEF\xBB\xBF"); // UTF-8 BOM for Arabic support
-                $headersWithReason = array_merge(self::HEADERS, ['rejection_reason']);
-                fputcsv($stream, $headersWithReason);
+                $csvRow = [];
+                foreach (self::HEADERS as $header) {
+                    $csvRow[] = $this->getValueByHeaderName($row, $header);
+                }
+                $csvRow[] = $reason;
+                fputcsv($stream, $csvRow);
                 rewind($stream);
-                Storage::disk('local')->put($rejectedPath, stream_get_contents($stream));
+                Storage::disk('local')->append($rejectedPath, stream_get_contents($stream));
                 fclose($stream);
+            } else {
+                file_put_contents(storage_path('logs/import_errors.txt'), "Rejected [{$errorCode}]: {$reason}\n", FILE_APPEND);
             }
-
-            $stream = fopen('php://temp', 'r+');
-            $csvRow = [];
-            foreach (self::HEADERS as $header) {
-                $csvRow[] = $this->getValueByHeaderName($row, $header);
-            }
-            $csvRow[] = $reason;
-            fputcsv($stream, $csvRow);
-            rewind($stream);
-            Storage::disk('local')->append($rejectedPath, stream_get_contents($stream));
-            fclose($stream);
-        } else {
-            file_put_contents(storage_path('logs/import_errors.txt'), "Rejected [{$errorCode}]: {$reason}\n", FILE_APPEND);
+        } catch (\Throwable $e) {
+            Log::error("Failed to record rejected row: " . $e->getMessage(), ['exception' => $e]);
         }
     }
 
     private function logWarning(string $warning, string $companyName): void
     {
-        if ($this->batchId) {
-            $logPath = "imports/errors/batch_{$this->batchId}.txt";
-            $logEntry = "[WARNING] Company: '{$companyName}' | Notice: {$warning}\n";
-            Storage::disk('local')->append($logPath, $logEntry);
+        try {
+            if ($this->batchId) {
+                $logPath = "imports/errors/batch_{$this->batchId}.txt";
+                $logEntry = "[WARNING] Company: '{$companyName}' | Notice: {$warning}\n";
+                Storage::disk('local')->append($logPath, $logEntry);
+            }
+        } catch (\Throwable $e) {
+            Log::warning("Failed to append warning to batch error log: " . $e->getMessage());
         }
     }
 
