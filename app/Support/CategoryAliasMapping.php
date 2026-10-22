@@ -40,6 +40,19 @@ class CategoryAliasMapping
         'rd automation'                                    => [1602, 2, false], // ID 176 approved for 1602
         'مصنع القاهرة كابيتل للمطابخ و الاثاث'              => [505, 2, false], // ID 545 approved for 505
 
+        // Industrial machinery main & sub category aliases (Final_2)
+        'الآلات والمعدات الصناعية'                           => [17, 1, false],
+        'آلات ومعدات صناعية'                                => [17, 1, false],
+        'industrial machinery & equipment'                 => [17, 1, false],
+        'industrial machinery'                             => [17, 1, false],
+        'التكييف والتبريد والمصاعد'                        => [1709, 2, false],
+        'قطع غيار وتصنيع وتشغيل الماكينات'                  => [1710, 2, false],
+        'مضخات وضواغط'                                     => [1711, 2, false],
+        'معدات الأغذية والمطاعم'                           => [1712, 2, false],
+        'معدات البناء والرافعات والتأجير'                  => [1713, 2, false],
+        'معدات الزراعة والطاقة والمعدات المتخصصة'          => [1714, 2, false],
+        'معدات صناعية عامة'                                => [1715, 2, false],
+
         // Production legacy active categories
         'furniture'                                        => [5, 1, true],
         'الأثاث'                                           => [5, 1, true],
