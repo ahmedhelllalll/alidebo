@@ -12,7 +12,7 @@ class Final2CategoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->command->info("Running categories:seed-final2...");
+        $this->command->info('Running categories:seed-final2...');
         Artisan::call('categories:seed-final2', [
             '--target' => 'both',
             '--parent-mode' => 'l1-17',

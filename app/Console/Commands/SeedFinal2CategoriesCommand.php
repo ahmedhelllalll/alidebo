@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use App\Models\NewCategory;
 use App\Models\ProductCategory;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class SeedFinal2CategoriesCommand extends Command
 {
@@ -129,14 +128,14 @@ class SeedFinal2CategoriesCommand extends Command
     {
         $target = $this->option('target');
         $parentMode = $this->option('parent-mode');
-        $isDryRun = (bool)$this->option('dry-run');
+        $isDryRun = (bool) $this->option('dry-run');
 
-        $this->info("==================================================================");
-        $this->info("  Seed Industrial Machinery Subcategories from Final_2.xlsx");
-        $this->info("==================================================================");
+        $this->info('==================================================================');
+        $this->info('  Seed Industrial Machinery Subcategories from Final_2.xlsx');
+        $this->info('==================================================================');
         $this->line("Target:       <comment>{$target}</comment>");
         $this->line("Parent Mode:  <comment>{$parentMode}</comment>");
-        $this->line("Dry Run:      <comment>" . ($isDryRun ? 'YES (No DB Writes)' : 'NO (Applying Changes)') . "</comment>");
+        $this->line('Dry Run:      <comment>'.($isDryRun ? 'YES (No DB Writes)' : 'NO (Applying Changes)').'</comment>');
         $this->newLine();
 
         if ($target === 'both' || $target === 'new_categories') {
@@ -148,13 +147,14 @@ class SeedFinal2CategoriesCommand extends Command
         }
 
         $this->newLine();
-        $this->info("Operation completed successfully!");
+        $this->info('Operation completed successfully!');
+
         return Command::SUCCESS;
     }
 
     private function seedNewCategories(string $parentMode, bool $isDryRun): void
     {
-        $this->info(">>> Processing [new_categories] table...");
+        $this->info('>>> Processing [new_categories] table...');
 
         $now = now();
         $parentCategory = null;
@@ -165,7 +165,7 @@ class SeedFinal2CategoriesCommand extends Command
                 ->orWhere('slug', 'industrial-machinery-and-equipment')
                 ->first();
 
-            if (!$parentCategory) {
+            if (! $parentCategory) {
                 $maxL1Id = NewCategory::where('level', 1)->max('id') ?? 25;
                 $newL1Id = max(26, $maxL1Id + 1);
 
@@ -204,7 +204,7 @@ class SeedFinal2CategoriesCommand extends Command
                         $now
                     );
                 }
-                $parentCategory = (object)$parentData;
+                $parentCategory = (object) $parentData;
             } else {
                 $this->line("  [FOUND] Existing L1 Category ID {$parentCategory->id}: '{$parentCategory->name_ar}'");
             }
@@ -234,19 +234,19 @@ class SeedFinal2CategoriesCommand extends Command
             $existing = NewCategory::where('name_ar', $cat['name_ar'])->first();
 
             $categoryData = [
-                'parent_id'  => $parentId,
-                'level'      => 2,
-                'name_ar'    => $cat['name_ar'],
-                'name_en'    => $cat['name_en'],
-                'name_de'    => $cat['name_de'],
-                'name_es'    => $cat['name_es'],
-                'name_tr'    => $cat['name_tr'],
-                'name_zh'    => $cat['name_zh'],
-                'slug'       => $fullSlug,
+                'parent_id' => $parentId,
+                'level' => 2,
+                'name_ar' => $cat['name_ar'],
+                'name_en' => $cat['name_en'],
+                'name_de' => $cat['name_de'],
+                'name_es' => $cat['name_es'],
+                'name_tr' => $cat['name_tr'],
+                'name_zh' => $cat['name_zh'],
+                'slug' => $fullSlug,
                 'sort_order' => $idx + ($parentMode === 'l1-17' ? 8 : 0),
-                'status'     => 'active',
-                'icon'       => $cat['icon'],
-                'disk'       => 'public',
+                'status' => 'active',
+                'icon' => $cat['icon'],
+                'disk' => 'public',
                 'updated_at' => $now,
             ];
 
@@ -274,15 +274,16 @@ class SeedFinal2CategoriesCommand extends Command
 
     private function seedProductCategories(bool $isDryRun): void
     {
-        $this->info(">>> Processing [product_categories] table...");
+        $this->info('>>> Processing [product_categories] table...');
 
         $now = now();
         // Main industrial category in product_categories is ID 2: 'آلات ومعدات وقطع غيار صناعية'
         $parentId = 2;
         $parent = ProductCategory::find($parentId);
 
-        if (!$parent) {
+        if (! $parent) {
             $this->warn("  ProductCategory ID {$parentId} not found. Skipping product_categories.");
+
             return;
         }
 
@@ -298,18 +299,18 @@ class SeedFinal2CategoriesCommand extends Command
                 ->first();
 
             $data = [
-                'name_ar'    => $cat['name_ar'],
-                'name_en'    => $cat['name_en'],
-                'name_de'    => $cat['name_de'],
-                'name_es'    => $cat['name_es'],
-                'name_tr'    => $cat['name_tr'],
-                'name_zh'    => $cat['name_zh'],
-                'slug'       => $childSlug,
-                'parent_id'  => $parentId,
-                'icon'       => $cat['icon'],
-                'order'      => $idx,
-                'status'     => 'active',
-                'disk'       => 'public',
+                'name_ar' => $cat['name_ar'],
+                'name_en' => $cat['name_en'],
+                'name_de' => $cat['name_de'],
+                'name_es' => $cat['name_es'],
+                'name_tr' => $cat['name_tr'],
+                'name_zh' => $cat['name_zh'],
+                'slug' => $childSlug,
+                'parent_id' => $parentId,
+                'icon' => $cat['icon'],
+                'order' => $idx,
+                'status' => 'active',
+                'disk' => 'public',
                 'updated_at' => $now,
             ];
 
@@ -346,13 +347,13 @@ class SeedFinal2CategoriesCommand extends Command
         DB::table('seo_metadata')->updateOrInsert(
             [
                 'seoable_type' => 'category_v2',
-                'seoable_id'   => $id,
+                'seoable_id' => $id,
             ],
             [
-                'meta_title'       => json_encode($metaTitle, JSON_UNESCAPED_UNICODE),
+                'meta_title' => json_encode($metaTitle, JSON_UNESCAPED_UNICODE),
                 'meta_description' => json_encode($metaDesc, JSON_UNESCAPED_UNICODE),
-                'updated_at'       => $now,
-                'created_at'       => $now,
+                'updated_at' => $now,
+                'created_at' => $now,
             ]
         );
     }
