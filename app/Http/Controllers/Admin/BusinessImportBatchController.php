@@ -6,18 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Models\BusinessImportBatch;
 use App\Models\BusinessProfile;
 use App\Services\BusinessProfileService;
-use App\Imports\BusinessProfilesImport;
+use App\Services\BusinessImportQueueService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 
 class BusinessImportBatchController extends Controller
 {
     protected $profileService;
+    protected $queueService;
 
-    public function __construct(BusinessProfileService $profileService)
+    public function __construct(BusinessProfileService $profileService, BusinessImportQueueService $queueService)
     {
         $this->profileService = $profileService;
+        $this->queueService = $queueService;
     }
 
     public function index(Request $request)
@@ -28,6 +31,18 @@ class BusinessImportBatchController extends Controller
             ->latest()
             ->paginate(15);
 
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'batches' => $batches->items(),
+                'total' => $batches->total(),
+                'has_active' => BusinessImportBatch::whereIn('status', [
+                    BusinessImportBatch::STATUS_QUEUED,
+                    BusinessImportBatch::STATUS_PROCESSING
+                ])->exists(),
+            ]);
+        }
+
         return view('admin.import-batches.index', compact('batches'));
     }
 
@@ -35,61 +50,62 @@ class BusinessImportBatchController extends Controller
     {
         $this->authorize('create', BusinessProfile::class);
 
+        // Normalize single file to files[] array for backward compatibility
+        if ($request->hasFile('file') && !$request->hasFile('files')) {
+            $request->merge(['files' => [$request->file('file')]]);
+        }
+
         $request->validate([
-            'file' => 'required|mimes:xlsx,csv,xls|max:10240', // max 10MB
+            'files' => 'required|array|min:1|max:100',
+            'files.*' => 'required|file|mimes:xlsx,csv,xls|max:10240', // max 10MB per file
             'is_dry_run' => 'nullable|boolean',
         ]);
 
         try {
             $adminUser = auth()->user();
-            $file = $request->file('file');
+            $uploadedFiles = $request->file('files');
             $isDryRun = $request->boolean('is_dry_run', false);
-            
-            $batch = BusinessImportBatch::create([
-                'admin_id' => $adminUser->id,
-                'original_file_name' => $file->getClientOriginalName(),
-                'status' => 'processing',
-                'is_dry_run' => $isDryRun,
-            ]);
-            
-            // Store file to local disk first, so the Queue worker can safely access it via string path
-            $filePath = $file->store('imports/batches', 'local');
-            $fullPath = \Illuminate\Support\Facades\Storage::disk('local')->path($filePath);
-            $targetSheet = null;
-            try {
-                $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($fullPath);
-                if (method_exists($reader, 'listWorksheetNames')) {
-                    $sheetNames = $reader->listWorksheetNames($fullPath);
-                    if (in_array('Import Template', $sheetNames)) {
-                        $targetSheet = 'Import Template';
-                    }
+            $createdBatches = [];
+
+            DB::transaction(function () use ($uploadedFiles, $adminUser, $isDryRun, &$createdBatches) {
+                foreach ($uploadedFiles as $file) {
+                    $originalName = $file->getClientOriginalName();
+                    $filePath = $file->store('imports/batches', 'local');
+                    $targetSheet = $this->queueService->detectTargetSheet($filePath);
+
+                    $batch = BusinessImportBatch::create([
+                        'admin_id'           => $adminUser->id,
+                        'original_file_name' => $originalName,
+                        'file_path'          => $filePath,
+                        'target_sheet'       => $targetSheet,
+                        'status'             => BusinessImportBatch::STATUS_QUEUED,
+                        'is_dry_run'         => $isDryRun,
+                    ]);
+
+                    $createdBatches[] = $batch->id;
                 }
-            } catch (\Throwable $sheetEx) {
-                // Ignore and fallback to sheet index 0
-            }
+            });
 
-            try {
-                Excel::queueImport(new BusinessProfilesImport($adminUser->email, $adminUser->id, $batch->id, $isDryRun, $targetSheet), $filePath, 'local');
-            } catch (\Throwable $queueException) {
-                \Log::error('Queue Import Dispatch Failed: ' . $queueException->getMessage());
-                $batch->update(['status' => 'failed']);
-                throw $queueException;
-            }
+            // Trigger the sequential pipeline
+            $this->queueService->dispatchNext();
 
-            $message = $isDryRun
-                ? (__('admin.dry_run_started') ?? 'Dry run preview started in the background. You will receive an email upon completion.')
-                : (__('admin.import_started') ?? 'Import started in the background. You will receive an email upon completion.');
+            $totalCount = count($createdBatches);
+            $mode = $isDryRun ? 'Dry run' : 'Import';
+            $message = $totalCount === 1
+                ? "{$mode} queued successfully. Processing sequentially in the background."
+                : "{$totalCount} sheets queued successfully. Processing sequentially in the background.";
 
             return response()->json([
                 'success' => true,
                 'message' => $message,
-                'batch_id' => $batch->id,
+                'batch_ids' => $createdBatches,
+                'total_queued' => $totalCount,
             ]);
         } catch (\Throwable $e) {
-            \Log::error('Excel Import Trigger Failed: ' . $e->getMessage());
+            Log::error('Excel Bulk Import Ingestion Failed: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json([
                 'success' => false,
-                'message' => __('admin.import_failed') . ' Details: ' . $e->getMessage() . ' in ' . basename($e->getFile()) . ':' . $e->getLine()
+                'message' => __('admin.import_failed') . ' Details: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -98,20 +114,22 @@ class BusinessImportBatchController extends Controller
     {
         $this->authorize('delete', BusinessProfile::class);
 
-        // We must delete the businesses individually to trigger image deletion
-        // or we use the profile service
+        // Delete associated businesses and images
         $businesses = $importBatch->businesses()->get();
         foreach ($businesses as $business) {
-            // Delete associated images
             if ($business->logo) $this->profileService->deleteImage($business->logo, $business->disk ?? 'public');
             if ($business->cover) $this->profileService->deleteImage($business->cover, $business->disk ?? 'public');
             
-            // Delete gallery media
             foreach ($business->media as $media) {
                 $this->profileService->deleteMedia($media);
             }
             
             $business->delete();
+        }
+
+        // Delete the uploaded source excel file if exists
+        if ($importBatch->file_path && Storage::disk('local')->exists($importBatch->file_path)) {
+            Storage::disk('local')->delete($importBatch->file_path);
         }
 
         // Delete the error log file if exists
@@ -124,7 +142,13 @@ class BusinessImportBatchController extends Controller
             Storage::disk('local')->delete($importBatch->rejected_file_path);
         }
 
+        $wasProcessing = $importBatch->isProcessing();
         $importBatch->delete();
+
+        // If the deleted batch was currently processing, advance the pipeline
+        if ($wasProcessing) {
+            $this->queueService->dispatchNext();
+        }
 
         return response()->json([
             'success' => true,

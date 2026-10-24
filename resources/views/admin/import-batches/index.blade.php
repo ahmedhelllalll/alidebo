@@ -31,7 +31,7 @@
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-white/[0.02]">
                     @forelse($batches as $batch)
-                        <tr class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/20 transition-colors group">
+                        <tr id="batch-row-{{ $batch->id }}" class="hover:bg-slate-50/50 dark:hover:bg-zinc-800/20 transition-colors group">
                             <td class="px-5 py-4 text-sm font-bold text-slate-800 dark:text-zinc-200">#{{ $batch->id }}</td>
                             <td class="px-5 py-4">
                                 <div class="flex flex-col">
@@ -46,21 +46,21 @@
                                 <div class="flex items-center gap-3">
                                     <div class="flex flex-col items-center" title="{{ __('admin.total_rows') ?? 'Total' }}">
                                         <span class="text-[10px] uppercase font-bold text-slate-400">Total</span>
-                                        <span class="text-sm font-bold text-slate-700 dark:text-zinc-300">{{ $batch->total_rows }}</span>
+                                        <span id="batch-total-{{ $batch->id }}" class="text-sm font-bold text-slate-700 dark:text-zinc-300">{{ $batch->total_rows }}</span>
                                     </div>
                                     <div class="flex flex-col items-center" title="{{ __('admin.imported_rows') ?? 'Created' }}">
                                         <span class="text-[10px] uppercase font-bold text-emerald-500">Created</span>
-                                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400">{{ $batch->imported_rows }}</span>
+                                        <span id="batch-imported-{{ $batch->id }}" class="text-sm font-bold text-emerald-600 dark:text-emerald-400">{{ $batch->imported_rows }}</span>
                                     </div>
                                     @if($batch->updated_rows > 0)
                                     <div class="flex flex-col items-center" title="{{ __('admin.updated_rows') ?? 'Updated' }}">
                                         <span class="text-[10px] uppercase font-bold text-blue-500">Updated</span>
-                                        <span class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ $batch->updated_rows }}</span>
+                                        <span id="batch-updated-{{ $batch->id }}" class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ $batch->updated_rows }}</span>
                                     </div>
                                     @endif
                                     <div class="flex flex-col items-center" title="{{ __('admin.skipped_rows') ?? 'Skipped' }}">
                                         <span class="text-[10px] uppercase font-bold text-red-400">Failed</span>
-                                        <span class="text-sm font-bold text-red-500 dark:text-red-400">{{ $batch->skipped_rows }}</span>
+                                        <span id="batch-skipped-{{ $batch->id }}" class="text-sm font-bold text-red-500 dark:text-red-400">{{ $batch->skipped_rows }}</span>
                                     </div>
                                 </div>
                             </td>
@@ -71,19 +71,25 @@
                                             <i class="fa-solid fa-flask text-[9px]"></i> {{ __('admin.dry_run') ?? 'Dry Run' }}
                                         </span>
                                     @endif
-                                    @if($batch->status === 'completed')
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20">
-                                            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> {{ __('admin.completed') ?? 'Completed' }}
-                                        </span>
-                                    @elseif($batch->status === 'processing')
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-500/20">
-                                            <div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div> {{ __('admin.processing') ?? 'Processing' }}
-                                        </span>
-                                    @else
-                                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-500/20">
-                                            <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div> {{ __('admin.failed') ?? 'Failed' }}
-                                        </span>
-                                    @endif
+                                    <div id="batch-status-{{ $batch->id }}">
+                                        @if($batch->status === 'completed')
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20">
+                                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> {{ __('admin.completed') ?? 'Completed' }}
+                                            </span>
+                                        @elseif($batch->status === 'processing')
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-500/20">
+                                                <div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div> {{ __('admin.processing') ?? 'Processing' }}
+                                            </span>
+                                        @elseif($batch->status === 'queued')
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200/50 dark:border-amber-500/20">
+                                                <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div> {{ __('admin.queued') ?? 'Queued' }}
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-500/20">
+                                                <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div> {{ __('admin.failed') ?? 'Failed' }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-5 py-4 text-end">
@@ -154,67 +160,95 @@
     </x-slot>
 </x-admin.modal>
 
-<x-admin.modal id="importExcelModal" title="{{ __('admin.new_import') ?? 'New Import' }}" width="max-w-md">
+<x-admin.modal id="importExcelModal" title="{{ __('admin.new_import') ?? 'New Bulk Import' }}" width="max-w-xl">
     <div class="p-6 space-y-4">
         <div class="p-4 bg-emerald-50 dark:bg-emerald-500/10 rounded-2xl border border-emerald-100 dark:border-emerald-500/20">
             <p class="text-xs text-emerald-600 dark:text-emerald-400 font-bold leading-relaxed">
-                {{ __('admin.import_instructions') ?? 'Upload an Excel or CSV file. The process will run in the background and you will receive an email upon completion.' }}
+                {{ __('admin.import_instructions') ?? 'Upload one or multiple Excel / CSV files (up to 100 sheets). Batches are queued and executed sequentially in the background to ensure minimal server resource usage.' }}
             </p>
         </div>
         <div x-data="{
-                fileName: '',
-                fileSize: '',
+                files: [],
                 isDragging: false,
-                handleFileChange(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        this.fileName = file.name;
-                        this.fileSize = (file.size / 1024 / 1024).toFixed(2) + ' MB';
-                    } else {
-                        this.fileName = '';
-                        this.fileSize = '';
-                    }
+                handleFiles(fileList) {
+                    const incoming = Array.from(fileList);
+                    incoming.forEach(f => {
+                        if (!this.files.some(existing => existing.name === f.name && existing.size === f.size)) {
+                            this.files.push(f);
+                        }
+                    });
+                    this.syncInput();
                 },
-                removeFile() {
-                    this.fileName = '';
-                    this.fileSize = '';
-                    document.getElementById('import_file').value = '';
+                removeFile(index) {
+                    this.files.splice(index, 1);
+                    this.syncInput();
+                },
+                clearAll() {
+                    this.files = [];
+                    this.syncInput();
+                },
+                syncInput() {
+                    const dt = new DataTransfer();
+                    this.files.forEach(f => dt.items.add(f));
+                    const input = document.getElementById('import_files');
+                    if (input) input.files = dt.files;
+                },
+                formatSize(bytes) {
+                    if (!bytes) return '0 B';
+                    const k = 1024;
+                    const sizes = ['B', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+                },
+                totalSize() {
+                    const total = this.files.reduce((acc, f) => acc + f.size, 0);
+                    return this.formatSize(total);
                 }
             }">
             
-            <input type="file" id="import_file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" @change="handleFileChange">
+            <input type="file" id="import_files" name="files[]" multiple accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" class="hidden" @change="handleFiles($event.target.files)">
 
             <!-- Drop Zone / Upload Card -->
-            <div x-show="!fileName"
-                 class="mt-4 border-2 border-dashed border-slate-300 dark:border-zinc-700 rounded-2xl p-8 flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/5 transition-all text-center group"
+            <div class="mt-4 border-2 border-dashed border-slate-300 dark:border-zinc-700 rounded-2xl p-6 flex flex-col items-center justify-center cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/5 transition-all text-center group"
                  :class="{ 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/5': isDragging }"
                  @dragover.prevent="isDragging = true"
                  @dragleave.prevent="isDragging = false"
-                 @drop.prevent="isDragging = false; document.getElementById('import_file').files = $event.dataTransfer.files; document.getElementById('import_file').dispatchEvent(new Event('change'))"
-                 @click="document.getElementById('import_file').click()">
+                 @drop.prevent="isDragging = false; handleFiles($event.dataTransfer.files)"
+                 @click="document.getElementById('import_files').click()">
                 
-                <div class="w-14 h-14 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mb-4 transition-transform group-hover:scale-110">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mb-3 transition-transform group-hover:scale-110">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                 </div>
-                <h3 class="text-[14px] font-[900] text-slate-700 dark:text-zinc-200">{{ __('admin.click_to_upload') ?? 'Click to upload or drag & drop' }}</h3>
-                <p class="text-xs font-semibold text-slate-500 dark:text-zinc-500 mt-1">{{ __('admin.accepted_formats') ?? 'Accepted formats: .xlsx, .csv' }}</p>
+                <h3 class="text-[14px] font-[900] text-slate-700 dark:text-zinc-200">{{ __('admin.click_to_upload') ?? 'Click to upload files or drag & drop' }}</h3>
+                <p class="text-xs font-semibold text-slate-500 dark:text-zinc-500 mt-1">Multi-file support: select up to 100 sheets (.xlsx, .csv)</p>
             </div>
 
-            <!-- Selected File Preview -->
-            <div x-show="fileName" style="display: none;" class="mt-4 p-4 bg-white dark:bg-zinc-800 border-2 border-emerald-200 dark:border-emerald-500/30 rounded-2xl flex items-center justify-between shadow-sm">
-                <div class="flex items-center gap-4 overflow-hidden">
-                    <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center shrink-0">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                    <div class="min-w-0">
-                        <p class="text-[14px] font-[900] text-slate-700 dark:text-zinc-200 truncate" x-text="fileName"></p>
-                        <p class="text-[12px] font-semibold text-slate-500 dark:text-zinc-500 mt-0.5" x-text="fileSize"></p>
-                    </div>
+            <!-- Selected Files List -->
+            <div x-show="files.length > 0" style="display: none;" class="mt-4 space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-zinc-300 px-1">
+                    <span><span class="text-emerald-600 dark:text-emerald-400 font-extrabold" x-text="files.length"></span> files queued (<span x-text="totalSize()"></span>)</span>
+                    <button type="button" @click="clearAll()" class="text-rose-500 hover:text-rose-600 transition-colors">Clear All</button>
                 </div>
-                <button type="button" @click.stop="removeFile()" class="p-2.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-colors shrink-0" title="Remove File">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
+                <div class="max-h-44 overflow-y-auto custom-scrollbar space-y-2 pr-1">
+                    <template x-for="(file, index) in files" :key="index">
+                        <div class="p-2.5 bg-white dark:bg-zinc-800 border border-slate-200/80 dark:border-white/5 rounded-xl flex items-center justify-between shadow-xs">
+                            <div class="flex items-center gap-3 overflow-hidden min-w-0">
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-xs font-bold text-slate-700 dark:text-zinc-200 truncate" x-text="file.name"></p>
+                                    <p class="text-[10px] font-semibold text-slate-400" x-text="formatSize(file.size)"></p>
+                                </div>
+                            </div>
+                            <button type="button" @click.stop="removeFile(index)" class="p-1 text-slate-400 hover:text-rose-500 transition-colors shrink-0" title="Remove">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                    </template>
+                </div>
             </div>
+
             <!-- Dry Run Mode Option -->
             <div class="mt-4 p-3.5 bg-slate-50 dark:bg-zinc-800/60 rounded-2xl border border-slate-200/70 dark:border-white/5 flex items-start gap-3 cursor-pointer" onclick="document.getElementById('is_dry_run').click()">
                 <input type="checkbox" id="is_dry_run" name="is_dry_run" value="1" class="mt-0.5 w-4 h-4 text-emerald-500 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer" onclick="event.stopPropagation()">
@@ -227,7 +261,7 @@
     </div>
     <x-slot name="footer">
         <button id="submitImportBtn" onclick="submitImport()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-sm transition-all shadow-lg shadow-emerald-500/20">
-            {{ __('admin.start_import') ?? 'Start Import' }}
+            {{ __('admin.start_import') ?? 'Start Bulk Import' }}
         </button>
     </x-slot>
 </x-admin.modal>
@@ -283,29 +317,32 @@
     window.closeModal = (id) => window.modals[id]?.hide();
 
     function openImportModal() {
-        document.getElementById('import_file').value = '';
+        const fileInput = document.getElementById('import_files');
+        if (fileInput) fileInput.value = '';
         const dryRunCb = document.getElementById('is_dry_run');
         if (dryRunCb) dryRunCb.checked = false;
         window.modals?.importExcelModal?.show() || document.getElementById('importExcelModal').classList.remove('hidden');
     }
 
     async function submitImport() {
-        const fileInput = document.getElementById('import_file');
+        const fileInput = document.getElementById('import_files');
         const btn = document.getElementById('submitImportBtn');
-        if (!fileInput.files.length) {
-            if (typeof showToast !== 'undefined') showToast('error', 'Please select a file first.');
+        if (!fileInput || !fileInput.files.length) {
+            if (typeof showToast !== 'undefined') showToast('error', 'Please select at least one file.');
             return;
         }
 
         const formData = new FormData();
-        formData.append('file', fileInput.files[0]);
+        for (let i = 0; i < fileInput.files.length; i++) {
+            formData.append('files[]', fileInput.files[i]);
+        }
         const dryRunCb = document.getElementById('is_dry_run');
         if (dryRunCb && dryRunCb.checked) {
             formData.append('is_dry_run', '1');
         }
 
         const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Processing...';
+        btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i> Queuing sheets...';
         btn.disabled = true;
 
         try {
@@ -321,7 +358,7 @@
             if (res.success) {
                 if (typeof showToast !== 'undefined') showToast('success', res.message);
                 window.modals?.importExcelModal?.hide();
-                setTimeout(() => window.location.reload(), 1500);
+                setTimeout(() => window.location.reload(), 1200);
             } else {
                 if (typeof showToast !== 'undefined') showToast('error', res.message || 'Error starting import');
             }
@@ -350,7 +387,7 @@
             })).json();
             if (res.success) {
                 if (typeof showToast !== 'undefined') showToast('success', res.message);
-                setTimeout(() => window.location.reload(), 1500);
+                setTimeout(() => window.location.reload(), 1200);
             }
         } catch (e) { 
             if (typeof showToast !== 'undefined') showToast('error', '{{ __("admin.deletion_failed") ?? "Deletion Failed" }}'); 
@@ -362,8 +399,66 @@
         }
     }
 
+    let pollInterval = null;
+    function startPollingIfActive() {
+        const activeRows = document.querySelectorAll('[id^="batch-status-"]');
+        let hasActive = false;
+        activeRows.forEach(el => {
+            const text = el.innerText || '';
+            if (text.includes('Processing') || text.includes('Queued')) {
+                hasActive = true;
+            }
+        });
+
+        if (!hasActive) return;
+
+        if (pollInterval) clearInterval(pollInterval);
+        pollInterval = setInterval(async () => {
+            try {
+                const res = await (await fetch(`${window.AppConfig.adminUrl}/import-batches`, {
+                    headers: { 'Accept': 'application/json' }
+                })).json();
+
+                if (res.success && res.batches) {
+                    res.batches.forEach(b => {
+                        const totalEl = document.getElementById(`batch-total-${b.id}`);
+                        const importedEl = document.getElementById(`batch-imported-${b.id}`);
+                        const updatedEl = document.getElementById(`batch-updated-${b.id}`);
+                        const skippedEl = document.getElementById(`batch-skipped-${b.id}`);
+                        const statusEl = document.getElementById(`batch-status-${b.id}`);
+
+                        if (totalEl) totalEl.innerText = b.total_rows;
+                        if (importedEl) importedEl.innerText = b.imported_rows;
+                        if (updatedEl) updatedEl.innerText = b.updated_rows;
+                        if (skippedEl) skippedEl.innerText = b.skipped_rows;
+
+                        if (statusEl) {
+                            if (b.status === 'completed') {
+                                statusEl.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200/50 dark:border-emerald-500/20"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> {{ __('admin.completed') ?? 'Completed' }}</span>`;
+                            } else if (b.status === 'processing') {
+                                statusEl.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-200/50 dark:border-blue-500/20"><div class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></div> {{ __('admin.processing') ?? 'Processing' }}</span>`;
+                            } else if (b.status === 'queued') {
+                                statusEl.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200/50 dark:border-amber-500/20"><div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div> {{ __('admin.queued') ?? 'Queued' }}</span>`;
+                            } else {
+                                statusEl.innerHTML = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200/50 dark:border-red-500/20"><div class="w-1.5 h-1.5 rounded-full bg-red-500"></div> {{ __('admin.failed') ?? 'Failed' }}</span>`;
+                            }
+                        }
+                    });
+
+                    if (!res.has_active) {
+                        clearInterval(pollInterval);
+                        pollInterval = null;
+                    }
+                }
+            } catch (err) {
+                // Ignore transient network hiccups during polling
+            }
+        }, 7000);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         initModals();
+        startPollingIfActive();
         if (typeof gsap !== 'undefined') {
             gsap.from('.dashboard-header-reveal', { y: -20, opacity: 0, duration: 0.6, ease: "power3.out" });
             gsap.from('.list-card', { y: 30, opacity: 0, duration: 0.7, ease: "power3.out", delay: 0.1 });

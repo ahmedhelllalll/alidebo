@@ -9,6 +9,7 @@ use App\Models\NewCategory;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\BusinessImportBatch;
+use App\Services\BusinessImportQueueService;
 use App\Services\DataNormalizationService;
 use App\Mail\ImportCompleted;
 use App\Support\CategoryAliasMapping;
@@ -75,8 +76,11 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
     ];
 
     public const MAX_IMAGE_SIZE = 5242880; // 5MB limit
-    public const IMAGE_TIMEOUT = 10;        // 10s total timeout
-    public const IMAGE_CONNECT_TIMEOUT = 5; // 5s connection timeout
+    public const IMAGE_TIMEOUT = 5;        // 5s total timeout
+    public const IMAGE_CONNECT_TIMEOUT = 3; // 3s connection timeout
+
+    public string $queue = BusinessImportQueueService::QUEUE_NAME;
+    public $timeout = 1800; // 30 minutes to prevent chunk timeout
 
     private $adminEmail;
     private $adminId;
@@ -87,7 +91,9 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
     private $isDryRun;
     private $targetSheet;
 
-    public $timeout = 1800; // 30 minutes to prevent chunk timeout
+    private int $chunkImported = 0;
+    private int $chunkUpdated = 0;
+    private int $chunkSkipped = 0;
 
     public function __construct($adminEmail, $adminId = null, $batchId = null, bool $isDryRun = false, ?string $targetSheet = null)
     {
@@ -132,6 +138,10 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         $newCats = NewCategory::all()->keyBy('id');
         $cities = City::all();
         $countries = Country::all();
+
+        $this->chunkImported = 0;
+        $this->chunkUpdated = 0;
+        $this->chunkSkipped = 0;
 
         foreach ($rows as $rowIndex => $row) {
             try {
@@ -295,9 +305,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         }
 
                         Cache::increment("import_stats_{$this->importId}_updated");
-                        if ($this->batchId) {
-                            BusinessImportBatch::where('id', $this->batchId)->increment('updated_rows');
-                        }
+                        $this->chunkUpdated++;
                         return;
                     }
 
@@ -339,10 +347,31 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
                     // Create Profile
                     if (!$this->isDryRun) {
+                        // Idempotency check: if chunk retried, avoid duplicate creation in same batch
+                        if ($this->batchId) {
+                            $existingInBatch = BusinessProfile::where('import_batch_id', $this->batchId)
+                                ->where('name', $companyName)
+                                ->first();
+                            if ($existingInBatch) {
+                                Cache::increment("import_stats_{$this->importId}_imported");
+                                $this->chunkImported++;
+                                return;
+                            }
+                        }
+
+                        $baseSlug = Str::slug($companyName);
+                        if (empty($baseSlug)) {
+                            $baseSlug = 'business-' . Str::lower(Str::random(6));
+                        }
+                        $slug = $baseSlug . '-' . Str::lower(Str::random(5));
+                        while (BusinessProfile::where('slug', $slug)->exists()) {
+                            $slug = $baseSlug . '-' . Str::lower(Str::random(8));
+                        }
+
                         $profile = BusinessProfile::create([
                             'user_id' => $this->adminId,
                             'name' => $companyName,
-                            'slug' => Str::slug($companyName . '-' . Str::random(5)),
+                            'slug' => $slug,
                             'description' => $description,
                             'address' => $address,
                             'category_id' => $catRes['legacy_id'],
@@ -384,9 +413,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                     }
 
                     Cache::increment("import_stats_{$this->importId}_imported");
-                    if ($this->batchId) {
-                        BusinessImportBatch::where('id', $this->batchId)->increment('imported_rows');
-                    }
+                    $this->chunkImported++;
                 });
             } catch (\Throwable $e) {
                 $errorMsg = "Fatal/System Error: " . $e->getMessage();
@@ -399,6 +426,26 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                 $this->recordRejectedRow($row, $errorMsg, 'ERR_FATAL_ROW');
                 continue;
             }
+        }
+
+        // Flush chunk stats to database in a single atomic update
+        if ($this->batchId && ($this->chunkImported > 0 || $this->chunkUpdated > 0 || $this->chunkSkipped > 0)) {
+            BusinessImportBatch::where('id', $this->batchId)->update([
+                'imported_rows' => DB::raw("imported_rows + {$this->chunkImported}"),
+                'updated_rows'  => DB::raw("updated_rows + {$this->chunkUpdated}"),
+                'skipped_rows'  => DB::raw("skipped_rows + {$this->chunkSkipped}"),
+                'total_rows'    => DB::raw("total_rows + " . ($this->chunkImported + $this->chunkUpdated + $this->chunkSkipped)),
+                'updated_at'    => now(),
+            ]);
+        }
+
+        $this->chunkImported = 0;
+        $this->chunkUpdated = 0;
+        $this->chunkSkipped = 0;
+
+        unset($rows, $legacyCats, $newCats, $cities, $countries);
+        if (function_exists('gc_collect_cycles')) {
+            gc_collect_cycles();
         }
     }
 
@@ -692,31 +739,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         }
 
         try {
-            // 1. HEAD request check to abort huge files before download
-            try {
-                $head = Http::timeout(self::IMAGE_CONNECT_TIMEOUT)
-                    ->connectTimeout(self::IMAGE_CONNECT_TIMEOUT)
-                    ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; AlideboBot/1.0)'])
-                    ->head($url);
-
-                if ($head->successful()) {
-                    $contentLength = $head->header('Content-Length');
-                    if ($contentLength !== null && is_numeric($contentLength) && (int)$contentLength > self::MAX_IMAGE_SIZE) {
-                        $sizeMb = round(((int)$contentLength) / (1024 * 1024), 2);
-                        $msg = "Image skipped: size ({$sizeMb}MB) exceeds 5MB limit for URL: {$url}";
-                        Log::warning($msg);
-                        if ($companyName) {
-                            $this->logWarning($msg, $companyName);
-                        }
-                        return null;
-                    }
-                }
-            } catch (\Throwable $headEx) {
-                // Some servers reject HEAD requests; fallback to streaming GET
-                Log::debug("HEAD request skipped for image {$url}: " . $headEx->getMessage());
-            }
-
-            // 2. Stream GET with abort callback if size exceeds 5MB
+            // Stream GET with abort callback if size exceeds 5MB
             $response = Http::timeout(self::IMAGE_TIMEOUT)
                 ->connectTimeout(self::IMAGE_CONNECT_TIMEOUT)
                 ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; AlideboBot/1.0)'])
@@ -736,6 +759,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
             $body = $response->body();
             if (empty($body) || strlen($body) > self::MAX_IMAGE_SIZE) {
+                unset($body);
                 return null;
             }
 
@@ -916,9 +940,9 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
     {
         try {
             Cache::increment("import_stats_{$this->importId}_skipped");
+            $this->chunkSkipped++;
 
             if ($this->batchId) {
-                BusinessImportBatch::where('id', $this->batchId)->increment('skipped_rows');
 
                 // 1. Error Log
                 $logPath = "imports/errors/batch_{$this->batchId}.txt";
@@ -1001,7 +1025,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
                 if ($this->batchId) {
                     BusinessImportBatch::where('id', $this->batchId)->update([
-                        'status'             => 'completed',
+                        'status'             => BusinessImportBatch::STATUS_COMPLETED,
                         'total_rows'         => $stats['total'],
                         'imported_rows'      => $stats['imported'],
                         'updated_rows'       => $stats['updated'],
@@ -1027,12 +1051,26 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                 Cache::forget("import_stats_{$this->importId}_flagged");
                 Cache::forget("import_stats_{$this->importId}_new_categories");
                 Cache::forget("import_stats_{$this->importId}_new_cities");
+
+                // Trigger next batch in line
+                try {
+                    app(BusinessImportQueueService::class)->dispatchNext();
+                } catch (\Throwable $dispatchEx) {
+                    Log::error("Failed to dispatch next batch after batch #{$this->batchId} completion: " . $dispatchEx->getMessage());
+                }
             },
             ImportFailed::class => function (ImportFailed $event) {
                 if ($this->batchId) {
-                    BusinessImportBatch::where('id', $this->batchId)->update(['status' => 'failed']);
+                    BusinessImportBatch::where('id', $this->batchId)->update(['status' => BusinessImportBatch::STATUS_FAILED]);
                 }
                 Log::error('Excel Import Completely Failed', ['exception' => $event->getException()]);
+
+                // Trigger next batch in line
+                try {
+                    app(BusinessImportQueueService::class)->dispatchNext();
+                } catch (\Throwable $dispatchEx) {
+                    Log::error("Failed to dispatch next batch after batch #{$this->batchId} failure: " . $dispatchEx->getMessage());
+                }
             },
         ];
     }
