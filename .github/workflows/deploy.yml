@@ -52,3 +52,11 @@ jobs:
           tmp/**
           tmp_extracted/**
           tmp_new_update/**
+          data/**
+          data/*
+          data
+          scratch/**
+          scratch/*
+          scratch
+          *.xlsx
+          *.csv
