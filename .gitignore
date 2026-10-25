@@ -27,3 +27,10 @@ Thumbs.db
 *.zip
 *.rar
 alidebo_categories_tree-2.xlsx
+Final_2.xlsx
+
+# Data, datasets, and temporary scratch
+/data/
+/scratch/
+*.xlsx
+*.csv

@@ -19,8 +19,26 @@ class BackupController extends Controller
         return env('BACKUP_PATH', storage_path('app/private'));
     }
 
+    /**
+     * Clean up any stale in_progress records that have been running for more than 30 minutes.
+     */
+    private function cleanStaleBackups(): void
+    {
+        BackupLog::where('status', 'in_progress')
+            ->where(function ($query) {
+                $query->where('created_at', '<', now()->subMinutes(30))
+                      ->orWhere('backup_date', '<', now()->subMinutes(30));
+            })
+            ->update([
+                'status' => 'failed',
+                'error_message' => 'Backup timed out or was interrupted.',
+            ]);
+    }
+
     public function index()
     {
+        $this->cleanStaleBackups();
+
         $files = BackupLog::orderBy('backup_date', 'desc')->get();
 
         // Check if queue runner is busy
@@ -35,6 +53,8 @@ class BackupController extends Controller
 
     public function status(Request $request)
     {
+        $this->cleanStaleBackups();
+
         $isGenerating = \DB::table('jobs')->where('payload', 'LIKE', '%db:backup%')->exists()
             || BackupLog::where('status', 'in_progress')->exists();
             
@@ -45,9 +65,12 @@ class BackupController extends Controller
 
     public function create(Request $request)
     {
+        $this->cleanStaleBackups();
+
         // Prevent duplicate backup processes
         $alreadyRunning = \DB::table('jobs')->where('payload', 'LIKE', '%db:backup%')->exists()
             || BackupLog::where('status', 'in_progress')->exists();
+
             
         if ($alreadyRunning) {
             return response()->json([

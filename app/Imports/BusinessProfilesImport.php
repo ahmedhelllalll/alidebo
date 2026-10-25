@@ -729,6 +729,13 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
     private function downloadAndStoreImage($url, string $folder, ?string $companyName = null): ?string
     {
+        // EMERGENCY BANDWIDTH PROTECTION: Remote image scraping and R2 uploads are paused
+        // to prevent bandwidth exhaustion, queue worker timeouts, and hung jobs.
+        // Pure textual, category, contact, and business metadata imports proceed at maximum speed.
+        if (!config('services.import.enable_image_scraping', env('IMPORT_ENABLE_IMAGE_SCRAPING', false))) {
+            return null;
+        }
+
         if ($this->isDryRun || empty($url)) {
             return null;
         }
@@ -737,6 +744,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
             return null;
         }
+
 
         try {
             // Stream GET with abort callback if size exceeds 5MB

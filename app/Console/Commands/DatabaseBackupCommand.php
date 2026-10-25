@@ -61,38 +61,55 @@ class DatabaseBackupCommand extends Command
 
         $this->info('1. Dumping database...');
         
-        // Use environment variable for password to avoid warnings
-        $command = [
-            'mysqldump',
-            '-h', $host,
-            '-P', $port,
-            '-u', $username,
-            $database
-        ];
-        
-        $env = $_ENV;
-        if (!empty($password)) {
-            $env['MYSQL_PWD'] = $password;
+        $mysqldumpBinary = 'mysqldump';
+        if (PHP_OS_FAMILY === 'Windows') {
+            $windowsCandidates = [
+                'C:\\xampp\\mysql\\bin\\mysqldump.exe',
+                'C:\\laragon\\bin\\mysql\\current\\bin\\mysqldump.exe',
+                'C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysqldump.exe',
+            ];
+            foreach ($windowsCandidates as $cand) {
+                if (file_exists($cand)) {
+                    $mysqldumpBinary = $cand;
+                    break;
+                }
+            }
         }
 
-        $process = new Process($command, null, $env);
-        $process->setTimeout(300); // 5 minutes timeout
+        try {
+            // Use environment variable for password to avoid warnings
+            $command = [
+                $mysqldumpBinary,
+                '-h', $host,
+                '-P', $port,
+                '-u', $username,
+                $database
+            ];
+            
+            $env = $_ENV;
+            if (!empty($password)) {
+                $env['MYSQL_PWD'] = $password;
+            }
 
-        // Redirect output directly to the SQL file to save memory
-        $process->run(function ($type, $buffer) use ($sqlPath) {
-            file_put_contents($sqlPath, $buffer, FILE_APPEND);
-        });
+            $process = new Process($command, null, $env);
+            $process->setTimeout(300); // 5 minutes timeout
 
-        if (!$process->isSuccessful()) {
-            $errorMsg = 'Database dump failed: ' . $process->getErrorOutput();
-            $this->error($errorMsg);
-            $backupLog->update([
-                'status' => 'failed',
-                'error_message' => $errorMsg,
-            ]);
-            @unlink($sqlPath);
-            return Command::FAILURE;
-        }
+            // Redirect output directly to the SQL file to save memory
+            $process->run(function ($type, $buffer) use ($sqlPath) {
+                file_put_contents($sqlPath, $buffer, FILE_APPEND);
+            });
+
+            if (!$process->isSuccessful()) {
+                $errorMsg = 'Database dump failed: ' . $process->getErrorOutput();
+                $this->error($errorMsg);
+                $backupLog->update([
+                    'status' => 'failed',
+                    'error_message' => $errorMsg,
+                ]);
+                @unlink($sqlPath);
+                return Command::FAILURE;
+            }
+
 
         // 2. Encryption (The Lock)
         $this->info('2. Compressing and encrypting backup...');
@@ -217,7 +234,20 @@ class DatabaseBackupCommand extends Command
             }
         }
 
-        $this->info('Backup process completed successfully!');
-        return Command::SUCCESS;
+            $this->info('Backup process completed successfully!');
+            return Command::SUCCESS;
+        } catch (\Throwable $e) {
+            $errorMsg = 'Unexpected backup error: ' . $e->getMessage();
+            $this->error($errorMsg);
+            Log::error($errorMsg);
+            $backupLog->update([
+                'status' => 'failed',
+                'error_message' => $errorMsg,
+            ]);
+            @unlink($sqlPath);
+            @unlink($zipPath);
+            return Command::FAILURE;
+        }
     }
 }
+

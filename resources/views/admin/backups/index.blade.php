@@ -7,15 +7,17 @@
     <div class="space-y-6 transition-all duration-500">
 
         {{-- Auto-Backup Info Card --}}
-        <div class="flex items-start sm:items-center gap-4 p-5 bg-white dark:bg-[#121214] border border-slate-200 dark:border-white/5 rounded-2xl shadow-sm">
-            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                <i class="fa-solid fa-clock-rotate-left"></i>
+        {{-- Auto-Backup Info Card --}}
+        <div class="flex items-start sm:items-center gap-4 p-5 bg-white dark:bg-[#121214] border border-amber-200/60 dark:border-amber-500/10 rounded-2xl shadow-sm">
+            <div class="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 shrink-0">
+                <i class="fa-solid fa-pause"></i>
             </div>
             <div>
-                <h2 class="text-[14px] font-[900] text-slate-800 dark:text-white">{{ __('admin.auto_backup_active') ?? 'Automated Backups Active' }}</h2>
-                <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mt-0.5">{{ __('admin.auto_backup_desc') ?? 'Rest easy! Your system automatically generates and securely stores a fresh, encrypted snapshot of all your database records every 12 hours.' }}</p>
+                <h2 class="text-[14px] font-[900] text-slate-800 dark:text-white">Scheduled Auto-Backups Paused (Manual Mode Active)</h2>
+                <p class="text-[13px] font-medium text-slate-500 dark:text-zinc-400 mt-0.5">Automated 12-hour background backups are temporarily paused to conserve bandwidth and prevent background loops. You can still generate fresh encrypted snapshots on-demand using the "Create Backup" button.</p>
             </div>
         </div>
+
 
         {{-- Header & Actions --}}
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 dashboard-header-reveal">
