@@ -65,35 +65,42 @@ class BusinessImportBatchController extends Controller
             $adminUser = auth()->user();
             $uploadedFiles = $request->file('files');
             $isDryRun = $request->boolean('is_dry_run', false);
+
+            // Step 1: Store files to local disk first (outside DB transaction to prevent long transactions)
+            $storedBatchesData = [];
+            foreach ($uploadedFiles as $file) {
+                $originalName = $file->getClientOriginalName();
+                $filePath = $file->store('imports/batches', 'local');
+
+                $storedBatchesData[] = [
+                    'admin_id'           => $adminUser->id,
+                    'original_file_name' => $originalName,
+                    'file_path'          => $filePath,
+                    'target_sheet'       => null, // Resolved asynchronously by queue worker
+                    'status'             => BusinessImportBatch::STATUS_QUEUED,
+                    'is_dry_run'         => $isDryRun,
+                    'created_at'         => now(),
+                    'updated_at'         => now(),
+                ];
+            }
+
+            // Step 2: Atomic DB batch insert (runs in milliseconds)
             $createdBatches = [];
-
-            DB::transaction(function () use ($uploadedFiles, $adminUser, $isDryRun, &$createdBatches) {
-                foreach ($uploadedFiles as $file) {
-                    $originalName = $file->getClientOriginalName();
-                    $filePath = $file->store('imports/batches', 'local');
-                    $targetSheet = $this->queueService->detectTargetSheet($filePath);
-
-                    $batch = BusinessImportBatch::create([
-                        'admin_id'           => $adminUser->id,
-                        'original_file_name' => $originalName,
-                        'file_path'          => $filePath,
-                        'target_sheet'       => $targetSheet,
-                        'status'             => BusinessImportBatch::STATUS_QUEUED,
-                        'is_dry_run'         => $isDryRun,
-                    ]);
-
+            DB::transaction(function () use ($storedBatchesData, &$createdBatches) {
+                foreach ($storedBatchesData as $data) {
+                    $batch = BusinessImportBatch::create($data);
                     $createdBatches[] = $batch->id;
                 }
             });
 
-            // Trigger the sequential pipeline
+            // Step 3: Trigger the sequential background pipeline
             $this->queueService->dispatchNext();
 
             $totalCount = count($createdBatches);
-            $mode = $isDryRun ? 'Dry run' : 'Import';
+            $mode = $isDryRun ? __('admin.dry_run') : __('admin.new_import');
             $message = $totalCount === 1
-                ? "{$mode} queued successfully. Processing sequentially in the background."
-                : "{$totalCount} sheets queued successfully. Processing sequentially in the background.";
+                ? __('admin.batch_queued_successfully', ['mode' => $mode])
+                : __('admin.batches_queued_successfully', ['count' => $totalCount]);
 
             return response()->json([
                 'success' => true,
@@ -114,45 +121,87 @@ class BusinessImportBatchController extends Controller
     {
         $this->authorize('delete', BusinessProfile::class);
 
-        // Delete associated businesses and images
-        $businesses = $importBatch->businesses()->get();
-        foreach ($businesses as $business) {
-            if ($business->logo) $this->profileService->deleteImage($business->logo, $business->disk ?? 'public');
-            if ($business->cover) $this->profileService->deleteImage($business->cover, $business->disk ?? 'public');
-            
-            foreach ($business->media as $media) {
-                $this->profileService->deleteMedia($media);
-            }
-            
-            $business->delete();
+        // Safeguard: Never delete an actively processing batch
+        if ($importBatch->isProcessing()) {
+            return response()->json([
+                'success' => false,
+                'message' => __('admin.cannot_delete_processing_batch') ?? 'Cannot delete a batch that is currently processing. Please wait for it to complete or fail.',
+            ], 422);
         }
 
-        // Delete the uploaded source excel file if exists
-        if ($importBatch->file_path && Storage::disk('local')->exists($importBatch->file_path)) {
-            Storage::disk('local')->delete($importBatch->file_path);
-        }
+        try {
+            $stats = $this->profileService->deleteImportBatch($importBatch);
 
-        // Delete the error log file if exists
-        if ($importBatch->error_log_path && Storage::disk('local')->exists($importBatch->error_log_path)) {
-            Storage::disk('local')->delete($importBatch->error_log_path);
-        }
-
-        // Delete the rejected file if exists
-        if ($importBatch->rejected_file_path && Storage::disk('local')->exists($importBatch->rejected_file_path)) {
-            Storage::disk('local')->delete($importBatch->rejected_file_path);
-        }
-
-        $wasProcessing = $importBatch->isProcessing();
-        $importBatch->delete();
-
-        // If the deleted batch was currently processing, advance the pipeline
-        if ($wasProcessing) {
+            // In case there is another batch queued, advance the pipeline
             $this->queueService->dispatchNext();
+
+            return response()->json([
+                'success' => true,
+                'message' => __('admin.batch_deleted_successfully') ?? 'Batch deleted successfully.',
+                'stats' => $stats,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error("Failed to delete import batch #{$importBatch->id}: " . $e->getMessage(), ['exception' => $e]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delete batch: ' . $e->getMessage(),
+            ], 500);
         }
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $this->authorize('delete', BusinessProfile::class);
+
+        $request->validate([
+            'batch_ids' => 'required|array|min:1|max:200',
+            'batch_ids.*' => 'required|integer|exists:business_import_batches,id',
+        ]);
+
+        $batchIds = $request->input('batch_ids');
+
+        // Safeguard: Check if any selected batch is processing
+        $processingBatches = BusinessImportBatch::whereIn('id', $batchIds)
+            ->where('status', BusinessImportBatch::STATUS_PROCESSING)
+            ->pluck('id')
+            ->all();
+
+        if (!empty($processingBatches)) {
+            return response()->json([
+                'success' => false,
+                'message' => __('admin.cannot_delete_processing_batches', ['batches' => implode(', #', $processingBatches)]),
+            ], 422);
+        }
+
+        $batches = BusinessImportBatch::whereIn('id', $batchIds)->get();
+        $deletedBatchesCount = 0;
+        $totalBusinesses = 0;
+        $totalMedia = 0;
+
+        foreach ($batches as $batch) {
+            try {
+                $stats = $this->profileService->deleteImportBatch($batch);
+                $deletedBatchesCount++;
+                $totalBusinesses += $stats['deleted_businesses'];
+                $totalMedia += $stats['deleted_media'];
+            } catch (\Throwable $e) {
+                Log::error("Bulk destroy error on batch #{$batch->id}: " . $e->getMessage(), ['exception' => $e]);
+            }
+        }
+
+        // Advance pipeline if there are remaining queued batches
+        $this->queueService->dispatchNext();
+
+        $msg = $deletedBatchesCount === 1
+            ? __('admin.single_batch_deleted_summary', ['businesses' => $totalBusinesses, 'media' => $totalMedia])
+            : __('admin.bulk_batches_deleted_summary', ['count' => $deletedBatchesCount, 'businesses' => $totalBusinesses, 'media' => $totalMedia]);
 
         return response()->json([
             'success' => true,
-            'message' => __('admin.batch_deleted_successfully') ?? 'Batch deleted successfully.'
+            'message' => $msg,
+            'deleted_batches' => $deletedBatchesCount,
+            'deleted_businesses' => $totalBusinesses,
+            'deleted_media' => $totalMedia,
         ]);
     }
 
@@ -160,21 +209,23 @@ class BusinessImportBatchController extends Controller
     {
         $this->authorize('viewAny', BusinessProfile::class);
 
-        if (!$importBatch->error_log_path || !Storage::disk('local')->exists($importBatch->error_log_path)) {
+        $path = $importBatch->error_log_path;
+        if (!$path || str_contains($path, '..') || !str_starts_with($path, 'imports/errors/') || !Storage::disk('local')->exists($path)) {
             return back()->with('error', __('admin.no_error_log_found') ?? 'No error log found for this batch.');
         }
 
-        return Storage::disk('local')->download($importBatch->error_log_path, 'batch_'.$importBatch->id.'_errors.txt');
+        return Storage::disk('local')->download($path, 'batch_'.$importBatch->id.'_errors.txt');
     }
 
     public function downloadRejected(BusinessImportBatch $importBatch)
     {
         $this->authorize('viewAny', BusinessProfile::class);
 
-        if (!$importBatch->rejected_file_path || !Storage::disk('local')->exists($importBatch->rejected_file_path)) {
+        $path = $importBatch->rejected_file_path;
+        if (!$path || str_contains($path, '..') || !str_starts_with($path, 'imports/rejected/') || !Storage::disk('local')->exists($path)) {
             return back()->with('error', __('admin.no_rejected_file_found') ?? 'No rejected rows found for this batch.');
         }
 
-        return Storage::disk('local')->download($importBatch->rejected_file_path, 'batch_'.$importBatch->id.'_rejected.csv');
+        return Storage::disk('local')->download($path, 'batch_'.$importBatch->id.'_rejected.csv');
     }
 }

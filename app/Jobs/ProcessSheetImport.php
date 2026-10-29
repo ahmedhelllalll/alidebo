@@ -55,6 +55,24 @@ class ProcessSheetImport implements ShouldQueue
             return;
         }
 
+        // Verify zip archive safety (Zip bomb / DoS defense)
+        if (!$queueService->validateArchiveSafety($batch->file_path)) {
+            $errorMsg = "[FATAL] File rejected: Failed archive safety verification (potential zip bomb, excessive compression ratio, or corrupt archive).";
+            Log::error("ProcessSheetImport: Batch #{$batch->id} safety violation - {$errorMsg}");
+
+            $errorPath = "imports/errors/batch_{$batch->id}.txt";
+            Storage::disk('local')->append($errorPath, $errorMsg . "\n");
+
+            $batch->update([
+                'status' => BusinessImportBatch::STATUS_FAILED,
+                'error_log_path' => $errorPath,
+            ]);
+
+            // Unlock next batch in line
+            $queueService->dispatchNext();
+            return;
+        }
+
         $targetSheet = $batch->target_sheet ?: $queueService->detectTargetSheet($batch->file_path);
         if ($targetSheet && !$batch->target_sheet) {
             $batch->update(['target_sheet' => $targetSheet]);

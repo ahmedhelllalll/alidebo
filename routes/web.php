@@ -166,6 +166,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/businesses/bulk-status', [Admin\BusinessController::class, 'bulkStatus'])->name('businesses.bulk-status');
         Route::resource('businesses', Admin\BusinessController::class);
         
+        Route::post('/import-batches/bulk-delete', [Admin\BusinessImportBatchController::class, 'bulkDestroy'])->name('import-batches.bulk-destroy');
         Route::get('/import-batches/{importBatch}/errors', [Admin\BusinessImportBatchController::class, 'downloadErrors'])->name('import-batches.errors');
         Route::get('/import-batches/{importBatch}/rejected', [Admin\BusinessImportBatchController::class, 'downloadRejected'])->name('import-batches.rejected');
         Route::resource('import-batches', Admin\BusinessImportBatchController::class)->only(['index', 'store', 'destroy']);

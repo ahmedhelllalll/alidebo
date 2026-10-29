@@ -108,14 +108,14 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         $this->targetSheet = $targetSheet;
         $this->normalizer = new DataNormalizationService();
 
-        // Initialize stats
-        Cache::put("import_stats_{$this->importId}_total", 0, 3600);
-        Cache::put("import_stats_{$this->importId}_imported", 0, 3600);
-        Cache::put("import_stats_{$this->importId}_updated", 0, 3600);
-        Cache::put("import_stats_{$this->importId}_skipped", 0, 3600);
-        Cache::put("import_stats_{$this->importId}_flagged", 0, 3600);
-        Cache::put("import_stats_{$this->importId}_new_categories", 0, 3600);
-        Cache::put("import_stats_{$this->importId}_new_cities", 0, 3600);
+        // Initialize stats with 24-hour TTL (86400s) to prevent expiration during large/long-running imports
+        Cache::put("import_stats_{$this->importId}_total", 0, 86400);
+        Cache::put("import_stats_{$this->importId}_imported", 0, 86400);
+        Cache::put("import_stats_{$this->importId}_updated", 0, 86400);
+        Cache::put("import_stats_{$this->importId}_skipped", 0, 86400);
+        Cache::put("import_stats_{$this->importId}_flagged", 0, 86400);
+        Cache::put("import_stats_{$this->importId}_new_categories", 0, 86400);
+        Cache::put("import_stats_{$this->importId}_new_cities", 0, 86400);
     }
 
     public function sheets(): array
@@ -161,13 +161,12 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                 Cache::increment("import_stats_{$this->importId}_total");
 
                 DB::transaction(function () use ($row, &$newCats, &$legacyCats, &$cities, &$countries) {
-                    // 1. Validate Company Name (Mandatory)
-                    $companyName = $this->getValueByHeaderName($row, 'company_name');
-                    if (empty($companyName) || trim($companyName) === '') {
+                    // 1. Validate Company Name (Mandatory) & normalize zero-width/non-breaking unicode whitespace
+                    $companyName = $this->cleanString($this->getValueByHeaderName($row, 'company_name'));
+                    if (empty($companyName)) {
                         $this->recordRejectedRow($row, "Company name is missing/blank. Row rejected.", 'ERR_EMPTY_NAME');
                         return;
                     }
-                    $companyName = trim($companyName);
 
                     // 2. Resolve Category (3-step priority: new_category_id -> category_slug -> legacy category text)
                     $catRes = $this->resolveCategoryData($row, $companyName, $newCats, $legacyCats);
@@ -251,52 +250,71 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         $updateData['contact_methods'] = $existingContacts;
 
                         if (!$this->isDryRun) {
-                            // Logo re-download rule: only update if valid URL and changed
+                            // Logo update rule: only update if valid URL and changed
                             if ($logoUrl && filter_var($logoUrl, FILTER_VALIDATE_URL)) {
                                 if ($logoUrl !== $existing->logo_url && $logoUrl !== $existing->logo) {
-                                    $newLogo = $this->downloadAndStoreImage($logoUrl, 'logos', $companyName);
+                                    $newLogo = $this->resolveMediaUrl($logoUrl, 'logos', $companyName);
                                     if ($newLogo) {
-                                        if ($existing->logo) {
+                                        if ($existing->logo && !str_starts_with($existing->logo, 'http')) {
                                             Storage::disk($existing->disk ?: $this->disk)->delete($existing->logo);
                                         }
                                         $updateData['logo'] = $newLogo;
+                                        if ($this->isPreUploadedR2Url($logoUrl)) {
+                                            $updateData['disk'] = 'r2';
+                                        }
                                     }
                                 }
                             }
 
-                            // Cover re-download rule: only update if valid URL and changed
+                            // Cover update rule: only update if valid URL and changed
                             if ($coverUrl && filter_var($coverUrl, FILTER_VALIDATE_URL)) {
                                 if ($coverUrl !== $existing->cover_url && $coverUrl !== $existing->cover) {
-                                    $newCover = $this->downloadAndStoreImage($coverUrl, 'covers', $companyName);
+                                    $newCover = $this->resolveMediaUrl($coverUrl, 'covers', $companyName);
                                     if ($newCover) {
-                                        if ($existing->cover) {
+                                        if ($existing->cover && !str_starts_with($existing->cover, 'http')) {
                                             Storage::disk($existing->disk ?: $this->disk)->delete($existing->cover);
                                         }
                                         $updateData['cover'] = $newCover;
+                                        if ($this->isPreUploadedR2Url($coverUrl)) {
+                                            $updateData['disk'] = 'r2';
+                                        }
                                     }
                                 }
                             }
 
-                            // Gallery images update
+                            // Gallery images update (Image 1 to Image 12)
                             for ($i = 1; $i <= 12; $i++) {
                                 $imgUrl = $this->getValueByHeaderName($row, "image_{$i}");
                                 if ($imgUrl && filter_var($imgUrl, FILTER_VALIDATE_URL)) {
                                     $existingMedia = BusinessMedia::where('business_profile_id', $existing->id)
                                         ->where('order', $i)
                                         ->first();
-                                    if ($existingMedia) {
-                                        Storage::disk($existingMedia->disk ?: $this->disk)->delete($existingMedia->file_path);
-                                        $existingMedia->delete();
+
+                                    // If media is already pointing to this exact URL, skip
+                                    if ($existingMedia && ($existingMedia->file_path === $imgUrl || $existingMedia->url === $imgUrl)) {
+                                        continue;
                                     }
-                                    $path = $this->downloadAndStoreImage($imgUrl, 'gallery', $companyName);
-                                    if ($path) {
-                                        BusinessMedia::create([
-                                            'business_profile_id' => $existing->id,
-                                            'file_path' => $path,
-                                            'type' => 'image',
-                                            'order' => $i,
-                                            'disk' => $this->disk,
-                                        ]);
+
+                                    $pathOrUrl = $this->resolveMediaUrl($imgUrl, 'gallery', $companyName);
+                                    if ($pathOrUrl) {
+                                        if ($existingMedia) {
+                                            if ($existingMedia->file_path && !str_starts_with($existingMedia->file_path, 'http')) {
+                                                Storage::disk($existingMedia->disk ?: $this->disk)->delete($existingMedia->file_path);
+                                            }
+                                            $existingMedia->update([
+                                                'file_path' => $pathOrUrl,
+                                                'disk' => $this->isPreUploadedR2Url($imgUrl) ? 'r2' : $this->disk,
+                                                'type' => 'image',
+                                            ]);
+                                        } else {
+                                            BusinessMedia::create([
+                                                'business_profile_id' => $existing->id,
+                                                'file_path' => $pathOrUrl,
+                                                'type' => 'image',
+                                                'order' => $i,
+                                                'disk' => $this->isPreUploadedR2Url($imgUrl) ? 'r2' : $this->disk,
+                                            ]);
+                                        }
                                     }
                                 }
                             }
@@ -325,10 +343,16 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         }
                     }
 
-                    // Check 2: Phone
+                    // Check 2: Phone (Exact & Digits-only Normalized)
                     $phone = $contactMethods['phone'] ?? null;
                     if (!empty($phone)) {
                         $dupPhone = BusinessProfile::where('contact_methods->phone', $phone)->first();
+                        if (!$dupPhone) {
+                            $digitPhone = preg_replace('/\D+/', '', $phone);
+                            if (strlen($digitPhone) >= 7) {
+                                $dupPhone = BusinessProfile::where('contact_methods->phone', 'like', '%' . substr($digitPhone, -7) . '%')->first();
+                            }
+                        }
                         if ($dupPhone) {
                             $this->recordRejectedRow($row, "Duplicate detected: Phone '{$phone}' already exists on Business #{$dupPhone->id} ('{$dupPhone->name}').", 'ERR_DUPLICATE_DETECTED');
                             return;
@@ -387,10 +411,13 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
                         // Process Logo & Cover
                         if ($logoUrl && filter_var($logoUrl, FILTER_VALIDATE_URL)) {
-                            $profile->logo = $this->downloadAndStoreImage($logoUrl, 'logos', $companyName);
+                            $profile->logo = $this->resolveMediaUrl($logoUrl, 'logos', $companyName);
                         }
                         if ($coverUrl && filter_var($coverUrl, FILTER_VALIDATE_URL)) {
-                            $profile->cover = $this->downloadAndStoreImage($coverUrl, 'covers', $companyName);
+                            $profile->cover = $this->resolveMediaUrl($coverUrl, 'covers', $companyName);
+                        }
+                        if ($this->isPreUploadedR2Url($logoUrl) || $this->isPreUploadedR2Url($coverUrl)) {
+                            $profile->disk = 'r2';
                         }
                         $profile->save();
 
@@ -398,14 +425,14 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         for ($i = 1; $i <= 12; $i++) {
                             $imgUrl = $this->getValueByHeaderName($row, "image_{$i}");
                             if ($imgUrl && filter_var($imgUrl, FILTER_VALIDATE_URL)) {
-                                $path = $this->downloadAndStoreImage($imgUrl, 'gallery', $companyName);
-                                if ($path) {
+                                $pathOrUrl = $this->resolveMediaUrl($imgUrl, 'gallery', $companyName);
+                                if ($pathOrUrl) {
                                     BusinessMedia::create([
                                         'business_profile_id' => $profile->id,
-                                        'file_path' => $path,
+                                        'file_path' => $pathOrUrl,
                                         'type' => 'image',
                                         'order' => $i,
-                                        'disk' => $this->disk,
+                                        'disk' => $this->isPreUploadedR2Url($imgUrl) ? 'r2' : $this->disk,
                                     ]);
                                 }
                             }
@@ -428,15 +455,20 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
             }
         }
 
-        // Flush chunk stats to database in a single atomic update
-        if ($this->batchId && ($this->chunkImported > 0 || $this->chunkUpdated > 0 || $this->chunkSkipped > 0)) {
-            BusinessImportBatch::where('id', $this->batchId)->update([
-                'imported_rows' => DB::raw("imported_rows + {$this->chunkImported}"),
-                'updated_rows'  => DB::raw("updated_rows + {$this->chunkUpdated}"),
-                'skipped_rows'  => DB::raw("skipped_rows + {$this->chunkSkipped}"),
-                'total_rows'    => DB::raw("total_rows + " . ($this->chunkImported + $this->chunkUpdated + $this->chunkSkipped)),
-                'updated_at'    => now(),
-            ]);
+        // Flush chunk stats and touch heartbeat timestamp unconditionally
+        if ($this->batchId) {
+            $totalInChunk = $this->chunkImported + $this->chunkUpdated + $this->chunkSkipped;
+            if ($totalInChunk > 0) {
+                BusinessImportBatch::where('id', $this->batchId)->update([
+                    'imported_rows' => DB::raw("imported_rows + {$this->chunkImported}"),
+                    'updated_rows'  => DB::raw("updated_rows + {$this->chunkUpdated}"),
+                    'skipped_rows'  => DB::raw("skipped_rows + {$this->chunkSkipped}"),
+                    'total_rows'    => DB::raw("total_rows + {$totalInChunk}"),
+                    'updated_at'    => now(),
+                ]);
+            } else {
+                BusinessImportBatch::where('id', $this->batchId)->touch();
+            }
         }
 
         $this->chunkImported = 0;
@@ -686,8 +718,12 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
     private function resolveCity($cityName, $countryName, &$cities, &$countries)
     {
-        if (empty($cityName))
+        $cityName = $this->cleanString($cityName);
+        $countryName = $this->cleanString($countryName);
+
+        if (empty($cityName)) {
             return null;
+        }
 
         $cityMatch = $this->normalizer->match($cityName, $cities, ['name_ar', 'name_en', 'name_de', 'name_es', 'name_tr', 'name_zh']);
         if ($cityMatch) {
@@ -698,44 +734,115 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
             return null;
         }
 
-        // We need a country to create a city
+        // Resolve or create country (required non-null foreign key on cities table)
         $countryId = null;
         if (!empty($countryName)) {
             $countryMatch = $this->normalizer->match($countryName, $countries, ['name_ar', 'name_en', 'name_de', 'name_es', 'name_tr', 'name_zh']);
             if ($countryMatch) {
                 $countryId = $countryMatch->id;
             } else {
-                $country = Country::create([
-                    'name_en' => $countryName,
-                    'name_ar' => $countryName,
-                    'code' => strtoupper(substr(Str::slug($countryName), 0, 2)),
-                    'status' => 'pending',
-                ]);
-                $countries->push($country);
+                // Ensure safe 2-character country code even if non-Latin or Arabic script
+                $cleanCode = strtoupper(substr(preg_replace('/[^a-zA-Z]/', '', Str::slug($countryName)), 0, 2));
+                if (empty($cleanCode) || strlen($cleanCode) < 2) {
+                    $cleanCode = strtoupper(substr(md5($countryName), 0, 2));
+                }
+
+                $country = Country::firstOrCreate(
+                    ['name_en' => $countryName],
+                    [
+                        'name_ar' => $countryName,
+                        'code'    => $cleanCode,
+                        'status'  => 'pending',
+                    ]
+                );
+                if (!$countries->contains('id', $country->id)) {
+                    $countries->push($country);
+                }
                 $countryId = $country->id;
+            }
+        } else {
+            // Country not specified; fall back to the first active platform country to prevent NOT NULL SQL constraint violation
+            $defaultCountry = $countries->firstWhere('status', 'active') ?: $countries->first();
+            if ($defaultCountry) {
+                $countryId = $defaultCountry->id;
             }
         }
 
-        $city = City::create([
-            'name_en' => $cityName,
-            'name_ar' => $cityName,
-            'country_id' => $countryId,
-            'status' => 'pending',
-        ]);
-        $cities->push($city);
+        // If no country exists in the system at all, log warning and do not create orphaned city
+        if (!$countryId) {
+            Log::warning("resolveCity: Cannot create city '{$cityName}' without a valid country_id.");
+            return null;
+        }
+
+        $city = City::firstOrCreate(
+            ['name_en' => $cityName, 'country_id' => $countryId],
+            [
+                'name_ar' => $cityName,
+                'status'  => 'pending',
+            ]
+        );
+        if (!$cities->contains('id', $city->id)) {
+            $cities->push($city);
+        }
         Cache::increment("import_stats_{$this->importId}_new_cities");
         return $city->id;
     }
 
-    private function downloadAndStoreImage($url, string $folder, ?string $companyName = null): ?string
+    /**
+     * Determine if an image URL is a pre-uploaded Cloudflare R2 or CDN asset.
+     */
+    private function isPreUploadedR2Url(?string $url): bool
     {
-        // EMERGENCY BANDWIDTH PROTECTION: Remote image scraping and R2 uploads are paused
-        // to prevent bandwidth exhaustion, queue worker timeouts, and hung jobs.
-        // Pure textual, category, contact, and business metadata imports proceed at maximum speed.
-        if (!config('services.import.enable_image_scraping', env('IMPORT_ENABLE_IMAGE_SCRAPING', false))) {
-            return null;
+        if (empty($url)) {
+            return false;
         }
 
+        $url = trim($url);
+        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
+            return false;
+        }
+
+        // 1. Matches Cloudflare R2 default domain (*.r2.dev or *.cloudflarestorage.com)
+        if (str_contains($url, 'r2.dev') || str_contains($url, 'r2.cloudflarestorage.com')) {
+            return true;
+        }
+
+        // 2. Matches configured Cloudflare R2 public URL / custom domain
+        $r2ConfigUrl = config('filesystems.disks.r2.url') ?: env('CLOUDFLARE_R2_URL');
+        if (!empty($r2ConfigUrl)) {
+            $configuredHost = parse_url($r2ConfigUrl, PHP_URL_HOST);
+            $urlHost = parse_url($url, PHP_URL_HOST);
+            if ($configuredHost && $urlHost && strcasecmp($configuredHost, $urlHost) === 0) {
+                return true;
+            }
+            if (str_starts_with($url, rtrim($r2ConfigUrl, '/'))) {
+                return true;
+            }
+        }
+
+        // 3. Matches standard pre-processed R2 storage paths
+        if (str_contains($url, '/businesses/logos/') ||
+            str_contains($url, '/businesses/covers/') ||
+            str_contains($url, '/businesses/gallery/')) {
+            return true;
+        }
+
+        // 4. When remote image scraping is disabled (default), all valid HTTP/HTTPS URLs
+        // in the spreadsheet are treated as pre-uploaded CDN/R2 links.
+        if (!config('services.import.enable_image_scraping', env('IMPORT_ENABLE_IMAGE_SCRAPING', false))) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Resolve image URL for import.
+     * Pre-uploaded R2/CDN links are returned immediately with zero network latency.
+     * Other remote links fall back to downloadAndStoreImage() if scraping is enabled.
+     */
+    private function resolveMediaUrl(?string $url, string $folder, ?string $companyName = null): ?string
+    {
         if ($this->isDryRun || empty($url)) {
             return null;
         }
@@ -745,13 +852,55 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
             return null;
         }
 
+        // Fast-path bypass for pre-uploaded Cloudflare R2 / CDN media
+        if ($this->isPreUploadedR2Url($url)) {
+            return $url;
+        }
+
+        // Fallback: download, validate MIME/bytes, and upload to storage disk
+        return $this->downloadAndStoreImage($url, $folder, $companyName);
+    }
+
+    private function downloadAndStoreImage($url, string $folder, ?string $companyName = null): ?string
+    {
+        if ($this->isDryRun || empty($url)) {
+            return null;
+        }
+
+        $url = trim($url);
+        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
+            return null;
+        }
+
+        // Fast-path bypass: return pre-uploaded R2/CDN links directly
+        if ($this->isPreUploadedR2Url($url)) {
+            return $url;
+        }
+
+        // EMERGENCY BANDWIDTH PROTECTION: Remote image scraping and R2 uploads are paused
+        // to prevent bandwidth exhaustion, queue worker timeouts, and hung jobs.
+        // Pure textual, category, contact, and business metadata imports proceed at maximum speed.
+        if (!config('services.import.enable_image_scraping', env('IMPORT_ENABLE_IMAGE_SCRAPING', false))) {
+            return null;
+        }
+
+        // SSRF Defense: strictly verify that the target URL resolves to a public, routable IP address
+        if (!$this->isSafePublicUrl($url)) {
+            $msg = "Image skipped: URL blocked by SSRF defense (non-public or cloud metadata endpoint): {$url}";
+            Log::warning($msg);
+            if ($companyName) {
+                $this->logWarning($msg, $companyName);
+            }
+            return null;
+        }
 
         try {
-            // Stream GET with abort callback if size exceeds 5MB
+            // Stream GET with abort callback if size exceeds 5MB and disable redirects to prevent SSRF bypass
             $response = Http::timeout(self::IMAGE_TIMEOUT)
                 ->connectTimeout(self::IMAGE_CONNECT_TIMEOUT)
                 ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; AlideboBot/1.0)'])
                 ->withOptions([
+                    'allow_redirects' => false,
                     'progress' => function ($downloadTotal, $downloadedNow) use ($url) {
                         if (($downloadTotal > self::MAX_IMAGE_SIZE) || ($downloadedNow > self::MAX_IMAGE_SIZE)) {
                             throw new \RuntimeException("Image exceeded maximum 5MB size limit ({$downloadedNow} bytes downloaded): {$url}");
@@ -876,7 +1025,10 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
         if (str_starts_with($header, 'image_')) {
             $num = str_replace('image_', '', $header);
-            return $this->getValueByFuzzyKey($row, ["image_{$num}", "image {$num}", "image{$num}"]);
+            return $this->getValueByFuzzyKey($row, [
+                "image_{$num}", "image {$num}", "image{$num}",
+                "صورة_{$num}", "صورة {$num}", "صورة{$num}",
+            ]);
         }
 
         return null;
@@ -943,6 +1095,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
     /**
      * Record a rejected/skipped row into both the text audit log and the rejected CSV.
+     * Hardened against CSV / Formula Injection and Log Forging.
      */
     private function recordRejectedRow($row, string $reason, string $errorCode = 'ERR_REJECTED'): void
     {
@@ -950,15 +1103,18 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
             Cache::increment("import_stats_{$this->importId}_skipped");
             $this->chunkSkipped++;
 
-            if ($this->batchId) {
+            // Sanitize strings against Log Forging (strip CR/LF)
+            $companyName = $this->cleanString($this->getValueByHeaderName($row, 'company_name')) ?: 'Unknown';
+            $safeCompany = preg_replace('/[\r\n]+/', ' ', $companyName);
+            $safeReason = preg_replace('/[\r\n]+/', ' ', $reason);
 
+            if ($this->batchId) {
                 // 1. Error Log
                 $logPath = "imports/errors/batch_{$this->batchId}.txt";
-                $companyName = $this->getValueByHeaderName($row, 'company_name') ?: 'Unknown';
-                $logEntry = "[REJECTED] Code: {$errorCode} | Company: '{$companyName}' | Reason: {$reason}\n";
+                $logEntry = "[REJECTED] Code: {$errorCode} | Company: '{$safeCompany}' | Reason: {$safeReason}\n";
                 Storage::disk('local')->append($logPath, $logEntry);
 
-                // 2. Rejected CSV Output
+                // 2. Rejected CSV Output (sanitized against CSV formula injection)
                 $rejectedPath = "imports/rejected/batch_{$this->batchId}_rejected.csv";
                 if (!Storage::disk('local')->exists($rejectedPath)) {
                     $stream = fopen('php://temp', 'r+');
@@ -973,15 +1129,16 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                 $stream = fopen('php://temp', 'r+');
                 $csvRow = [];
                 foreach (self::HEADERS as $header) {
-                    $csvRow[] = $this->getValueByHeaderName($row, $header);
+                    $val = $this->getValueByHeaderName($row, $header);
+                    $csvRow[] = $this->sanitizeCsvCell($val);
                 }
-                $csvRow[] = $reason;
+                $csvRow[] = $this->sanitizeCsvCell($reason);
                 fputcsv($stream, $csvRow);
                 rewind($stream);
                 Storage::disk('local')->append($rejectedPath, stream_get_contents($stream));
                 fclose($stream);
             } else {
-                file_put_contents(storage_path('logs/import_errors.txt'), "Rejected [{$errorCode}]: {$reason}\n", FILE_APPEND);
+                file_put_contents(storage_path('logs/import_errors.txt'), "Rejected [{$errorCode}]: {$safeReason}\n", FILE_APPEND);
             }
         } catch (\Throwable $e) {
             Log::error("Failed to record rejected row: " . $e->getMessage(), ['exception' => $e]);
@@ -993,12 +1150,109 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
         try {
             if ($this->batchId) {
                 $logPath = "imports/errors/batch_{$this->batchId}.txt";
-                $logEntry = "[WARNING] Company: '{$companyName}' | Notice: {$warning}\n";
+                $safeCompany = preg_replace('/[\r\n]+/', ' ', $companyName);
+                $safeWarning = preg_replace('/[\r\n]+/', ' ', $warning);
+                $logEntry = "[WARNING] Company: '{$safeCompany}' | Notice: {$safeWarning}\n";
                 Storage::disk('local')->append($logPath, $logEntry);
             }
         } catch (\Throwable $e) {
             Log::warning("Failed to append warning to batch error log: " . $e->getMessage());
         }
+    }
+
+    /**
+     * Clean and normalize unicode strings: strip zero-width characters, BOM, and normalize whitespace.
+     */
+    private function cleanString(?string $str): ?string
+    {
+        if ($str === null) {
+            return null;
+        }
+
+        // Strip zero-width spaces, joiners, non-joiners, byte-order marks
+        $clean = preg_replace('/[\x{200B}\x{200C}\x{200D}\x{FEFF}]/u', '', $str);
+        // Replace non-breaking and unusual spaces with standard space
+        $clean = preg_replace('/[\x{00A0}\x{202F}\x{3000}]/u', ' ', $clean);
+        // Collapse multiple whitespace
+        $clean = preg_replace('/\s+/u', ' ', $clean);
+
+        return trim($clean);
+    }
+
+    /**
+     * Sanitize cell value against CSV / Excel Formula Injection (OWASP standard).
+     * If cell starts with '=', '+', '-', '@', '\t', or '\r', prepend an apostrophe (').
+     */
+    private function sanitizeCsvCell(?string $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return $value;
+        }
+
+        // Strip non-printable control characters
+        $value = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $value);
+
+        // Neutralize formulas
+        if (preg_match('/^[=+\-@\t\r]/', $value)) {
+            return "'" . $value;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Defense-in-depth against SSRF (Server-Side Request Forgery).
+     * Validates that the target URL resolves exclusively to public, routable IP addresses.
+     * Blocks loopback (127.0.0.1), private RFC1918 subnets, cloud metadata endpoints, and non-HTTP protocols.
+     */
+    private function isSafePublicUrl(string $url): bool
+    {
+        $parsed = parse_url($url);
+        if (!$parsed || empty($parsed['host']) || empty($parsed['scheme'])) {
+            return false;
+        }
+
+        $scheme = strtolower($parsed['scheme']);
+        if ($scheme !== 'http' && $scheme !== 'https') {
+            return false;
+        }
+
+        $host = strtolower($parsed['host']);
+
+        // 1. Block dangerous hostnames & cloud metadata services
+        $blockedHosts = [
+            'localhost',
+            '127.0.0.1',
+            '0.0.0.0',
+            '169.254.169.254',          // AWS / OpenStack metadata
+            'metadata.google.internal',    // GCP metadata
+            'metadata.goog',
+            'instance-data',
+        ];
+        if (in_array($host, $blockedHosts, true) || str_ends_with($host, '.localhost')) {
+            return false;
+        }
+
+        // 2. Resolve DNS host to IPs
+        $ips = @gethostbynamel($host);
+        if (!$ips || !is_array($ips)) {
+            return false;
+        }
+
+        // 3. Ensure EVERY resolved IP is public and not private / reserved / loopback / link-local
+        foreach ($ips as $ip) {
+            $isPublic = filter_var(
+                $ip,
+                FILTER_VALIDATE_IP,
+                FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+            );
+            if (!$isPublic) {
+                Log::warning("SSRF Protection: Blocked attempt to query private/reserved IP [{$ip}] via host [{$host}]");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function chunkSize(): int

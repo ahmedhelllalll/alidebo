@@ -4,7 +4,10 @@ namespace App\Services;
 
 use App\Models\BusinessProfile;
 use App\Models\BusinessMedia;
+use App\Models\BusinessImportBatch;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -51,11 +54,202 @@ class BusinessProfileService
         return $file->store($directory, 'r2');
     }
 
-    public function deleteImage(?string $path, string $disk = 'public'): void
+    /**
+     * Resolve a clean relative storage/object key from a full URL or relative path.
+     * Strips scheme, host, leading slashes, query parameters, and bucket name prefixes.
+     * Defensively rejects and sanitizes directory traversal sequences ('..') and null bytes.
+     */
+    public function resolveStorageKey(?string $pathOrUrl): ?string
     {
-        if ($path && !str_contains($path, 'categories')) {
-            Storage::disk($disk)->delete($path);
+        if (empty($pathOrUrl)) {
+            return null;
         }
+
+        $pathOrUrl = trim($pathOrUrl);
+
+        // If it's a full URL, extract path component
+        if (str_starts_with($pathOrUrl, 'http://') || str_starts_with($pathOrUrl, 'https://')) {
+            $parsed = parse_url($pathOrUrl);
+            $pathOrUrl = $parsed['path'] ?? '';
+        }
+
+        // 1. Strip null bytes and control characters
+        $clean = str_replace(["\0", "\r", "\n"], '', $pathOrUrl);
+        // Normalize backslashes to forward slashes
+        $clean = str_replace('\\', '/', $clean);
+        // URL decode components
+        $clean = rawurldecode($clean);
+
+        // 2. Disallow any directory traversal sequences (..)
+        $segments = explode('/', $clean);
+        $safeSegments = [];
+        foreach ($segments as $segment) {
+            $trimmed = trim($segment);
+            if ($trimmed === '' || $trimmed === '.') {
+                continue;
+            }
+            if ($trimmed === '..') {
+                // Directory traversal detected! Abort immediately.
+                Log::warning("BusinessProfileService: Directory traversal attempt blocked in storage key: {$pathOrUrl}");
+                return null;
+            }
+            $safeSegments[] = $trimmed;
+        }
+
+        if (empty($safeSegments)) {
+            return null;
+        }
+
+        $key = implode('/', $safeSegments);
+
+        // 3. Strip configured bucket name prefix if present
+        $bucket = config('filesystems.disks.r2.bucket') ?: env('CLOUDFLARE_R2_BUCKET');
+        if (!empty($bucket) && str_starts_with($key, $bucket . '/')) {
+            $key = substr($key, strlen($bucket) + 1);
+        }
+
+        return !empty($key) ? $key : null;
+    }
+
+    /**
+     * Defensive deletion of an image from storage without crashing on missing files or network errors.
+     */
+    public function deleteImage(?string $path, string $disk = 'r2'): void
+    {
+        if (!$path || str_contains($path, 'categories')) {
+            return;
+        }
+
+        try {
+            $key = $this->resolveStorageKey($path);
+            if ($key) {
+                Storage::disk($disk)->delete($key);
+            }
+        } catch (\Throwable $e) {
+            Log::warning("BusinessProfileService: Failed to delete image [{$path}] on disk [{$disk}]: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Hardened, chunked deletion of an import batch and all associated records and storage assets.
+     *
+     * @param BusinessImportBatch $importBatch
+     * @return array Metrics of deleted records ['deleted_businesses' => int, 'deleted_media' => int]
+     * @throws \RuntimeException if batch is currently processing
+     */
+    public function deleteImportBatch(BusinessImportBatch $importBatch): array
+    {
+        if ($importBatch->isProcessing()) {
+            throw new \RuntimeException("Cannot delete Batch #{$importBatch->id} because it is currently processing. Wait for it to complete or fail.");
+        }
+
+        $deletedBusinessesCount = 0;
+        $deletedMediaCount = 0;
+
+        // Chunk through businesses to keep memory consumption near zero
+        $importBatch->businesses()->chunkById(100, function ($businesses) use (&$deletedBusinessesCount, &$deletedMediaCount) {
+            $businessIds = $businesses->pluck('id')->all();
+            if (empty($businessIds)) {
+                return;
+            }
+
+            // A. Collect all media keys for this chunk
+            $mediaRecords = BusinessMedia::whereIn('business_profile_id', $businessIds)
+                ->get(['id', 'file_path', 'disk']);
+
+            $keysByDisk = [];
+
+            foreach ($mediaRecords as $media) {
+                $disk = $media->disk ?: 'r2';
+                $key = $this->resolveStorageKey($media->file_path);
+                if ($key) {
+                    $keysByDisk[$disk][] = $key;
+                    $deletedMediaCount++;
+                }
+            }
+
+            foreach ($businesses as $business) {
+                $disk = $business->disk ?: 'r2';
+                if ($business->logo) {
+                    $key = $this->resolveStorageKey($business->logo);
+                    if ($key) {
+                        $keysByDisk[$disk][] = $key;
+                        $deletedMediaCount++;
+                    }
+                }
+                if ($business->cover) {
+                    $key = $this->resolveStorageKey($business->cover);
+                    if ($key) {
+                        $keysByDisk[$disk][] = $key;
+                        $deletedMediaCount++;
+                    }
+                }
+            }
+
+            // B. Prune files from storage defensively using chunked array deletion (max 500 keys per call to respect S3/R2 1000 key limit)
+            foreach ($keysByDisk as $disk => $keys) {
+                try {
+                    $uniqueKeys = array_values(array_unique($keys));
+                    if (!empty($uniqueKeys)) {
+                        foreach (array_chunk($uniqueKeys, 500) as $keyChunk) {
+                            Storage::disk($disk)->delete($keyChunk);
+                        }
+                    }
+                } catch (\Throwable $storageEx) {
+                    Log::warning("deleteImportBatch: Storage deletion error on disk [{$disk}]: " . $storageEx->getMessage());
+                }
+            }
+
+            // C. Delete related database records inside transaction
+            DB::transaction(function () use ($businessIds) {
+                // Delete child relations explicitly
+                DB::table('business_media')->whereIn('business_profile_id', $businessIds)->delete();
+                DB::table('business_views')->whereIn('business_profile_id', $businessIds)->delete();
+                DB::table('business_leads')->whereIn('business_profile_id', $businessIds)->delete();
+                DB::table('reviews')->whereIn('business_profile_id', $businessIds)->delete();
+                DB::table('business_profile_translations')->whereIn('business_profile_id', $businessIds)->delete();
+                DB::table('business_image_categories')->whereIn('business_profile_id', $businessIds)->delete();
+
+                // Products & product images if any
+                $productIds = DB::table('products')->whereIn('business_profile_id', $businessIds)->pluck('id')->all();
+                if (!empty($productIds)) {
+                    DB::table('product_images')->whereIn('product_id', $productIds)->delete();
+                    DB::table('products')->whereIn('id', $productIds)->delete();
+                }
+
+                // Delete the business profiles
+                DB::table('business_profiles')->whereIn('id', $businessIds)->delete();
+            });
+
+            $deletedBusinessesCount += count($businessIds);
+        });
+
+        // 3. Prune local batch files
+        $localFilesToDelete = array_filter([
+            $importBatch->file_path,
+            $importBatch->error_log_path,
+            $importBatch->rejected_file_path,
+            "imports/errors/batch_{$importBatch->id}.txt",
+            "imports/rejected/batch_{$importBatch->id}_rejected.csv",
+        ]);
+
+        foreach (array_unique($localFilesToDelete) as $localFile) {
+            try {
+                if (Storage::disk('local')->exists($localFile)) {
+                    Storage::disk('local')->delete($localFile);
+                }
+            } catch (\Throwable $fileEx) {
+                Log::warning("deleteImportBatch: Local file deletion failed for [{$localFile}]: " . $fileEx->getMessage());
+            }
+        }
+
+        // 4. Delete the batch record itself
+        $importBatch->delete();
+
+        return [
+            'deleted_businesses' => $deletedBusinessesCount,
+            'deleted_media' => $deletedMediaCount,
+        ];
     }
 
     public function createProfile($user, array $validated, $request): BusinessProfile
@@ -255,7 +449,7 @@ class BusinessProfileService
 
     public function deleteMedia(BusinessMedia $media): void
     {
-        $this->deleteImage($media->file_path, $media->disk ?? 'public');
+        $this->deleteImage($media->file_path, $media->disk ?: 'r2');
         $media->delete();
     }
 }
