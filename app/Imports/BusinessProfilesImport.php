@@ -250,60 +250,56 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                         $updateData['contact_methods'] = $existingContacts;
 
                         if (!$this->isDryRun) {
-                            // Logo update rule: only update if valid URL and changed
-                            if ($logoUrl && filter_var($logoUrl, FILTER_VALIDATE_URL)) {
-                                if ($logoUrl !== $existing->logo_url && $logoUrl !== $existing->logo) {
-                                    $newLogo = $this->resolveMediaUrl($logoUrl, 'logos', $companyName);
-                                    if ($newLogo) {
+                            // Logo update rule: only update if valid R2 media and changed
+                            if (!empty($logoUrl)) {
+                                $newLogo = $this->resolveMediaUrl($logoUrl, 'logos', $companyName);
+                                if ($newLogo) {
+                                    if ($newLogo !== $existing->logo_url && $newLogo !== $existing->logo) {
                                         if ($existing->logo && !str_starts_with($existing->logo, 'http')) {
                                             Storage::disk($existing->disk ?: $this->disk)->delete($existing->logo);
                                         }
                                         $updateData['logo'] = $newLogo;
-                                        if ($this->isPreUploadedR2Url($logoUrl)) {
-                                            $updateData['disk'] = 'r2';
-                                        }
+                                        $updateData['disk'] = 'r2';
                                     }
                                 }
                             }
 
-                            // Cover update rule: only update if valid URL and changed
-                            if ($coverUrl && filter_var($coverUrl, FILTER_VALIDATE_URL)) {
-                                if ($coverUrl !== $existing->cover_url && $coverUrl !== $existing->cover) {
-                                    $newCover = $this->resolveMediaUrl($coverUrl, 'covers', $companyName);
-                                    if ($newCover) {
+                            // Cover update rule: only update if valid R2 media and changed
+                            if (!empty($coverUrl)) {
+                                $newCover = $this->resolveMediaUrl($coverUrl, 'covers', $companyName);
+                                if ($newCover) {
+                                    if ($newCover !== $existing->cover_url && $newCover !== $existing->cover) {
                                         if ($existing->cover && !str_starts_with($existing->cover, 'http')) {
                                             Storage::disk($existing->disk ?: $this->disk)->delete($existing->cover);
                                         }
                                         $updateData['cover'] = $newCover;
-                                        if ($this->isPreUploadedR2Url($coverUrl)) {
-                                            $updateData['disk'] = 'r2';
-                                        }
+                                        $updateData['disk'] = 'r2';
                                     }
                                 }
                             }
 
-                            // Gallery images update (Image 1 to Image 12)
+                            // Gallery images update (Image 1 to Image 12: strictly R2 only)
                             for ($i = 1; $i <= 12; $i++) {
                                 $imgUrl = $this->getValueByHeaderName($row, "image_{$i}");
-                                if ($imgUrl && filter_var($imgUrl, FILTER_VALIDATE_URL)) {
-                                    $existingMedia = BusinessMedia::where('business_profile_id', $existing->id)
-                                        ->where('order', $i)
-                                        ->first();
-
-                                    // If media is already pointing to this exact URL, skip
-                                    if ($existingMedia && ($existingMedia->file_path === $imgUrl || $existingMedia->url === $imgUrl)) {
-                                        continue;
-                                    }
-
+                                if (!empty($imgUrl)) {
                                     $pathOrUrl = $this->resolveMediaUrl($imgUrl, 'gallery', $companyName);
                                     if ($pathOrUrl) {
+                                        $existingMedia = BusinessMedia::where('business_profile_id', $existing->id)
+                                            ->where('order', $i)
+                                            ->first();
+
+                                        // If media is already pointing to this exact URL, skip
+                                        if ($existingMedia && ($existingMedia->file_path === $pathOrUrl || $existingMedia->file_url === $pathOrUrl)) {
+                                            continue;
+                                        }
+
                                         if ($existingMedia) {
                                             if ($existingMedia->file_path && !str_starts_with($existingMedia->file_path, 'http')) {
                                                 Storage::disk($existingMedia->disk ?: $this->disk)->delete($existingMedia->file_path);
                                             }
                                             $existingMedia->update([
                                                 'file_path' => $pathOrUrl,
-                                                'disk' => $this->isPreUploadedR2Url($imgUrl) ? 'r2' : $this->disk,
+                                                'disk' => 'r2',
                                                 'type' => 'image',
                                             ]);
                                         } else {
@@ -312,14 +308,16 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                                                 'file_path' => $pathOrUrl,
                                                 'type' => 'image',
                                                 'order' => $i,
-                                                'disk' => $this->isPreUploadedR2Url($imgUrl) ? 'r2' : $this->disk,
+                                                'disk' => 'r2',
                                             ]);
                                         }
                                     }
                                 }
                             }
 
-                            $existing->update($updateData);
+                            if (!empty($updateData)) {
+                                $existing->update($updateData);
+                            }
                         }
 
                         Cache::increment("import_stats_{$this->importId}_updated");
@@ -409,22 +407,22 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                             'import_batch_id' => $this->batchId,
                         ]);
 
-                        // Process Logo & Cover
-                        if ($logoUrl && filter_var($logoUrl, FILTER_VALIDATE_URL)) {
+                        // Process Logo & Cover: strictly accept only pre-uploaded Cloudflare R2 media
+                        if (!empty($logoUrl)) {
                             $profile->logo = $this->resolveMediaUrl($logoUrl, 'logos', $companyName);
                         }
-                        if ($coverUrl && filter_var($coverUrl, FILTER_VALIDATE_URL)) {
+                        if (!empty($coverUrl)) {
                             $profile->cover = $this->resolveMediaUrl($coverUrl, 'covers', $companyName);
                         }
-                        if ($this->isPreUploadedR2Url($logoUrl) || $this->isPreUploadedR2Url($coverUrl)) {
+                        if ($profile->logo || $profile->cover) {
                             $profile->disk = 'r2';
                         }
                         $profile->save();
 
-                        // Process Gallery Images (Image 1 to Image 12)
+                        // Process Gallery Images (Image 1 to Image 12: strictly pre-uploaded Cloudflare R2 media)
                         for ($i = 1; $i <= 12; $i++) {
                             $imgUrl = $this->getValueByHeaderName($row, "image_{$i}");
-                            if ($imgUrl && filter_var($imgUrl, FILTER_VALIDATE_URL)) {
+                            if (!empty($imgUrl)) {
                                 $pathOrUrl = $this->resolveMediaUrl($imgUrl, 'gallery', $companyName);
                                 if ($pathOrUrl) {
                                     BusinessMedia::create([
@@ -432,7 +430,7 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
                                         'file_path' => $pathOrUrl,
                                         'type' => 'image',
                                         'order' => $i,
-                                        'disk' => $this->isPreUploadedR2Url($imgUrl) ? 'r2' : $this->disk,
+                                        'disk' => 'r2',
                                     ]);
                                 }
                             }
@@ -789,48 +787,69 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
     }
 
     /**
-     * Determine if an image URL is a pre-uploaded Cloudflare R2 or CDN asset.
+     * Determine if an image URL or path is strictly hosted on our Cloudflare R2 CDN/storage.
+     * Only accepts URLs matching Cloudflare R2 domains or configured custom CDN domains.
+     * All non-R2 external URLs (e.g. WordPress media, Facebook, Google, external CDNs) return false.
      */
-    private function isPreUploadedR2Url(?string $url): bool
+    public function isPreUploadedR2Url(?string $url): bool
     {
         if (empty($url)) {
             return false;
         }
 
         $url = trim($url);
+
+        // Pre-stored relative storage path on R2 disk (e.g. businesses/logos/xxx.webp)
+        if (preg_match('/^businesses\/(logos|covers|gallery)\/[a-zA-Z0-9_\-\.\/]+$/i', $url)) {
+            return true;
+        }
+
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
             return false;
         }
 
-        // 1. Matches Cloudflare R2 default domain (*.r2.dev or *.cloudflarestorage.com)
-        if (str_contains($url, 'r2.dev') || str_contains($url, 'r2.cloudflarestorage.com')) {
+        $host = parse_url($url, PHP_URL_HOST);
+        if (!$host) {
+            return false;
+        }
+        $host = strtolower($host);
+
+        // 1. Matches Alidebo custom media / CDN domain (e.g. media.alidebo.com)
+        if ($host === 'media.alidebo.com' || str_ends_with($host, '.media.alidebo.com') ||
+            $host === 'cdn.alidebo.com' || str_ends_with($host, '.cdn.alidebo.com')) {
             return true;
         }
 
-        // 2. Matches configured Cloudflare R2 public URL / custom domain
+        // 2. Matches Cloudflare R2 domains (*.r2.cloudflarestorage.com, *.r2.dev, *.cloudflarestorage.com)
+        if ($host === 'r2.cloudflarestorage.com' || str_ends_with($host, '.r2.cloudflarestorage.com') ||
+            $host === 'cloudflarestorage.com' || str_ends_with($host, '.cloudflarestorage.com') ||
+            $host === 'r2.dev' || str_ends_with($host, '.r2.dev')) {
+            return true;
+        }
+
+        // 3. Matches configured Cloudflare R2 public URL / custom domain in config or env
         $r2ConfigUrl = config('filesystems.disks.r2.url') ?: env('CLOUDFLARE_R2_URL');
         if (!empty($r2ConfigUrl)) {
-            $configuredHost = parse_url($r2ConfigUrl, PHP_URL_HOST);
-            $urlHost = parse_url($url, PHP_URL_HOST);
-            if ($configuredHost && $urlHost && strcasecmp($configuredHost, $urlHost) === 0) {
-                return true;
+            $configuredHost = strtolower((string) parse_url($r2ConfigUrl, PHP_URL_HOST));
+            if (!empty($configuredHost)) {
+                if ($host === $configuredHost || str_ends_with($host, '.' . $configuredHost)) {
+                    return true;
+                }
             }
             if (str_starts_with($url, rtrim($r2ConfigUrl, '/'))) {
                 return true;
             }
         }
 
-        // 3. Matches standard pre-processed R2 storage paths
-        if (str_contains($url, '/businesses/logos/') ||
-            str_contains($url, '/businesses/covers/') ||
-            str_contains($url, '/businesses/gallery/')) {
-            return true;
-        }
-
-        // 4. When remote image scraping is disabled (default), all valid HTTP/HTTPS URLs
-        // in the spreadsheet are treated as pre-uploaded CDN/R2 links.
-        if (!config('services.import.enable_image_scraping', env('IMPORT_ENABLE_IMAGE_SCRAPING', false))) {
-            return true;
+        // 4. Matches configured Cloudflare R2 endpoint host in config or env
+        $r2Endpoint = config('filesystems.disks.r2.endpoint') ?: env('CLOUDFLARE_R2_ENDPOINT');
+        if (!empty($r2Endpoint)) {
+            $endpointHost = strtolower((string) parse_url($r2Endpoint, PHP_URL_HOST));
+            if (!empty($endpointHost)) {
+                if ($host === $endpointHost || str_ends_with($host, '.' . $endpointHost)) {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -838,151 +857,33 @@ class BusinessProfilesImport implements ToCollection, WithHeadingRow, WithChunkR
 
     /**
      * Resolve image URL for import.
-     * Pre-uploaded R2/CDN links are returned immediately with zero network latency.
-     * Other remote links fall back to downloadAndStoreImage() if scraping is enabled.
+     * Strictly enforces Cloudflare R2 pre-uploaded media check.
+     * Only accepts and links images already hosted on our Cloudflare R2 CDN/domain.
+     * All non-R2 external URLs are silently skipped with zero network latency and no outbound requests.
      */
-    private function resolveMediaUrl(?string $url, string $folder, ?string $companyName = null): ?string
+    public function resolveMediaUrl(?string $url, string $folder, ?string $companyName = null): ?string
     {
         if ($this->isDryRun || empty($url)) {
             return null;
         }
 
         $url = trim($url);
-        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
-            return null;
-        }
 
-        // Fast-path bypass for pre-uploaded Cloudflare R2 / CDN media
+        // Enforce Cloudflare R2 check: strictly accept only pre-uploaded R2 media
         if ($this->isPreUploadedR2Url($url)) {
             return $url;
         }
 
-        // Fallback: download, validate MIME/bytes, and upload to storage disk
-        return $this->downloadAndStoreImage($url, $folder, $companyName);
+        // Silently ignore external / remote non-R2 URLs (e.g. WordPress, Facebook, Google)
+        // without downloading, throwing exceptions, or logging warnings.
+        return null;
     }
 
     private function downloadAndStoreImage($url, string $folder, ?string $companyName = null): ?string
     {
-        if ($this->isDryRun || empty($url)) {
-            return null;
-        }
-
-        $url = trim($url);
-        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^https?:\/\//i', $url)) {
-            return null;
-        }
-
-        // Fast-path bypass: return pre-uploaded R2/CDN links directly
-        if ($this->isPreUploadedR2Url($url)) {
-            return $url;
-        }
-
-        // EMERGENCY BANDWIDTH PROTECTION: Remote image scraping and R2 uploads are paused
-        // to prevent bandwidth exhaustion, queue worker timeouts, and hung jobs.
-        // Pure textual, category, contact, and business metadata imports proceed at maximum speed.
-        if (!config('services.import.enable_image_scraping', env('IMPORT_ENABLE_IMAGE_SCRAPING', false))) {
-            return null;
-        }
-
-        // SSRF Defense: strictly verify that the target URL resolves to a public, routable IP address
-        if (!$this->isSafePublicUrl($url)) {
-            $msg = "Image skipped: URL blocked by SSRF defense (non-public or cloud metadata endpoint): {$url}";
-            Log::warning($msg);
-            if ($companyName) {
-                $this->logWarning($msg, $companyName);
-            }
-            return null;
-        }
-
-        try {
-            // Stream GET with abort callback if size exceeds 5MB and disable redirects to prevent SSRF bypass
-            $response = Http::timeout(self::IMAGE_TIMEOUT)
-                ->connectTimeout(self::IMAGE_CONNECT_TIMEOUT)
-                ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; AlideboBot/1.0)'])
-                ->withOptions([
-                    'allow_redirects' => false,
-                    'progress' => function ($downloadTotal, $downloadedNow) use ($url) {
-                        if (($downloadTotal > self::MAX_IMAGE_SIZE) || ($downloadedNow > self::MAX_IMAGE_SIZE)) {
-                            throw new \RuntimeException("Image exceeded maximum 5MB size limit ({$downloadedNow} bytes downloaded): {$url}");
-                        }
-                    },
-                ])
-                ->get($url);
-
-            if (!$response->successful()) {
-                Log::warning("Image download failed with status {$response->status()} for URL: {$url}");
-                return null;
-            }
-
-            $body = $response->body();
-            if (empty($body) || strlen($body) > self::MAX_IMAGE_SIZE) {
-                unset($body);
-                return null;
-            }
-
-            // 3. Inspect MIME type (magic bytes) & URL extension
-            $finfo = new \finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->buffer($body);
-            $contentType = strtolower($response->header('Content-Type') ?? '');
-
-            $urlPath = parse_url($url, PHP_URL_PATH);
-            $urlExt = strtolower(pathinfo($urlPath ?? '', PATHINFO_EXTENSION));
-
-            $allowedMimes = [
-                'image/webp'      => 'webp',
-                'image/x-webp'    => 'webp',
-                'image/jpeg'      => 'jpg',
-                'image/jpg'       => 'jpg',
-                'image/pjpeg'     => 'jpg',
-                'image/png'       => 'png',
-                'image/x-png'     => 'png',
-                'image/gif'       => 'gif',
-                'image/svg+xml'   => 'svg',
-                'image/svg'       => 'svg',
-                'image/avif'      => 'avif',
-                'image/bmp'       => 'bmp',
-                'image/x-ms-bmp'  => 'bmp',
-            ];
-
-            $extension = null;
-            if (isset($allowedMimes[$mimeType])) {
-                $extension = $allowedMimes[$mimeType];
-            } elseif (str_contains($contentType, 'webp') || $urlExt === 'webp') {
-                $extension = 'webp';
-            } elseif (str_contains($contentType, 'png') || $urlExt === 'png') {
-                $extension = 'png';
-            } elseif (str_contains($contentType, 'jpeg') || str_contains($contentType, 'jpg') || in_array($urlExt, ['jpg', 'jpeg'])) {
-                $extension = 'jpg';
-            } elseif (str_contains($contentType, 'gif') || $urlExt === 'gif') {
-                $extension = 'gif';
-            } elseif (str_contains($contentType, 'svg') || $urlExt === 'svg') {
-                $extension = 'svg';
-            } elseif (str_contains($contentType, 'avif') || $urlExt === 'avif') {
-                $extension = 'avif';
-            }
-
-            if (!$extension) {
-                $msg = "Image skipped: unsupported or non-image format (mime: {$mimeType}) for URL: {$url}";
-                Log::warning($msg);
-                if ($companyName) {
-                    $this->logWarning($msg, $companyName);
-                }
-                return null;
-            }
-
-            // 4. Store safely to configured disk
-            $filename = 'businesses/' . $folder . '/' . Str::uuid() . '.' . $extension;
-            Storage::disk($this->disk)->put($filename, $body);
-
-            return $filename;
-        } catch (\Throwable $e) {
-            $msg = "Image processing/download failed for {$url}: " . $e->getMessage();
-            Log::warning($msg);
-            if ($companyName) {
-                $this->logWarning($msg, $companyName);
-            }
-            return null;
-        }
+        // Outbound image scraping and downloading is permanently disabled during imports.
+        // Only pre-uploaded Cloudflare R2 assets are accepted via resolveMediaUrl().
+        return null;
     }
 
     /**
